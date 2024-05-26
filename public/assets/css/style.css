@@ -13282,6 +13282,9 @@ ul.nav-tabs > li > a {
 .justify-start {
 	justify-content: flex-start !important;
 }
+.isian-title {
+	font-weight: 700;
+}
 .overflow-hidden {
 	overflow: hidden !important;
 }
