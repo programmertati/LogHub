@@ -145,7 +145,7 @@ body {
 	font-family: 'CircularStd', sans-serif;
 	font-size: .9375rem;
 	color: #1f1f1f;
-	background-color: #f4f3ef;
+	background-color: rgba(255, 255, 255, 1);
 	min-height: 100%;
 	overflow-x: hidden;
 }
@@ -1339,9 +1339,11 @@ table.dataTable thead > tr > td.sorting {
 .header {
 	background:rgba(255, 255, 255, 1);
 	border-bottom: 1px solid #ddd;
-	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
-	height: 60px;
-	left: 230px;
+	--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+	--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+	height: 4rem;
+	left: 320px;
 	position: fixed;
 	right: 0;
 	top: 0;
@@ -1437,7 +1439,6 @@ table.dataTable thead > tr > td.sorting {
     z-index: 99;
 }
 .user-menu.nav > li > a {
-	color: #fff;
 	font-size: 15px;
 	line-height: 60px;
 	padding: 0 15px;
@@ -1464,7 +1465,8 @@ table.dataTable thead > tr > td.sorting {
 }
 .main-drop .user-img img {
 	border-radius: 50%;
-    width: 30px;
+    width: 45px;
+	height: auto;
 }
 .user-img .status {
 	border: 2px solid #fff;
@@ -1511,8 +1513,9 @@ table.dataTable thead > tr > td.sorting {
     position: fixed;
     top: 0;
     transition: all 0.2s ease-in-out 0s;
-    width: 230px;
+	width: 20rem;
     z-index: 1030;
+	border-right: 2px solid #ddd;
 }
 .sidebar.opened {
 	-webkit-transition: all 0.4s ease;
@@ -1542,9 +1545,13 @@ table.dataTable thead > tr > td.sorting {
 }
 .sidebar-menu li a:hover {
 	color: rgba(0, 0, 0, 1);
+	background-color: #f0f1f5;
+	border-radius: 15px;
 }
 .sidebar-menu li.active a {
-	color: #eb5e28;
+	color: white;
+	background-color: #dc3545;
+	border-radius: 15px;
 }
 .menu-title {
     color: rgba(0, 0, 0, 0.8);
@@ -1743,7 +1750,7 @@ table.dataTable thead > tr > td.sorting {
 
 .page-wrapper {
 	left: 0;
-	margin-left: 230px;
+	margin-left: 320px;
 	padding-top: 60px;
 	position: relative;
 	transition: all 0.2s ease-in-out;
@@ -8217,8 +8224,10 @@ ul.comment-list li ul.children {
 	.header {
 		background: rgba(255, 255, 255, 1);;
 		border-bottom: 1px solid transparent;
-		box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
-		height: 60px;
+		--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+		--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+		height: 4rem;
 		left: 0;
 		position: fixed;
 		right: 0;
@@ -8280,7 +8289,6 @@ ul.comment-list li ul.children {
 		padding-right: 0;
 	}
 	a.mobile_btn {
-		color: #3b5c03;
 		font-size: 24px;
 		height: 60px;
 		left: 0;
@@ -8408,8 +8416,10 @@ ul.comment-list li ul.children {
 	.header {
 		background: rgba(255, 255, 255, 1);;
 		border-bottom: 1px solid transparent;
-		box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
-		height: 60px;
+		--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+		--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+		height: 4rem;
 		left: 0;
 		position: fixed;
 		right: 0;
@@ -11910,12 +11920,10 @@ ul.nav-tabs > li > a {
 }
 
 .sidebar .sidebar-left {
-	float: left;
 	height: 60px;
 	padding: 0 20px;
 	position: relative;
-	text-align: center;
-	width: 230px;
+	width: 20rem;
 	z-index: 1;
 	transition: all 0.2s ease-in-out;
 }
@@ -13651,14 +13659,14 @@ ul.nav-tabs > li > a {
 .input-checklist {
 	position: relative;
 	display: flex;
-    margin-bottom: 1%;
+	margin-top: -3%;
 	align-items: baseline;
 }
 .input-checklist2 {
     position: relative;
     display: flex;
 	flex-wrap: wrap;
-    margin-bottom: 1%;
+	margin-top: -3%;
     align-items: baseline;
 }
 .update-title {
@@ -13689,13 +13697,26 @@ ul.nav-tabs > li > a {
 .aksi-update-checklist {
 	display: flex;
     margin-left: 5%;
-    margin-bottom: 2%;
+	margin-bottom: 3%;
 }
 .aksi-update-checklist2 {
     display: flex;
     margin-left: 5%;
     margin-bottom: 2%;
     margin-top: 1%;
+}
+.move-card {
+	position: relative;
+    text-align: center;
+	font-size: 20px;
+    font-weight: 700;
+}
+.aksi-move-card {
+	position: relative;
+    display: flex;
+    align-items: baseline;
+    margin-top: -7px;
+    margin-bottom: -20px;
 }
 .icon-comment {
 	margin-top: 1%;

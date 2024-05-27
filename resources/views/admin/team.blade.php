@@ -12,11 +12,8 @@
 
                 <!-- Tampilan Foto & Nama Tim -->
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('showTeams') }}"><i class="fa-solid fa-house fa-fade fa-2xl" style="position: relative; bottom: 10px;"></i></a>&nbsp;
-                    <p class="text-xl font-bold">Tim:</p>
-                    <p class="text-xl">{{ $team->name }}</p>
-                    <p class="text-xl font-bold">Keterangan:</p>
-                    <p class="text-xl">{{ $team->description }}</p>
+                    <a href="{{ route('showTeams') }}"><i class="fa-solid fa-house fa-fade fa-2xl" style="position: relative; bottom: 3px;"></i></a>&nbsp;
+                    <p class="text-xl font-bold" style="margin-bottom: 3px;">Team: <p class="text-xl" style="margin-bottom: 3px;">{{ $team->name }}</p></p>
                 </div>
 
                 <div class="w-full h-24 flex items-center p-6 bg-pattern-{{ $team->pattern }} border-b border-gray-200">
@@ -38,7 +35,7 @@
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-col gap-4">
                             <div class="flex items-center gap-2 pl-1">
-                                <h2 class="text-2xl font-bold">Papan</h2>
+                                <h2 class="text-2xl font-bold">Boards</h2>
                             </div>
                             <form action="{{ route('searchBoard', ['team_id' => $team->id]) }}" id="search-form" method="GET">
                                 @csrf
@@ -48,12 +45,12 @@
                                             <input type="hidden" name="team_id" value="{{ $team->id }}">
                                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                             <input type="text" class="form-control floating" name="board_name" value="{{ session('__old_board_name') }}" style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 30px">
-                                            <label class="focus-label"><i class="fa-solid fa-table-columns"></i> Nama Papan</label>
+                                            <label class="focus-label"><i class="fa-solid fa-table-columns"></i> Boards's Name</label>
                                             
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
-                                        <button type="submit" class="btn btn-success btn-block btn_search" style="width: 45%; border-radius: 30px;"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
+                                        <button type="submit" class="btn btn-success btn-block btn_search" style="width: 45%; border-radius: 30px;"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
                                     </div>
                                 </div>
                             </form>
@@ -84,7 +81,7 @@
                                 <a href="#" data-toggle="modal" data-target="#createBoard">
                                     <div class="flex flex-col items-center justify-center gap-2 text-gray-400 transition duration-300 bg-gray-100 shadow-md cursor-pointer select-none w-72 h-52 rounded-xl hover:shadow-2xl" style="background-color: rgb(243 244 246 / 1) !important; @foreach($result_tema as $sql_mode => $mode_tema)@if($mode_tema->tema_aplikasi == 'Gelap')background-color: #292D3E !important; @endif @endforeach">
                                         <i class="fa-solid fa-plus fa-2xl"></i><br>
-                                        <h4>Buat Papan</h4>
+                                        <h4>Create Board</h4>
                                     </div>
                                 </a>
                             @endif
@@ -98,7 +95,7 @@
 
                 <!-- Tampilan Papan dan Anggota Tim -->
                 <div class="flex flex-col max-h-96 gap-4 w-96">
-                    <h2 class="ml-4 text-2xl font-bold">Anggota</h2>
+                    <h2 class="ml-4 text-2xl font-bold">Members</h2>
                     <div class="isian-anggota  flex flex-col flex-grow w-full gap-2 p-4 border-2 border-gray-200 rounded-xl">
                         <div class="flex items-center gap-4">
                             <a href="{{ URL::to('/assets/images/' . $owner->avatar) }}" data-fancybox="foto-profil">
@@ -129,7 +126,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Perbaharui Tim</h5>
+                        <h5 class="modal-title">Edit Team</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -139,8 +136,8 @@
                             @csrf
                             <input type="hidden" name="team_id" value="{{ $team->id }}">
                             <div class="form-group">
-                                <label>Nama Tim</label><span class="text-danger">*</span>
-                                <input type="text" class="form-control @error('team_name') is-invalid @enderror" id="team_name" name="team_name" value="{{ $team->name }}" required>
+                                <label>Team's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control @error('team_name') is-invalid @enderror" id="team_name" name="team_name" placeholder="Enter a team's name" value="{{ $team->name }}" required>
                                 @error('team_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -148,8 +145,8 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label>Deskripsi Tim</label><span class="text-danger">*</span>
-                                <textarea class="form-control @error('team_description') is-invalid @enderror" id="team_description" name="team_description" required></textarea>
+                                <label>Team's Description</label><span class="text-danger">*</span>
+                                <textarea class="form-control @error('team_description') is-invalid @enderror" id="team_description" name="team_description" placeholder="Enter a team's description" required></textarea>
                                 @error('team_description')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -157,7 +154,7 @@
                                 @enderror
                             </div>
                             <div class="flex flex-col w-full gap-2">
-                                <label>Latar Belakang Tim</label>
+                                <label>Team's Background</label>
                                 <input type="hidden" id="pattern-field" name="team_pattern" value="{{ isset($patterns[0]) ? $patterns[0] : 'default_value' }}">
                                 <div class="flex items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-hidden overflow-x-scroll border-2 border-gray-200 h-36 rounded-xl">
                                     @isset($patterns)
@@ -170,10 +167,10 @@
                                         @endforeach
                                     @endif
                                 </div>
-                                <small class="text-danger">*Silahkan pilih kembali (Latar Belakang Tim) apabila melakukan pembaharuan.</small>
+                                <small class="text-danger">*Please select again (Team's Background) when updating.</small>
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Simpan</button>
+                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -187,42 +184,32 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Kelola Anggota Tim</h5>
+                        <h5 class="modal-title">Manage Members</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="member-name">Anggota Tim</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="member-name" name="member-name" placeholder="Masukkan email anggota">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-                                </div>
-                            </div><br>
+                            <label for="member-name">Team Member</label>
                             <select class="theSelect" id="member-name2" name="member-name" style="width: 100% !important">
-                                <option selected disabled>-- Pilih Anggota Tim --</option>
+                                <option selected disabled>-- Select Team Members --</option>
                                 @foreach ($members as $member)
                                     <option value="{{ $member->email }}">{{ $member->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="border border-dark rounded overflow-auto" style="max-height: 20rem;">
+                        <div class="border border-dark rounded-lg overflow-auto" style="max-height: 20rem;">
                             <div class="d-flex flex-wrap p-2">
                                 @foreach ($members as $member)
-                                    <div data-role="member-card" data-email="{{ $member->email }}" data-name="{{ $member->name }}" class="card m-2 p-2 text-center" style="width: 11.5rem; --tw-border-opacity: 1; border-color: rgb(209 213 219 / var(--tw-border-opacity)); cursor: pointer;">
-                                        <img class="card-img-top rounded-circle mx-auto" src="{{ URL::to('/assets/images/' . $member->avatar) }}" style="width: 3rem;" loading="lazy">
-                                        <div class="card-body p-1">
-                                            <p class="card-text font-weight-bold">{{ $member->name }}</p>
-                                            <p class="card-text">{{ $member->email }}</p>
-                                        </div>
+                                    <div data-role="member-card" data-email="{{ $member->email }}" data-name="{{ $member->name }}">
+                                        <p class="card-text font-weight-bold" style="cursor: pointer">{{ $member->name }}, {{ $member->email }}</p>
                                     </div>
                                 @endforeach
                             </div>
                         </div>
                         <div class="submit-section">
-                            <button type="button" class="btn btn-primary submit-btn" id="save-btn">Simpan</button>
+                            <button type="button" class="btn btn-primary submit-btn" id="save-btn">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -235,16 +222,16 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Undang Anggota Tim</h5>
+                        <h5 class="modal-title">Invite People</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="input-text-inv-email" class="form-label">E-mail</label>
+                            <label for="input-text-inv-email" class="form-label">E-mail Address</label>
                             <div class="input-group gap-2">
-                                <input type="email" class="form-control" id="inv-email" placeholder="Masukkan email anggota">
+                                <input type="email" class="form-control" id="inv-email" placeholder="Enter member email">
                                 <button class="btn btn-primary" type="button" id="add-btn">
                                     <i class="fa-solid fa-user-plus"></i>
                                 </button>
@@ -253,7 +240,7 @@
                         <div class="mb-3">
                             <div class="input-group gap-2" style="flex-wrap: nowrap;">
                                 <select class="theSelect" id="inv-email2" style="width: 100% !important">
-                                    <option selected disabled>-- Pilih Anggota Tim --</option>
+                                    <option selected disabled>-- Select Team Members --</option>
                                     @foreach ($UserTeams as $result_team)
                                         <option value="{{ $result_team->email }}">{{ $result_team->name }}</option>
                                     @endforeach
@@ -270,7 +257,7 @@
                                 
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn" id="save-btn">Simpan</button>
+                                <button type="submit" class="btn btn-primary submit-btn" id="save-btn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -284,7 +271,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Buat Papan</h5>
+                        <h5 class="modal-title">Create Board</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -294,8 +281,8 @@
                             @csrf
                             <input type="hidden" name="team_id" value="{{ $team->id }}">
                             <div class="form-group">
-                                <label>Nama Papan</label><span class="text-danger">*</span>
-                                <input type="text" class="form-control @error('board_name') is-invalid @enderror" id="board_name" name="board_name" required>
+                                <label>Board's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control @error('board_name') is-invalid @enderror" id="board_name" name="board_name" placeholder="Enter a board's name" required>
                                 @error('board_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -303,7 +290,7 @@
                                 @enderror
                             </div>
                             <div class="flex flex-col w-full gap-2">
-                                <label>Warna Papan</label>
+                                <label>Board's Color</label>
                                 <input type="hidden" id="background-field" name="board_pattern" value="{{ isset($backgrounds[0]) ? $backgrounds[0] : 'default_value' }}">
                                 <div class="flex items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-hidden overflow-x-scroll border-2 border-gray-200 h-36 rounded-xl">
                                     @isset($backgrounds)
@@ -318,7 +305,7 @@
                                 </div>
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Simpan</button>
+                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -333,8 +320,8 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="form-header">
-                            <h3>Hapus Tim "{{ $team->name }}"?</h3>
-                            <p>Apakah Anda yakin ingin menghapus tim ini?</p>
+                            <h3>Delete Team "{{ $team->name }}"?</h3>
+                            <p>Are you sure you want to delete this team?</p>
                         </div>
                         <div class="modal-btn delete-action">
                             <form action="{{ route('doDeleteTeam', ['team_id' => $team->id]) }}" method="POST">
@@ -342,10 +329,10 @@
                                 <input type="hidden" name="team_id" value="{{ $team->id }}">
                                 <div class="row">
                                     <div class="col-6">
-                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Hapus</button>
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
                                     </div>
                                     <div class="col-6">
-                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Kembali</a>
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
                                     </div>
                                 </div>
                             </form>
@@ -499,7 +486,7 @@
                 
                 addBtn.addEventListener('click', () => {
                     const email = emailInput.value.trim();
-                    if (email && email !== '-- Pilih Anggota Tim --') {
+                    if (email && email !== '-- Select Team Members --') {
                         const emailDiv = document.createElement('div');
                         emailDiv.className = 'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-pill';
                         emailDiv.innerHTML = `
@@ -517,7 +504,7 @@
 
                 addBtn2.addEventListener('click', () => {
                     const email = emailInput2.value.trim();
-                    if (email && email !== '-- Pilih Anggota Tim --') {
+                    if (email && email !== '-- Select Team Members --') {
                         const emailDiv = document.createElement('div');
                         emailDiv.className = 'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-pill';
                         emailDiv.innerHTML = `
@@ -570,7 +557,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Papan Tim - Admin | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Team Board - Admin | Trello - PT TATI';
         </script>
     @endsection
 @endsection

@@ -25,7 +25,7 @@
                     console.log(response);
                     $('#saveButton'+id).addClass('hidden');
                     $('#cancelButton'+id).addClass('hidden');
-                    toastr.success('Anda berhasil memperbaharui keterangan!');
+                    toastr.success('Berhasil memperbaharui keterangan!');
                     localStorage.clear();
                 },
                 error: function(){
@@ -70,7 +70,7 @@
                     $('#addTitle-'+id).addClass('hidden');
                     localStorage.setItem('modal_id', response.card_id);
                     window.location.reload();
-                    toastr.success('Anda berhasil menambahkan judul!');
+                    toastr.success('Berhasil menambahkan judul!');
                 },
                 error: function(){
                     toastr.error('Terjadi kesalahan, silakan coba lagi!');

@@ -11,7 +11,7 @@
                 <div class="tampilan-kolom gap-4 p-4">
 
                     <a href="#" data-toggle="modal" data-target="#addCol" class="flex-col flex-shrink-0 gap-2 px-4 py-2 transition shadow-lg cursor-pointer select-none h-4h w-72 rounded-xl bg-slate-100 hover:scale-105 hover:relative">
-                        <p class="flex items-center justify-center gap-4 text-black"><i class="fa-solid fa-plus fa-lg"></i>Tambah Kolom...</p>
+                        <p class="flex items-center justify-center gap-4 text-black"><i class="fa-solid fa-plus fa-lg"></i>Add list...</p>
                     </a>
 
                     <!-- Tampilan Kolom -->
@@ -62,13 +62,13 @@
                                                     <input type="hidden" class="form-control" name="board_id" value="{{ $board->id }}">
                                                     <input type="hidden" class="form-control" name="team_id" value="{{ $team->id }}">
                                                     <input type="hidden" class="form-control" name="column_id" value="{{ $dataKolom->id }}">
-                                                    <input type="text" class="form-control" name="name" id="cardName" style="border-radius: 15px; background-color: #f5fffa;" placeholder="Masukkan nama kartu.." required>
-                                                    <button type="submit" class="btn btn-outline-info btn-add">Tambah Kartu</button>
+                                                    <input type="text" class="form-control" name="name" id="cardName" style="border-radius: 15px; background-color: #f5fffa;" placeholder="Enter card's name..." required>
+                                                    <button type="submit" class="btn btn-outline-info btn-add">Add card</button>
                                                 </form>
                                             </div>
                                         </li>
                                         <button onclick="openAdd('{{ $dataKolom->id }}')" class="btn btn-outline-info" id="btn-add{{ $dataKolom->id }}">
-                                            <i class="fa-solid fa-plus"></i> Tambah Kartu...
+                                            <i class="fa-solid fa-plus"></i> Add a card...
                                         </button>
                                 <!-- /Tampilan Kartu -->
 
@@ -93,7 +93,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Buat Kolom</h5>
+                        <h5 class="modal-title">Create Columns</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -107,8 +107,8 @@
                             <input type="hidden" class="form-control" name="board_id" value="{{ $board->id }}">
                             <input type="hidden" class="form-control" name="team_id" value="{{ $team->id }}">
                             <div class="form-group">
-                                <label>Nama Kolom</label><span class="text-danger">*</span>
-                                <input type="text" class="form-control @error('column_name') is-invalid @enderror" id="buat-kolom" name="column_name" required>
+                                <label>Column's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control @error('column_name') is-invalid @enderror" id="buat-kolom" name="column_name" placeholder="Enter a column's name" required>
                                 @error('column_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -116,7 +116,7 @@
                                 @enderror
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Simpan</button>
+                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -131,7 +131,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Perbaharui Kolom</h5>
+                            <h5 class="modal-title">Update Columns</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -141,8 +141,8 @@
                                 @csrf
                                 <input type="hidden" name="column_id" id="column_id" value="{{ $perbaharuiKolom->id  }}">
                                 <div class="form-group">
-                                    <label>Nama Kolom</label><span class="text-danger">*</span>
-                                    <input type="text" class="form-control @error('column_name') is-invalid @enderror" id="column_name" name="column_name" value="{{ $perbaharuiKolom->name  }}" required />
+                                    <label>Column's Name</label><span class="text-danger">*</span>
+                                    <input type="text" class="form-control @error('column_name') is-invalid @enderror" id="column_name" name="column_name" placeholder="Enter a column's name" value="{{ $perbaharuiKolom->name  }}" required />
                                     @error('column_name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -150,7 +150,7 @@
                                     @enderror
                                 </div>
                                 <div class="submit-section">
-                                    <button type="submit" class="btn btn-primary submit-btn">Simpan</button>
+                                    <button type="submit" class="btn btn-primary submit-btn">Save</button>
                                 </div>
                             </form>
                         </div>
@@ -183,7 +183,18 @@
                                             </div>
                                         </form>
                                     @endif
-                                    <p class="tag-list">dalam daftar <a class="tag-name">{{ $dataKolom->name  }}</a></p>
+                                    <div class="aksi-move-card">
+                                        <p class="tag-list">in list</p>
+                                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" style="margin-left: -12px;">{{ $dataKolom->name  }}</a>
+                                        <div class="dropdown-menu notifications">
+                                            <div class="topnav-dropdown-header">
+                                                <span class="move-card">Move Card</span>
+                                            </div><br>
+                                            <div class="noti-content" style="margin-left: 20px;">
+                                                <h5 @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white !important" @endif @endforeach>List Card</h5>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -198,14 +209,14 @@
                                         <i class="fa-solid fa-align-left fa-lg"></i>
                                     </div>
                                     <div class="keterangan-tag">
-                                        <p class="deskripsi-keterangan">Keterangan</p>
+                                        <p class="deskripsi-keterangan">Description</p>
                                         <form id="myForm{{ $isianKartu->id }}" method="POST">
                                             @csrf
                                             <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                                            <input type="text" class="border border-1 border-dark w-40l p-2 rounded-xl" id="keterangan{{ $isianKartu->id }}" name="keterangan" placeholder="Masukkan Keterangan" value="{{ $isianKartu->description }}"><br>
+                                            <input type="text" class="border border-1 border-dark w-40l p-2 rounded-xl" id="keterangan{{ $isianKartu->id }}" name="keterangan" placeholder="Enter a description" value="{{ $isianKartu->description }}"><br>
                                             <div class="aksi-update-keterangan gap-2">
-                                                <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButton{{ $isianKartu->id }}">Simpan</button>
-                                                <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButton{{ $isianKartu->id }}">Batal</button>
+                                                <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButton{{ $isianKartu->id }}">Save</button>
+                                                <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButton{{ $isianKartu->id }}">Cancel</button>
                                             </div>
                                         </form>
                                     </div>
@@ -219,19 +230,19 @@
                                     <div class="menu-tambah-checklist flex flex-col flex-wrap">
                                         <div class="header-checklist flex gap-5">
                                             <div class="icon-tambah-checklist hidden" id="iconCheck-{{ $isianKartu->id }}">
-                                                <i class="fa-regular fa-square-check fa-xl"></i>
+                                                <i class="fa-regular fa-square-check fa-xl" style="color: #489bdb;"></i>
                                             </div>
                                             <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                                            <input type="text" class="border border-1 border-dark w-40l p-2 rounded-xl hidden" id="titleChecklist{{ $isianKartu->id }}" name="titleChecklist" placeholder="Masukkan Judul" required>
+                                            <input type="text" class="border border-1 border-dark w-40l p-2 rounded-xl hidden" id="titleChecklist{{ $isianKartu->id }}" name="titleChecklist" placeholder="Enter a title" required>
                                         </div>
                                         <div class="aksi-tambah-checklist gap-2">
-                                            <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitle{{ $isianKartu->id }}">Simpan</button>
-                                            <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonTitle{{ $isianKartu->id }}">Batal</button><br>
+                                            <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitle{{ $isianKartu->id }}">Save</button>
+                                            <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonTitle{{ $isianKartu->id }}">Cancel</button><br>
                                         </div>
                                     </div>
                                 </form>
                                 <div class="tambah-checklist">
-                                    <button type="button" class="btn btn-outline-info icon-item" id="addTitle-{{ $isianKartu->id }}"><i class="fa-regular fa-square-check fa-lg"></i> Tambah Checklist</button>
+                                    <button type="button" class="btn btn-outline-info icon-item" id="addTitle-{{ $isianKartu->id }}"><i class="fa-regular fa-square-check fa-lg"></i> Add Checklist</button>
                                 </div>
                                 <!-- /Tambah Judul Checklist -->
                             @else
@@ -241,8 +252,8 @@
                                         <i class="fa-solid fa-align-left fa-lg"></i>
                                     </div>
                                     <div class="keterangan-tag">
-                                        <p class="deskripsi-keterangan">Keterangan</p>
-                                        <p class="border border-1 border-dark w-403 p-2 rounded-xl" style="color: white !important">{{ $isianKartu->description }}</p><br>
+                                        <p class="deskripsi-keterangan">Description</p>
+                                        <p class="border border-1 border-dark w-403 p-2 rounded-xl" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white !important" @endif @endforeach>{{ $isianKartu->description }}</p><br>
                                     </div>
                                 </div>
                                 <!-- /Tampilan Keterangan Apabila Bukan Punyanya -->
@@ -253,15 +264,16 @@
                                 <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl">
                                     <!-- Perbaharui & Hapus Judul Checklist -->
                                     <div class="header-checklist flex justify-content">
-                                        <i class="fa-regular fa-square-check fa-xl"></i>
+                                        {{-- <i class="fa-regular fa-square-check fa-xl"></i> --}}
+                                        <i class="fa-regular fa-square-check fa-xl" style="position: absolute; color: #489bdb; margin-top: 20px;"></i>
                                         <form id="myFormTitleUpdate{{ $titleChecklists->id }}" method="POST" class="update-title">
                                             @csrf
                                                 <input type="hidden" id="title_id" name="title_id" value="{{ $titleChecklists->id }}">
                                                 <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                                                <input type="text" class="isian-title border border-1 border-darks w-402 p-2 rounded-xl" id="titleChecklistUpdate{{ $titleChecklists->id }}" name="titleChecklistUpdate" placeholder="Masukkan Judul" value="{{$titleChecklists->name}}">
+                                                <input type="text" class="isian-title border border-1 border-darks w-402 p-2 rounded-xl" id="titleChecklistUpdate{{ $titleChecklists->id }}" name="titleChecklistUpdate" placeholder="Enter a title" value="{{$titleChecklists->name}}">
                                                 <div class="aksi-update-title gap-2">
-                                                    <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitleUpdate{{ $titleChecklists->id }}">Simpan</button>
-                                                    <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonTitleUpdate{{ $titleChecklists->id }}">Batal</button>
+                                                    <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitleUpdate{{ $titleChecklists->id }}">Save</button>
+                                                    <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonTitleUpdate{{ $titleChecklists->id }}">Cancel</button>
                                                 </div>
                                         </form>
                                         <form id="myFormTitleDelete{{ $titleChecklists->id }}" method="POST">
@@ -290,14 +302,13 @@
                                     @foreach ($titleChecklists->checklists as $checklists)
                                     <div class="input-checklist">
                                         <!-- Tampilan Checklist -->
-                                        <form id="myFormChecklistUpdate{{ $checklists->id }}" method="POST" class="form-checklist flex gap-5">
+                                        <form id="myFormChecklistUpdate{{ $checklists->id }}" method="POST" class="form-checklist gap-5">
                                             @csrf
                                             <input class="dynamicCheckbox" type="checkbox" id="{{$checklists->id}}" name="{{$checklists->id}}" {{$checklists->is_active == '1' ? 'checked' : ''}}>
                                             <label class="dynamicCheckboxLabel border border-1 border-darks w-407 p-2 rounded-xl  {{$checklists->is_active == '1' ? 'strike-through' : ''}}" id="labelCheckbox-{{$checklists->id}}" for="labelCheckbox-{{$checklists->id}}">{{$checklists->name}}</label>
-
                                             <input type="hidden" id="checklist_id" name="checklist_id" value="{{ $checklists->id }}">
                                             <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                                            <input type="text" class="dynamicCheckboxValue border border-1 border-darks w-407 p-2 rounded-xl hidden" id="checkbox-{{$checklists->id}}" name="checkbox-{{$checklists->id}}" value="{{$checklists->name}}" placeholder="Masukkan checklist">
+                                            <input type="text" class="dynamicCheckboxValue border border-1 border-darks w-407 p-2 rounded-xl hidden" id="checkbox-{{$checklists->id}}" name="checkbox-{{$checklists->id}}" value="{{$checklists->name}}" placeholder="Enter a checklist">
                                         </form>
                                         <!-- Icon Hapus Checklist -->
                                         @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty())
@@ -318,8 +329,8 @@
 
                                     <!-- Aksi Update Checklist -->
                                     <div class="aksi-update-checklist gap-2">
-                                        <button type="submit" class="saves btn btn-outline-info hidden" id="saveButtonChecklistUpdate-{{ $checklists->id }}">Simpan</button>
-                                        <button type="button" class="cancels btn btn-outline-danger hidden" id="cancelButtonChecklistUpdate-{{ $checklists->id }}">Batal</button>
+                                        <button type="submit" class="saves btn btn-outline-info hidden" id="saveButtonChecklistUpdate-{{ $checklists->id }}">Save</button>
+                                        <button type="button" class="cancels btn btn-outline-danger hidden" id="cancelButtonChecklistUpdate-{{ $checklists->id }}">Cancel</button>
                                     </div>
                                     <!-- /Aksi Update Checklist -->
 
@@ -335,14 +346,14 @@
                                             <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
                                             <div class="header-tambah-checklist flex gap-4">
                                                 <i class="fa-xl"></i>
-                                                <input type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist{{ $titleChecklists->id }}" name="checklist" placeholder="Masukkan Checklist" required>
+                                                <input type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist{{ $titleChecklists->id }}" name="checklist" placeholder="Enter a checklist" required>
                                             </div>
                                             <div class="aksi-update-checklist gap-2">
-                                                <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist{{ $titleChecklists->id }}">Simpan</button>
-                                                <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist{{ $titleChecklists->id }}">Batal</button>
+                                                <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist{{ $titleChecklists->id }}">Save</button>
+                                                <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist{{ $titleChecklists->id }}">Cancel</button>
                                             </div>
                                     </form>
-                                    <button type="button" class="btn btn-outline-info" id="AddChecklist{{ $titleChecklists->id }}">Tambah Item</button>
+                                    <button type="button" class="btn btn-outline-info" id="AddChecklist{{ $titleChecklists->id }}">Add an item</button>
                                     <!-- Tambah baru checklist -->
                                     </div>
                                 @endforeach
@@ -352,7 +363,7 @@
                                         <!-- Perbaharui & Hapus Judul Checklist -->
                                         <div class="header-checklist flex gap-4">
                                             <i class="fa-regular fa-square-check fa-xl"></i>
-                                            <p class="isian-title border border-1 border-darks w-408 p-2 rounded-xl" style="color: white !important">{{$titleChecklists->name}}</p>
+                                            <p class="isian-title border border-1 border-darks w-408 p-2 rounded-xl" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white !important" @endif @endforeach>{{$titleChecklists->name}}</p>
                                         </div>
                                         <!-- /Perbaharui & Hapus Judul Checklist -->
 
@@ -392,8 +403,8 @@
                                             @csrf
                                             <input type="hidden" name="user_id" value="{{ Auth::user()->id  }}">
                                             <input type="hidden" name="card_id" value="{{ $isianKartu->id }}">
-                                            <textarea onclick="saveComment('{{ $dataKolom->id }}')" class="form-control border border-1 border-dark rounded-xl" rows="1" cols="77" id="contentarea{{ $dataKolom->id }}" name="content" placeholder="Tulis komentar..."></textarea>
-                                            <button type="submit" class="btn btn-outline-info icon-comment hidden" id="simpanButton{{ $dataKolom->id }}">Kirim</button>
+                                            <textarea onclick="saveComment('{{ $dataKolom->id }}')" class="form-control border border-1 border-dark rounded-xl" rows="1" cols="77" id="contentarea{{ $dataKolom->id }}" name="content" placeholder="Write a comment..."></textarea>
+                                            <button type="submit" class="btn btn-outline-info icon-comment hidden" id="simpanButton{{ $dataKolom->id }}">Save</button>
                                         </form>
                                     </div>
                                     <div class="activity-tag flex flex-col hiddens" id="showActivity{{ $dataKolom->id }}">
@@ -415,29 +426,29 @@
                                                                     <div class="title-activity flex gap-1">
                                                                     @if (strpos($history->content, 'Membuat Kartu') !== false)
                                                                         <!-- Berdasarkan kolom masing-masing -->
-                                                                            <p>{{ $history->name }}, telah menambahkan {{ $card->name }} ke kolom ini</p>
+                                                                            <p>{{ $history->name }}, added {{ $card->name }} to this column</p>
                                                                         @elseif (strpos($history->content, 'Memperbaharui Kartu') !== false)
-                                                                            <p>{{ $history->name }}, telah memperbaharui {{ $card->name }} ke kolom ini</p>
+                                                                            <p>{{ $history->name }}, has updated {{ $card->name }} to this column</p>
                                                                         @elseif (strpos($history->content, 'Memperbaharui Keterangan Kartu') !== false)
-                                                                            <p>{{ $history->name }}, telah memperbaharui keterangan kartu {{ $card->name }} ke kolom ini</p>
+                                                                            <p>{{ $history->name }}, has updated card description {{ $card->name }} to this column</p>
                                                                         <!-- /Berdasarkan kolom masing-masing -->
 
                                                                         <!-- Berdasarkan kartu masing-masing -->
                                                                         @elseif (strpos($history->content, 'Membuat Judul Checklist') !== false)
-                                                                            <p>{{ $history->name }}, telah menambahkan judul {{ $titleChecklists->name }} ke kartu ini</p>
+                                                                            <p>{{ $history->name }}, added title {{ $titleChecklists->name }} to this card</p>
                                                                         @elseif (strpos($history->content, 'Memperbaharui Judul Checklist') !== false)
-                                                                            <p>{{ $history->name }}, telah memperbaharui judul {{ $titleChecklists->name }} ke kartu ini</p>
+                                                                            <p>{{ $history->name }}, has updated title {{ $titleChecklists->name }} to this card</p>
                                                                         @elseif (strpos($history->content, 'Menghapus Judul Checklist') !== false)
-                                                                            <p>{{ $history->name }}, telah menghapus judul {{ $titleChecklists->name }} ke kartu ini</p>
+                                                                            <p>{{ $history->name }}, has deleted title {{ $titleChecklists->name }} to this card</p>
                                                                         <!-- /Berdasarkan kartu masing-masing -->
 
                                                                         <!-- Berdasarkan judul masing-masing -->
                                                                         @elseif (strpos($history->content, 'Membuat Checklist') !== false)
-                                                                            <p>{{ $history->name }}, telah menambahkan checklist ke judul {{ $titleChecklists->name }}</p>
+                                                                            <p>{{ $history->name }}, added checklist to title {{ $titleChecklists->name }}</p>
                                                                         @elseif (strpos($history->content, 'Memperbaharui Checklist') !== false)
-                                                                            <p>{{ $history->name }}, telah memperbaharui checklist ke judul {{ $titleChecklists->name }}</p>
+                                                                            <p>{{ $history->name }}, has updated checklist to title {{ $titleChecklists->name }}</p>
                                                                         @elseif (strpos($history->content, 'Menghapus Checklist') !== false)
-                                                                            <p>{{ $history->name }}, telah menghapus checklist ke judul {{ $titleChecklists->name }}</p>
+                                                                            <p>{{ $history->name }}, has deleted checklist to title {{ $titleChecklists->name }}</p>
                                                                         <!-- /Berdasarkan judul masing-masing -->
                                                                     @endif
                                                                     </div>
@@ -479,7 +490,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Perbaharui Kartu</h5>
+                                <h5 class="modal-title">Update Cards</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -489,8 +500,8 @@
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $perbaharuiKartu->id  }}">
                                     <div class="form-group">
-                                        <label>Nama Kartu</label><span class="text-danger">*</span>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $perbaharuiKartu->name  }}" required />
+                                        <label>Card's Name</label><span class="text-danger">*</span>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $perbaharuiKartu->name  }}" placeholder="Enter a card's name" required />
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -498,7 +509,7 @@
                                         @enderror
                                     </div>
                                     <div class="submit-section">
-                                        <button type="submit" class="btn btn-primary submit-btn">Simpan</button>
+                                        <button type="submit" class="btn btn-primary submit-btn">Save</button>
                                     </div>
                                 </form>
                             </div>
@@ -526,10 +537,11 @@
                 border: 2px solid black;
                 border-radius: 4px;
                 cursor: pointer;
+                margin-bottom: -5px;
             }
             input[type="checkbox"]:checked {
-                background-color: #539dec;
-                border-color: #539dec;
+                background-color: #6cd274;
+                border-color: #6cd274;
             }
             input[type="checkbox"]:checked::after {
                 content: '✔';
@@ -554,7 +566,7 @@
                 font-size:.75rem;
                 background-color:#e9ecef;
                 border-radius:1rem;
-                margin-bottom:10px;
+                margin-bottom: 25px;
                 margin-top:-4px;
                 width:84.8%;
                 margin-left:5.5%
@@ -568,7 +580,7 @@
                 font-size:.75rem;
                 background-color:#e9ecef;
                 border-radius:1rem;
-                margin-bottom:10px;
+                margin-bottom: 25px;
                 margin-top:-4px;
                 width:90%;
                 margin-left:5.5%
@@ -584,7 +596,7 @@
                 border-color: rgb(229 231 235 / var(--tw-border-opacity)) !important;
             }
             .border-darks {border: 2px solid transparent !important; cursor: pointer;}
-            .border-darkss {border-color: #343a40 !important;}
+            .border-darkss {border-color: #d1d1d1 !important;}
             .border-darks:focus {border-color: #343a40 !important; cursor: pointer;}
             .border-dark:hover {background-color: #091E420F; !important; cursor: pointer;}
             .border-darks:hover {background-color: #091E420F; !important; cursor: pointer;}
@@ -600,7 +612,7 @@
                     .activity-keterangan {color: {{ $mode_tema->warna_sistem_tulisan }} !important}
                     .border-dark {border-color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
                     .border-darks {border: 2px solid transparent !important; cursor: pointer;}
-                    .border-darkss {border-color: {{ $mode_tema->warna_sistem_tulisan }} !important;}  
+                    .border-darkss {border-color: #d1d1d175 !important;}
                     .border-darks:focus {border-color: {{ $mode_tema->warna_sistem_tulisan }} !important; cursor: pointer;}
                     .border-dark:hover {background-color: {{ $mode_tema->warna_sistem }} !important; cursor: pointer;}
                     .border-darks:hover {background-color: {{ $mode_tema->warna_sistem }} !important; cursor: pointer;}
@@ -613,6 +625,7 @@
                     .kolom-card {background-color: {{ $mode_tema->warna_sistem }} !important; border-color: {{ $mode_tema->warna_sistem_tulisan }} !important}
                     .progress{background-color: {{ $mode_tema->warna_sistem }} !important;}
                     .progress2{background-color: {{ $mode_tema->warna_sistem }} !important;}
+                    .move-card {color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
                 @endif
             @endforeach
         </style>
@@ -627,7 +640,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Kartu Tim - User | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Team Card - User | Trello - PT TATI';
         </script>
     @endsection
 @endsection

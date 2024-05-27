@@ -7,10 +7,10 @@ function openAdd(id){
     
     if (style.includes('flex')) {
         cardTrello.classList.remove("flex");
-        btnadd.innerHTML="Tambah Kartu...";
+        btnadd.innerHTML="<i class='fa-solid fa-plus'></i> Add a card...";
     } else {
         cardTrello.classList.add("flex");
-        btnadd.innerHTML="Batalkan";
+        btnadd.innerHTML="Cancel";
     }
 }
 // /Khusus ketika klik button +Tambah Kartu //

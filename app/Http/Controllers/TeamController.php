@@ -762,7 +762,7 @@ class TeamController extends Controller
         $team_id = intval($request->team_id);
         $this->teamLogic->deleteMembers($team_id, [$user_email]);
 
-        Toastr::success('Keluar dari tim telah berhasil!', 'Success');
+        Toastr::success('Berhasil keluar dari tim!', 'Success');
         return redirect()->route("showTeams2");
     }
     // /Fitur Keluar dari Tim Khusus User //
@@ -805,7 +805,7 @@ class TeamController extends Controller
         $selectedTeam->pattern = $request->team_pattern;
         $selectedTeam->save();
 
-        Toastr::success('Data tim berhasil diperbaharui!', 'Success');
+        Toastr::success('Berhasil perbaharui data tim!', 'Success');
         return redirect()->back();
     }
     // /Perbaharui Data Tim Khusus Admin //
@@ -845,7 +845,7 @@ class TeamController extends Controller
             ]);
         }
 
-        Toastr::success('Undangan terkirim, harap menunggu konfirmasi dari anggota tersebut!', 'Success');
+        Toastr::success('Undangan terkirim!', 'Success');
         return redirect()->back();
     }
     // /Fitur Mengundang Anggota Khusus Admin //

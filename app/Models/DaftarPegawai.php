@@ -9,6 +9,8 @@ class DaftarPegawai extends Model
 {
     use HasFactory;
 
+    protected $table = 'daftar_pegawai';
+
     protected $fillable = [
         'name',
         'user_id',

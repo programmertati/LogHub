@@ -14,7 +14,7 @@
                     console.log(response);
                     location.reload();
                     localStorage.setItem('modal_id', response.card_id);
-                    toastr.success('Anda berhasil menghapus checklist!');
+                    toastr.success('Berhasil menghapus checklist!');
 
                     // Show modal after create title
                     var modal_id = localStorage.getItem('modal_id');

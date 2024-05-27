@@ -8,10 +8,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Riwayat Aktivitas</h3>
+                        <h3 class="page-title">History Activity</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Riwayat Aktivitas</li>
+                            <li class="breadcrumb-item active">History Activity</li>
                         </ul>
                     </div>
                 </div>
@@ -22,18 +22,15 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-striped custom-table" id="tableRiwayatAktivitas" style="width: 100%">
+                        <table class="table table-striped custom-table" id="tableHistoryActivity" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama</th>
-                                    <th>E-mail</th>
-                                    <th>Username</th>
-                                    <th>ID Employee</th>
-                                    <th>Status</th>
-                                    <th>Peran</th>
-                                    <th>Deskripsi</th>
-                                    <th>Waktu</th>
+                                    <th>Name</th>
+                                    <th>Card ID</th>
+                                    <th>Type</th>
+                                    <th>Content</th>
+                                    <th>Time History</th>
                                 </tr>
                             </thead>
                         </table>
@@ -49,11 +46,11 @@
         <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap4.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-                var table = $('#tableRiwayatAktivitas').DataTable({
+                var table = $('#tableHistoryActivity').DataTable({
                     "processing": true,
                     "serverSide": true,
                     "ajax": {
-                        "url": "{{ route('get-riwayat-aktivitas') }}",
+                        "url": "{{ route('get-history-activity') }}",
                         "data": function(d) {
                             d.keyword = $('#keyword').val();
                             d._token = "{{ csrf_token() }}";
@@ -64,32 +61,19 @@
                             "data": "id"
                         },
                         {
-                            "data": "user_name"
+                            "data": "user_id"
                         },
                         {
-                            "data": "email"
+                            "data": "card_id"
                         },
                         {
-                            "data": "username"
+                            "data": "type"
                         },
                         {
-                            "data": "employee_id"
+                            "data": "content"
                         },
                         {
-                            "data": "status"
-                        },
-                        {
-                            "data": "role_name"
-                        },
-                        {
-                            "data": "modify_user"
-                        },
-                        {
-                            "data": "date_time",
-                            "render": function (data, type, row) {
-                                var formattedDateTime = moment(data).locale('id').format('dddd, D MMMM YYYY || hh:mm A');
-                                return '<td>' + formattedDateTime + '</td>';
-                            }
+                            "data": "created_at",
                         },
                     ],
                     "language": {
@@ -99,7 +83,7 @@
                         "infoEmpty": "Showing 0 to 0 of 0 entries",
                         "infoFiltered": "(filtered from _MAX_ total records)",
                         "search": "Cari:",
-                        "searchPlaceholder": "Nama",
+                        "searchPlaceholder": "Name",
                         "paginate": {
                             "previous": "Previous",
                             "next": "Next",
@@ -125,7 +109,7 @@
         <script src="{{ asset('assets/js/atur-tanggal-indo.js') }}"></script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Manajemen Riwayat Aktivitas - Admin | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'History Activity - Admin | Trello - PT TATI';
         </script>
 
     @endsection

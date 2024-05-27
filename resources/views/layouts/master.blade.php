@@ -8,7 +8,7 @@
     <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
     <meta name="author" content="PT TATI">
     <meta name="robots" content="noindex, nofollow">
-    <title id="pageTitle">Beranda | Trello - PT TATI</title>
+    <title id="pageTitle">Home | Trello - PT TATI</title>
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/favicon.png') }}">
     <!-- Bootstrap CSS -->
@@ -755,9 +755,16 @@
 
                 <!-- Profil -->
                 <li class="nav-item dropdown has-arrow main-drop">
-                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <!-- <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <span class="user-img">
                             <i class="fa-solid fa-gear fa-xl" style="color : #66615b"></i>
+                        </span>
+                    </a> -->
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <span>{{ Session::get('name') }}</span>
+                        <span class="user-img">
+                            <img src="{{ URL::to('/assets/images/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" loading="lazy">
+                            <span class="status online"></span>
                         </span>
                     </a>
                     <div class="dropdown-menu">

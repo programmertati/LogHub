@@ -103,7 +103,7 @@ Route::controller(UserManagementController::class)->group(function () {
     Route::get('admin/kata-sandi', 'tampilanPerbaharuiKataSandi')->middleware('auth')->name('admin-kata-sandi');
     Route::get('user/kata-sandi', 'tampilanPerbaharuiKataSandi')->middleware('auth')->name('user-kata-sandi');
     Route::post('change/password/db', 'perbaharuiKataSandi')->name('change/password/db');
-    Route::get('get-riwayat-aktivitas', 'getRiwayatAktivitas')->name('get-riwayat-aktivitas');
+    Route::get('get-history-activity', 'getHistoryActivity')->name('get-history-activity');
     Route::get('get-aktivitas-pengguna', 'getAktivitasPengguna')->name('get-aktivitas-pengguna');
  
 });

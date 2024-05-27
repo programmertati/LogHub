@@ -13,13 +13,13 @@ class CreateSinkronisasiDataUsersTable extends Migration
      */
     public function up()
     {
-        DB::unprepared('
-            CREATE TRIGGER sinkronisasi_data AFTER INSERT ON users FOR EACH ROW
-            BEGIN
-                INSERT INTO mode_aplikasi(name,user_id,email,tema_aplikasi) VALUES (NEW.name,NEW.user_id,NEW.email,NEW.tema_aplikasi);
-                INSERT INTO daftar_pegawai(name,user_id,email,username,employee_id,role_name,avatar) VALUES (NEW.name,NEW.user_id,NEW.email,NEW.username,NEW.employee_id,NEW.role_name,NEW.avatar);
-            END
-        ');
+        // DB::unprepared('
+        //     CREATE TRIGGER sinkronisasi_data AFTER INSERT ON users FOR EACH ROW
+        //     BEGIN
+        //         INSERT INTO mode_aplikasi(name,user_id,email,tema_aplikasi) VALUES (NEW.name,NEW.user_id,NEW.email,NEW.tema_aplikasi);
+        //         INSERT INTO daftar_pegawai(name,user_id,email,username,employee_id,role_name,avatar) VALUES (NEW.name,NEW.user_id,NEW.email,NEW.username,NEW.employee_id,NEW.role_name,NEW.avatar);
+        //     END
+        // ');
     }
 
     /**

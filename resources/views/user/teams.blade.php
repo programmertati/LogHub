@@ -15,11 +15,11 @@
                         <div class="col-sm-6 col-md-9">
                             <div class="form-group form-focus">
                                 <input type="text" class="form-control floating" name="team_name" value="{{ session('__old_team_name') }}" style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 30px" />
-                                <label class="focus-label"><i class="fa-solid fa-cube"></i> Nama Tim</label>
+                                <label class="focus-label"><i class="fa-solid fa-cube"></i> Team's Name</label>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
-                            <button type="submit" class="btn btn-success btn-block btn_search" style="width: 45%; border-radius: 30px;"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
+                            <button type="submit" class="btn btn-success btn-block btn_search" style="width: 45%; border-radius: 30px;"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
                         </div>
                     </div>
                 </form>
@@ -29,7 +29,7 @@
                 @if (!$invites->isEmpty())
                     <div class="flex flex-col gap-6"><br>
                         <div>
-                            <h2 class="ml-6 text-3xl font-bold">Undangan Tertunda</h2><hr>
+                            <h2 class="ml-6 text-3xl font-bold">Pending Invites</h2><hr>
                         </div>
                         <div class="flex flex-wrap gap-x-8 gap-y-6">
                             @foreach ($invites as $team)
@@ -53,7 +53,7 @@
                 <!-- Tampilan Tim Pengguna -->
                 <div class="row align-items-center">
                     <div class="col"><br>
-                        <h2 class="ml-6 text-3xl font-bold">Tim Saya</h2><hr>
+                        <h2 class="ml-6 text-3xl font-bold">My Teams</h2><hr>
                     </div>
                 </div>
                 <!-- /Tampilan Tim Pengguna -->
@@ -161,7 +161,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Undangan Tim</h5>
+                            <h5 class="modal-title">Team Invite</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -176,23 +176,23 @@
                                         </div><hr><hr>
                                     </div><br>
                                     <div class="flex flex-col">
-                                        <p>Anda diundang untuk bergabung dengan Tim <span class="font-bold">{{ $result_team->team->name }}</span></p>
-                                        <p><span class="font-bold">Keterangan: </span><span>{{ $result_team->team->description }}</span></p>
+                                        <p>You are invited to join team <span class="font-bold">{{ $result_team->team->name }}</span></p>
+                                        <p><span class="font-bold">Description: </span><span>{{ $result_team->team->description }}</span></p>
                                     </div>
                                     <div class="flex items-center gap-2 mt-2">
-                                        <p>Hormat Kami, <span class="font-bold">{{ $result_team->user->name }}</span></p>
+                                        <p>Sincerely, <span class="font-bold">{{ $result_team->user->name }}</span></p>
                                         <img class="avatar-undangan" src="{{ URL::to('/assets/images/' . $result_team->user->avatar) }}" loading="lazy">
                                     </div>
                                 </div><br>
                                 <div class="row">
                                     <div class="col-6">
-                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Terima</button>
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Accept</button>
                                     </div>
                             </form>
                             <form action="{{ route('rejectTeamInvite', ['user_id' => Auth::user()->id, 'team_id' => $result_team->team_id]) }}" method="GET">
                                 @csrf
                                     <div class="col-6">
-                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Tolak</button>
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Reject</button>
                                     </div>
                                 </div>
                             </form>
@@ -215,7 +215,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Tim - User | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Teams - User | Trello - PT TATI';
         </script>
     @endsection
 @endsection

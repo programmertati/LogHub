@@ -12,11 +12,8 @@
 
                 <!-- Tampilan Foto & Nama Tim -->
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('showTeams2') }}"><i class="fa-solid fa-house fa-fade fa-2xl" style="position: relative; bottom: 10px;"></i></a>&nbsp;
-                    <p class="text-xl font-bold">Tim:</p>
-                    <p class="text-xl">{{ $team->name }}</p>
-                    <p class="text-xl font-bold">Keterangan:</p>
-                    <p class="text-xl">{{ $team->description }}</p>
+                    <a href="{{ route('showTeams2') }}"><i class="fa-solid fa-house fa-fade fa-2xl" style="position: relative; bottom: 3px;"></i></a>&nbsp;
+                    <p class="text-xl font-bold" style="margin-bottom: 3px;">Team: <p class="text-xl" style="margin-bottom: 3px;">{{ $team->name }}</p></p>
                 </div>
 
                 <div class="w-full h-24 flex items-center p-6 bg-pattern-{{ $team->pattern }} border-b border-gray-200">
@@ -38,7 +35,7 @@
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-col gap-4">
                             <div class="flex items-center gap-2 pl-1">
-                                <h2 class="text-2xl font-bold">Papan</h2>
+                                <h2 class="text-2xl font-bold">Boards</h2>
                             </div>
                             <form action="{{ route('searchBoard2', ['team_id' => $team->id]) }}" id="search-form" method="GET">
                                 @csrf
@@ -48,12 +45,12 @@
                                             <input type="hidden" name="team_id" value="{{ $team->id }}">
                                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                             <input type="text" class="form-control floating" name="board_name" value="{{ session('__old_board_name') }}" style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 30px">
-                                            <label class="focus-label"><i class="fa-solid fa-table-columns"></i> Nama Papan</label>
+                                            <label class="focus-label"><i class="fa-solid fa-table-columns"></i> Boards's Name</label>
                                             
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-3">
-                                        <button type="submit" class="btn btn-success btn-block btn_search" style="width: 45%; border-radius: 30px;"><i class="fa-solid fa-magnifying-glass"></i> Cari</button>
+                                        <button type="submit" class="btn btn-success btn-block btn_search" style="width: 45%; border-radius: 30px;"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
                                     </div>
                                 </div>
                             </form>
@@ -98,8 +95,8 @@
 
                 <!-- Tampilan Papan dan Anggota Tim -->
                 <div class="flex flex-col max-h-96 gap-4 w-96">
-                    <h2 class="ml-4 text-2xl font-bold">Anggota</h2>
-                    <div class="flex flex-col flex-grow w-full gap-2 p-4 overflow-x-hidden overflow-y-auto border-2 border-gray-200 rounded-xl">
+                    <h2 class="ml-4 text-2xl font-bold">Members</h2>
+                    <div class="isian-anggota  flex flex-col flex-grow w-full gap-2 p-4 border-2 border-gray-200 rounded-xl">
                         <div class="flex items-center gap-4">
                             <a href="{{ URL::to('/assets/images/' . $owner->avatar) }}" data-fancybox="foto-profil">
                                 <img src="{{ URL::to('/assets/images/' . $owner->avatar) }}" loading="lazy" class="!flex-shrink-0 !flex-grow-0 w-12 avatar-undangan">
@@ -130,8 +127,8 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="form-header">
-                            <h3>Keluar dari Tim "{{ $team->name }}"?</h3>
-                            <p>Apakah Anda yakin ingin keluar dari tim ini?</p>
+                            <h3>Leave the Team "{{ $team->name }}"?</h3>
+                            <p>Are you sure you want to leave this team?</p>
                         </div>
                         <div class="modal-btn delete-action">
                             <form action="{{ route('doLeaveTeam', ['team_id' => $team->id]) }}" method="POST">
@@ -139,10 +136,10 @@
                                 <input type="hidden" name="team_id" value="{{ $team->id }}">
                                 <div class="row">
                                     <div class="col-6">
-                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Keluar dari Tim</button>
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Leave the Team</button>
                                     </div>
                                     <div class="col-6">
-                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Batal</a>
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
                                     </div>
                                 </div>
                             </form>
@@ -195,7 +192,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Papan Tim - User | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Team Board - User | Trello - PT TATI';
         </script>
     @endsection
 @endsection

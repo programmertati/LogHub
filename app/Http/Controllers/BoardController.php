@@ -363,7 +363,7 @@ class BoardController extends Controller
         }
         $column->name = $request->column_name;
         $column->save();
-        Toastr::success('Anda berhasil memperbaharui kolom!', 'Success');
+        Toastr::success('Berhasil memperbaharui kolom!', 'Success');
         return redirect()->back();
     }
     // /Perbaharui Kolom Admin //
@@ -384,7 +384,7 @@ class BoardController extends Controller
         }
         $column->name = $request->column_name;
         $column->save();
-        Toastr::success('Anda berhasil memperbaharui kolom!', 'Success');
+        Toastr::success('Berhasil memperbaharui kolom!', 'Success');
         return redirect()->back();
     }
     // /Perbaharui Kolom User //
@@ -395,7 +395,7 @@ class BoardController extends Controller
         $request->validate(["column_id" => "required"]);
         $col_id = intval($request->column_id);
         $this->boardLogic->deleteCol($col_id);
-        Toastr::success('Anda berhasil menghapus kolom!', 'Success');
+        Toastr::success('Berhasil menghapus kolom!', 'Success');
         return redirect()->back();
     }
     // /Menghapus Kolom Admin //
@@ -406,7 +406,7 @@ class BoardController extends Controller
         $request->validate(["column_id" => "required"]);
         $col_id = intval($request->column_id);
         $this->boardLogic->deleteCol2($col_id);
-        Toastr::success('Anda berhasil menghapus kolom!', 'Success');
+        Toastr::success('Berhasil menghapus kolom!', 'Success');
         return redirect()->back();
     }
     // /Menghapus Kolom User //
@@ -421,7 +421,7 @@ class BoardController extends Controller
         $newCard = $this->boardLogic->addCard($column_id, $card_name);
         $this->cardLogic->cardAddEvent($newCard->id, Auth::user()->id, "Membuat Kartu");
 
-        Toastr::success('Anda berhasil membuat kartu!', 'Success');
+        Toastr::success('Berhasil membuat kartu!', 'Success');
         return redirect()->back();
         // return response()->json($newCard);
     }
@@ -437,7 +437,7 @@ class BoardController extends Controller
         $newCard = $this->boardLogic->addCard2($column_id, $card_name);
         $this->cardLogic->cardAddEvent($newCard->id, Auth::user()->id, "Membuat Kartu");
 
-        Toastr::success('Anda berhasil membuat kartu!', 'Success');
+        Toastr::success('Berhasil membuat kartu!', 'Success');
         return redirect()->back();
         // return response()->json($newCard);
     }
@@ -466,11 +466,11 @@ class BoardController extends Controller
             $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Kartu");
 
             DB::commit();
-            Toastr::success('Anda berhasil memperbaharui kartu!', 'Success');
+            Toastr::success('Berhasil memperbaharui kartu!', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Anda gagal memperbaharui kartu!', 'Error');
+            Toastr::error('Gagal memperbaharui kartu!', 'Error');
             return redirect()->back();
         }
     }
@@ -499,11 +499,11 @@ class BoardController extends Controller
             $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Kartu");
 
             DB::commit();
-            Toastr::success('Anda berhasil memperbaharui kartu!', 'Success');
+            Toastr::success('Berhasil memperbaharui kartu!', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Anda gagal memperbaharui kartu!', 'Error');
+            Toastr::error('Gagal memperbaharui kartu!', 'Error');
             return redirect()->back();
         }
     }
@@ -517,11 +517,11 @@ class BoardController extends Controller
             $this->cardLogic->deleteCard(intval($card_id));
 
             DB::commit();
-            Toastr::success('Anda berhasil menghapus kartu!', 'Success');
+            Toastr::success('Berhasil menghapus kartu!', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Anda gagal menghapus kartu!', 'Error');
+            Toastr::error('Gagal menghapus kartu!', 'Error');
             return redirect()->back();
         }
     }
@@ -535,11 +535,11 @@ class BoardController extends Controller
             $this->cardLogic->deleteCard2(intval($card_id));
 
             DB::commit();
-            Toastr::success('Anda berhasil menghapus kartu!', 'Success');
+            Toastr::success('Berhasil menghapus kartu!', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Anda gagal menghapus kartu!', 'Error');
+            Toastr::error('Gagal menghapus kartu!', 'Error');
             return redirect()->back();
         }
     }
@@ -598,11 +598,11 @@ class BoardController extends Controller
             DB::table('card_histories')->insert($createComment);
 
             DB::commit();
-            Toastr::success('Anda berhasil memberikan komentar pada kartu!', 'Success');
+            Toastr::success('Berhasil memberikan komentar!', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Anda gagal memberikan komentar pada kartu!', 'Error');
+            Toastr::error('Gagal memberikan komentar!', 'Error');
             return redirect()->back();
         }
     }
@@ -631,11 +631,11 @@ class BoardController extends Controller
             DB::table('card_histories')->insert($createComment);
 
             DB::commit();
-            Toastr::success('Anda berhasil memberikan komentar pada kartu!', 'Success');
+            Toastr::success('Berhasil memberikan komentar', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Anda gagal memberikan komentar pada kartu!', 'Error');
+            Toastr::error('Gagal memberikan komentar', 'Error');
             return redirect()->back();
         }
     }

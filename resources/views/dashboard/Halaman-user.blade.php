@@ -8,13 +8,13 @@
     $msg = ' Today is ' . date('l, M. d, Y.');
     
     if ($hour >= 0 && $hour <= 11 && $minute <= 59 && $second <= 59) {
-        $greet = 'Selamat Pagi,';
+        $greet = 'Good Morning,';
     } elseif ($hour >= 12 && $hour <= 15 && $minute <= 59 && $second <= 59) {
-        $greet = 'Selamat Siang,';
+        $greet = 'Good Afternoon,';
     } elseif ($hour >= 16 && $hour <= 17 && $minute <= 59 && $second <= 59) {
-        $greet = 'Selamat Sore,';
+        $greet = 'Good Evening,';
     } elseif ($hour >= 18 && $hour <= 23 && $minute <= 59 && $second <= 59) {
-        $greet = 'Selamat Malam,';
+        $greet = 'Good Night,';
     }
     ?>
 
@@ -35,7 +35,7 @@
             </div>
             <!-- /Page Header -->
 
-            <div class="container">
+            {{-- <div class="container">
                 <div class="row">
                     <div class="col-md-24 col-sm-24 col-lg-24 col-xl-12">
                         <div class="card dash-widget">
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- message --}}
             {!! Toastr::message() !!}

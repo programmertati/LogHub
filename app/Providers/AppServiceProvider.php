@@ -23,7 +23,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->instance(BoardLogic::class, $boardLogic);
     }
 
-    public function boot(): void
+    public function boot()
     {
+        date_default_timezone_set('Asia/Jakarta');
+        config(['app.locale' => 'id']);
+        \Carbon\Carbon::setLocale('id');
+        if (env('APP_ENV') != 'local') {
+            $this->app['request']->server->set('HTTPS', true); 
+        } else {
+            $this->app['request']->server->set('HTTPS', false);  
+        } 
     }
 }

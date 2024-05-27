@@ -9,6 +9,7 @@ use App\Models\Notification;
 use App\Models\userActivityLog;
 use App\Models\activityLog;
 use App\Models\User;
+use App\Models\CardHistory;
 use Carbon\Carbon;
 use Session;
 use Auth;
@@ -244,7 +245,7 @@ class UserManagementController extends Controller
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="#" class="dropdown-item userUpdate" data-toggle="modal" data-id="'.$record->id.'" data-target="#edit_user">
-                                <i class="fa fa-pencil m-r-5"></i> Edit
+                                <i class="fa fa-pencil m-r-5"></i> Details
                             </a>
                         </div>
                     </div>
@@ -937,21 +938,22 @@ class UserManagementController extends Controller
     // /Perbaharui Kata Sandi //
 
     // Proses Data Riwayat Aktivitas //
-    public function getRiwayatAktivitas(Request $request)
+    public function getHistoryActivity(Request $request)
     {
         $columns = array(
             0 => 'id',
-            1 => 'user_name',
-            2 => 'email',
-            3 => 'username',
-            4 => 'employee_id',
-            5 => 'status',
-            6 => 'role_name',
-            7 => 'modify_user',
-            8 => 'date_time',
+            1 => 'user_id',
+            2 => 'card_id',
+            3 => 'type',
+            4 => 'content',
+            5 => 'created_at'
         );
 
-        $totalData = userActivityLog::count();
+        $historyActivity = DB::table('card_histories')
+            ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
+            ->select('card_histories.*', 'users.name as result_name');
+        $totalData = $historyActivity->count();
+
         $totalFiltered = $totalData;
 
         $limit = $request->length;
@@ -959,48 +961,57 @@ class UserManagementController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
         $search = $request->input('search.value');
-        $counter = $start + 1;
 
         if (empty($search)) {
-            $activityLog = userActivityLog::offset($start)
+            $historyActivity = DB::table('card_histories')
+                ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
+                ->select('card_histories.*', 'users.name as result_name')
+                ->offset($start)
                 ->limit($limit)
                 ->orderBy($order, $dir)
                 ->get();
         } else {
-            $activityLog =  userActivityLog::where('user_name', 'like', "%{$search}%")
+            $historyActivity = DB::table('card_histories')
+                ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
+                ->select('card_histories.*', 'users.name as result_name')
+                ->where(function ($query) use ($search) {
+                    $query->where('user_id', 'like', "%{$search}%");})
                 ->offset($start)
                 ->limit($limit)
                 ->orderBy($order, $dir)
                 ->get();
 
-            $totalFiltered = userActivityLog::where('user_name', 'like', "%{$search}%")
+            $totalFiltered = DB::table('card_histories')
+                ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
+                ->select('card_histories.*', 'users.name as result_name')
+                ->where(function ($query) use ($search) {
+                    $query->where('user_id', 'like', "%{$search}%");})
                 ->count();
         }
 
-        $data = array();
-        if (!empty($activityLog)) {
-            foreach ($activityLog as $key => $item) {
-                $nestedData['id']           = $counter++;
-                $nestedData['user_name']    = $item->user_name;
-                $nestedData['email']        = $item->email;
-                $nestedData['username']     = $item->username;
-                $nestedData['employee_id']  = $item->employee_id;
-                $nestedData['status']       = $item->status;
-                $nestedData['role_name']    = $item->role_name;
-                $nestedData['modify_user']  = $item->modify_user;
-                $nestedData['date_time']    = $item->date_time;
-                $data[] = $nestedData;
+        $data_arr = [];
+        if (!empty($historyActivity)) {
+            foreach ($historyActivity as $key => $item) {
+                $formattedDate = Carbon::parse($item->created_at)->translatedFormat('l, j F Y || h:i A');
+                $data_arr [] = [
+                    "id"            => '<span class="id" data-id="' . $item->id . '">' . ($start + ($key + 1)) . '</span>',
+                    "user_id"       => '<span class="user_id">' . $item->result_name . '</span>',
+                    "card_id"       => '<span class="card_id">' . $item->card_id . '</span>',
+                    "type"          => '<span class="type">' . $item->type . '</span>',
+                    "content"       => '<span class="content">' . $item->content . '</span>',
+                    "created_at"    => '<span class="created_at">' . $formattedDate . '</span>',
+                ];
             }
         }
 
-        $json_data = array(
+        $response = array(
             "draw"            => intval($request->input('draw')),
             "recordsTotal"    => intval($totalData),
             "recordsFiltered" => intval($totalFiltered),
-            "data"            => $data
+            "data"            => $data_arr
         );
 
-        return response()->json($json_data);
+        return response()->json($response);
     }
     // /Proses Data Riwayat Aktivitas //
 

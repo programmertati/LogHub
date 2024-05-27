@@ -13,13 +13,13 @@ class CreateGenerateIdTblsTable extends Migration
      */
     public function up()
     {
-        DB::unprepared('
-            CREATE TRIGGER generate_user_id BEFORE INSERT ON users FOR EACH ROW
-            BEGIN
-                INSERT INTO sequence_tbls VALUES (NULL);
-                SET NEW.user_id = CONCAT("ID_", LPAD(LAST_INSERT_ID(), 5, "0"));
-            END
-        ');
+        // DB::unprepared('
+        //     CREATE TRIGGER generate_user_id BEFORE INSERT ON users FOR EACH ROW
+        //     BEGIN
+        //         INSERT INTO sequence_tbls VALUES (NULL);
+        //         SET NEW.user_id = CONCAT("ID_", LPAD(LAST_INSERT_ID(), 5, "0"));
+        //     END
+        // ');
     }
 
     /**

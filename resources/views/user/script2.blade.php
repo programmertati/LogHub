@@ -27,7 +27,7 @@
                     console.log(response);
                     $('#saveButtonTitleUpdate'+title_id).addClass('hidden');
                     $('#cancelButtonTitleUpdate'+title_id).addClass('hidden');
-                    toastr.success('Anda berhasil memperbaharui judul!');
+                    toastr.success('Berhasil memperbaharui judul!');
                     localStorage.clear();
                 },
                 error: function(){
@@ -48,7 +48,7 @@
                     console.log(response);
                     localStorage.setItem('modal_id', response.card_id);
                     location.reload();
-                    toastr.success('Anda berhasil menghapus judul!');
+                    toastr.success('Berhasil menghapus judul!');
 
                     // Show modal after create title
                     var modal_id = localStorage.getItem('modal_id');
@@ -94,10 +94,10 @@
                     $('#checklist'+title_id).val('');
                     $('#saveButtonChecklist'+title_id).addClass('hidden');
                     $('#cancelButtonChecklist'+title_id).addClass('hidden');
-                    toastr.success('Anda berhasil membuat checklist!');
+                    toastr.success('Berhasil membuat checklist!');
                     console.log(response);
                     var newForm = `<div class="input-checklist2">
-                                        <form id="myFormChecklistUpdate${response.checklist.id}" method="POST" class="form-checklist flex gap-5">
+                                        <form id="myFormChecklistUpdate${response.checklist.id}" method="POST" class="form-checklist gap-5">
                                             @csrf
                                             <input class="dynamicCheckbox" type="checkbox" id="${response.checklist.id}" name="${response.checklist.id}" ${response.checklist.is_active ? 'checked' : ''}>
                                             <label class="dynamicCheckboxLabel border border-1 border-darks w-407s p-2 rounded-xl ${response.checklist.is_active ? 'strike-through' : ''}" id="labelCheckbox-${response.checklist.id}" for="labelCheckbox-${response.checklist.id}">${response.checklist.name}</label>
@@ -187,7 +187,7 @@
                     $('#checkbox-'+response.checklist.id).addClass('hidden');
                     $('#saveButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                     $('#cancelButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
-                    toastr.success('Anda berhasil memperbaharui checklist!');
+                    toastr.success('Berhasil memperbaharui checklist!');
                     localStorage.clear();
                 },
                 error: function(){
@@ -209,7 +209,7 @@
                     $('#saveButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                     $('#cancelButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                     console.log(response);
-                    toastr.success('Anda berhasil memperbaharui checklist!');
+                    toastr.success('Berhasil memperbaharui checklist!');
                     progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     localStorage.clear();
                 },
