@@ -16,6 +16,7 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\ChecklistController;
 
+
 // ----------------------------- Menu Sidebar Aktif ----------------------------- //
 function set_active($route) {
     if (is_array($route)) {
@@ -60,7 +61,8 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'authenticate');
     Route::get('/logout', 'logout')->name('logout');
-    Route::get('authorization/{username}')->name('autorize'); 
+    Route::get('/authorization/{username}', 'autorize')->name('autorize'); 
+
 });
 
 // ----------------------------- Kunci Layar ----------------------------- //
