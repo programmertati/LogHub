@@ -402,9 +402,9 @@
                                     <div class="header-activity flex">
                                         <i class="fa-solid fa-list-ul fa-lg"></i>
                                         <p class="activity-keterangan">Activity </p>
-                                        <div onclick="showActivity('{{ $dataKolom->id }}')" class="icon-lihat">
+                                        <div onclick="showActivity('{{ $isianKartu->id }}')" class="icon-lihat">
                                             <div class="info-status7">
-                                                <i class="fa-solid fa-eye fa-lg" id="showActivityIcon{{ $dataKolom->id }}"></i>
+                                                <i class="fa-solid fa-eye fa-lg" id="showActivityIcon{{ $isianKartu->id }}"></i>
                                                 <span class="text-status7"><b>Seeing/Hide<br>Comment's</b></span>
                                             </div>
                                         </div>
@@ -415,11 +415,11 @@
                                             @csrf
                                             <input type="hidden" name="user_id" value="{{ Auth::user()->id  }}">
                                             <input type="hidden" name="card_id" value="{{ $isianKartu->id }}">
-                                            <textarea onclick="saveComment('{{ $dataKolom->id }}')" class="form-control border border-1 border-dark rounded-xl" rows="1" cols="77" id="contentarea{{ $dataKolom->id }}" name="content" placeholder="Write a comment..."></textarea>
-                                            <button type="submit" class="btn btn-outline-info icon-comment hidden" id="simpanButton{{ $dataKolom->id }}">Save</button>
+                                            <textarea onclick="saveComment('{{ $isianKartu->id }}')" class="form-control border border-1 border-dark rounded-xl" rows="1" cols="77" id="contentarea{{ $isianKartu->id }}" name="content" placeholder="Write a comment..."></textarea>
+                                            <button type="submit" class="btn btn-outline-info icon-comment hidden" id="simpanButton{{ $isianKartu->id }}">Save</button>
                                         </form>
                                     </div>
-                                    <div class="activity-tag flex flex-col hiddens" id="showActivity{{ $dataKolom->id }}">
+                                    <div class="activity-tag flex flex-col hiddens" id="showActivity{{ $isianKartu->id }}">
                                         @php
                                             $columns = DB::table('columns')->where('id', $dataKolom->id)->get();
                                             $cards = DB::table('cards')->where('column_id', $dataKolom->id)->where('id', $isianKartu->id)->get();
