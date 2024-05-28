@@ -327,6 +327,7 @@
                     hr{border-top: 1px solid {{ $mode_tema->warna_sistem_tulisan }} !important}
                     .text-black {color: white !important}
                     .bg-slate-100{background-color: {{ $mode_tema->warna_sistem }} !important;}
+                    .sidebar-menu li a:hover {color: rgba(0, 0, 0, 1) !important;}
 
                     @foreach ($belum_dibaca as $notifikasi_belum_dibaca)
                         #popup-notifikasi_{{ $notifikasi_belum_dibaca->id }} {background: {{ $mode_tema->warna_mode }} !important}
@@ -774,9 +775,6 @@
                         @if (Auth::user()->role_name == 'User')
                             <a class="dropdown-item" href="{{ route('user-profile') }}">Profil Saya</a>
                         @endif                        
-                        @if (Auth::user()->role_name == 'Admin')
-                            <a class="dropdown-item" href="{{ route('pengaturan-perusahaan') }}">Pengaturan</a>
-                        @endif
                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                     </div>
                 </li>
@@ -795,9 +793,6 @@
                     @if (Auth::user()->role_name == 'User')
                         <a class="dropdown-item" href="{{ route('user-profile') }}">Profil Saya</a>
                     @endif                        
-                    @if (Auth::user()->role_name == 'Admin')
-                        <a class="dropdown-item" href="{{ route('pengaturan-perusahaan') }}">Pengaturan</a>
-                    @endif
                     <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                 </div>
             </div>
