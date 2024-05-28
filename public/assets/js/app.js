@@ -126,7 +126,7 @@ $(document).ready(function() {
 	// Page Content Height
 
 	var pHeight = $(window).height();
-	$pageWrapper.css('min-height', pHeight);
+	// $pageWrapper.css('min-height', pHeight);
 	$(window).resize(function() {
 		var prHeight = $(window).height();
 		$pageWrapper.css('min-height', prHeight);

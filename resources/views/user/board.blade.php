@@ -2,10 +2,11 @@
 @section('content')
 
         <!-- Page Wrapper -->
-        <div class="page-wrapper">
+        <div class="page-wrapper" style="height: 100vh">
 
             <!-- Tampilan Background Kolom & Card -->
-            <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" style="height: 93vh !important">
+            {{-- <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" style="height: 93vh !important"> --}}
+            <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" style="height: 100%">
 
                 <!-- Tampilan Kolom & Kartu -->
                 <div class="tampilan-kolom gap-4 p-4">
@@ -50,13 +51,13 @@
                                         <li class="kartu-trello" id="kartu-trello" onmouseenter="aksiKartuShow({{ $dataKartu->id }})" onmouseleave="aksiKartuHide({{ $dataKartu->id }})">
                                             
                                             <!-- Tampilan Aksi Edit -->
-                                            @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty())
+                                            {{-- @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                                 <a href="#" data-toggle="modal" data-target="#editCard{{ $dataKartu->id }}">
                                                     <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}">
                                                         <i class="fa-solid fa-pencil fa-sm"></i>
                                                     </div>
                                                 </a>
-                                            @endif
+                                            {{-- @endif --}}
                                             <!-- /Tampilan Aksi Edit -->
 
                                             <!-- Tampilan Kartu Pengguna -->
@@ -449,7 +450,7 @@
                                         <div onclick="showActivity('{{ $isianKartu->id }}')" class="icon-lihat">
                                             <div class="info-status7">
                                                 <i class="fa-solid fa-eye fa-lg" id="showActivityIcon{{ $isianKartu->id }}"></i>
-                                                <span class="text-status7"><b>Seeing/Hide<br>Comment's</b></span>
+                                                <span class="text-status7"><b>Seeing Comment's</b></span>
                                             </div>
                                         </div>
                                     </div>

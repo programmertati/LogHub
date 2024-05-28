@@ -975,7 +975,7 @@ class UserManagementController extends Controller
                 ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
                 ->select('card_histories.*', 'users.name as result_name')
                 ->where(function ($query) use ($search) {
-                    $query->where('user_id', 'like', "%{$search}%");})
+                    $query->where('users.name', 'like', "%{$search}%");})
                 ->offset($start)
                 ->limit($limit)
                 ->orderBy($order, $dir)
@@ -985,7 +985,7 @@ class UserManagementController extends Controller
                 ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
                 ->select('card_histories.*', 'users.name as result_name')
                 ->where(function ($query) use ($search) {
-                    $query->where('user_id', 'like', "%{$search}%");})
+                    $query->where('users.name', 'like', "%{$search}%");})
                 ->count();
         }
 

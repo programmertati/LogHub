@@ -2,10 +2,11 @@
 @section('content')
 
         <!-- Page Wrapper -->
-        <div class="page-wrapper">
+        <div class="page-wrapper" style="height: 100vh">
 
             <!-- Tampilan Background Kolom & Card -->
-            <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" style="height: 93vh !important">
+            {{-- <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" style="height: 93vh !important"> --}}
+            <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" style="height: 100%">
 
                 <!-- Tampilan Kolom & Kartu -->
                 <div class="tampilan-kolom gap-4 p-4">
@@ -50,11 +51,13 @@
                                             <!-- /Tampilan Aksi Edit -->
 
                                             <!-- Tampilan Kartu Pengguna -->
-                                            <a href="#" data-toggle="modal" data-target="#isianKartu{{ $dataKartu->id }}">
-                                                <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
-                                                    <span class="flex ms-3">{{ $dataKartu->name }}</span>
-                                                </div>
-                                            </a>
+                                            {{-- @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
+                                                <a href="#" data-toggle="modal" data-target="#isianKartu{{ $dataKartu->id }}">
+                                                    <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
+                                                        <span class="flex ms-3">{{ $dataKartu->name }}</span>
+                                                    </div>
+                                                </a>
+                                            {{-- @endif --}}
                                             <!-- /Tampilan Kartu Pengguna -->
                                         </li>
                                     @endforeach
@@ -471,7 +474,7 @@
                                         <div onclick="showActivity('{{ $isianKartu->id }}')" class="icon-lihat">
                                             <div class="info-status7">
                                                 <i class="fa-solid fa-eye fa-lg" id="showActivityIcon{{ $isianKartu->id }}"></i>
-                                                <span class="text-status7"><b>Seeing/Hide<br>Comment's</b></span>
+                                                <span class="text-status7"><b>Seeing Comment's</b></span>
                                             </div>
                                         </div>
                                     </div>
