@@ -20,11 +20,24 @@
 
                             <!-- Tampilan Aksi Edit & Hapus -->
                             <a href="#" data-toggle="modal" data-target="#updateColumn{{ $dataKolom->id }}">
+                                <div class="aksi-kolom" id="aksi-kolom{{ $dataKolom->id }}">
+                                    <i class="fa-solid fa-pencil fa-sm"></i>
+                                </div>
+                            </a>
+                            <a href="#" data-toggle="modal" data-target="#deleteColumn{{ $dataKolom->id }}">
+                                <div class="aksi-kolom2" id="aksi-kolom2{{ $dataKolom->id }}">
+                                    <i class="fa-solid fa-trash fa-sm"></i>
+                                </div>
+                            </a>
+                            <!-- /Tampilan Aksi Edit & Hapus -->
+
+                            {{-- <!-- Tampilan Aksi Edit & Hapus Bersama Auth -->
+                            <a href="#" data-toggle="modal" data-target="#updateColumn{{ $dataKolom->id }}">
                                 <div class="aksi-kolom2" id="aksi-kolom{{ $dataKolom->id }}">
                                     <i class="fa-solid fa-pencil fa-sm"></i>
                                 </div>
                             </a>
-                            <!-- /Tampilan Aksi Edit & Hapus -->
+                            <!-- /Tampilan Aksi Edit & Hapus Bersama Auth --> --}}
 
                             <!-- Tampilan Nama Kolom -->
                             <h5 class="kolom-nama mb-3 font-semibold text-lgs dark:text-white">{{ $dataKolom->name }}</h5>
@@ -160,6 +173,37 @@
         @endforeach
         <!-- /Perbaharui Kolom Modal -->
 
+        <!-- Hapus Kolom Modal Dicomment ketika menggunakan auth -->
+        @foreach ( $dataColumnCard as $hapusKolom )
+            <div id="deleteColumn{{ $hapusKolom->id }}" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-header">
+                                <h3>Delete Columns "{{ $hapusKolom->name }}"?</h3>
+                                <p>Are you sure you want to delete this column?</p>
+                            </div>
+                            <div class="modal-btn delete-action">
+                                <form action="{{ route('deleteCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="column_id" id="column_id" value="{{ $hapusKolom->id  }}">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+        <!-- /Hapus Kolom Modal Dicomment ketika menggunakan auth -->
+
         <!-- Isian Kartu Modal -->
         @foreach ( $dataColumnCard as $dataKolom )
             @foreach ($dataKolom->cards as $isianKartu)
@@ -172,7 +216,7 @@
                                 </div>
                                 <div>
                                     <h5 class="nama-kartu">{{ $isianKartu->name  }}</h5>
-                                    @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty())
+                                    {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                         <form action="{{ route('hapusKartu2', ['card_id' => $isianKartu->id]) }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $isianKartu->id  }}">
@@ -185,7 +229,7 @@
                                                 </button>
                                             </div>
                                         </form>
-                                    @endif
+                                    {{-- @endif --}}
                                     <div class="aksi-move-card">
                                         <p class="tag-list">in list</p>
                                         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" style="margin-left: -12px;">{{ $dataKolom->name  }}</a>
@@ -205,7 +249,7 @@
                             </div>
                             <div class="modal-body">
 
-                            @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty())
+                            {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                 <!-- Tambah & Edit Keterangan -->
                                 <div class="menu-keterangan">
                                     <div class="icon-align">
@@ -248,7 +292,7 @@
                                     <button type="button" class="btn btn-outline-info icon-item" id="addTitle-{{ $isianKartu->id }}"><i class="fa-regular fa-square-check fa-lg"></i> Add Checklist</button>
                                 </div>
                                 <!-- /Tambah Judul Checklist -->
-                            @else
+                            {{-- @else
                                 <!-- Tampilan Keterangan Apabila Bukan Punyanya -->
                                 <div class="menu-keterangan">
                                     <div class="icon-align">
@@ -260,9 +304,9 @@
                                     </div>
                                 </div>
                                 <!-- /Tampilan Keterangan Apabila Bukan Punyanya -->
-                            @endif
+                            @endif --}}
                                 
-                            @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty())
+                            {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                 @foreach ($isianKartu->titleChecklists as $titleChecklists)
                                 <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl">
                                     <!-- Perbaharui & Hapus Judul Checklist -->
@@ -317,7 +361,7 @@
                                             <input type="text" class="dynamicCheckboxValue border border-1 border-darks w-407 p-2 rounded-xl hidden" id="checkbox-{{$checklists->id}}" name="checkbox-{{$checklists->id}}" value="{{$checklists->name}}" placeholder="Enter a checklist">
                                         </form>
                                         <!-- Icon Hapus Checklist -->
-                                        @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty())
+                                        {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                             <form id="myFormChecklistDelete{{ $checklists->id }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" id="id" name="id" value="{{ $checklists->id }}">
@@ -331,7 +375,7 @@
                                                     </button>
                                                 </div>
                                             </form>
-                                        @endif
+                                        {{-- @endif --}}
                                         <!-- /Icon Hapus Checklist -->
                                     </div>
                                     <!-- /Tampilan Checklist -->
@@ -366,7 +410,7 @@
                                     <!-- Tambah baru checklist -->
                                     </div>
                                 @endforeach
-                            @else
+                            {{-- @else
                                 @foreach ($isianKartu->titleChecklists as $titleChecklists)
                                     <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl">
                                         <!-- Perbaharui & Hapus Judul Checklist -->
@@ -397,7 +441,7 @@
                                         <!-- /Perbaharui & Hapus Checklist -->
                                     </div>
                                 @endforeach
-                            @endif
+                            @endif --}}
                                 <div class="menu-activity">
                                     <div class="header-activity flex">
                                         <i class="fa-solid fa-list-ul fa-lg"></i>

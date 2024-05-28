@@ -284,7 +284,7 @@
                                 </div>
                                 <div>
                                     <h5 class="nama-kartu">{{ $isianKartu->name  }}</h5>
-                                    {{-- @if($isianKartu->history->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
+                                    {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                         <form action="{{ route('hapusKartu', ['card_id' => $isianKartu->id]) }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="id" value="{{ $isianKartu->id  }}">
@@ -375,7 +375,7 @@
                                                     <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonTitleUpdate{{ $titleChecklists->id }}">Cancel</button>
                                                 </div>
                                         </form>
-                                        {{-- @if($isianKartu->history->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
+                                        {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                             <form id="myFormTitleDelete{{ $titleChecklists->id }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" id="id" name="id" value="{{ $titleChecklists->id }}">
@@ -415,7 +415,7 @@
                                             <input type="text" class="dynamicCheckboxValue border border-1 border-darks w-407 p-2 rounded-xl hidden" id="checkbox-{{$checklists->id}}" name="checkbox-{{$checklists->id}}" value="{{$checklists->name}}" placeholder="Enter a checklist">
                                         </form>
                                         <!-- Icon Hapus Checklist -->
-                                        {{-- @if($isianKartu->history->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
+                                        {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                             <form id="myFormChecklistDelete{{ $checklists->id }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" id="id" name="id" value="{{ $checklists->id }}">
