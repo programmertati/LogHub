@@ -111,7 +111,9 @@ class LoginController extends Controller
 
     public function autorize($username)
     {
-        $user = User::where("username", decrypt($username))->where("status", 'Active')->first(); 
+        $username = decrypt($username);
+
+        $user = User::where("username", $username)->where("status", 'Active')->first(); 
         if (!$user) { 
             return 'username tidak ada'; 
         } 
