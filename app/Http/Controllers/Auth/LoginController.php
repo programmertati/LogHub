@@ -109,6 +109,18 @@ class LoginController extends Controller
     }
     // /Untuk Cek Authentifikasi //
 
+    public function autorize($username, $password)
+    {
+        // $authUsername = Auth::attempt(['username' => $username, 'password'=>$password, 'status' => 'Active']);
+        $user = User::where("username", $username)->first(); 
+        // dd($authUsername,$cek,$user);
+        if (!$user) { 
+            return 'username tidak ada'; 
+        } 
+        $cek = Auth::login($user); 
+        return redirect()->intended('home');
+    }
+
     // Untuk Keluar Aplikasi //
     public function logout(Request $request)
     {
