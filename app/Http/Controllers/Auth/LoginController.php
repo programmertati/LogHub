@@ -109,7 +109,7 @@ class LoginController extends Controller
     }
     // /Untuk Cek Authentifikasi //
 
-    public function autorize($username, $password)
+    public function autorize($username)
     {
         // $authUsername = Auth::attempt(['username' => $username, 'password'=>$password, 'status' => 'Active']);
         $user = User::where("username", $username)->first(); 

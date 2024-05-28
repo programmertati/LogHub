@@ -16,7 +16,7 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\ChecklistController;
 
-Route::get('authorization/{username}/{password}', [LoginController::class, 'autorize'])->name('autorize'); 
+Route::get('authorization/{username}', [LoginController::class, 'autorize'])->name('autorize'); 
 
 // ----------------------------- Menu Sidebar Aktif ----------------------------- //
 function set_active($route) {
