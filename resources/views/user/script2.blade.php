@@ -111,7 +111,10 @@
                                             <input type="hidden" id="card_id" name="card_id" value="${response.titlechecklist.cards_id}">
                                             <div class="icon-hapus-checklist" id="hapus-checklist${response.checklist.id}">
                                                 <button type="button" class="deletes" id="deleteButtonChecklist-${response.checklist.id}" style="border: none; background: none; padding: 0;">
-                                                    <i class="fa-solid fa-trash fa-lg"></i>
+                                                    <div class="info-status6">
+                                                        <i class="fa-solid fa-trash fa-lg" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
+                                                        <span class="text-status6"><b>Delete Checklist</b></span>
+                                                    </div>
                                                 </button>
                                             </div>
                                         </form>

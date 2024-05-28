@@ -11,7 +11,7 @@
                 </div>
                 <li class="{{ set_active(['home']) }}">
                     <a href="{{ route('home') }}" class="{{ set_active(['home']) ? 'noti-dot' : '' }}">
-                        <i class="fa fa-building-columns fa-2xs"></i>
+                        <i class="fa-solid fa-building-columns"></i>
                         <span>Home</span>
                     </a>
                 </li>
@@ -20,13 +20,13 @@
                     <li class="menu-title"> <span>System Management</span> </li>
                     <li class="{{ set_active(['manajemen/pengguna']) }}">
                         <a href="{{ route('manajemen-pengguna') }}" class="{{ set_active(['manajemen/pengguna']) ? 'noti-dot' : '' }}">
-                            <i class="fa-solid fa-person fa-lg"></i>
+                            <i class="fa-solid fa-person"></i>
                             <span>List User</span>
                         </a>
                     </li>
                     <li class="{{ set_active(['riwayat/aktivitas']) }}">
                         <a href="{{ route('riwayat-aktivitas') }}" class="{{ set_active(['riwayat/aktivitas']) ? 'noti-dot' : '' }}">
-                            <i class="fa-solid fa-clock-rotate-left fa-sm"></i>
+                            <i class="fa-solid fa-clock-rotate-left"></i>
                             <span>History Activity</span>
                         </a>
                     </li>
@@ -184,7 +184,6 @@
                         </a>
                     </li>
                 @endif
-                
             </ul>
         </div>
     </div>
