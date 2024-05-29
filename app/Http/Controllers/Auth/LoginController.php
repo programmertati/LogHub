@@ -41,7 +41,8 @@ class LoginController extends Controller
     // Tampilan Masuk Aplikasi //
     public function login(Request $request)
     {
-        return view('auth.login');
+        // return view('auth.login');
+        return view('auth.landing'); 
     }
     // /Tampilan Masuk Aplikasi //
 
@@ -115,10 +116,16 @@ class LoginController extends Controller
 
         $user = User::where("username", $username)->where("status", 'Active')->first(); 
         if (!$user) { 
-            return 'username tidak ada'; 
+            $message = 'Akun Anda Tidak Terdaftar, Hubungi Admin !';
+            return view('auth.landing', compact('message')); 
         } 
         $cek = Auth::login($user); 
         return redirect()->intended('home');
+    }
+
+    public function landing()
+    {
+        return view('auth.landing');
     }
 
     // Untuk Keluar Aplikasi //
@@ -135,6 +142,8 @@ class LoginController extends Controller
 
         $activityLog = ['name' => Session::get('name'), 'username'=> Session::get('username'), 'employee_id'=> Session::get('employee_id'), 'email'=> Session::get('email'), 'description' => 'Berhasil Keluar Aplikasi Trello', 'date_time' => $todayDate];
         DB::table('activity_logs')->insert($activityLog);
+
+        $message = 'Terima kasih, Anda telah logout';
         
         $request->session()->forget('name');
         $request->session()->forget('email');
@@ -149,7 +158,7 @@ class LoginController extends Controller
         
         Auth::logout();
         Toastr::success('Anda berhasil keluar aplikasi Trello','Success');
-        return redirect('login');
+        return view('auth.landing', compact('message')); 
     }
     // Untuk Keluar Aplikasi //
 }

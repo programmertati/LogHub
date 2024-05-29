@@ -26,7 +26,8 @@ function set_active($route) {
 
 // ----------------------------- Autentikfikasi Login ----------------------------- //
 Route::get('/', function () {
-    return view('auth.login');
+    // return view('auth.login');
+    return view('auth.landing');
 });
 
 // ----------------------------- Autentikfikasi MultiLevel ----------------------------- //
@@ -61,6 +62,7 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('/login', 'authenticate');
     Route::get('/logout', 'logout')->name('logout');
     Route::get('/authorization/{username}', 'autorize')->name('autorize'); 
+    Route::get('/landing', 'landing')->name('landing'); 
 });
 
 // ----------------------------- Kunci Layar ----------------------------- //
