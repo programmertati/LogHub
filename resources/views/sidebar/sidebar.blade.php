@@ -130,12 +130,12 @@
                             <span> Profile</span>
                         </a>
                     </li>
-                    <li class="{{ set_active(['admin/kata-sandi']) }}">
+                    {{-- <li class="{{ set_active(['admin/kata-sandi']) }}">
                         <a href="{{ route('admin-kata-sandi') }}" class="{{ set_active(['admin/kata-sandi']) ? 'noti-dot' : '' }}">
                             <i class="la la-key"></i>
                             <span> Change Password</span>
                         </a>
-                    </li>
+                    </li> --}}
                 @endif
 
                 @if (Auth::user()->role_name == 'User')
@@ -177,12 +177,12 @@
                             <span> Profile</span>
                         </a>
                     </li>
-                    <li class="{{ set_active(['user/kata-sandi']) }}">
+                    {{-- <li class="{{ set_active(['user/kata-sandi']) }}">
                         <a href="{{ route('user-kata-sandi') }}" class="{{ set_active(['user/kata-sandi']) ? 'noti-dot' : '' }}">
                             <i class="la la-key"></i>
                             <span> Change Password</span>
                         </a>
-                    </li>
+                    </li> --}}
                 @endif
             </ul>
         </div>
