@@ -41,7 +41,8 @@ class LoginController extends Controller
     // Tampilan Masuk Aplikasi //
     public function login(Request $request)
     {
-        return view('auth.login');
+        // return view('auth.login'); //
+        return view('auth.landing');
     }
     // /Tampilan Masuk Aplikasi //
 
@@ -119,8 +120,8 @@ class LoginController extends Controller
         $user = User::where('username', $username)->where('status', 'Active')->first();
 
         if (!$user) {
-            Toastr::error('Gagal, Username / ID Employee / Email anda tidak terdaftar pada aplikasi ini', 'Error');
-            return 'Username tidak ada';
+            $message = 'Akun Anda Tidak Terdaftar, Silahkan Hubungi Admin!';
+            return view('auth.landing', compact('message'));
         }
 
         Auth::login($user);
@@ -135,12 +136,12 @@ class LoginController extends Controller
         Session::put('avatar', $user->avatar);
 
         $activityLog = [
-            'name' => $user->name,
-            'username' => $user->username,
-            'employee_id' => $user->employee_id,
-            'email' => $user->email,
-            'description' => 'Berhasil Masuk Aplikasi Trello',
-            'date_time' => $todayDate
+            'name'          => $user->name,
+            'username'      => $user->username,
+            'employee_id'   => $user->employee_id,
+            'email'         => $user->email,
+            'description'   => 'Berhasil Masuk Aplikasi Trello',
+            'date_time'     => $todayDate
         ];
         DB::table('activity_logs')->insert($activityLog);
 
@@ -153,6 +154,13 @@ class LoginController extends Controller
         return redirect()->intended('home');
     }
     // /Untuk Cek Authentifikasi dari Mantai //
+
+    // Tampilan Landing Page //
+    public function landing()
+    {
+        return view('auth.landing');
+    }
+    // /Tampilan Landing Page //
 
     // Untuk Keluar Aplikasi //
     public function logout(Request $request)
@@ -168,6 +176,8 @@ class LoginController extends Controller
 
         $activityLog = ['name' => Session::get('name'), 'username'=> Session::get('username'), 'employee_id'=> Session::get('employee_id'), 'email'=> Session::get('email'), 'description' => 'Berhasil Keluar Aplikasi Trello', 'date_time' => $todayDate];
         DB::table('activity_logs')->insert($activityLog);
+
+        $message = 'Terima kasih, Anda telah keluar aplikasi!';
         
         $request->session()->forget('name');
         $request->session()->forget('email');
@@ -182,7 +192,8 @@ class LoginController extends Controller
         
         Auth::logout();
         Toastr::success('Anda berhasil keluar aplikasi Trello','Success');
-        return redirect('login');
+        // return redirect('login'); //
+        return view('auth.landing', compact('message')); 
     }
     // Untuk Keluar Aplikasi //
 }
