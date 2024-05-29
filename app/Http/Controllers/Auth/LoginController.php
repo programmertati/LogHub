@@ -109,17 +109,50 @@ class LoginController extends Controller
     }
     // /Untuk Cek Authentifikasi //
 
+    // Untuk Cek Authentifikasi dari Mantai //
     public function autorize($username)
     {
         $username = decrypt($username);
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
 
-        $user = User::where("username", $username)->where("status", 'Active')->first(); 
-        if (!$user) { 
-            return 'username tidak ada'; 
-        } 
-        $cek = Auth::login($user); 
+        $user = User::where('username', $username)->where('status', 'Active')->first();
+
+        if (!$user) {
+            Toastr::error('Gagal, Username / ID Employee / Email anda tidak terdaftar pada aplikasi ini', 'Error');
+            return 'Username tidak ada';
+        }
+
+        Auth::login($user);
+        Session::put('name', $user->name);
+        Session::put('email', $user->email);
+        Session::put('username', $user->username);
+        Session::put('employee_id', $user->employee_id);
+        Session::put('user_id', $user->user_id);
+        Session::put('join_date', $user->join_date);
+        Session::put('status', $user->status);
+        Session::put('role_name', $user->role_name);
+        Session::put('avatar', $user->avatar);
+
+        $activityLog = [
+            'name' => $user->name,
+            'username' => $user->username,
+            'employee_id' => $user->employee_id,
+            'email' => $user->email,
+            'description' => 'Berhasil Masuk Aplikasi Trello',
+            'date_time' => $todayDate
+        ];
+        DB::table('activity_logs')->insert($activityLog);
+
+        $updateStatus = [
+            'status_online' => 'Online'
+        ];
+        DB::table('users')->where('id', $user->id)->update($updateStatus);
+
+        Toastr::success('Anda berhasil memasuki aplikasi Trello', 'Success');
         return redirect()->intended('home');
     }
+    // /Untuk Cek Authentifikasi dari Mantai //
 
     // Untuk Keluar Aplikasi //
     public function logout(Request $request)
