@@ -126,7 +126,7 @@
         <script src="{{ asset('assets/js/indicatorkatasandi.js') }}"></script>
 
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Daftar Aplikasi | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Daftar Aplikasi | Loghub - PT TATI';
         </script>
 
         <script>

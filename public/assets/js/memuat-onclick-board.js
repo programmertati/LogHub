@@ -1,15 +1,15 @@
 // Khusus ketika klik button +Tambah Kartu //
 function openAdd(id){
-    const cardTrello = document.getElementById(`cardTrello${id}`);
+    const cardLoghub = document.getElementById(`cardLoghub${id}`);
     const btnadd = document.getElementById(`btn-add${id}`);
 
-    let style = cardTrello.getAttribute("class")
+    let style = cardLoghub.getAttribute("class")
     
     if (style.includes('flex')) {
-        cardTrello.classList.remove("flex");
+        cardLoghub.classList.remove("flex");
         btnadd.innerHTML="<i class='fa-solid fa-plus'></i> Add a card...";
     } else {
-        cardTrello.classList.add("flex");
+        cardLoghub.classList.add("flex");
         btnadd.innerHTML="Cancel";
     }
 }
@@ -17,7 +17,7 @@ function openAdd(id){
 
 // Khusus untuk menghilangkan dan memunculkan edit & delete beserta menghilangkan text yang ada di +Tambah Kartu //
 function hideAdd() {
-    const targetCard = document.querySelectorAll(".card-trello");
+    const targetCard = document.querySelectorAll(".card-loghub");
     targetCard.forEach(element => {
         element.classList.add("hidden");
     });

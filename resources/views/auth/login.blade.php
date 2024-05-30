@@ -8,7 +8,7 @@
                 <!-- /Account Logo -->
                 <div class="account-box">
                     <div class="account-wrapper">
-                        <h3 class="account-title">Trello</h3>
+                        <h3 class="account-title">Loghub</h3>
                         <h3 class="account-title2">Aplikasi Manajemen Tugas</h3><br>
                         <!-- Account Form -->
                         <form method="POST" action="{{ route('login') }}">

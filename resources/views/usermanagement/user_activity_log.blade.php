@@ -109,7 +109,7 @@
         <script src="{{ asset('assets/js/atur-tanggal-indo.js') }}"></script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'History Activity - Admin | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'History Activity - Admin | Loghub - PT TATI';
         </script>
 
     @endsection

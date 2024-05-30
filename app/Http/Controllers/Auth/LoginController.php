@@ -81,7 +81,7 @@ class LoginController extends Controller
                 Session::put('role_name', $user->role_name);
                 Session::put('avatar', $user->avatar);
                 
-                $activityLog = ['name' => Session::get('name'), 'username' => $user->username, 'employee_id' => $user->employee_id, 'email' => $user->email, 'description' => 'Berhasil Masuk Aplikasi Trello', 'date_time' => $todayDate];
+                $activityLog = ['name' => Session::get('name'), 'username' => $user->username, 'employee_id' => $user->employee_id, 'email' => $user->email, 'description' => 'Berhasil Masuk Aplikasi', 'date_time' => $todayDate];
                 DB::table('activity_logs')->insert($activityLog);
 
                 $result_user_id = Session::get('user_id');
@@ -90,7 +90,7 @@ class LoginController extends Controller
                 ];
                 DB::table('users')->where('user_id', $result_user_id)->update($updateStatus);
 
-                Toastr::success('Anda berhasil memasuki aplikasi Trello', 'Success');
+                Toastr::success('Anda berhasil masuk aplikasi', 'Success');
                 return redirect()->intended('home');
 
             } elseif (User::where('employee_id', $username)->orWhere('email', $username)->exists()) {
@@ -140,7 +140,7 @@ class LoginController extends Controller
             'username'      => $user->username,
             'employee_id'   => $user->employee_id,
             'email'         => $user->email,
-            'description'   => 'Berhasil Masuk Aplikasi Trello',
+            'description'   => 'Berhasil Masuk Aplikasi',
             'date_time'     => $todayDate
         ];
         DB::table('activity_logs')->insert($activityLog);
@@ -150,7 +150,7 @@ class LoginController extends Controller
         ];
         DB::table('users')->where('id', $user->id)->update($updateStatus);
 
-        Toastr::success('Anda berhasil memasuki aplikasi Trello', 'Success');
+        Toastr::success('Anda berhasil masuk aplikasi', 'Success');
         return redirect()->intended('home');
     }
     // /Untuk Cek Authentifikasi dari Mantai //
@@ -174,7 +174,7 @@ class LoginController extends Controller
         ];
         DB::table('users')->where('user_id', $result_user_id)->update($updateStatus);
 
-        $activityLog = ['name' => Session::get('name'), 'username'=> Session::get('username'), 'employee_id'=> Session::get('employee_id'), 'email'=> Session::get('email'), 'description' => 'Berhasil Keluar Aplikasi Trello', 'date_time' => $todayDate];
+        $activityLog = ['name' => Session::get('name'), 'username'=> Session::get('username'), 'employee_id'=> Session::get('employee_id'), 'email'=> Session::get('email'), 'description' => 'Berhasil Keluar Aplikasi', 'date_time' => $todayDate];
         DB::table('activity_logs')->insert($activityLog);
 
         $message = 'Terima kasih, Anda telah keluar aplikasi!';
@@ -191,7 +191,7 @@ class LoginController extends Controller
         $request->session()->flush();
         
         Auth::logout();
-        Toastr::success('Anda berhasil keluar aplikasi Trello','Success');
+        Toastr::success('Anda berhasil keluar aplikasi','Success');
         // return redirect('login'); //
         return view('auth.landing', compact('message')); 
     }

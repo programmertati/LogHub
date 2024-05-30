@@ -292,7 +292,7 @@
         <script src="{{ asset('assets/js/memuat-ulang.js') }}"></script>
 
         <script>
-            document.getElementById('pageTitle').innerHTML = 'User Management - Admin | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'User Management - Admin | Loghub - PT TATI';
         </script>
 
     @endsection

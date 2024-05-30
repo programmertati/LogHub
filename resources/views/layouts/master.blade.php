@@ -4,11 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="description" content="PT TATI - Aplikasi Trello">
+    <meta name="description" content="PT TATI - Aplikasi Loghub">
     <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
     <meta name="author" content="PT TATI">
     <meta name="robots" content="noindex, nofollow">
-    <title id="pageTitle">Home | Trello - PT TATI</title>
+    <title id="pageTitle">Home | Loghub - PT TATI</title>
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/favicon.png') }}">
     <!-- Bootstrap CSS -->
@@ -260,8 +260,8 @@
             .dropzone-box-42{background-color: {{ $mode_tema->warna_mode }} !important;}
             .dropzone-box-43{background-color: {{ $mode_tema->warna_mode }} !important;}
             .dropzone-box-44{background-color: {{ $mode_tema->warna_mode }} !important;}
-            .kartu-trello {background-color: {{ $mode_tema->warna_mode }} !important;}
-            .card-trello {background-color: {{ $mode_tema->warna_mode }} !important;}
+            .kartu-loghub {background-color: {{ $mode_tema->warna_mode }} !important;}
+            .card-loghub {background-color: {{ $mode_tema->warna_mode }} !important;}
             .fa-circle-check{color: {{ $mode_tema->warna_mode }} !important;}
             .bg-white{background-color: {{ $mode_tema->warna_mode }} !important;}
             .bg-gray-100{background-color: {{ $mode_tema->warna_mode }} !important;}

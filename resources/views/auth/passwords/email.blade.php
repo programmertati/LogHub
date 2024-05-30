@@ -54,7 +54,7 @@
         <script src="https://kit.fontawesome.com/95e99ea6db.js" crossorigin="anonymous"></script>
 
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Lupa Kata Sandi | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Lupa Kata Sandi | Loghub - PT TATI';
         </script>
 
     @endsection

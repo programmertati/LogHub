@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error('Respons jaringan tidak baik.');
             })
             .then((data) => {
-                $('#cardContainer').append(`<div class="w-full max-w-72 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700" id="kolom-trello">
+                $('#cardContainer').append(`<div class="w-full max-w-72 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700" id="kolom-loghub">
                                                 <a href="#" data-toggle="modal" data-target="#diisi id modal">
                                                     <div class="aksi-kolom">
                                                         <i class="fa-solid fa-pencil fa-sm"></i>
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 </a>
                                                 <h5 class="kolom-nama mb-3 font-semibold text-lg dark:text-white">${data.name}</h5>
                                                 <ul class="my-4 space-y-3">
-                                                    <li class="card-trello hidden" id="cardTrello">
+                                                    <li class="card-loghub hidden" id="cardLoghub">
                                                         <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
                                                             <textarea class="form-control" name="#" style="border-radius: 15px; background-color: #f5fffa;" placeholder="Masukkan judul ini.."></textarea>
                                                         </div>

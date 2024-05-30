@@ -116,7 +116,7 @@
         <script src="{{ asset('assets/js/atur-tanggal-indo.js') }}"></script>
 
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Manajemen Aktivitas Pengguna - Admin | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Manajemen Aktivitas Pengguna - Admin | Loghub - PT TATI';
         </script>
         
     @endsection

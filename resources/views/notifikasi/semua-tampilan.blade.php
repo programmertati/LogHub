@@ -346,7 +346,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Semua Notifikasi | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Semua Notifikasi | Loghub - PT TATI';
         </script>
         
     @endsection

@@ -422,7 +422,7 @@
 
         <script>
             @if (Auth::user()->role_name == 'Admin') 
-                document.getElementById('pageTitle').innerHTML = 'Profile Settings - Admin | Trello - PT TATI';
+                document.getElementById('pageTitle').innerHTML = 'Profile Settings - Admin | Loghub - PT TATI';
             @endif
         </script>
 

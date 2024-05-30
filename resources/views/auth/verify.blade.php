@@ -79,7 +79,7 @@
                                                                         <td class="pad">
                                                                             <div style="font-family: sans-serif">
                                                                                 <div style="font-size: 12px; font-family: Arial, Helvetica, sans-serif; color: #555555;">
-                                                                                    <p style="margin: 0; text-align: center;">Anda mendapatkan email ini karena anda ingin melakukan penyetelan ulang sandi Trello - PT TATI. Untuk melanjutkan proses silahkan klik tautan berikut :</p>
+                                                                                    <p style="margin: 0; text-align: center;">Anda mendapatkan email ini karena anda ingin melakukan penyetelan ulang sandi Loghub - PT TATI. Untuk melanjutkan proses silahkan klik tautan berikut :</p>
                                                                                 </div>
                                                                             </div>
                                                                         </td>
@@ -161,7 +161,7 @@
                                                                         <td class="pad">
                                                                             <div style="font-family: sans-serif">
                                                                                 <div style="font-size: 12px; font-family: Arial, Helvetica, sans-serif; color: #555555;">
-                                                                                    <p style="margin: 0; font-size: 12px; text-align: right;">Hormat Kami,<br>Administrator | Trello - PT TATI</p>
+                                                                                    <p style="margin: 0; font-size: 12px; text-align: right;">Hormat Kami,<br>Administrator | Loghub - PT TATI</p>
                                                                                 </div>
                                                                             </div>
                                                                         </td>

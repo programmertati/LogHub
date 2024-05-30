@@ -561,7 +561,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Team Board - Admin | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Team Board - Admin | Loghub - PT TATI';
         </script>
     @endsection
 @endsection

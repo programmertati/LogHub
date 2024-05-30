@@ -133,10 +133,10 @@
 
         <script>
             @if (Auth::user()->role_name == 'Admin') 
-                document.getElementById('pageTitle').innerHTML = 'Change Password Settings - Admin | Trello - PT TATI';
+                document.getElementById('pageTitle').innerHTML = 'Change Password Settings - Admin | Loghub - PT TATI';
             @endif
             @if (Auth::user()->role_name == 'User') 
-                document.getElementById('pageTitle').innerHTML = 'Change Password Settings - User | Trello - PT TATI';
+                document.getElementById('pageTitle').innerHTML = 'Change Password Settings - User | Loghub - PT TATI';
             @endif
         </script>
         

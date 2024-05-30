@@ -192,7 +192,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Team Board - User | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Team Board - User | Loghub - PT TATI';
         </script>
     @endsection
 @endsection

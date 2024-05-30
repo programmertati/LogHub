@@ -48,7 +48,7 @@
 
                                 <!-- Tampilan Kartu -->
                                     @foreach ($dataKolom->cards as $dataKartu)
-                                        <li class="kartu-trello" id="kartu-trello" onmouseenter="aksiKartuShow({{ $dataKartu->id }})" onmouseleave="aksiKartuHide({{ $dataKartu->id }})">
+                                        <li class="kartu-loghub" id="kartu-loghub" onmouseenter="aksiKartuShow({{ $dataKartu->id }})" onmouseleave="aksiKartuHide({{ $dataKartu->id }})">
                                             
                                             <!-- Tampilan Aksi Edit -->
                                             {{-- @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
@@ -69,7 +69,7 @@
                                             <!-- /Tampilan Kartu Pengguna -->
                                         </li>
                                     @endforeach
-                                        <li class="card-trello hidden" id="cardTrello{{ $dataKolom->id }}">
+                                        <li class="card-loghub hidden" id="cardLoghub{{ $dataKolom->id }}">
                                             <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
                                                 <form action="{{ route('addCard2', ['board_id' => $board->id, 'team_id' => $board->team_id, 'column_id' => $dataKolom->id ]) }}" method="POST">
                                                     @csrf
@@ -697,7 +697,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Team Card - User | Trello - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Team Card - User | Loghub - PT TATI';
         </script>
     @endsection
 @endsection
