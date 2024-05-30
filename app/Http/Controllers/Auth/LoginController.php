@@ -151,7 +151,9 @@ class LoginController extends Controller
         DB::table('users')->where('id', $user->id)->update($updateStatus);
 
         Toastr::success('Anda berhasil masuk aplikasi', 'Success');
-        return redirect()->intended('home');
+        $route = $user->role_name == 'Admin' ? 'showTeams' : 'showTeams2';
+        // return redirect()->intended('home');
+        return redirect()->route($route);
     }
     // /Untuk Cek Authentifikasi dari Mantai //
 
