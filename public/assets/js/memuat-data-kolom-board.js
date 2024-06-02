@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                                             <textarea class="form-control" name="#" style="border-radius: 15px; background-color: #f5fffa;" placeholder="Masukkan judul ini.."></textarea>
                                                         </div>
                                                     </li>
-                                                    <a href="#" class="btn btn-outline-info" style="border-radius: 30px" id="addCardButton">
-                                                        <i class="fa-solid fa-plus"></i> Tambah Kartu
+                                                    <a href="#" class="btn btn-outline-info" id="addCardButton">
+                                                        <i class="fa-solid fa-plus"></i> Add a card...
                                                     </a>
                                                 </ul>
                                             </div>`)

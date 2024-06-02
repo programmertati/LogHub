@@ -554,9 +554,10 @@ class BoardController extends Controller
 
         $user_id = AUth::user()->id;
         $card_id = $request->card_id;
+        $status_keterangan = empty($request->keterangan) ? 'hide' : 'show';
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Keterangan Kartu");
 
-        return response()->json(['message' => 'Data berhasil disimpan!']);
+        return response()->json(['message' => 'Data berhasil disimpan!', 'status_keterangan' => $status_keterangan]);
     }
     // Perbaharui Deskripsi Kartu Admin //
 
@@ -569,9 +570,10 @@ class BoardController extends Controller
 
         $user_id = AUth::user()->id;
         $card_id = $request->card_id;
+        $status_keterangan = empty($request->keterangan) ? 'hide' : 'show';
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Keterangan Kartu");
 
-        return response()->json(['message' => 'Data berhasil disimpan!']);
+        return response()->json(['message' => 'Data berhasil disimpan!', 'status_keterangan' => $status_keterangan]);
     }
     // Perbaharui Deskripsi Kartu User //
 

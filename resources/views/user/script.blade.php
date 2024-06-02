@@ -27,6 +27,12 @@
                     $('#cancelButton'+id).addClass('hidden');
                     toastr.success('Berhasil memperbaharui keterangan!');
                     localStorage.clear();
+                    // Perbaharui Status Keterangan
+                    if(response.status_keterangan == 'hide'){
+                        $('#descriptionStatus' + id).addClass('hidden');
+                    } else {
+                        $('#descriptionStatus' + id).removeClass('hidden');
+                    }
                 },
                 error: function(){
                     toastr.error('Terjadi kesalahan, silakan coba lagi!');
@@ -67,9 +73,9 @@
                     $('#saveButtonTitle'+id).addClass('hidden');
                     $('#cancelButtonTitle'+id).addClass('hidden');
                     $('#iconCheck-'+id).addClass('hidden');
-                    $('#addTitle-'+id).addClass('hidden');
+                    $('#addTitle-'+id).removeClass('hidden');
                     localStorage.setItem('modal_id', response.card_id);
-                    window.location.reload();
+                    // window.location.reload();
                     toastr.success('Berhasil menambahkan judul!');
                 },
                 error: function(){
@@ -79,7 +85,7 @@
         });
         // Show modal after create title
         var modal_id = localStorage.getItem('modal_id');
-        $('#isianKartu'+modal_id).modal('show');
+        // $('#isianKartu'+modal_id).modal('show');
         $('#isianKartu'+id).on('click', function(){
             localStorage.clear();
         });

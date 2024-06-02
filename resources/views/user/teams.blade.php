@@ -12,14 +12,14 @@
                 <form id="search-form" action="{{ route('searchTeam2') }}" method="GET">
                     @csrf
                     <div class="row filter-row">
-                        <div class="col-sm-6 col-md-9">
+                        <div class="col-sm-6 col-md-11">
                             <div class="form-group form-focus">
-                                <input type="text" class="form-control floating" name="team_name" value="{{ session('__old_team_name') }}" style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 30px" />
+                                <input type="text" class="form-control floating" name="team_name" value="{{ session('__old_team_name') }}" style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 15px" />
                                 <label class="focus-label"><i class="fa-solid fa-cube"></i> Team's Name</label>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3">
-                            <button type="submit" class="btn btn-success btn-block btn_search" style="width: 45%; border-radius: 30px;"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+                        <div class="col-sm-6 col-md-1">
+                            <button type="submit" class="btn btn-success btn-block btn_search"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </div>
                 </form>
