@@ -75,7 +75,7 @@
                     $('#iconCheck-'+id).addClass('hidden');
                     $('#addTitle-'+id).removeClass('hidden');
                     localStorage.setItem('modal_id', response.card_id);
-                    // window.location.reload();
+                    window.location.reload();
                     toastr.success('Berhasil menambahkan judul!');
                 },
                 error: function(){

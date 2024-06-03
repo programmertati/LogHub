@@ -16,7 +16,7 @@
                     </a>
 
                     <!-- Tampilan Kolom -->
-                    @foreach ( $dataColumnCard as $dataKolom )
+                    @foreach ( $dataColumnCard->sortBy('id') as $dataKolom )
                         <div class="kolom-card" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
 
                             <!-- Tampilan Aksi Edit & Hapus -->
