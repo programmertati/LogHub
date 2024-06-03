@@ -17,7 +17,7 @@
 
                     <!-- Tampilan Kolom -->
                     @foreach ( $dataColumnCard->sortBy('id') as $dataKolom )
-                        <div class="kolom-card" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
+                        <div class="kolom-card-{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
 
                             <!-- Tampilan Aksi Edit & Hapus -->
                             <a href="#" data-toggle="modal" data-target="#updateColumn{{ $dataKolom->id }}">
@@ -54,7 +54,7 @@
                                             {{-- @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                                 <a href="#" data-toggle="modal" data-target="#isianKartu{{ $dataKartu->id }}">
                                                     <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
-                                                        <span class="flex ms-3">{{ $dataKartu->name }}</span>
+                                                        <span class="flex ms-3" style="width: 150px;">{{ $dataKartu->name }}</span>
                                                     </div>
                                                     <div class="container-footer">
                                                         <div class="tampilan">
@@ -716,6 +716,19 @@
                 width:84.8%;
                 margin-left:5.5%
             }
+            @foreach ( $dataColumnCard as $dataKolom )
+                .kolom-card-{{ $dataKolom->id }} {
+                    --tw-bg-opacity: 1;
+                    --tw-border-opacity: 1;
+                    min-width: 290px !important;
+                    padding: 1rem !important;
+                    border-radius: 0.5rem !important;
+                    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+                    background-color: rgb(241 245 249 / var(--tw-bg-opacity)) !important;
+                    border-color: rgb(229 231 235 / var(--tw-border-opacity)) !important;
+                    height: 1%
+                }
+            @endforeach
             .kolom-card {
                 --tw-bg-opacity: 1;
                 --tw-border-opacity: 1;

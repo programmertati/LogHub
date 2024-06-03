@@ -85,7 +85,7 @@
         });
         // Show modal after create title
         var modal_id = localStorage.getItem('modal_id');
-        // $('#isianKartu'+modal_id).modal('show');
+        $('#isianKartu'+modal_id).modal('show');
         $('#isianKartu'+id).on('click', function(){
             localStorage.clear();
         });
