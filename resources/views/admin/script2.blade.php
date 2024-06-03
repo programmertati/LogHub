@@ -24,7 +24,6 @@
                 url: "{{ route('updateTitle') }}",
                 data: formData,
                 success: function(response){
-                    console.log(response);
                     $('#saveButtonTitleUpdate'+title_id).addClass('hidden');
                     $('#cancelButtonTitleUpdate'+title_id).addClass('hidden');
                     toastr.success('Berhasil memperbaharui judul!');
@@ -48,7 +47,6 @@
                     url: "{{ route('hapusTitle') }}",
                     data: formData,
                     success: function(response) {
-                        console.log(response);
                         localStorage.setItem('modal_id', response.card_id);
                         // location.reload();
                         // Menghilangkan Title Checklist //
@@ -100,8 +98,8 @@
                     $('#checklist'+title_id).val('');
                     $('#saveButtonChecklist'+title_id).addClass('hidden');
                     $('#cancelButtonChecklist'+title_id).addClass('hidden');
+                    progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     toastr.success('Berhasil membuat checklist!');
-                    console.log(response);
                     var newForm = `<div class="input-checklist2">
                                         <form id="myFormChecklistUpdate${response.checklist.id}" method="POST" class="form-checklist gap-5">
                                             @csrf
@@ -113,8 +111,9 @@
                                         </form>
                                         <form id="myFormChecklistDelete${response.checklist.id}" method="POST">
                                             @csrf
-                                            <input type="hidden" id="id" name="id" value="${response.checklist.id}">
                                             <input type="hidden" id="card_id" name="card_id" value="${response.titlechecklist.cards_id}">
+                                            <input type="hidden" id="title_checklists_id" name="title_checklists_id" value="${response.titlechecklist.id}">
+                                            <input type="hidden" id="id" name="id" value="${response.checklist.id}">
                                             <div class="icon-hapus-checklist" id="hapus-checklist${response.checklist.id}">
                                                 <button type="button" class="deletes" id="deleteButtonChecklist-${response.checklist.id}" style="border: none; background: none; padding: 0;">
                                                     <div class="info-status6">
@@ -163,9 +162,7 @@
         $(document).on('click', 'label[for]', function() {
             var label = $(this).attr('for');
             var checkboxId = label.split('-');
-            console.log(checkboxId);
             $('label[for="labelCheckbox-' + checkboxId[1] + '"]').addClass('hidden');
-            console.log(checkboxId[1]);
            $('#checkbox-'+checkboxId[1]).removeClass('hidden');
            $('#saveButtonChecklistUpdate-'+checkboxId[1]).removeClass('hidden');
            $('#cancelButtonChecklistUpdate-'+checkboxId[1]).removeClass('hidden');
@@ -183,7 +180,6 @@
         $(document).off('click', '.saves');
         $(document).on('click', '.saves', function() {
             var id = $(this).attr('id').split('-');
-            console.log(id);
             event.preventDefault(); 
             var formData = $('#myFormChecklistUpdate' + id[1]).serialize();
             $.ajax({
@@ -217,7 +213,6 @@
                     $('#checkbox-'+response.checklist.id).addClass('hidden');
                     $('#saveButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                     $('#cancelButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
-                    console.log(response);
                     toastr.success('Berhasil memperbaharui checklist!');
                     progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     localStorage.clear();

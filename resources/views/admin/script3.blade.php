@@ -11,20 +11,11 @@
                 url: "{{ route('hapusChecklist') }}",
                 data: formData,
                 success: function(response){
-                    console.log(response);
-                    // location.reload();
                     // Menghilangkan Data Checklist //
                     $('#myFormChecklistUpdate' + id[1]).hide();
                     $('#myFormChecklistDelete' + id[1]).hide();
-                    localStorage.setItem('modal_id', response.card_id);
+                    progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     toastr.success('Berhasil menghapus checklist!');
-
-                    // Show modal after create title
-                    var modal_id = localStorage.getItem('modal_id');
-                    // $('#isianKartu'+modal_id).modal('show');
-                    $('#isianKartu'+id).on('click', function(){
-                        localStorage.clear();
-                    });
                 },
                 error: function(){
                     alert('Terjadi kesalahan, silakan coba lagi!');
@@ -32,5 +23,21 @@
             });
         });
         // End Section Checklist
+        function progressBar(id,percentage ) {
+            var progressBar = $('.progress-bar-' + id);
+            progressBar.css('width', percentage + '%');
+            progressBar.attr('aria-valuenow', percentage);
+            progressBar.text(Math.round(percentage) + '%');
+            progressBar.removeClass('bg-danger bg-warning bg-info bg-success');
+            if (percentage <= 25) {
+                progressBar.addClass('bg-danger');
+            } else if (percentage > 25 && percentage < 50) {
+                progressBar.addClass('bg-warning');
+            } else if (percentage >= 50 && percentage <= 75) {
+                progressBar.addClass('bg-info');
+            } else if (percentage > 75) {
+                progressBar.addClass('bg-success');
+            }
+        }
     });
 </script>

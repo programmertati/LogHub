@@ -484,8 +484,9 @@
                                         {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                             <form id="myFormChecklistDelete{{ $checklists->id }}" method="POST">
                                                 @csrf
-                                                <input type="hidden" id="id" name="id" value="{{ $checklists->id }}">
                                                 <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                                                <input type="hidden" id="title_checklists_id" name="title_checklists_id" value="{{ $titleChecklists->id }}">
+                                                <input type="hidden" id="id" name="id" value="{{ $checklists->id }}">
                                                 <div class="icon-hapus-checklist" id="hapus-checklist{{ $checklists->id }}">
                                                     <button type="submit" class="deletes" id="deleteButtonChecklist-{{ $checklists->id }}" style="border: none; background: none; padding: 0;">
                                                         <div class="info-status6">

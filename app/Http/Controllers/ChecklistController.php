@@ -103,30 +103,6 @@ class ChecklistController extends Controller
     }
     // /Hapus Judul Kartu User //
 
-    // Hapus Checklist Kartu Admin //
-    public function hapusChecklist(Request $request) {
-        Checklists::destroy($request->id);
-
-        $user_id = AUth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Checklist");
-
-        return response()->json(['message' => 'Data berhasil dihapus!', 'card_id' => $request->card_id]);
-    }
-    // /Hapus Checklist Kartu Admin //
-
-    // Hapus Checklist Kartu Admin //
-    public function hapusChecklist2(Request $request) {
-        Checklists::destroy($request->id);
-
-        $user_id = AUth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Checklist");
-
-        return response()->json(['message' => 'Data berhasil dihapus!', 'card_id' => $request->card_id]);
-    }
-    // /Hapus Checklist Kartu Admin //
-
     // Tambahkan Checklist Admin //
     public function addChecklist(Request $request)
     {
@@ -135,8 +111,10 @@ class ChecklistController extends Controller
             'name' => $request->checklist
         ]);
 
+        //Get Checklists
         $checklist = Checklists::where('title_checklists_id', $request->title_id)->where('id', $data->id)->first();
-        $titleChecklist = TitleChecklists::find($request->title_id);
+        //Get Progress Bar
+        $titleChecklist = $this->progressBar($checklist->title_checklists_id);
 
         $user_id = AUth::user()->id;
         $card_id = $request->card_id;
@@ -158,8 +136,10 @@ class ChecklistController extends Controller
             'name' => $request->checklist
         ]);
 
+        //Get Checklists
         $checklist = Checklists::where('title_checklists_id', $request->title_id)->where('id', $data->id)->first();
-        $titleChecklist = TitleChecklists::find($request->title_id);
+        //Get Progress Bar
+        $titleChecklist = $this->progressBar($checklist->title_checklists_id);
 
         $user_id = AUth::user()->id;
         $card_id = $request->card_id;
@@ -177,23 +157,16 @@ class ChecklistController extends Controller
     public function updateChecklist(Request $request)
     {
         $is_active = $request->{$request->checklist_id} == 'on' ? 1 : 0;
+        //Update Checklists
         Checklists::where('id', $request->checklist_id)->update([
             'name' => $request->{'checkbox-'.$request->checklist_id},
             'is_active' => $is_active,
         ]);
 
+        //Get Checklists
         $checklist = Checklists::find($request->checklist_id);
-        $totData = Checklists::where('title_checklists_id', $checklist->title_checklists_id)
-                        ->count();
-        $countActive = Checklists::where('title_checklists_id', $checklist->title_checklists_id)
-                        ->where('is_active', 1)
-                        ->count();
-        $percentage = !empty($countActive) ? round(($countActive / $totData) * 100) : 0; 
-        TitleChecklists::where('id', $checklist->title_checklists_id)->update([
-            'percentage' => $percentage
-        ]);
-
-        $titleChecklist = TitleChecklists::find($checklist->title_checklists_id);
+        //Get Progress Bar
+        $titleChecklist = $this->progressBar($checklist->title_checklists_id);
 
         $user_id = AUth::user()->id;
         $card_id = $request->card_id;
@@ -211,23 +184,16 @@ class ChecklistController extends Controller
     public function updateChecklist2(Request $request)
     {
         $is_active = $request->{$request->checklist_id} == 'on' ? 1 : 0;
+        //Update Checklists
         Checklists::where('id', $request->checklist_id)->update([
             'name' => $request->{'checkbox-'.$request->checklist_id},
             'is_active' => $is_active,
         ]);
 
+        //Get Checklists
         $checklist = Checklists::find($request->checklist_id);
-        $totData = Checklists::where('title_checklists_id', $checklist->title_checklists_id)
-                        ->count();
-        $countActive = Checklists::where('title_checklists_id', $checklist->title_checklists_id)
-                        ->where('is_active', 1)
-                        ->count();
-        $percentage = !empty($countActive) ? round(($countActive / $totData) * 100) : 0; 
-        TitleChecklists::where('id', $checklist->title_checklists_id)->update([
-            'percentage' => $percentage
-        ]);
-
-        $titleChecklist = TitleChecklists::find($checklist->title_checklists_id);
+        //Get Progress Bar
+        $titleChecklist = $this->progressBar($checklist->title_checklists_id);
 
         $user_id = AUth::user()->id;
         $card_id = $request->card_id;
@@ -240,4 +206,57 @@ class ChecklistController extends Controller
         ]);
     }
     // /Perbaharui Checklist Admin //
+
+    // Hapus Checklist Kartu Admin //
+    public function hapusChecklist(Request $request) 
+    {
+        //Destroy Checklist
+        Checklists::destroy($request->id);
+        //Get Progress Bar
+        $titleChecklist = $this->progressBar($request->title_checklists_id);
+
+        $user_id = Auth::user()->id;
+        $card_id = $request->card_id;
+        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Checklist");
+
+        return response()->json([
+            'message' => 'Data berhasil dihapus!',
+            'card_id' => $request->card_id,
+            'titlechecklist' => $titleChecklist,
+        ]);
+    }
+    // /Hapus Checklist Kartu Admin //
+
+    // Hapus Checklist Kartu Admin //
+    public function hapusChecklist2(Request $request) 
+    {
+        //Destroy Checklist
+        Checklists::destroy($request->id);
+        //Get Progress Bar
+        $titleChecklist = $this->progressBar($request->title_checklists_id);
+
+        $user_id = Auth::user()->id;
+        $card_id = $request->card_id;
+        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Checklist");
+
+        return response()->json([
+            'message' => 'Data berhasil dihapus!',
+            'card_id' => $request->card_id,
+            'titlechecklist' => $titleChecklist,
+        ]);
+    }
+    // /Hapus Checklist Kartu Admin //
+
+    public static function progressBar($title_checklists_id)
+    {
+        $totData = Checklists::where('title_checklists_id', $title_checklists_id)->count();
+        $countActive = Checklists::where('title_checklists_id', $title_checklists_id)->where('is_active', 1)->count();
+        $percentage = !empty($countActive) ? round(($countActive / $totData) * 100) : 0; 
+        TitleChecklists::where('id', $title_checklists_id)->update([
+            'percentage' => $percentage
+        ]);
+        $titleChecklist = TitleChecklists::find($title_checklists_id);
+
+        return $titleChecklist;
+    }
 }
