@@ -28,6 +28,19 @@ class BoardLogic
         'morning'
     ];
 
+    public const COVER = [
+        'green',
+        'yellow',
+        'orange',
+        'red',
+        'purple',
+        'blue',
+        'sky',
+        'lime',
+        'pink',
+        'black'
+    ];
+
     // Hak Akses //
     public function hasAccess(int $user_id, int $board_id)
     {

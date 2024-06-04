@@ -127,7 +127,8 @@ class BoardController extends Controller
             ->with("team", $team)
             ->with("owner", $teamOwner)
             ->with("board", $board)
-            ->with("patterns", BoardLogic::PATTERN);
+            ->with("patterns", BoardLogic::PATTERN)
+            ->with("covers", BoardLogic::COVER);
     }
     // /Tampilan Papan Admin //
 
@@ -207,7 +208,8 @@ class BoardController extends Controller
             ->with("team", $team)
             ->with("owner", $teamOwner)
             ->with("board", $board)
-            ->with("patterns", BoardLogic::PATTERN);
+            ->with("patterns", BoardLogic::PATTERN)
+            ->with("covers", BoardLogic::COVER);
     }
     // /Tampilan Papan User //
 
@@ -561,6 +563,21 @@ class BoardController extends Controller
     }
     // Perbaharui Deskripsi Kartu Admin //
 
+    // Perbaharui Cover Kartu Admin //
+    public function perbaharuiCover(Request $request)
+    {
+        Card::where('id', $request->card_id)->update([
+            'pattern' => $request->pattern
+        ]);
+
+        $user_id = AUth::user()->id;
+        $card_id = $request->card_id;
+        $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Cover Kartu");
+
+        return response()->json(['message' => 'Data berhasil disimpan!']);
+    }
+    // /Perbaharui Cover Kartu Admin //
+
     // Perbaharui Deskripsi Kartu User //
     public function addDescription2(Request $request)
     {
@@ -576,6 +593,21 @@ class BoardController extends Controller
         return response()->json(['message' => 'Data berhasil disimpan!', 'status_keterangan' => $status_keterangan]);
     }
     // Perbaharui Deskripsi Kartu User //
+
+    // Perbaharui Cover Kartu User //
+    public function perbaharuiCover2(Request $request)
+    {
+        Card::where('id', $request->card_id)->update([
+            'pattern' => $request->pattern
+        ]);
+
+        $user_id = AUth::user()->id;
+        $card_id = $request->card_id;
+        $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Cover Kartu");
+
+        return response()->json(['message' => 'Data berhasil disimpan!']);
+    }
+    // /Perbaharui Cover Kartu User //
 
     // Menambahkan Komen Admin //
     public function komentarKartu(Request $request)

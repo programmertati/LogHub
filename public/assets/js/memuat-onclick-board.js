@@ -92,4 +92,19 @@ function saveComment(id) {
         }
     });
 }
+
+function changeCard(id) {
+    var changeCardElement = document.getElementById(`select-card${id}`);
+    if (changeCardElement) {
+        changeCardElement.addEventListener('change', function() {
+            var modalTarget = this.value;
+            if (modalTarget !== "-- Select Card --") {
+                $('.modal').modal('hide');
+                setTimeout(function() {
+                    $(modalTarget).modal('show');
+                }, 500);
+            }
+        });
+    }
+}
 // /Untuk menyembunyikan dan melihat simpan komentar //

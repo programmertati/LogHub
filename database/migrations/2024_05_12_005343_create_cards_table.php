@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->longText("description")->nullable();
+            $table->string("pattern")->nullable();
 
             $table->foreignId("column_id")->constrained()->onDelete("cascade");
             $table->unsignedBigInteger("previous_id")->nullable();

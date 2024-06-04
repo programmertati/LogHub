@@ -345,9 +345,38 @@
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header" style="justify-content: left;">
-                                <div class="icon-card">
-                                    <i class="fa-solid fa-credit-card fa-lg"></i>
+
+                                <!-- Untuk Pembaharuan Cover -->
+                                <div class="icon-card info-status11 dropdown">
+                                    <i class="fa-solid fa-credit-card fa-lg cursor-pointer" data-toggle="dropdown" aria-expanded="false" data-auto-close="outside"></i>
+                                    <span class="text-status11"><b>Change Cover</b></span>
+                                    <form action="{{ route('perbaharuiCover') }}" method="POST" class="dropdown-menu p-4" style="min-width: 33rem !important;">
+                                        @csrf
+                                        <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                                        <div class="topnav-dropdown-header">
+                                            <span class="move-card">Cover</span>
+                                        </div><br>
+                                        <div class="flex flex-col w-full gap-2">
+                                            <label style="font-size: 18px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach">Color's</label>
+                                            <input type="hidden" id="cover-field-{{ $isianKartu->id }}" name="pattern" value="{{ isset($covers[0]) ? $covers[0] : 'default_value' }}">
+                                            <div class="flex flex-wrap items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-auto border-2 border-gray-200 h-36 rounded-xl">
+                                                @isset($covers)
+                                                    @foreach ($covers as $cover)
+                                                        <div onclick="selectPattern2('{{ $cover }}', '{{ $isianKartu->id }}')" class="{{ $cover == $covers[0] ? 'order-first' : '' }} h-full flex flex-wrap border-4 rounded-lg w-36 card-cover-{{ $cover }} hover:border-black" id="cover-{{ $cover }}-{{ $isianKartu->id }}" style="height: 40% !important; width: 5rem !important;">
+                                                            <div id="check-{{ $cover }}-{{ $isianKartu->id }}" class="flex flex-wrap items-center justify-center w-full h-full {{ $cover == $covers[0] ? 'opacity-100' : 'opacity-0' }}">
+                                                                <i class="fa-solid fa-circle-check"></i>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                @endif
+                                                <small class="text-danger" style="font-weight: 700; font-size: 13px;">*Please select (Color's) again when updating.</small>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-outline-info">Update</button>
+                                    </form>
                                 </div>
+                                <!-- /Untuk Pembaharuan Cover -->
+
                                 <div>
                                     <h5 class="nama-kartu">{{ $isianKartu->name  }}</h5>
                                     {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
@@ -366,14 +395,23 @@
                                     {{-- @endif --}}
                                     <div class="aksi-move-card">
                                         <p class="tag-list">in list</p>
-                                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" style="margin-left: -12px;">{{ $dataKolom->name  }}</a>
-                                        <div class="dropdown-menu notifications">
-                                            <div class="topnav-dropdown-header">
-                                                <span class="move-card">Move Card</span>
-                                            </div><br>
-                                            <div class="noti-content" style="margin-left: 20px;">
-                                                <h5 @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white !important" @endif @endforeach>List Card</h5>
-                                            </div>
+                                        <div class="dropdown info-status10">
+                                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" data-auto-close="outside" style="margin-left: -12px;">{{ $dataKolom->name }}</a>
+                                            <span class="text-status10"><b>Move Card's</b></span>
+                                            <form class="dropdown-menu p-4" style="min-width: 20rem !important;">
+                                                <div class="topnav-dropdown-header">
+                                                    <span class="move-card">Move Card</span>
+                                                </div><br>
+                                                <div class="form-group">
+                                                    <label for="select-card" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach>List Card</label>
+                                                    <select onclick="changeCard('{{ $isianKartu->id }}')" id="select-card{{ $isianKartu->id }}" class="theSelect" style="width: 100% !important; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; background-color: #292D3E; @endif @endforeach cursor:pointer">
+                                                        <option selected disabled>-- Select Card --</option>
+                                                        @foreach ($dataKolom->cards->sortBy('column_id') as $dataKartu)
+                                                            <option value="#isianKartu{{ $dataKartu->id }}">{{ $dataKartu->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -716,6 +754,36 @@
                 width:84.8%;
                 margin-left:5.5%
             }
+            .card-cover-green:hover {
+                background-color: #216E4E;
+            }
+            .card-cover-yellow:hover {
+                background-color: #7F5F01;
+            }
+            .card-cover-orange:hover {
+                background-color: #A54800;
+            }
+            .card-cover-red:hover {
+                background-color: #AE2E24;
+            }
+            .card-cover-purple:hover {
+                background-color: #5E4DB2;
+            }
+            .card-cover-blue:hover {
+                background-color: #0055CC;
+            }
+            .card-cover-sky:hover {
+                background-color: #206A83;
+            }
+            .card-cover-lime:hover {
+                background-color: #4C6B1F;
+            }
+            .card-cover-pink:hover {
+                background-color: #943D73;
+            }
+            .card-cover-black:hover {
+                background-color: #596773;
+            }
             @foreach ( $dataColumnCard as $dataKolom )
                 .kolom-card-{{ $dataKolom->id }} {
                     --tw-bg-opacity: 1;
@@ -765,11 +833,44 @@
                     .dynamicCheckboxLabel {background-color: {{ $mode_tema->warna_mode }} !important}
                     input[type="checkbox"] {background-color: {{ $mode_tema->warna_mode }} !important; border: 2px solid white !important}
                     input[type="checkbox"]:checked {border-color: {{ $mode_tema->warna_sistem_tulisan }} !important}
+                    @foreach ( $dataColumnCard as $dataKolom )
+                        .kolom-card-{{ $dataKolom->id }} {background-color: {{ $mode_tema->warna_sistem }} !important; border-color: {{ $mode_tema->warna_sistem_tulisan }} !important}
+                    @endforeach
                     .kolom-card {background-color: {{ $mode_tema->warna_sistem }} !important; border-color: {{ $mode_tema->warna_sistem_tulisan }} !important}
                     .progress{background-color: {{ $mode_tema->warna_sistem }} !important;}
                     .move-card {color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
                     .container-footer .border {background-color: #4BCE97 !important;}
                     .fa-clock {color: #808080 !important;}
+                    .card-cover-green {
+                        background-color: #216E4E;
+                    }
+                    .card-cover-yellow {
+                        background-color: #7F5F01;
+                    }
+                    .card-cover-orange {
+                        background-color: #A54800;
+                    }
+                    .card-cover-red {
+                        background-color: #AE2E24;
+                    }
+                    .card-cover-purple {
+                        background-color: #5E4DB2;
+                    }
+                    .card-cover-blue {
+                        background-color: #0055CC;
+                    }
+                    .card-cover-sky {
+                        background-color: #206A83;
+                    }
+                    .card-cover-lime {
+                        background-color: #4C6B1F;
+                    }
+                    .card-cover-pink {
+                        background-color: #943D73;
+                    }
+                    .card-cover-black {
+                        background-color: #596773;
+                    }
                 @endif
             @endforeach
         </style>

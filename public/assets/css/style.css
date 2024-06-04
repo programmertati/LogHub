@@ -8769,6 +8769,14 @@ ul.comment-list li ul.children {
 		left: 61% !important;
 	}
 
+	.info-status10 .text-status10 {
+		left: 61% !important;
+	}
+
+	.info-status11 .text-status11 {
+		left: 61% !important;
+	}
+
 	.fa-backward {
 		margin-left: 25px !important;
 		margin-top: 30px !important;
@@ -8833,6 +8841,14 @@ ul.comment-list li ul.children {
 	}
 	
 	.info-status9 .text-status9 {
+		left: 67% !important;
+	}
+
+	.info-status10 .text-status10 {
+		left: 67% !important;
+	}
+
+	.info-status11 .text-status11 {
 		left: 67% !important;
 	}
 
@@ -8903,6 +8919,14 @@ ul.comment-list li ul.children {
 		left: 68% !important;
 	}
 
+	.info-status10 .text-status10 {
+		left: 68% !important;
+	}
+
+	.info-status11 .text-status11 {
+		left: 68% !important;
+	}
+
 	.fa-backward {
 		margin-left: 25px !important;
 		margin-top: 30px !important;
@@ -8970,6 +8994,14 @@ ul.comment-list li ul.children {
 		left: 70% !important;
 	}
 
+	.info-status10 .text-status10 {
+		left: 70% !important;
+	}
+
+	.info-status11 .text-status11 {
+		left: 70% !important;
+	}
+
 	.fa-backward {
 		margin-left: 25px !important;
 		margin-top: 30px !important;
@@ -9034,6 +9066,14 @@ ul.comment-list li ul.children {
 	}
 
 	.info-status9 .text-status9 {
+		left: 83% !important;
+	}
+
+	.info-status10 .text-status10 {
+		left: 83% !important;
+	}
+
+	.info-status11 .text-status11 {
 		left: 83% !important;
 	}
 
@@ -11900,6 +11940,14 @@ ul.nav-tabs > li > a {
 	position: relative;
 }
 
+.info-status10 {
+	position: relative;
+}
+
+.info-status11 {
+	position: relative;
+}
+
 .fitur-kembali-2 .fitur-text {
 	visibility: hidden;
 	width: 120px;
@@ -12096,6 +12144,40 @@ ul.nav-tabs > li > a {
     transition: opacity 0.3s;
 }
 
+.info-status10 .text-status10 {
+    visibility: hidden;
+    position: absolute;
+    font-size: 14px;
+    font-family: 'Poppins';
+    color: #fff;
+    background-color: #222229;
+    padding: 5px;
+    bottom: 10%;
+    margin-bottom: 30px;
+    left: 13px;
+    margin-right: -80px;
+	margin-left: 15px;
+    border-radius: 5px;
+    transition: opacity 0.3s;
+}
+
+.info-status11 .text-status11 {
+    visibility: hidden;
+    position: absolute;
+    font-size: 14px;
+    font-family: 'Poppins';
+    color: #fff;
+    background-color: #222229;
+    padding: 5px;
+    bottom: 10%;
+    margin-bottom: 25px;
+    left: 13px;
+    margin-right: -80px;
+	margin-left: -45px;
+    border-radius: 5px;
+    transition: opacity 0.3s;
+}
+
 .fitur-kembali-2:hover .fitur-text {
 	visibility: visible;
 	opacity: 1;
@@ -12147,6 +12229,16 @@ ul.nav-tabs > li > a {
 }
 
 .info-status9:hover .text-status9 {
+	visibility: visible;
+	opacity: 1;
+}
+
+.info-status10:hover .text-status10 {
+	visibility: visible;
+	opacity: 1;
+}
+
+.info-status11:hover .text-status11 {
 	visibility: visible;
 	opacity: 1;
 }
@@ -14312,3 +14404,36 @@ ul.nav-tabs > li > a {
 .icon-view-board {
 	font-size: 20px !important
 }
+
+/** ---- Warna Cover ---- **/
+.card-cover-green {
+    background-color: #4BCE97;
+}
+.card-cover-yellow {
+    background-color: #F5CD47;
+}
+.card-cover-orange {
+    background-color: #FEA362;
+}
+.card-cover-red {
+    background-color: #F87168;
+}
+.card-cover-purple {
+    background-color: #9F8FEF;
+}
+.card-cover-blue {
+    background-color: #579DFF;
+}
+.card-cover-sky {
+    background-color: #6CC3E0;
+}
+.card-cover-lime {
+    background-color: #94C748;
+}
+.card-cover-pink {
+    background-color: #E774BB;
+}
+.card-cover-black {
+    background-color: #8590A2;
+}
+/** ---- /Warna Cover ---- **/
