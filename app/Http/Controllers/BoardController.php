@@ -61,6 +61,7 @@ class BoardController extends Controller
         $dataColumnCard = Column::with('cards')
             ->where('board_id', '=', $board_id )
             ->get();
+        $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -123,7 +124,7 @@ class BoardController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("admin.board", compact('dataColumnCard', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("admin.board", compact('UserTeams', 'dataColumnCard', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
             ->with("team", $team)
             ->with("owner", $teamOwner)
             ->with("board", $board)
@@ -142,6 +143,7 @@ class BoardController extends Controller
         $dataColumnCard = Column::with('cards')
             ->where('board_id', '=', $board_id )
             ->get();
+        $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -204,7 +206,7 @@ class BoardController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("user.board", compact('dataColumnCard', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("user.board", compact('UserTeams', 'dataColumnCard', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
             ->with("team", $team)
             ->with("owner", $teamOwner)
             ->with("board", $board)
@@ -578,6 +580,21 @@ class BoardController extends Controller
     }
     // /Perbaharui Cover Kartu Admin //
 
+    // Hapus Cover Kartu Admin //
+    public function hapusCover(Request $request)
+    {
+        Card::where('id', $request->card_id)->update([
+            'pattern' => NULL
+        ]);
+
+        $user_id = AUth::user()->id;
+        $card_id = $request->card_id;
+        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Cover Kartu");
+
+        return response()->json(['message' => 'Data berhasil disimpan!']);
+    }
+    // /Hapus Cover Kartu Admin //
+
     // Perbaharui Deskripsi Kartu User //
     public function addDescription2(Request $request)
     {
@@ -608,6 +625,21 @@ class BoardController extends Controller
         return response()->json(['message' => 'Data berhasil disimpan!']);
     }
     // /Perbaharui Cover Kartu User //
+
+    // Hapus Cover Kartu User //
+    public function hapusCover2(Request $request)
+    {
+        Card::where('id', $request->card_id)->update([
+            'pattern' => NULL
+        ]);
+
+        $user_id = AUth::user()->id;
+        $card_id = $request->card_id;
+        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Cover Kartu");
+
+        return response()->json(['message' => 'Data berhasil disimpan!']);
+    }
+    // /Hapus Cover Kartu User //
 
     // Menambahkan Komen Admin //
     public function komentarKartu(Request $request)

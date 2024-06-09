@@ -20,32 +20,41 @@
                         <div class="kolom-card-{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
 
                             <!-- Tampilan Aksi Edit & Hapus -->
-                            <a href="#" data-toggle="modal" data-target="#updateColumn{{ $dataKolom->id }}">
-                                <div class="aksi-kolom" id="aksi-kolom{{ $dataKolom->id }}">
-                                    <i class="fa-solid fa-pencil fa-sm"></i>
+                            <div class="dropdown dropdown-action aksi-kolom" id="aksi-kolom{{ $dataKolom->id }}">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateColumn{{ $dataKolom->id }}">
+                                        <i class="fa fa-pencil m-r-5"></i> Edit
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteColumn{{ $dataKolom->id }}">
+                                        <i class='fa fa-trash-o m-r-5'></i> Delete
+                                    </a>
                                 </div>
-                            </a>
-                            <a href="#" data-toggle="modal" data-target="#deleteColumn{{ $dataKolom->id }}">
-                                <div class="aksi-kolom2" id="aksi-kolom2{{ $dataKolom->id }}">
-                                    <i class="fa-solid fa-trash fa-sm"></i>
-                                </div>
-                            </a>
+                            </div>
                             <!-- /Tampilan Aksi Edit & Hapus -->
 
                             <!-- Tampilan Nama Kolom -->
                             <h5 class="kolom-nama mb-3 font-semibold text-lgs dark:text-white">{{ $dataKolom->name }}</h5>
                             <!-- /Tampilan Nama Kolom -->
 
-                            <ul class="my-4 space-y-3">
+                            <ul class="my-4 space-y-3 overflow-auto h-space-card">
 
                                 <!-- Tampilan Kartu -->
                                     @foreach ($dataKolom->cards as $dataKartu)
-                                        <li class="kartu-loghub" id="kartu-loghub" onmouseenter="aksiKartuShow({{ $dataKartu->id }})" onmouseleave="aksiKartuHide({{ $dataKartu->id }})">
+                                        <li class="kartu-loghub" id="kartu-loghub" onmouseenter="aksiKartuShow({{ $dataKartu->id }})" onmouseleave="aksiKartuHide({{ $dataKartu->id }})" style="position: relative;">
                                             
                                             <!-- Tampilan Aksi Edit -->
+                                            <div class="cover-card card-cover2-{{ $dataKartu->pattern }} {{ $dataKartu->pattern ? '' : 'hiddens' }}" id="cover-card-{{ $dataKartu->id }}"></div>
+                                            <a href="#" data-toggle="modal" data-target="#editCard{{ $dataKartu->id }}">
+                                                <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}" style="position: absolute !important;">
+                                                    <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
+                                                </div>
+                                            </a>
                                             <a href="#" data-toggle="modal" data-target="#editCard{{ $dataKartu->id }}">
                                                 <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}">
-                                                    <i class="fa-solid fa-pencil fa-sm"></i>
+                                                    <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
                                                 </div>
                                             </a>
                                             <!-- /Tampilan Aksi Edit -->
@@ -53,12 +62,10 @@
                                             <!-- Tampilan Kartu Pengguna -->
                                             {{-- @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                                 <a href="#" data-toggle="modal" data-target="#isianKartu{{ $dataKartu->id }}">
-                                                    <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
-                                                        <span class="flex ms-3" style="width: 150px;">{{ $dataKartu->name }}</span>
-                                                    </div>
-                                                    <div class="container-footer">
-                                                        <div class="tampilan">
-
+                                                    <div class="card-nama" @if(!empty($dataKartu->pattern)) style="border-top-right-radius: 0 !important; border-bottom-right-radius: 8px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 8px !important; @endif">
+                                                        <span class="flex ms-3" style="width: 150px; @if(!empty($dataKartu->description)) margin-bottom: 10px; @endif">{{ $dataKartu->name }}</span>
+                                                        <div class="tampilan-info gap-2">
+    
                                                             <!-- Muncul apabila terdapat deskripsi pada kartu -->
                                                             @if(!empty($dataKartu->description))
                                                                 <div class="info-status8" id="descriptionStatus{{ $dataKartu->id }}">
@@ -124,24 +131,24 @@
                                             <!-- /Tampilan Kartu Pengguna -->
                                         </li>
                                     @endforeach
-                                        <li class="card-loghub hidden" id="cardLoghub{{ $dataKolom->id }}">
-                                            <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
-                                                <form action="{{ route('addCard', ['board_id' => $board->id, 'team_id' => $board->team_id, 'column_id' => $dataKolom->id ]) }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" class="form-control" name="board_id" value="{{ $board->id }}">
-                                                    <input type="hidden" class="form-control" name="team_id" value="{{ $team->id }}">
-                                                    <input type="hidden" class="form-control" name="column_id" value="{{ $dataKolom->id }}">
-                                                    <input type="text" class="form-control" name="name" id="cardName" style="border-radius: 15px; background-color: #f5fffa;" placeholder="Enter card's name..." required>
-                                                    <button type="submit" class="btn btn-outline-info btn-add">Add card</button>
-                                                </form>
-                                            </div>
-                                        </li>
-                                        <button onclick="openAdd('{{ $dataKolom->id }}')" class="btn btn-outline-info" id="btn-add{{ $dataKolom->id }}">
-                                            <i class="fa-solid fa-plus"></i> Add a card...
-                                        </button>
                                 <!-- /Tampilan Kartu -->
 
                             </ul>
+                            <li class="card-loghub hidden" id="cardLoghub{{ $dataKolom->id }}">
+                                <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
+                                    <form action="{{ route('addCard', ['board_id' => $board->id, 'team_id' => $board->team_id, 'column_id' => $dataKolom->id ]) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" class="form-control" name="board_id" value="{{ $board->id }}">
+                                        <input type="hidden" class="form-control" name="team_id" value="{{ $team->id }}">
+                                        <input type="hidden" class="form-control" name="column_id" value="{{ $dataKolom->id }}">
+                                        <input type="text" class="form-control" name="name" id="cardName" style="width: 130%; border-radius: 10px; background-color: #f5fffa;" placeholder="Enter card's name..." required>
+                                        <button type="submit" class="btn btn-outline-info btn-add">Add card</button>
+                                    </form>
+                                </div>
+                            </li>
+                            <button onclick="openAdd('{{ $dataKolom->id }}')" class="btn btn-outline-info" id="btn-add{{ $dataKolom->id }}">
+                                <i class="fa-solid fa-plus"></i> Add a card...
+                            </button>
                         </div>
                     @endforeach
                     <!-- /Tampilan Kolom -->
@@ -186,7 +193,7 @@
                                 <div class="flex items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-hidden overflow-x-scroll border-2 border-gray-200 h-36 rounded-xl">
                                     @isset($patterns)
                                         @foreach ($patterns as $pattern)
-                                            <div onclick="selectPattern('{{ $pattern }}')" class="{{ $pattern == $patterns[0] ? 'order-first' : '' }} h-full flex-shrink-0 border-4 rounded-lg w-36 bg-grad-{{ $pattern }} hover:border-black" id="pattern-{{ $pattern }}">
+                                            <div onclick="selectPattern('{{ $pattern }}')" class="{{ $pattern == $patterns[0] ? 'order-first' : '' }} h-full flex-shrink-0 border-4 rounded-lg w-36 bg-grad-{{ $pattern }} hover:border-black" id="pattern-{{ $pattern }}" style="cursor: pointer">
                                                 <div id="check-{{ $pattern }}" class="flex items-center justify-center w-full h-full {{ $pattern == $patterns[0] ? 'opacity-100' : 'opacity-0' }}">
                                                     <i class="fa-solid fa-circle-check"></i>
                                                 </div>
@@ -197,7 +204,7 @@
                                 <small class="text-danger">*Please select (Board's Color) again when updating.</small>
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -263,7 +270,7 @@
                                 @enderror
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -297,7 +304,7 @@
                                     @enderror
                                 </div>
                                 <div class="submit-section">
-                                    <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                                    <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
                                 </div>
                             </form>
                         </div>
@@ -344,67 +351,82 @@
                 <div id="isianKartu{{ $isianKartu->id }}" class="modal custom-modal fade" role="dialog">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
+                            <div class="cover-card card-cover2-{{ $isianKartu->pattern }} {{ $isianKartu->pattern ? '' : 'hiddens' }}" id="cover-card2-{{ $isianKartu->id }}" style="height: 116px !important;"></div>
                             <div class="modal-header" style="justify-content: left;">
-
-                                <!-- Untuk Pembaharuan Cover -->
-                                <div class="icon-card info-status11 dropdown">
-                                    <i class="fa-solid fa-credit-card fa-lg cursor-pointer" data-toggle="dropdown" aria-expanded="false" data-auto-close="outside"></i>
-                                    <span class="text-status11"><b>Change Cover</b></span>
-                                    <form action="{{ route('perbaharuiCover') }}" method="POST" class="dropdown-menu p-4" style="min-width: 33rem !important;">
-                                        @csrf
-                                        <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                                        <div class="topnav-dropdown-header">
-                                            <span class="move-card">Cover</span>
-                                        </div><br>
-                                        <div class="flex flex-col w-full gap-2">
-                                            <label style="font-size: 18px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach">Color's</label>
-                                            <input type="hidden" id="cover-field-{{ $isianKartu->id }}" name="pattern" value="{{ isset($covers[0]) ? $covers[0] : 'default_value' }}">
-                                            <div class="flex flex-wrap items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-auto border-2 border-gray-200 h-36 rounded-xl">
-                                                @isset($covers)
-                                                    @foreach ($covers as $cover)
-                                                        <div onclick="selectPattern2('{{ $cover }}', '{{ $isianKartu->id }}')" class="{{ $cover == $covers[0] ? 'order-first' : '' }} h-full flex flex-wrap border-4 rounded-lg w-36 card-cover-{{ $cover }} hover:border-black" id="cover-{{ $cover }}-{{ $isianKartu->id }}" style="height: 40% !important; width: 5rem !important;">
-                                                            <div id="check-{{ $cover }}-{{ $isianKartu->id }}" class="flex flex-wrap items-center justify-center w-full h-full {{ $cover == $covers[0] ? 'opacity-100' : 'opacity-0' }}">
-                                                                <i class="fa-solid fa-circle-check"></i>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                @endif
-                                                <small class="text-danger" style="font-weight: 700; font-size: 13px;">*Please select (Color's) again when updating.</small>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-outline-info">Update</button>
-                                    </form>
+                                <div class="icon-card">
+                                    <i class="fa-solid fa-credit-card fa-lg"></i>
                                 </div>
-                                <!-- /Untuk Pembaharuan Cover -->
-
                                 <div>
                                     <h5 class="nama-kartu">{{ $isianKartu->name  }}</h5>
                                     {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
-                                        <form action="{{ route('hapusKartu', ['card_id' => $isianKartu->id]) }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{ $isianKartu->id  }}">
-                                            <div class="hapus-kartu">
-                                                <button type="submit" style="border: none; background: none; padding: 0;">
-                                                    <div class="info-status4">
-                                                        <i class="fa-solid fa-trash fa-lg" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
-                                                        <span class="text-status4"><b>Delete Card's</b></span>
-                                                    </div>
-                                                </button>
+
+                                        <!-- Untuk Pembaharuan Cover dan Hapus Kartu -->
+                                        <div class="info-status4">
+                                            <div class="dropdown dropdown-action opsi-hapus-cover" id="opsi-hapus-cover{{ $isianKartu->id }}">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="fa-solid fa-ellipsis"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-left">
+                                                    <a href="#" class="dropdown-item card-cover4-{{ $isianKartu->pattern }}" data-toggle="dropdown" data-auto-close="outside" id="formCover-{{ $isianKartu->id }}" aria-expanded="false"><i class="fa-solid fa-clapperboard"></i>  <span id="coverText">{{ $isianKartu->pattern ? 'Change Cover' : 'Add Cover' }}</span></a>
+                                                    <form id="updateCoverForm" class="dropdown-menu p-4" style="min-width: 16rem !important; margin-top: -37px !important; margin-left: -19px !important;">
+                                                        @csrf
+                                                        <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                                                        <div class="topnav-dropdown-header">
+                                                            <span class="move-card">Cover</span>
+                                                        </div><br>
+                                                        <div class="flex flex-col w-full gap-2">
+                                                            <label style="font-size: 18px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach">Color's</label>
+                                                            <small class="text-danger" style="font-weight: 700; font-size: 13px;">*Please select (Color's) again when updating.</small>
+                                                            <input type="hidden" id="cover-field-{{ $isianKartu->id }}" name="pattern" value="{{ isset($covers[0]) ? $covers[0] : 'default_value' }}">
+                                                            <div class="flex flex-wrap items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-auto border-2 border-gray-200 h-36 rounded-xl">
+                                                                @isset($covers)
+                                                                    @foreach ($covers as $cover)
+                                                                        <div onclick="selectPattern2('{{ $cover }}', '{{ $isianKartu->id }}')" class="{{ $cover == $covers[0] ? 'order-first' : '' }} h-full flex flex-wrap border-4 rounded-lg w-36 card-cover-{{ $cover }} hover:border-black" id="cover-{{ $cover }}-{{ $isianKartu->id }}" style="height: 40% !important; width: 5rem !important; cursor: pointer">
+                                                                            <div id="check-{{ $cover }}-{{ $isianKartu->id }}" class="flex flex-wrap items-center justify-center w-full h-full {{ $cover == $covers[0] ? 'opacity-100' : 'opacity-0' }}">
+                                                                                <i class="fa-solid fa-circle-check"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <a href="#" class="dropdown-item card-cover3-{{ $isianKartu->pattern }} {{ $isianKartu->pattern ? '' : 'hiddens' }}" id="cover-card3-{{ $isianKartu->id }}" data-toggle="modal">
+                                                        <form onclick="hapusCoverCard('{{ $isianKartu->id }}', event)">
+                                                            @csrf
+                                                            <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                                                            <button type="submit" class="deleteCover" style="@foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach">
+                                                                <i class='fa fa-trash-o m-r-5'></i> Delete Cover
+                                                            </button>
+                                                        </form>
+                                                    </a>
+                                                    @include('admin.script4')
+                                                    <a href="#" class="dropdown-item" data-toggle="modal">
+                                                        <form action="{{ route('hapusKartu2', ['card_id' => $isianKartu->id]) }}" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="id" value="{{ $isianKartu->id  }}">
+                                                            <button type="submit" style="border: none; background: none; padding: 0; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach"><i class='fa fa-trash-o m-r-5'></i> Delete Card</button>
+                                                        </form>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </form>
+                                            <span class="text-status4" style="line-height: 20px"><b>Delete / Cover</b></span>
+                                        </div>
+                                        <!-- /Untuk Pembaharuan Cover dan Hapus Kartu -->
+                                        
                                     {{-- @endif --}}
                                     <div class="aksi-move-card">
                                         <p class="tag-list">in list</p>
                                         <div class="dropdown info-status10">
-                                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false" data-auto-close="outside" style="margin-left: -12px;">{{ $dataKolom->name }}</a>
+                                            <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false" data-auto-close="outside" style="margin-left: -12px;">{{ $dataKolom->name }}</a>
                                             <span class="text-status10"><b>Move Card's</b></span>
-                                            <form class="dropdown-menu p-4" style="min-width: 20rem !important;">
+                                            <form class="dropdown-menu p-4" style="min-width: 18rem !important; margin-left: 34px !important;">
                                                 <div class="topnav-dropdown-header">
                                                     <span class="move-card">Move Card</span>
                                                 </div><br>
                                                 <div class="form-group">
                                                     <label for="select-card" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach>List Card</label>
-                                                    <select onclick="changeCard('{{ $isianKartu->id }}')" id="select-card{{ $isianKartu->id }}" class="theSelect" style="width: 100% !important; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; background-color: #292D3E; @endif @endforeach cursor:pointer">
+                                                    <select onclick="changeCard('{{ $isianKartu->id }}')" id="select-card{{ $isianKartu->id }}" class="theSelect" style="width: 100% !important; height: 36px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; background-color: #292D3E; @endif @endforeach cursor:pointer">
                                                         <option selected disabled>-- Select Card --</option>
                                                         @foreach ($dataKolom->cards->sortBy('column_id') as $dataKartu)
                                                             <option value="#isianKartu{{ $dataKartu->id }}">{{ $dataKartu->name }}</option>
@@ -487,7 +509,7 @@
                                                 <div class="icon-hapus-title" id="hapus-title{{ $titleChecklists->id }}">
                                                     <button type="submit" style="border: none; background: none; padding: 0;">
                                                         <div class="info-status5">
-                                                            <i class="fa-solid fa-trash fa-lg" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
+                                                            <i class="fa-solid fa-trash fa-lg icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
                                                             <span class="text-status5"><b>Delete Title's</b></span>
                                                         </div>
                                                     </button>
@@ -558,7 +580,9 @@
                                             <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
                                             <div class="header-tambah-checklist flex gap-4">
                                                 <i class="fa-xl"></i>
-                                                <input type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist{{ $titleChecklists->id }}" name="checklist" placeholder="Enter a checklist" required>
+                                                <input onclick="mentionTags('checklist{{ $titleChecklists->id }}')" type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist{{ $titleChecklists->id }}" name="checklist" placeholder="Enter a checklist" required>
+                                                <div class="mention-tag" id="mention-tag-checklist{{ $titleChecklists->id }}"></div>
+                                                @include('admin.script5')
                                             </div>
                                             <div class="aksi-update-checklist gap-2">
                                                 <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist{{ $titleChecklists->id }}">Save</button>
@@ -633,6 +657,13 @@
                                                                         @elseif (strpos($history->content, 'Menghapus Checklist') !== false)
                                                                             <p>{{ $history->name }}, has deleted checklist to title {{ $titleChecklists->name }}</p>
                                                                         <!-- /Berdasarkan judul masing-masing -->
+
+                                                                        <!-- Berdasarkan cover masing-masing -->
+                                                                        @elseif (strpos($history->content, 'Memperbaharui Cover Kartu') !== false)
+                                                                            <p>{{ $history->name }}, has updated cover to this card</p>
+                                                                        @elseif (strpos($history->content, 'Menghapus Cover Kartu') !== false)
+                                                                            <p>{{ $history->name }}, has deleted cover to this card</p>
+                                                                        <!-- /Berdasarkan cover masing-masing -->
                                                                     @endif
                                                                     </div>
                                                                 </div>
@@ -692,7 +723,7 @@
                                         @enderror
                                     </div>
                                     <div class="submit-section">
-                                        <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                                        <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
                                     </div>
                                 </form>
                             </div>
@@ -704,6 +735,19 @@
         <!-- /Perbaharui Kartu Modal -->
 
         <style>
+            .icon-trash {
+                color: #626F86;
+                transition: color 0.3s;
+            }
+
+            .icon-trash:hover {
+                color: #dc3546e1;
+            }
+
+            .icon-trash:active {
+                color: #e62034;
+            }
+
             .fa-eye {
                 color: black;
                 cursor: pointer;
@@ -786,26 +830,27 @@
             }
             @foreach ( $dataColumnCard as $dataKolom )
                 .kolom-card-{{ $dataKolom->id }} {
-                    --tw-bg-opacity: 1;
-                    --tw-border-opacity: 1;
-                    min-width: 290px !important;
+                    --loghub-border-opacity: 1;
+                    color: #44546F !important;
+                    min-width: 325px !important;
                     padding: 1rem !important;
-                    border-radius: 0.5rem !important;
-                    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
-                    background-color: rgb(241 245 249 / var(--tw-bg-opacity)) !important;
-                    border-color: rgb(229 231 235 / var(--tw-border-opacity)) !important;
+                    border-radius: 12px;
+                    box-shadow: 0px 1px 1px #091e4240 !important;
+                    background-color: #f1f2f4 !important;
+                    border-color: rgb(229 231 235 / var(--loghub-border-opacity)) !important;
                     height: 1%
                 }
             @endforeach
             .kolom-card {
-                --tw-bg-opacity: 1;
-                --tw-border-opacity: 1;
-                min-width: 290px !important;
+                --loghub-border-opacity: 1;
+                color: #44546F !important;
+                min-width: 325px !important;
                 padding: 1rem !important;
-                border-radius: 0.5rem !important;
-                box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
-                background-color: rgb(241 245 249 / var(--tw-bg-opacity)) !important;
-                border-color: rgb(229 231 235 / var(--tw-border-opacity)) !important;
+                border-radius: 12px;
+                box-shadow: 0px 1px 1px #091e4240 !important;
+                background-color: #f1f2f4 !important;
+                border-color: rgb(229 231 235 / var(--loghub-border-opacity)) !important;
+                height: 1%
             }
             .border-darks {border: 2px solid transparent !important; cursor: pointer;}
             .border-darkss {border-color: #d1d1d1 !important;}
@@ -834,43 +879,33 @@
                     input[type="checkbox"] {background-color: {{ $mode_tema->warna_mode }} !important; border: 2px solid white !important}
                     input[type="checkbox"]:checked {border-color: {{ $mode_tema->warna_sistem_tulisan }} !important}
                     @foreach ( $dataColumnCard as $dataKolom )
-                        .kolom-card-{{ $dataKolom->id }} {background-color: {{ $mode_tema->warna_sistem }} !important; border-color: {{ $mode_tema->warna_sistem_tulisan }} !important}
+                        .kolom-card-{{ $dataKolom->id }} {background-color: {{ $mode_tema->warna_sistem }} !important; border-color: {{ $mode_tema->warna_sistem_tulisan }} !important; color: {{ $mode_tema->warna_sistem_tulisan }} !important}
                     @endforeach
-                    .kolom-card {background-color: {{ $mode_tema->warna_sistem }} !important; border-color: {{ $mode_tema->warna_sistem_tulisan }} !important}
+                    .kolom-card {background-color: {{ $mode_tema->warna_sistem }} !important; border-color: {{ $mode_tema->warna_sistem_tulisan }} !important; color: {{ $mode_tema->warna_sistem_tulisan }} !important}
                     .progress{background-color: {{ $mode_tema->warna_sistem }} !important;}
                     .move-card {color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
                     .container-footer .border {background-color: #4BCE97 !important;}
                     .fa-clock {color: #808080 !important;}
-                    .card-cover-green {
-                        background-color: #216E4E;
-                    }
-                    .card-cover-yellow {
-                        background-color: #7F5F01;
-                    }
-                    .card-cover-orange {
-                        background-color: #A54800;
-                    }
-                    .card-cover-red {
-                        background-color: #AE2E24;
-                    }
-                    .card-cover-purple {
-                        background-color: #5E4DB2;
-                    }
-                    .card-cover-blue {
-                        background-color: #0055CC;
-                    }
-                    .card-cover-sky {
-                        background-color: #206A83;
-                    }
-                    .card-cover-lime {
-                        background-color: #4C6B1F;
-                    }
-                    .card-cover-pink {
-                        background-color: #943D73;
-                    }
-                    .card-cover-black {
-                        background-color: #596773;
-                    }
+                    .card-cover-green {background-color: #216E4E;}
+                    .card-cover-yellow {background-color: #7F5F01;}
+                    .card-cover-orange {background-color: #A54800;}
+                    .card-cover-red {background-color: #AE2E24;}
+                    .card-cover-purple {background-color: #5E4DB2;}
+                    .card-cover-blue {background-color: #0055CC;}
+                    .card-cover-sky {background-color: #206A83;}
+                    .card-cover-lime {background-color: #4C6B1F;}
+                    .card-cover-pink {background-color: #943D73;}
+                    .card-cover-black {background-color: #596773;}
+                    .card-cover2-green {background-color: #216E4E;}
+                    .card-cover2-yellow {background-color: #7F5F01;}
+                    .card-cover2-orange {background-color: #A54800;}
+                    .card-cover2-red {background-color: #AE2E24;}
+                    .card-cover2-purple {background-color: #5E4DB2;}
+                    .card-cover2-blue {background-color: #0055CC;}
+                    .card-cover2-sky {background-color: #206A83;}
+                    .card-cover2-lime {background-color: #4C6B1F;}
+                    .card-cover2-pink {background-color: #943D73;}
+                    .card-cover2-black {background-color: #596773;}
                 @endif
             @endforeach
         </style>

@@ -76,6 +76,8 @@
             .bootstrap-datetimepicker-widget table td.minute:hover,
             .bootstrap-datetimepicker-widget table td.second:hover{color: {{ $mode_tema->warna_sistem }} !important}
             .bg-whites{background-color: {{ $mode_tema->warna_sistem }} !important;}
+            .mention-tag-item:hover{background-color : {{ $mode_tema->warna_sistem }} !important;}
+            .aksi-kolom{background-color: {{ $mode_tema->warna_sistem }} !important;}
 
             .card-title{color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
             .table{color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
@@ -263,6 +265,7 @@
             .dropzone-box-44{background-color: {{ $mode_tema->warna_mode }} !important;}
             .kartu-loghub {background-color: {{ $mode_tema->warna_mode }} !important;}
             .card-loghub {background-color: {{ $mode_tema->warna_mode }} !important;}
+            .opsi-hapus-cover{background-color: {{ $mode_tema->warna_mode }} !important;}
             .fa-circle-check{color: {{ $mode_tema->warna_mode }} !important;}
             .bg-white{background-color: {{ $mode_tema->warna_mode }} !important;}
             .bg-gray-100{background-color: {{ $mode_tema->warna_mode }} !important;}
@@ -279,6 +282,7 @@
             .action-button{background: {{ $mode_tema->warna_mode }}}
             .nav-tabs{background-color: {{ $mode_tema->warna_mode }} !important;}
             .profile-img-wrap{background : {{ $mode_tema->warna_mode }} !important;}
+            .mention-tag{background-color : {{ $mode_tema->warna_mode }} !important;}
             .header{background: {{ $mode_tema->warna_mode }} !important; box-shadow: {{ $mode_tema->bayangan_kotak_header }} !important;}
             .btn-white{background-color: {{ $mode_tema->warna_mode }} !important;}
             .btn-outline-secondary{background-color: {{ $mode_tema->warna_mode }} !important;}
@@ -293,6 +297,8 @@
             .form-focus .select2-container--default .select2-selection--single .select2-selection__rendered{background-color: {{ $mode_tema->warna_mode }} !important; color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
             .custom-select{background: {{ $mode_tema->warna_mode }} url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='{{ $mode_tema->warna_sistem_tulisan }}' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right .75rem center/8px 10px no-repeat !important;}
             .table-striped tbody tr:nth-of-type(odd){background-color: {{ $mode_tema->warna_mode }} !important;}
+            .card-nama{background-color: {{ $mode_tema->warna_mode }} !important; color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
+            .aksi-card-icon{background-color: {{ $mode_tema->warna_mode }} !important; color: #B6C2CF !important;}
 
             .form-control::-webkit-input-placeholder{color: {{ $mode_tema->tabel_tulisan_tersembunyi }} !important;}
             .form-control::-moz-placeholder{color: {{ $mode_tema->tabel_tulisan_tersembunyi }} !important;}
@@ -310,6 +316,9 @@
             .dash-widget-icon{background-color: {{ $mode_tema->ikon_plugin }} !important;}
             .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title{background: {{ $mode_tema->warna_mode_2 }} !important;}
             .select2-container--default .select2-results__option--selected{background-color: {{ $mode_tema->warna_mode_2 }} !important;}
+            .aksi-kolom:active {background-color: #091e421c !important; color: #9fadbc !important;}
+            .opsi-hapus-cover:hover {background-color: #091e4275 !important; color: #9fadbc !important;}
+            .opsi-hapus-cover:active {background-color: #091e4240 !important; color: #9fadbc !important;}
 
             @foreach($result_tema as $sql_user => $aplikasi_tema)
                 @if ($aplikasi_tema->tema_aplikasi == 'Gelap')
@@ -329,6 +338,21 @@
                     .text-black {color: white !important}
                     .bg-slate-100{background-color: {{ $mode_tema->warna_sistem }} !important;}
                     .sidebar-menu li a:hover {color: rgba(0, 0, 0, 1) !important;}
+                    .fa-ellipsis{color: #B6C2CF !important;}
+                    .aksi-kolom:hover {background-color: #a6c5e229 !important; color: #9fadbc !important;}
+                    .aksi-kolom:active {background-color: #a6c5e241 !important; color: #9fadbc !important;}
+                    .kolom-nama {border-bottom: 3px solid {{ $mode_tema->warna_mode }} !important;}
+                    .aksi-card-icon:hover{background-color: #22272B !important;}
+                    .card-nama{border: 2px solid transparent;transition: border-color 0.3s ease;}
+                    .card-nama:hover{opacity: 1; border-color: #85B8FF;}
+                    .info-status4 .text-status4{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status5 .text-status5{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status8 .text-status8{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status9 .text-status9{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status10 .text-status10{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .icon-trash {color: #B6C2CF !important;}
+                    .icon-trash:hover {color: #dc3546e1 !important;}
+                    .icon-trash:active {color: #e62034 !important;}
 
                     @foreach ($belum_dibaca as $notifikasi_belum_dibaca)
                         #popup-notifikasi_{{ $notifikasi_belum_dibaca->id }} {background: {{ $mode_tema->warna_mode }} !important}
@@ -763,7 +787,7 @@
                         </span>
                     </a> -->
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                        <span>{{ Session::get('name') }}</span>
+                        <span style="font-weight: 900">{{ Session::get('name') }}</span>
                         <span class="user-img">
                             <img src="{{ URL::to('/assets/images/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" loading="lazy">
                             <span class="status online"></span>

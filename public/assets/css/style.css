@@ -143,7 +143,6 @@ html {
 }
 body {
 	font-family: 'Nunito';
-	font-weight: bold;
 	font-size: .9375rem;
 	color: #1f1f1f;
 	background-color: rgba(255, 255, 255, 1);
@@ -12046,15 +12045,15 @@ ul.nav-tabs > li > a {
     visibility: hidden;
     position: absolute;
     font-size: 14px;
-    font-family: 'Poppins';
-    color: #fff;
-    background-color: #222229;
-    padding: 5px;
-    bottom: 10%;
-    margin-bottom: 27px;
-    left: 13px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
+    bottom: 6%;
+    margin-bottom: 34px;
+    left: 127px;
     margin-right: -80px;
-    margin-left: -47px;
+    margin-left: -198px;
     border-radius: 5px;
     transition: opacity 0.3s;
 }
@@ -12063,15 +12062,15 @@ ul.nav-tabs > li > a {
     visibility: hidden;
     position: absolute;
     font-size: 14px;
-    font-family: 'Poppins';
-    color: #fff;
-    background-color: #222229;
-    padding: 5px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
     bottom: 10%;
-    margin-bottom: 27px;
+    margin-bottom: 25px;
     left: 13px;
-    margin-right: -80px;
-	margin-left: -58px;
+    margin-right: -45px;
+    margin-left: -57px;
     border-radius: 5px;
     transition: opacity 0.3s;
 }
@@ -12114,15 +12113,15 @@ ul.nav-tabs > li > a {
     visibility: hidden;
     position: absolute;
     font-size: 12px;
-    font-family: 'Poppins';
-    color: #fff;
-    background-color: #222229;
-    padding: 5px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
     bottom: 10%;
-    margin-bottom: -30px;
+    margin-bottom: -24px;
     left: 13px;
-    margin-right: -80px;
-	margin-left: -100px;
+    margin-right: -150px;
+	margin-left: -27px;
     border-radius: 5px;
     transition: opacity 0.3s;
 }
@@ -12131,15 +12130,15 @@ ul.nav-tabs > li > a {
     visibility: hidden;
     position: absolute;
     font-size: 12px;
-    font-family: 'Poppins';
-    color: #fff;
-    background-color: #222229;
-    padding: 5px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
     bottom: 10%;
-    margin-bottom: -30px;
+    margin-bottom: -24px;
     left: 13px;
     margin-right: -80px;
-	margin-left: -50px;
+	margin-left: -40px;
     border-radius: 5px;
     transition: opacity 0.3s;
 }
@@ -12148,15 +12147,15 @@ ul.nav-tabs > li > a {
     visibility: hidden;
     position: absolute;
     font-size: 14px;
-    font-family: 'Poppins';
-    color: #fff;
-    background-color: #222229;
-    padding: 5px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
     bottom: 10%;
-    margin-bottom: 30px;
-    left: 13px;
+    margin-bottom: 27px;
+    left: 103px;
     margin-right: -80px;
-	margin-left: 15px;
+    margin-left: -90px;
     border-radius: 5px;
     transition: opacity 0.3s;
 }
@@ -13850,10 +13849,45 @@ ul.nav-tabs > li > a {
 	position: relative;
 	display: none;
 	float: right;
-    right: 10px;
-	top: 22px;
+    right: 3px;
+	top: 3px;
 	cursor: pointer;
     /* left: 190px; */
+}
+.aksi-card-icon {
+	background-color: #FFFFFF !important;
+	color: #172B4D !important;
+	border-radius: 50% !important;
+	padding: 10px !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	width: 30px !important;
+	height: 30px !important;
+}
+.aksi-card-icon:hover{
+	background-color: #F1F2F4 !important;
+}
+.card-nama {
+	/* display: flex; */
+	align-items: center;
+	padding: 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	font-weight: 700;
+	min-height: 36px;
+	background-color: #FFFFFF;
+	color: #172B4D;
+	border-radius: 8px;
+	box-shadow: 0px 1px 1px #091e4240;
+	cursor: pointer;
+	border: 2px solid transparent;
+	transition: border-color 0.3s ease;
+
+}
+.card-nama:hover {
+	opacity: 1;
+	border-color: #388BFF
 }
 .custom-modal .tag-list {
 	font-size: 14px;
@@ -13885,11 +13919,30 @@ ul.nav-tabs > li > a {
 }
 .aksi-kolom {
 	position: relative;
+	display: none;
+	width: 30px;
+	height: 30px;
+	margin-left: 90%;
+	margin-bottom: -7%;
+    margin-top: -3%;
+	align-items: center;
+	justify-content: center;
+	color: #626F86;
+	background-color: #f1f2f4;
+	border-radius: 8px;
+	cursor: pointer;
+}
+.aksi-kolom:hover {
+	background-color: #091e4224 !important;
+	color: #44546f !important;
+}
+/* .aksi-kolom {
+	position: relative;
 	top: -3px;
 	display: none;
 	left: 220px;
 	cursor: pointer;
-}
+} */
 .hidden {
 	display: none;
 }
@@ -13900,18 +13953,26 @@ ul.nav-tabs > li > a {
 	display: flex;
 }
 .kolom-nama {
-	border-bottom: 3px solid #f5fffa;
+	border-bottom: 3px solid #ffffff;
+	box-shadow: 0px 3px 1px -1px #091e4240;
+	margin-bottom: -5px !important;
 }
 .ms-3 {
 	margin-inline-start: 1.5rem;
 	margin-right: 1rem;
 }
 .card-loghub {
-	background-color: #f5fffa;
-	list-style-type: none;
-	border-radius: 30px;
-	margin-bottom: 10px;
-	margin-left: -6%;
+    margin-bottom: 10px;
+	color: #172B4D;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 1px 1px #091e4240;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+.card-loghub:hover {
+	opacity: 1;
+	border-color: #388BFF
 }
 .kartu-loghub {
 	background-color: #f5fffa;
@@ -13945,7 +14006,6 @@ ul.nav-tabs > li > a {
 	color: #5edd97;
 }
 .fa-trash:hover {
-	color: #f43b48;
 	cursor: pointer;
 }
 .fa-eye:hover {
@@ -14173,9 +14233,28 @@ ul.nav-tabs > li > a {
 	width: 85%;
 }
 .hapus-kartu {
-	position: absolute;
-	left: 34px;
-	top: 62px;
+	position: relative;
+    left: -37px;
+    top: 13px;
+    line-height: 0px;
+}
+.opsi-hapus-cover {
+	position: relative;
+	display: flex;
+	width: 30px;
+	height: 30px;
+	margin-bottom: -36px;
+    margin-left: -44px;
+	justify-content: center;
+	align-items: center;
+	color: #626F86;
+	background-color: #ffffff;
+	border-radius: 8px;
+	cursor: pointer;
+}
+.opsi-hapus-cover:hover {
+	background-color: #091e4224 !important;
+	color: #44546f !important;
 }
 .min-h-full {
     min-height: 100% !important;
@@ -14405,6 +14484,11 @@ ul.nav-tabs > li > a {
 	font-size: 20px !important
 }
 
+.h-space-card {
+	max-height: 525px;
+	padding: 0px 8px 0px 45px;
+}
+
 /** ---- Warna Cover ---- **/
 .card-cover-green {
     background-color: #4BCE97;
@@ -14436,4 +14520,86 @@ ul.nav-tabs > li > a {
 .card-cover-black {
     background-color: #8590A2;
 }
+
+.cover-card {
+	display: flex;
+	position: relative;
+	height: 36px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    overflow: hidden;
+}
+.deleteCover {
+	position: relative;
+	border: none;
+	background: none;
+	padding: 0; 
+}
+
+.card-cover2-green {
+    background-color: #4BCE97;
+}
+.card-cover2-yellow {
+    background-color: #F5CD47;
+}
+.card-cover2-orange {
+    background-color: #FEA362;
+}
+.card-cover2-red {
+    background-color: #F87168;
+}
+.card-cover2-purple {
+    background-color: #9F8FEF;
+}
+.card-cover2-blue {
+    background-color: #579DFF;
+}
+.card-cover2-sky {
+    background-color: #6CC3E0;
+}
+.card-cover2-lime {
+    background-color: #94C748;
+}
+.card-cover2-pink {
+    background-color: #E774BB;
+}
+.card-cover2-black {
+    background-color: #8590A2;
+}
 /** ---- /Warna Cover ---- **/
+
+/** Mention Tag Style **/
+.mention-tag {
+    position: absolute;
+	display: none;
+	width: 60%;
+	top: 41px;
+	left: 2.4%;
+	max-height: 200px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	overflow-y: auto;
+	cursor: pointer;
+	z-index: 1000;
+}
+.mention-tag-item {
+    padding: 8px 12px;
+}
+.mention-tag-item:hover {
+    background-color: #f0f0f0;
+}
+.avatar-mention {
+    background-color: #aaa;
+    border-radius: 50%;
+    height: 30px !important;
+    margin: 0 10px 0 0;
+    width: 30px !important;
+    position: relative;
+    bottom: 10px;
+}
+/** /Mention Tag Style **/
+
+.tampilan-info {
+	display: flex;
+}

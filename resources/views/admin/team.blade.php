@@ -159,7 +159,7 @@
                                 <div class="flex items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-hidden overflow-x-scroll border-2 border-gray-200 h-36 rounded-xl">
                                     @isset($patterns)
                                         @foreach ($patterns as $pattern)
-                                            <div onclick="selectPattern('{{ $pattern }}')" class="{{ $pattern == $patterns[0] ? 'order-first' : '' }} h-full flex-shrink-0 border-4 rounded-lg w-36 bg-pattern-{{ $pattern }} hover:border-black" id="pattern-{{ $pattern }}">
+                                            <div onclick="selectPattern('{{ $pattern }}')" class="{{ $pattern == $patterns[0] ? 'order-first' : '' }} h-full flex-shrink-0 border-4 rounded-lg w-36 bg-pattern-{{ $pattern }} hover:border-black" id="pattern-{{ $pattern }}" style="cursor: pointer">
                                                 <div id="check-{{ $pattern }}" class="flex items-center justify-center w-full h-full {{ $pattern == $patterns[0] ? 'opacity-100' : 'opacity-0' }}">
                                                     <i class="fa-solid fa-circle-check"></i>
                                                 </div>
@@ -170,7 +170,7 @@
                                 <small class="text-danger">*Please select again (Team's Background) when updating.</small>
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -209,7 +209,7 @@
                             </div>
                         </div>
                         <div class="submit-section">
-                            <button type="button" class="btn btn-primary submit-btn" id="save-btn">Delete</button>
+                            <button type="button" class="btn btn-outline-danger submit-btn" id="save-btn">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -232,7 +232,7 @@
                             <label for="input-text-inv-email" class="form-label">E-mail Address</label>
                             <div class="input-group gap-2">
                                 <input type="email" class="form-control" id="inv-email" placeholder="Enter member email">
-                                <button class="btn btn-primary" type="button" id="add-btn">
+                                <button class="btn btn-outline-info" type="button" id="add-btn">
                                     <i class="fa-solid fa-user-plus"></i>
                                 </button>
                             </div>
@@ -245,7 +245,7 @@
                                         <option value="{{ $result_team->email }}">{{ $result_team->name }}</option>
                                     @endforeach
                                 </select>
-                                <button class="btn btn-primary" type="button" id="add-btn2">
+                                <button class="btn btn-outline-info" type="button" id="add-btn2">
                                     <i class="fa-solid fa-user-plus"></i>
                                 </button>
                             </div>
@@ -257,7 +257,7 @@
                                 
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn" id="save-btn">Save</button>
+                                <button type="submit" class="btn btn-outline-info submit-btn" id="save-btn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -295,7 +295,7 @@
                                 <div class="flex items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-hidden overflow-x-scroll border-2 border-gray-200 h-36 rounded-xl">
                                     @isset($backgrounds)
                                         @foreach ($backgrounds as $background)
-                                            <div onclick="selectPattern2('{{ $background }}')" class="{{ $background == $backgrounds[0] ? 'order-first' : '' }} h-full flex-shrink-0 border-4 rounded-lg w-36 bg-grad-{{ $background }} hover:border-black" id="background-{{ $background }}">
+                                            <div onclick="selectPattern2('{{ $background }}')" class="{{ $background == $backgrounds[0] ? 'order-first' : '' }} h-full flex-shrink-0 border-4 rounded-lg w-36 bg-grad-{{ $background }} hover:border-black" id="background-{{ $background }}" style="cursor: pointer">
                                                 <div id="check-{{ $background }}" class="flex items-center justify-center w-full h-full {{ $background == $backgrounds[0] ? 'opacity-100' : 'opacity-0' }}">
                                                     <i class="fa-solid fa-circle-check"></i>
                                                 </div>
@@ -305,7 +305,7 @@
                                 </div>
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Save</button>
+                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
                             </div>
                         </form>
                     </div>
@@ -349,10 +349,6 @@
     <style> 
         .p-4 {
             padding: 1rem !important;
-        }
-        .fa-trash:hover {
-            color: #5edd97;
-            cursor: pointer;
         }
         .rounded-xl {
             --tw-border-opacity: 1;
@@ -495,7 +491,7 @@
                         emailDiv.className = 'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
                         emailDiv.innerHTML = `
                         <span>${email}</span>
-                        <button type="button" class="btn btn-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
                         <input type="hidden" name="emails[]" value="${email}">
                     `;
                     inviteContainer.appendChild(emailDiv);
@@ -513,7 +509,7 @@
                         emailDiv.className = 'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
                         emailDiv.innerHTML = `
                         <span>${email}</span>
-                        <button type="button" class="btn btn-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
                         <input type="hidden" name="emails[]" value="${email}">
                     `;
                     inviteContainer.appendChild(emailDiv);

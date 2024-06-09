@@ -164,6 +164,7 @@ Route::controller(BoardController::class)->group(function () {
     Route::post("admin/tim/papan/kolom/kartu/deskripsi/tambah", "addDescription")->name("addDescription");
     Route::post("admin/tim/papan/kolom/kartu/komentar/{card_id}", "komentarKartu")->name("komentarKartu");
     Route::post("admin/tim/papan/kolom/kartu/cover/perbaharui", "perbaharuiCover")->name("perbaharuiCover");
+    Route::post("admin/tim/papan/kolom/kartu/cover/hapus", "hapusCover")->name("hapusCover");
 
     // ----------------------------- User ----------------------------- //
     Route::get("user/tim/papan/{team_id}/{board_id}", "showBoard2")->middleware("auth", "auth.session", "boardAccess")->name("board2");
@@ -177,6 +178,7 @@ Route::controller(BoardController::class)->group(function () {
     Route::post("user/tim/papan/kolom/kartu/deskripsi/tambah", "addDescription2")->name("addDescription2");
     Route::post("user/tim/papan/kolom/kartu/komentar/{card_id}", "komentarKartu2")->name("komentarKartu2");
     Route::post("user/tim/papan/kolom/kartu/cover/perbaharui", "perbaharuiCover2")->name("perbaharuiCover2");
+    Route::post("user/tim/papan/kolom/kartu/cover/hapus", "hapusCover2")->name("hapusCover2");
     
 
 
