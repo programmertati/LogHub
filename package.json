@@ -13,6 +13,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "datatables.net-dt": "^1.13.6"
+        "datatables.net-dt": "^1.13.6",
+        "sortablejs": "^1.15.2"
     }
 }

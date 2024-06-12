@@ -10,6 +10,7 @@
     <meta name="robots" content="noindex, nofollow">
     <title id="pageTitle">Home | Loghub - PT TATI </title>
     <script src="{{ asset('assets/js/title-move.js') }}"></script>
+
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/favicon.png') }}">
     <!-- Bootstrap CSS -->
@@ -33,6 +34,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" integrity="sha512-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/abea6a9d41.js" crossorigin="anonymous"></script>
+
+    <!-- Untuk Moving Kolom -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <!-- Untuk Moving Kolom -->
 
     {{-- message toastr --}}
     <link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">

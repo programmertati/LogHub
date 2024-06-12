@@ -14723,3 +14723,11 @@ ul.nav-tabs > li > a {
     background-color: #b02a37;
     border: 1px solid #a52834;
 }
+
+.card-container {
+	max-height: 525px;
+    padding: 0px 8px 0px 45px;
+	margin-top: 0.75rem;
+	margin-bottom: 1rem;
+	overflow: auto;
+}

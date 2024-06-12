@@ -707,6 +707,19 @@ class BoardController extends Controller
     }
     // /Menambahkan Komen User //
 
+    // Untuk Pindah Posisi Kolom //
+    public function perbaharuiPosisiKolom(Request $request)
+    {
+        $positions = $request->input('positions');
+
+        foreach ($positions as $id => $position) {
+            Column::where('id', $id)->update(['position' => $position]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+    // /Untuk Pindah Posisi Kolom //
+
     // Mendapatkan Data Admin & User //
     public function getData($team_id, $board_id)
     {

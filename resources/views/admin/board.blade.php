@@ -16,8 +16,8 @@
                     </a>
 
                     <!-- Tampilan Kolom -->
-                    @foreach ( $dataColumnCard->sortBy('id') as $dataKolom )
-                        <div class="kolom-card-{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
+                    @foreach ($dataColumnCard->count() > 0 ? $dataColumnCard->sortBy('position') : $dataColumnCard->sortBy('id') as $dataKolom)
+                        <div class="kolom-card-{{ $dataKolom->id }}" id="kolom-card-{{ $dataKolom->id }}" data-id="{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
 
                             <!-- Tampilan Aksi Edit & Hapus -->
                             <div class="dropdown dropdown-action aksi-kolom" id="aksi-kolom{{ $dataKolom->id }}">
@@ -39,7 +39,7 @@
                             <h5 class="kolom-nama mb-3 font-semibold text-lgs dark:text-white">{{ $dataKolom->name }}</h5>
                             <!-- /Tampilan Nama Kolom -->
 
-                            <ul class="my-4 space-y-3 overflow-auto h-space-card">
+                            <ul class="card-container">
 
                                 <!-- Tampilan Kartu -->
                                     @foreach ($dataKolom->cards as $dataKartu)
@@ -151,6 +151,7 @@
                             </button>
                         </div>
                     @endforeach
+                    @include('allrole.pindahkolom')
                     <!-- /Tampilan Kolom -->
                     
                 </div>
@@ -878,7 +879,8 @@
                     box-shadow: 0px 1px 1px #091e4240 !important;
                     background-color: #f1f2f4 !important;
                     border-color: rgb(229 231 235 / var(--loghub-border-opacity)) !important;
-                    height: 1%
+                    height: 1%;
+                    cursor: pointer;
                 }
             @endforeach
             .kolom-card {
@@ -890,7 +892,8 @@
                 box-shadow: 0px 1px 1px #091e4240 !important;
                 background-color: #f1f2f4 !important;
                 border-color: rgb(229 231 235 / var(--loghub-border-opacity)) !important;
-                height: 1%
+                height: 1%;
+                cursor: pointer;
             }
             .border-darks {border: 2px solid transparent !important; cursor: pointer;}
             .border-darkss {border-color: #d1d1d1 !important;}
