@@ -48,6 +48,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/notifikasi/dibaca/{id}', 'bacaNotifikasi')->name('notifikasi.dibaca');
     Route::post('/notifikasi/dibaca/semua', 'bacasemuaNotifikasi')->name('notifikasi.dibaca-semua');
     Route::get('/ulangtahun', 'ulangtahun')->name('ulangtahun');
+    Route::post('/mention-tag-description', 'mentionDescriptionNotification')->name('mention-tag-description');
+    Route::post('/mention-tag-checklist', 'mentionChecklistNotification')->name('mention-tag-checklist');
+    Route::post('/mention-tag-comment', 'mentionCommentNotification')->name('mention-tag-comment');
 });
 
 // ----------------------------- Pengaturan Perusahaan ----------------------------- //

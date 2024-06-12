@@ -11,9 +11,9 @@
             @endforeach
         ];
 
-        window.mentionTags = function(inputId) {
+        window.mentionTags4 = function(inputId) {
             const inputTag = document.getElementById(inputId);
-            const mentionTag = document.getElementById(`mention-tag-${inputId}`);
+            const mentionTag = document.getElementById(`mention-tag-checkbox${inputId.replace('checkbox-', '')}`);
             let selectedUsers = [];
 
             inputTag.addEventListener('input', function(e) {
@@ -22,13 +22,13 @@
                 if (atPosition !== -1) {
                     const query = value.substring(atPosition + 1).toLowerCase();
                     const filteredUsers = users.filter(user => user.username.toLowerCase().startsWith(query));
-                    showMention(filteredUsers, atPosition, value, inputTag, mentionTag);
+                    showMention4(filteredUsers, atPosition, value, inputTag, mentionTag);
                 } else {
                     mentionTag.style.display = 'none';
                 }
             });
 
-            function showMention(users, atPosition, currentValue, inputTag, mentionTag) {
+            function showMention4(users, atPosition, currentValue, inputTag, mentionTag) {
                 mentionTag.innerHTML = '';
                 if (users.length === 0) {
                     mentionTag.style.display = 'none';
@@ -101,9 +101,9 @@
             // /Kalau tidak ada @ maka akan hidden container //
 
             // Kirimkan data mention ke notifikasi //
-            document.querySelectorAll('[id^="saveButtonChecklist"]').forEach(button => {
+            document.querySelectorAll('[id^="saveButtonChecklistUpdate"]').forEach(button => {
                 button.addEventListener('click', function() {
-                    const inputId = button.id.replace('saveButtonChecklist', 'checklist');
+                    const inputId = button.id.replace('saveButtonChecklistUpdate', 'checkbox');
                     const checklistInput = document.getElementById(inputId);
                     const name = checklistInput.value;
 
@@ -140,7 +140,7 @@
                 });
             });
             // /Kirimkan data mention ke notifikasi //
-
+            
         }
     });
 </script>

@@ -11,10 +11,10 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Semua Notifikasi - {{ Session::get('name') }}</h3>
+                        <h3 class="page-title">All Notifications - {{ Session::get('name') }}</h3>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Notifikasi</li>
+                            <li class="breadcrumb-item active">Notifications</li>
                         </ul>
                     </div>
                 </div>
@@ -27,8 +27,11 @@
                 <div class="row user-tabs">
                     <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
                         <ul class="nav nav-tabs nav-tabs-bottom nav-justified" style="text-align: center">
-                            <li class="nav-item"><a href="#semua_notif" data-toggle="tab" class="nav-link active">Semua</a></li>
-                            <li class="nav-item"><a href="#ulang_tahun" data-toggle="tab" class="nav-link">Ulang Tahun</a></li>
+                            <li class="nav-item"><a href="#semua_notif" data-toggle="tab" class="nav-link active">All</a></li>
+                            <li class="nav-item"><a href="#mention_description" data-toggle="tab" class="nav-link">Mention Description</a></li>
+                            <li class="nav-item"><a href="#mention_checklist" data-toggle="tab" class="nav-link">Mention Checklist</a></li>
+                            <li class="nav-item"><a href="#mention_comment" data-toggle="tab" class="nav-link">Mention Comment</a></li>
+                            <li class="nav-item"><a href="#ulang_tahun" data-toggle="tab" class="nav-link">Birthday</a></li>
                         </ul>
                     </div>
                 </div>
@@ -45,7 +48,7 @@
                                 <p class="noti-details" style="margin-top: 30px; text-align: center;">
                                     <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
                                 </p>
-                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">Tidak ada notifikasi baru</p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
                             </li>
                         @endif
                     </ul>
@@ -65,13 +68,42 @@
                                     <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
                                 </div>
                                 <div class="card-body" style="display:none">
-                                    <p><b>{{ $notifikasiData->message3 }}</b>, memberikan notifikasi {{ strtolower($notifikasiData->message) }} kepada Anda. Anda dapat melihat dan menghapus notifikasi ini.</p>
-                                    @if ($notifikasi->read_at)
-                                        <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
-                                        <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
+                                    @if ($notifikasiData->message == 'Happy Birthday')
+                                        <p><b>{{ $notifikasiData->message3 }}</b>, provide notifications {{ strtolower($notifikasiData->message) }} to You. You can view and delete these notifications.</p>
+                                        @if ($notifikasi->read_at)
+                                            <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
+                                            <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
+                                        @endif
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg"></i></a>
+                                            <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg"></i></a>
                                     @endif
-                                        <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg"></i></a>
-                                        <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg"></i></a>
+                                    @if ($notifikasiData->message == 'Mention Tag Description')
+                                        <p><b>{{ $notifikasiData->message2 }}</b>, provide notifications {{ strtolower($notifikasiData->message) }} to You. You can view and delete these notifications.</p>
+                                        @if ($notifikasi->read_at)
+                                            <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
+                                            <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
+                                        @endif
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg"></i></a>
+                                            <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg"></i></a>
+                                    @endif
+                                    @if ($notifikasiData->message == 'Mention Tag Checklist')
+                                        <p><b>{{ $notifikasiData->message2 }}</b>, provide notifications {{ strtolower($notifikasiData->message) }} to You. You can view and delete these notifications.</p>
+                                        @if ($notifikasi->read_at)
+                                            <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
+                                            <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
+                                        @endif
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg"></i></a>
+                                            <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg"></i></a>
+                                    @endif
+                                    @if ($notifikasiData->message == 'Mention Tag Comment')
+                                        <p><b>{{ $notifikasiData->message2 }}</b>, provide notifications {{ strtolower($notifikasiData->message) }} to You. You can view and delete these notifications.</p>
+                                        @if ($notifikasi->read_at)
+                                            <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
+                                            <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
+                                        @endif
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg"></i></a>
+                                            <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg"></i></a>
+                                    @endif
                                 </div>
                             </div>
                             @endforeach
@@ -80,15 +112,15 @@
                 </div>
                 <!-- /Semua Notifikasi -->
 
-                <!-- Notifikasi Ulang Tahun -->
-                <div id="ulang_tahun" class="tab-pane fade">
-                    <ul class="notification-list @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Selamat Ulang Tahun'; })->isEmpty()) empty @endif" style="margin-top: 10%;">
-                        @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Selamat Ulang Tahun'; })->isEmpty())
+                <!-- Mention Description -->
+                <div id="mention_description" class="tab-pane fade">
+                    <ul class="notification-list @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Description'; })->isEmpty()) empty @endif" style="margin-top: 10%;">
+                        @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Description'; })->isEmpty())
                             <li class="notification-message noti-unread">
                                 <p class="noti-details" style="margin-top: 30px; text-align: center;">
                                     <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
                                 </p>
-                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">Tidak ada notifikasi baru</p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
                             </li>
                         @endif
                     </ul>
@@ -100,7 +132,7 @@
                                 $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
                                 $read_at = \Carbon\Carbon::parse($notifikasi->read_at);
                             @endphp
-                            @if ($notifikasiData->message == 'Selamat Ulang Tahun')
+                            @if ($notifikasiData->message == 'Mention Tag Description')
                                 <div class="card" data-notification="{{ json_encode($notifikasiData) }}">
                                     <div class="card-header" onclick="toggleCardBody(this)">
                                         {{ $notifikasiData->message }}
@@ -109,7 +141,142 @@
                                         <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
                                     </div>
                                     <div class="card-body" style="display:none">
-                                        <p><b>{{ $notifikasiData->message3 }}</b>, memberikan notifikasi {{ strtolower($notifikasiData->message) }} kepada Anda. Anda dapat melihat dan menghapus notifikasi ini.</p>
+                                        <p><b>{{ $notifikasiData->message2 }}</b>, provide notifications {{ strtolower($notifikasiData->message) }} to You. You can view and delete these notifications.</p>
+                                        @if ($notifikasi->read_at)
+                                            <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
+                                            <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
+                                        @endif
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg"></i></a>
+                                            <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <!-- /Mention Description -->
+
+                <!-- Mention Checklist -->
+                <div id="mention_checklist" class="tab-pane fade">
+                    <ul class="notification-list @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Checklist'; })->isEmpty()) empty @endif" style="margin-top: 10%;">
+                        @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Checklist'; })->isEmpty())
+                            <li class="notification-message noti-unread">
+                                <p class="noti-details" style="margin-top: 30px; text-align: center;">
+                                    <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
+                                </p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
+                            </li>
+                        @endif
+                    </ul>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @php
+                                $notifikasiData = json_decode($notifikasi->data);
+                                $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
+                                $read_at = \Carbon\Carbon::parse($notifikasi->read_at);
+                            @endphp
+                            @if ($notifikasiData->message == 'Mention Tag Checklist')
+                                <div class="card" data-notification="{{ json_encode($notifikasiData) }}">
+                                    <div class="card-header" onclick="toggleCardBody(this)">
+                                        {{ $notifikasiData->message }}
+                                        <span class="arrow-notif"></span><br>
+                                        <i class="fa-solid fa-clock" style="color: #808080;" aria-hidden="true"></i>
+                                        <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <div class="card-body" style="display:none">
+                                        <p><b>{{ $notifikasiData->message2 }}</b>, provide notifications {{ strtolower($notifikasiData->message) }} to You. You can view and delete these notifications.</p>
+                                        @if ($notifikasi->read_at)
+                                            <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
+                                            <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
+                                        @endif
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg"></i></a>
+                                            <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <!-- /Mention Checklist -->
+
+                <!-- Mention Comment -->
+                <div id="mention_comment" class="tab-pane fade">
+                    <ul class="notification-list @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Comment'; })->isEmpty()) empty @endif" style="margin-top: 10%;">
+                        @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Comment'; })->isEmpty())
+                            <li class="notification-message noti-unread">
+                                <p class="noti-details" style="margin-top: 30px; text-align: center;">
+                                    <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
+                                </p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
+                            </li>
+                        @endif
+                    </ul>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @php
+                                $notifikasiData = json_decode($notifikasi->data);
+                                $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
+                                $read_at = \Carbon\Carbon::parse($notifikasi->read_at);
+                            @endphp
+                            @if ($notifikasiData->message == 'Mention Tag Comment')
+                                <div class="card" data-notification="{{ json_encode($notifikasiData) }}">
+                                    <div class="card-header" onclick="toggleCardBody(this)">
+                                        {{ $notifikasiData->message }}
+                                        <span class="arrow-notif"></span><br>
+                                        <i class="fa-solid fa-clock" style="color: #808080;" aria-hidden="true"></i>
+                                        <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <div class="card-body" style="display:none">
+                                        <p><b>{{ $notifikasiData->message2 }}</b>, provide notifications {{ strtolower($notifikasiData->message) }} to You. You can view and delete these notifications.</p>
+                                        @if ($notifikasi->read_at)
+                                            <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
+                                            <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
+                                        @endif
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg"></i></a>
+                                            <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg"></i></a>
+                                    </div>
+                                </div>
+                            @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <!-- /Mention Comment -->
+
+                <!-- Notifikasi Ulang Tahun -->
+                <div id="ulang_tahun" class="tab-pane fade">
+                    <ul class="notification-list @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Happy Birthday'; })->isEmpty()) empty @endif" style="margin-top: 10%;">
+                        @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Happy Birthday'; })->isEmpty())
+                            <li class="notification-message noti-unread">
+                                <p class="noti-details" style="margin-top: 30px; text-align: center;">
+                                    <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
+                                </p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
+                            </li>
+                        @endif
+                    </ul>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @php
+                                $notifikasiData = json_decode($notifikasi->data);
+                                $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
+                                $read_at = \Carbon\Carbon::parse($notifikasi->read_at);
+                            @endphp
+                            @if ($notifikasiData->message == 'Happy Birthday')
+                                <div class="card" data-notification="{{ json_encode($notifikasiData) }}">
+                                    <div class="card-header" onclick="toggleCardBody(this)">
+                                        {{ $notifikasiData->message }}
+                                        <span class="arrow-notif"></span><br>
+                                        <i class="fa-solid fa-clock" style="color: #808080;" aria-hidden="true"></i>
+                                        <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <div class="card-body" style="display:none">
+                                        <p><b>{{ $notifikasiData->message3 }}</b>, provide notifications {{ strtolower($notifikasiData->message) }} to You. You can view and delete these notifications.</p>
                                         @if ($notifikasi->read_at)
                                             <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
                                             <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
@@ -153,23 +320,68 @@
                                     <div class="media-body">
                                         <p class="noti-details3">
                                             <a><b>{{ $notifikasiData->name }}</b></a><br>
-                                            <a style="font-size: 15px">Surabaya / <span id="tanggal-semua-notifikasi"></span> | <span id="waktu-semua-notifikasi"></span></a><br>
-                                            <a style="color: #808080; font-weight: 500; font-size: 12px">ID Notifikasi: {{ substr($notifikasi->id, 0, 8) }}</a>
+                                            <a style="font-size: 15px">Surabaya / <span id="tanggal-semua-notifikasi_{{ $notifikasi->id }}"></span> | <span id="waktu-semua-notifikasi_{{ $notifikasi->id }}"></span></a><br>
+                                            <a style="color: #808080; font-weight: 500; font-size: 12px">Notification ID: {{ substr($notifikasi->id, 0, 8) }}</a>
                                         </p><br>
                                         <p class="noti-details4">
-                                            <i>{{ $notifikasiData->message2 }} <b>{{ $notifikasiData->message3 }}</b> {{ $notifikasiData->message4 }} {{ $notifikasiData->message5 }}<b>{{ $notifikasiData->message6 }}</b> Kepada <b>{{ $notifikasiData->name }}</b> {{ $notifikasiData->message7 }}</i>
+                                            @if ($notifikasiData->message == 'Happy Birthday')
+                                                {{ $notifikasiData->message2 }} <b>{{ $notifikasiData->message3 }}</b> {{ $notifikasiData->message4 }} {{ $notifikasiData->message5 }}<b>{{ $notifikasiData->message6 }}th</b> year to <b>{{ $notifikasiData->name }}</b> {{ $notifikasiData->message7 }}</i>
+                                            @endif
+                                            @if ($notifikasiData->message == 'Mention Tag Description')
+                                                {{ $notifikasiData->message3 }}
+                                            @endif
+                                            @if ($notifikasiData->message == 'Mention Tag Checklist')
+                                                {{ $notifikasiData->message3 }}
+                                            @endif
+                                            @if ($notifikasiData->message == 'Mention Tag Comment')
+                                                {{ $notifikasiData->message3 }}
+                                            @endif
                                         </p><br>
-                                        <p class="logo-rsud">
-                                            @foreach($result_tema as $sql_user => $aplikasi_tema)
-                                                @if ($aplikasi_tema->tema_aplikasi == 'Terang')
-                                                    <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}" alt="Logo PT TATI" loading="lazy">
-                                                    @elseif ($aplikasi_tema->tema_aplikasi == 'Gelap')
-                                                        <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}" alt="Logo PT TATI" loading="lazy">
-                                                @endif
-                                            @endforeach
-                                        </p>
+                                        @if ($notifikasiData->message == 'Happy Birthday')
+                                            <p class="logo-rsud">
+                                                @foreach($result_tema as $sql_user => $aplikasi_tema)
+                                                    @if ($aplikasi_tema->tema_aplikasi == 'Terang')
+                                                        <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}" alt="Logo PT TATI" loading="lazy">
+                                                        @elseif ($aplikasi_tema->tema_aplikasi == 'Gelap')
+                                                            <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}" alt="Logo PT TATI" loading="lazy">
+                                                    @endif
+                                                @endforeach
+                                            </p>
+                                        @endif
+                                        @if ($notifikasiData->message == 'Mention Tag Description')
+                                            <p class="logo-tati">
+                                                @foreach($result_tema as $sql_user => $aplikasi_tema)
+                                                    @if ($aplikasi_tema->tema_aplikasi == 'Terang')
+                                                        <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}" alt="Logo PT TATI" loading="lazy">
+                                                        @elseif ($aplikasi_tema->tema_aplikasi == 'Gelap')
+                                                            <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}" alt="Logo PT TATI" loading="lazy">
+                                                    @endif
+                                                @endforeach
+                                            </p>
+                                        @endif
+                                        @if ($notifikasiData->message == 'Mention Tag Checklist')
+                                            <p class="logo-tati">
+                                                @foreach($result_tema as $sql_user => $aplikasi_tema)
+                                                    @if ($aplikasi_tema->tema_aplikasi == 'Terang')
+                                                        <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}" alt="Logo PT TATI" loading="lazy">
+                                                        @elseif ($aplikasi_tema->tema_aplikasi == 'Gelap')
+                                                            <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}" alt="Logo PT TATI" loading="lazy">
+                                                    @endif
+                                                @endforeach
+                                            </p>
+                                        @endif
+                                        @if ($notifikasiData->message == 'Mention Tag Comment')
+                                            <p class="logo-tati">
+                                                @foreach($result_tema as $sql_user => $aplikasi_tema)
+                                                    @if ($aplikasi_tema->tema_aplikasi == 'Terang')
+                                                        <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}" alt="Logo PT TATI" loading="lazy">
+                                                        @elseif ($aplikasi_tema->tema_aplikasi == 'Gelap')
+                                                            <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}" alt="Logo PT TATI" loading="lazy">
+                                                    @endif
+                                                @endforeach
+                                            </p>
+                                        @endif
                                         <p class="noti-time2">
-                                            <b>PT. Tatacipta Teknologi Indonesia</b><br>
                                             <i class="fa-solid fa-clock" style="color: #808080;" aria-hidden="true"></i>
                                             <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
                                         </p>
@@ -195,18 +407,18 @@
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="form-header">
-                                <h3>Hapus Notifikasi</h3>
-                                <p>Apakah anda yakin ingin menghapus notifikasi ini?</p>
+                                <h3>Delete Notification</h3>
+                                <p>Are you sure you want to delete this notification?</p>
                             </div>
                             <div class="modal-btn delete-action">
                                 <div class="row">
                                     <div class="col-6">
                                         <a href="{{ route('tampilan-semua-notifikasi-hapus-data', $notifikasi->id) }}">
-                                            <button type="button" class="btn btn-primary continue-btn submit-btn">Hapus</button>
+                                            <button type="button" class="btn btn-primary continue-btn submit-btn">Delete</button>
                                         </a>
                                     </div>
                                     <div class="col-6">
-                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Kembali</a>
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Back</a>
                                     </div>
                                 </div>
                             </div>
@@ -346,7 +558,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Semua Notifikasi | Loghub - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'All Notifications | Loghub - PT TATI';
         </script>
         
     @endsection

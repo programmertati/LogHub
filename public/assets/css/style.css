@@ -512,7 +512,7 @@ table.dataTable thead > tr > td.sorting {
 	color: #f62d51 !important;
 	font-size: 13px;
 	font-weight: 600;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 }
 .text-info,
 .dropdown-menu > li > a.text-info {
@@ -1430,7 +1430,7 @@ table.dataTable thead > tr > td.sorting {
 	font-size: 16px;
 	font-weight: normal;
 	margin: 0;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 }
 .user-menu {
     float: right;
@@ -3863,7 +3863,7 @@ table.dataTable thead > tr > td.sorting {
     float: right;
     color: #333;
     font-size: 14px;
-    font-family: 'Poppins';
+    font-family: 'Nunito';
     text-align: center;
 }
 
@@ -3887,40 +3887,40 @@ table.dataTable thead > tr > td.sorting {
 .notification-message.noti-unread .noti-details2 {
 	color: #333;
 	font-size: 17px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	text-align: center;
 }
 
 .notification-message.noti-read .noti-details2 {
     color: #333;
 	font-size: 17px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	text-align: center;
 }
 
 .notification-message.noti-unread .noti-details3 {
 	color: #333;
 	font-size: 17px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 }
 
 .notification-message.noti-read .noti-details3 {
     color: #333;
 	font-size: 17px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 }
 
 .notification-message.noti-unread .noti-details4 {
 	color: #333;
 	font-size: 17px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	text-align: center;
 }
 
 .notification-message.noti-read .noti-details4 {
     color: #333;
 	font-size: 17px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	text-align: center;
 }
 
@@ -8783,7 +8783,12 @@ ul.comment-list li ul.children {
 
 	.logo-rsud img{
 		width: 30% !important;
-		left: 50% !important;
+		left: 71% !important;
+	}
+
+	.logo-tati img{
+		width: 30% !important;
+		left: 5% !important;
 	}
 }
 @media only screen and (max-width: 391.98px) {
@@ -8858,7 +8863,12 @@ ul.comment-list li ul.children {
 
 	.logo-rsud img{
 		width: 30% !important;
-		left: 50% !important;
+		left: 70% !important;
+	}
+
+	.logo-tati img{
+		width: 30% !important;
+		left: 5% !important;
 	}
 }
 @media only screen and (max-width: 384.98px) {
@@ -8933,7 +8943,12 @@ ul.comment-list li ul.children {
 	
 	.logo-rsud img{
 		width: 30% !important;
-		left: 50% !important;
+		left: 70% !important;
+	}
+
+	.logo-tati img{
+		width: 30% !important;
+		left: 5% !important;
 	}
 }
 @media only screen and (max-width: 375.98px) {
@@ -9008,7 +9023,12 @@ ul.comment-list li ul.children {
 
 	.logo-rsud img{
 		width: 30% !important;
-		left: 50% !important;
+		left: 70% !important;
+	}
+
+	.logo-tati img{
+		width: 30% !important;
+		left: 5% !important;
 	}
 }
 @media only screen and (max-width: 320.98px) {
@@ -9083,7 +9103,12 @@ ul.comment-list li ul.children {
 
 	.logo-rsud img{
 		width: 40% !important;
-		left: 35% !important;
+		left: 61% !important;
+	}
+
+	.logo-tati img{
+		width: 40% !important;
+		left: 8% !important;
 	}
 }
 /*Project Board*/
@@ -9135,17 +9160,17 @@ ul.comment-list li ul.children {
 }
 
 .namaperusahaan {
- font-family: 'Poppins';
+ font-family: 'Nunito';
 }
 
 .alamatperusahaan {
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	font-size: 18px;
 	font-weight: 550
 }
 
 .nomorhpperusahaan {
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	font-size: 16px; 
 	font-weight: 550
 }
@@ -9167,8 +9192,15 @@ ul.comment-list li ul.children {
 .logo-rsud img{
 	position: relative;
 	width: 20%;
-	left: 64%;
-	bottom: 15px;
+	left: 80%
+}
+
+.logo-tati img{
+	position: relative;
+	float: right;
+	width: 20%;
+	right: -3%;
+    bottom: 10px;
 }
 
 .cetak-dokumen{
@@ -11970,7 +12002,7 @@ ul.nav-tabs > li > a {
 	position: absolute;
 	width: 68%;
 	font-size: 14px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	color: #fff;
 	background-color: #249ae1;
 	padding: 5px;
@@ -11989,7 +12021,7 @@ ul.nav-tabs > li > a {
 	position: absolute;
 	width: 68%;
 	font-size: 14px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	color: #fff;
 	background-color: #249ae1;
 	padding: 5px;
@@ -12008,7 +12040,7 @@ ul.nav-tabs > li > a {
 	position: absolute;
 	width: 68%;
 	font-size: 14px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	color: #fff;
 	background-color: #249ae1;
 	padding: 5px;
@@ -12027,7 +12059,7 @@ ul.nav-tabs > li > a {
 	position: absolute;
 	width: 68%;
 	font-size: 14px;
-	font-family: 'Poppins';
+	font-family: 'Nunito';
 	color: #fff;
 	background-color: #249ae1;
 	padding: 5px;
@@ -12079,15 +12111,15 @@ ul.nav-tabs > li > a {
     visibility: hidden;
     position: absolute;
     font-size: 14px;
-    font-family: 'Poppins';
-    color: #fff;
-    background-color: #222229;
-    padding: 5px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
     bottom: 10%;
-    margin-bottom: 27px;
+    margin-bottom: 25px;
     left: 13px;
-    margin-right: -80px;
-	margin-left: -82px;
+    margin-right: -40px;
+    margin-left: -75px;
     border-radius: 5px;
     transition: opacity 0.3s;
 }
@@ -12096,15 +12128,15 @@ ul.nav-tabs > li > a {
     visibility: hidden;
     position: absolute;
     font-size: 14px;
-    font-family: 'Poppins';
-    color: #fff;
-    background-color: #222229;
-    padding: 5px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
     bottom: 10%;
-    margin-bottom: 27px;
-    left: 13px;
-    margin-right: -80px;
-	margin-left: -100px;
+	margin-bottom: 25px;
+    left: 18px;
+    margin-right: -40px;
+	margin-left: -91px;
     border-radius: 5px;
     transition: opacity 0.3s;
 }
@@ -12164,7 +12196,7 @@ ul.nav-tabs > li > a {
     visibility: hidden;
     position: absolute;
     font-size: 14px;
-    font-family: 'Poppins';
+    font-family: 'Nunito';
     color: #fff;
     background-color: #222229;
     padding: 5px;
@@ -12273,7 +12305,7 @@ ul.nav-tabs > li > a {
 }
 
 .fitur-tema-tulisan-terang {
-    font-family: 'Poppins';
+    font-family: 'Nunito';
     font-size: 15px;
     font-weight: 600;
     position: absolute;
@@ -12282,7 +12314,7 @@ ul.nav-tabs > li > a {
 }
 
 .fitur-tema-tulisan-gelap {
-    font-family: 'Poppins';
+    font-family: 'Nunito';
     font-size: 15px;
     font-weight: 600;
     position: absolute;
@@ -12384,7 +12416,7 @@ ul.nav-tabs > li > a {
 }
 
 .fitur-tema2-tulisan-terang {
-    font-family: 'Poppins';
+    font-family: 'Nunito';
     font-size: 15px;
     font-weight: 600;
     position: absolute;
@@ -12393,7 +12425,7 @@ ul.nav-tabs > li > a {
 }
 
 .fitur-tema2-tulisan-gelap {
-    font-family: 'Poppins';
+    font-family: 'Nunito';
     font-size: 15px;
     font-weight: 600;
     position: absolute;
@@ -14058,7 +14090,10 @@ ul.nav-tabs > li > a {
 }
 .activity-tag {
     position: relative;
+	display: flex;
+	flex-direction: column;
 	max-height: 17.5rem !important;
+	padding: 0px 10px 0px 0px;
     overflow: auto;
 }
 .waktu-history {
@@ -14069,7 +14104,10 @@ ul.nav-tabs > li > a {
     bottom: 20px;
 }
 .title-activity {
+	display: flex;
+	gap: 0.25rem !important;
 	font-size: 14px;
+	margin-bottom: 15px;
 }
 .deskripsi-keterangan {
 	font-size: 16px;
@@ -14094,14 +14132,10 @@ ul.nav-tabs > li > a {
 }
 .input-checklist {
 	position: relative;
-	display: flex;
-	margin-top: -3%;
 	align-items: baseline;
 }
 .input-checklist2 {
     position: relative;
-    display: flex;
-	flex-wrap: wrap;
 	margin-top: -3%;
     align-items: baseline;
 }
@@ -14117,7 +14151,7 @@ ul.nav-tabs > li > a {
 }
 .aksi-update-keterangan {
 	display: flex;
-	margin-top: 10px;
+	/* margin-top: 10px; */
 }
 .btn-add {
 	margin-top: 10px;
@@ -14132,8 +14166,8 @@ ul.nav-tabs > li > a {
 }
 .aksi-update-checklist {
 	display: flex;
-    margin-left: 5%;
-	margin-bottom: 3%;
+	margin-left: 5px;
+	margin-bottom: 10px;
 }
 .aksi-update-checklist2 {
     display: flex;
@@ -14161,7 +14195,8 @@ ul.nav-tabs > li > a {
 	min-width: 290px !important;
 }
 .form-checklist {
-	width: 96%;
+	width: 100%;
+    margin-left: 20px;
 }
 .w-406 {
     width: 86%;
@@ -14179,7 +14214,7 @@ ul.nav-tabs > li > a {
 	margin-top: 30px;
 }
 .menu-keterangan {
-	margin-bottom: -20px;
+	margin-bottom: -30px;
 }
 .menu-checklist {
 	margin-top: 10px;
@@ -14223,8 +14258,13 @@ ul.nav-tabs > li > a {
     width: 89%;
 }
 .isian-history {
-	background-color: #defbec;
-	border-radius: 30px;
+	display: flex;
+	gap: 0.25rem !important;
+	--loghub-border-opacity: 1;
+	background-color: #f1f2f4;
+	box-shadow: 0px 1px 1px #091e4240;
+    border-color: rgb(229 231 235 / var(--loghub-border-opacity));
+	border-radius: 12px;
 }
 .justify-between {
 	justify-content: space-between !important;
@@ -14368,7 +14408,6 @@ ul.nav-tabs > li > a {
     width: 30px !important;
 	height: 30px !important;
     border-radius: 50%;
-	top: 7px;
 }
 
 .avatar-comment {
@@ -14436,6 +14475,11 @@ ul.nav-tabs > li > a {
 	top: 10px;
 	margin-bottom: 10px;
 }
+.add-teams a:hover {
+	background-color: #dc3545 !important;
+	border-color: #dc3545 !important;
+	transition: all 0s ease-in-out 0s !important;
+}
 
 .link-add-teams {
 	margin-right: 15px
@@ -14462,7 +14506,8 @@ ul.nav-tabs > li > a {
 }
 
 .icon-view-team {
-	font-size: 20px !important
+	font-size: 20px !important;
+	color: rgb(0 0 0 / 50%)
 }
 
 .view-board {
@@ -14481,7 +14526,8 @@ ul.nav-tabs > li > a {
 }
 
 .icon-view-board {
-	font-size: 20px !important
+	font-size: 20px !important;
+	color: rgb(0 0 0 / 50%)
 }
 
 .h-space-card {
@@ -14535,6 +14581,12 @@ ul.nav-tabs > li > a {
 	background: none;
 	padding: 0; 
 }
+.deleteCard {
+	position: relative;
+	border: none;
+	background: none;
+	padding: 0;
+}
 
 .card-cover2-green {
     background-color: #4BCE97;
@@ -14572,9 +14624,10 @@ ul.nav-tabs > li > a {
 .mention-tag {
     position: absolute;
 	display: none;
-	width: 60%;
-	top: 41px;
-	left: 2.4%;
+	min-width: 60%;
+	max-width: 87%;
+	top: 100%;
+	left: 16px;
 	max-height: 200px;
 	background-color: #fff;
 	border: 1px solid #ccc;
@@ -14587,6 +14640,46 @@ ul.nav-tabs > li > a {
     padding: 8px 12px;
 }
 .mention-tag-item:hover {
+    background-color: #f0f0f0;
+}
+.mention-tag-keterangan {
+    position: absolute;
+	display: none;
+	min-width: 60%;
+	max-width: 85%;
+	top: 72%;
+	max-height: 200px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	overflow-y: auto;
+	cursor: pointer;
+	z-index: 1000;
+}
+.mention-tag-keterangan-item {
+    padding: 8px 12px;
+}
+.mention-tag-keterangan-item:hover {
+    background-color: #f0f0f0;
+}
+.mention-tag-comment {
+    position: absolute;
+	display: none;
+	min-width: 60%;
+	max-width: 78%;
+	top: 48%;
+	max-height: 200px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	overflow-y: auto;
+	cursor: pointer;
+	z-index: 1000;
+}
+.mention-tag-comment-item {
+    padding: 8px 12px;
+}
+.mention-tag-comment-item:hover {
     background-color: #f0f0f0;
 }
 .avatar-mention {
@@ -14602,4 +14695,31 @@ ul.nav-tabs > li > a {
 
 .tampilan-info {
 	display: flex;
+}
+
+.opsi-sidebar {
+	float: right;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	margin-right: 17px;
+    bottom: 44px;
+	color: #ffffff;
+	background-color: #dc3545;
+	border: 1px solid #dc3545;
+	border-radius: 8px;
+	cursor: pointer;
+}
+.opsi-sidebar:hover {
+    color: #ffffff;
+    background-color: #bb2d3b;
+    border: 1px solid #b02a37;
+}
+.opsi-sidebar:active {
+    color: #ffffff;
+    background-color: #b02a37;
+    border: 1px solid #a52834;
 }

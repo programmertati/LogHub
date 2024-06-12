@@ -12,7 +12,6 @@
 
                 <!-- Tampilan Foto & Nama Tim -->
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('showTeams2') }}"><i class="fa-solid fa-house fa-fade fa-2xl" style="position: relative; bottom: 3px;"></i></a>&nbsp;
                     <p class="text-xl font-bold" style="margin-bottom: 3px;">Team: <p class="text-xl" style="margin-bottom: 3px;">{{ $team->name }}</p></p>
                 </div>
 
@@ -192,7 +191,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Team Board - User | Loghub - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Team Board - User | Loghub - PT TATI ';
         </script>
     @endsection
 @endsection

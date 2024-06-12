@@ -11,9 +11,9 @@
             @endforeach
         ];
 
-        window.mentionTags = function(inputId) {
+        window.mentionTags2 = function(inputId) {
             const inputTag = document.getElementById(inputId);
-            const mentionTag = document.getElementById(`mention-tag-${inputId}`);
+            const mentionTag = document.getElementById(`mention-tag-keterangan${inputId.replace('keterangan', '')}`);
             let selectedUsers = [];
 
             inputTag.addEventListener('input', function(e) {
@@ -22,13 +22,13 @@
                 if (atPosition !== -1) {
                     const query = value.substring(atPosition + 1).toLowerCase();
                     const filteredUsers = users.filter(user => user.username.toLowerCase().startsWith(query));
-                    showMention(filteredUsers, atPosition, value, inputTag, mentionTag);
+                    showMention2(filteredUsers, atPosition, value, inputTag, mentionTag);
                 } else {
                     mentionTag.style.display = 'none';
                 }
             });
 
-            function showMention(users, atPosition, currentValue, inputTag, mentionTag) {
+            function showMention2(users, atPosition, currentValue, inputTag, mentionTag) {
                 mentionTag.innerHTML = '';
                 if (users.length === 0) {
                     mentionTag.style.display = 'none';
@@ -39,7 +39,7 @@
                 {
                     // Untuk div avatar, username, name/email //
                     const item = document.createElement('div');
-                    item.className = 'mention-tag-item';
+                    item.className = 'mention-tag-keterangan-item';
                     item.style.display = 'flex';
                     item.style.alignItems = 'flex-end';
                     // /Untuk div avatar, username, name/email //
@@ -101,15 +101,15 @@
             // /Kalau tidak ada @ maka akan hidden container //
 
             // Kirimkan data mention ke notifikasi //
-            document.querySelectorAll('[id^="saveButtonChecklist"]').forEach(button => {
+            document.querySelectorAll('[id^="saveButton"]').forEach(button => {
                 button.addEventListener('click', function() {
-                    const inputId = button.id.replace('saveButtonChecklist', 'checklist');
-                    const checklistInput = document.getElementById(inputId);
-                    const name = checklistInput.value;
+                    const inputId = button.id.replace('saveButton', 'keterangan');
+                    const descriptionTextarea = document.getElementById(inputId);
+                    const description = descriptionTextarea.value;
 
                     if (selectedUsers.length > 0) {
                         const promises = selectedUsers.map(user => {
-                            return fetch('/mention-tag-checklist', {
+                            return fetch('/mention-tag-description', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -117,7 +117,7 @@
                                 },
                                 body: JSON.stringify({
                                     username: user.username,
-                                    name: name
+                                    keterangan: description
                                 })
                             });
                         });
@@ -140,7 +140,7 @@
                 });
             });
             // /Kirimkan data mention ke notifikasi //
-
+            
         }
     });
 </script>

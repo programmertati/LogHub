@@ -215,7 +215,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Teams - User | Loghub - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Teams - User | Loghub - PT TATI ';
         </script>
     @endsection
 @endsection

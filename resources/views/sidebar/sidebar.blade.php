@@ -37,7 +37,38 @@
                             <span style="font-weight: 900">Team</span>
                         </a>
                     </li>
-                    @if (Route::is('showTeams'))
+                    @if (Route::is('viewTeam') || Route::is('searchBoard'))
+                    <div class="dropdown dropdown-action opsi-sidebar">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis" style="color: white"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
+                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateTeam">
+                                <i class="icon-view-team fa-solid fa-pencil"></i>
+                                <span style="font-weight: 900">Edit</span>
+                            </a>
+                            @if ($statusTeams->contains('Member'))
+                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#manageMember">
+                                    <i class="icon-view-team fa-solid fa-user-gear"></i>
+                                    <span style="font-weight: 900">Members</span>
+                                </a>
+                            @endif
+                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#inviteMember">
+                                <i class="icon-view-team fa-solid fa-user-plus"></i>
+                                <span style="font-weight: 900">Invite</span>
+                            </a>
+                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#createBoard">
+                                <i class="icon-view-team fa-solid fa-table-columns"></i>
+                                <span style="font-weight: 900">Add Board</span>
+                            </a>
+                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteTeam">
+                                <i class="icon-view-team fa-solid fa-trash"></i>
+                                <span style="font-weight: 900">Delete</span>
+                            </a>
+                        </div>
+                    </div>
+                    @endif
+                    @if (Route::is('showTeams') || Route::is('searchTeam'))
                     <li class="add-teams btn btn-outline-danger">
                         <a href="#" class="link-add-teams" data-toggle="modal" data-target="#createTeam">
                             <i class="icon-add-teams fa-solid fa-cubes"></i>
@@ -45,81 +76,40 @@
                         </a>
                     </li>
                     @endif
-                    @if (Route::is('searchTeam'))
-                    <li class="add-teams btn btn-outline-danger">
-                        <a href="#" class="link-add-teams" data-toggle="modal" data-target="#createTeam">
-                            <i class="icon-add-teams fa-solid fa-cubes"></i>
-                            <span style="font-weight: 900">Add Teams</span>
-                        </a>
-                    </li>
-                    @endif
-                    @if (Route::is('viewTeam'))
-                        <li class="link-view-team btn btn-outline-danger">
-                            <a href="#" data-toggle="modal" data-target="#updateTeam">
-                                <i class="icon-view-team fa-solid fa-pencil"></i>
-                                <span style="font-weight: 900">Edit</span>
-                            </a>
-                            @if ($statusTeams->contains('Member'))
-                                <a href="#" data-toggle="modal" data-target="#manageMember">
-                                    <i class="icon-view-team fa-solid fa-user-gear"></i>
-                                    <span style="font-weight: 900">Members</span>
-                                </a>
-                            @endif
-                            <a href="#" data-toggle="modal" data-target="#inviteMember">
-                                <i class="icon-view-team fa-solid fa-user-plus"></i>
-                                <span style="font-weight: 900">Invite</span>
-                            </a>
-                            <a href="#" data-toggle="modal" data-target="#createBoard">
-                                <i class="icon-view-team fa-solid fa-table-columns"></i>
-                                <span style="font-weight: 900">Add Board</span>
-                            </a>
-                            <a href="#" data-toggle="modal" data-target="#deleteTeam">
-                                <i class="icon-view-team fa-solid fa-trash"></i>
-                                <span style="font-weight: 900">Delete</span>
-                            </a>
-                        </li>
-                    @endif
-                    @if (Route::is('searchBoard'))
-                        <li class="link-view-team btn btn-outline-danger">
-                            <a href="#" data-toggle="modal" data-target="#updateTeam">
-                                <i class="icon-view-team fa-solid fa-pencil"></i>
-                                <span style="font-weight: 900">Edit</span>
-                            </a>
-                            @if ($statusTeams->contains('Member'))
-                                <a href="#" data-toggle="modal" data-target="#manageMember">
-                                    <i class="icon-view-team fa-solid fa-user-gear"></i>
-                                    <span style="font-weight: 900">Members</span>
-                                </a>
-                            @endif
-                            <a href="#" data-toggle="modal" data-target="#inviteMember">
-                                <i class="icon-view-team fa-solid fa-user-plus"></i>
-                                <span style="font-weight: 900">Invite</span>
-                            </a>
-                            <a href="#" data-toggle="modal" data-target="#createBoard">
-                                <i class="icon-view-team fa-solid fa-table-columns"></i>
-                                <span style="font-weight: 900">Add Board</span>
-                            </a>
-                            <a href="#" data-toggle="modal" data-target="#deleteTeam">
-                                <i class="icon-view-team fa-solid fa-trash"></i>
-                                <span style="font-weight: 900">Delete</span>
+                    @if (Route::is('viewTeam') || Route::is('searchBoard'))
+                        <li class="add-teams btn btn-outline-danger">
+                            <a href="{{ route('showTeams') }}" class="link-add-teams">
+                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                <span style="font-weight: 900">Back Team's</span>
                             </a>
                         </li>
                     @endif
                     @if (Route::is('board'))
-                        <a href="{{ route('viewTeam', ['team_id' => $team->id]) }}">
+                        <div class="dropdown dropdown-action opsi-sidebar">
+                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-ellipsis" style="color: white"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
+                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateBoard">
+                                    <i class="icon-view-board fa-solid fa-pencil"></i>
+                                    <span style="font-weight: 900">Edit</span>
+                                </a>
+                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteBoard">
+                                    <i class="icon-view-board fa-solid fa-trash"></i>
+                                    <span style="font-weight: 900">Delete</span>
+                                </a>
+                            </div>
+                        </div>
+                        <a href="#">
                             <div class="view-board btn btn-outline-danger">
                                 <span style="font-weight: 900"><h4>Board:</h4></span>
                                 <span style="font-weight: 900"><h5>{{ $board->name }}</h5></span>
                             </div>
                         </a>
-                        <li class="link-view-board btn btn-outline-danger">
-                            <a href="#" data-toggle="modal" data-target="#updateBoard">
-                                <i class="icon-view-board fa-solid fa-pencil"></i>
-                                <span style="font-weight: 900">Edit</span>
-                            </a>
-                            <a href="#" data-toggle="modal" data-target="#deleteBoard">
-                                <i class="icon-view-board fa-solid fa-trash"></i>
-                                <span style="font-weight: 900">Delete</span>
+                        <li class="add-teams btn btn-outline-danger">
+                            <a href="{{ route('viewTeam', ['team_id' => $team->id]) }}" class="link-add-teams">
+                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                <span style="font-weight: 900">Back Board's</span>
                             </a>
                         </li>
                     @endif
@@ -140,29 +130,34 @@
                             <span style="font-weight: 900">Team</span>
                         </a>
                     </li>
-                    @if (Route::is('viewTeam2'))
+                    @if (Route::is('viewTeam2') || Route::is('searchBoard2'))
                         <li class="link-view-team-user btn btn-outline-danger">
                             <a href="#" data-toggle="modal" data-target="#leaveTeam">
-                                <i class="icon-view-team fa-solid fa-right-from-bracket"></i>
+                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
                                 <span style="font-weight: 900">Leave Team</span>
                             </a>
                         </li>
-                    @endif
-                    @if (Route::is('searchBoard2'))
-                        <li class="link-view-team-user btn btn-outline-danger">
-                            <a href="#" data-toggle="modal" data-target="#leaveTeam">
-                                <i class="icon-view-team fa-solid fa-right-from-bracket"></i>
-                                <span style="font-weight: 900">Leave Team</span>
+                        <li class="add-teams btn btn-outline-danger">
+                            <a href="{{ route('showTeams2') }}" class="link-add-teams">
+                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                <span style="font-weight: 900">Back Team's</span>
                             </a>
                         </li>
                     @endif
                     @if (Route::is('board2'))
-                        <a href="{{ route('viewTeam2', ['team_id' => $team->id]) }}">
+                        <a href="#">
                             <div class="view-board btn btn-outline-danger">
                                 <span style="font-weight: 900"><h4>Board:</h4></span>
                                 <span style="font-weight: 900"><h5>{{ $board->name }}</h5></span>
                             </div>
                         </a>
+                        <li class="add-teams btn btn-outline-danger">
+                            <a href="{{ route('viewTeam2', ['team_id' => $team->id]) }}" class="link-add-teams">
+                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                <span style="font-weight: 900">Back Board's</span>
+                            </a>
+                        </li>
+
                     @endif
                     <li class="menu-title"> <span style="font-weight: 900">Setting</span> </li>
                     <li class="{{ set_active(['user/profile']) }}">

@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 // use App\Models\CompanySettings;
 use App\Notifications\UlangTahunNotification;
+use App\Notifications\MentionDescriptionNotification;
+use App\Notifications\MentionChecklistNotification;
+use App\Notifications\MentionCommentNotification;
 use App\Models\Notification;
 use App\Models\ModeAplikasi;
 use App\Models\User;
@@ -216,6 +219,80 @@ class HomeController extends Controller
         return back();
     }
     // /Manual Function Notifikasi Ultah //
+
+    // Untuk Mengirikan Mention Tag Notifikasi //
+    public function mentionDescriptionNotification(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'keterangan' => 'required|string'
+        ]);
+
+        // Ambil username dari permintaan
+        $username = $request->input('username');
+        $keterangan = $request->input('keterangan');
+
+        // Temukan pengguna berdasarkan username
+        $user = User::where('username', $username)->first();
+
+        // Kirim notifikasi jika pengguna ditemukan
+        if ($user) {
+            $notification = new MentionDescriptionNotification($user, $keterangan);
+            $user->notify($notification);
+            return response()->json(['message' => 'Notifikasi mention berhasil dikirim.']);
+        } else {
+            return response()->json(['error' => 'Pengguna mention tidak ditemukan.'], 404);
+        }
+    }
+
+    public function mentionChecklistNotification(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'name' => 'required|string'
+        ]);
+
+        // Ambil username dari permintaan
+        $username = $request->input('username');
+        $name = $request->input('name');
+
+        // Temukan pengguna berdasarkan username
+        $user = User::where('username', $username)->first();
+
+        // Kirim notifikasi jika pengguna ditemukan
+        if ($user) {
+            $notification = new MentionChecklistNotification($user, $name);
+            $user->notify($notification);
+            return response()->json(['message' => 'Notifikasi mention berhasil dikirim.']);
+        } else {
+            return response()->json(['error' => 'Pengguna mention tidak ditemukan.'], 404);
+        }
+    }
+    
+    public function mentionCommentNotification(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'content' => 'required|string'
+        ]);
+
+        // Ambil username dari permintaan
+        $username = $request->input('username');
+        $content = $request->input('content');
+
+        // Temukan pengguna berdasarkan username
+        $user = User::where('username', $username)->first();
+
+        // Kirim notifikasi jika pengguna ditemukan
+        if ($user) {
+            $notification = new MentionCommentNotification($user, $content);
+            $user->notify($notification);
+            return response()->json(['message' => 'Notifikasi mention berhasil dikirim.']);
+        } else {
+            return response()->json(['error' => 'Pengguna mention tidak ditemukan.'], 404);
+        }
+    }
+    // /Untuk Mengirikan Mention Tag Notifikasi //
 
     // Mode Tema Aplikasi //
     public function updateTemaAplikasi(Request $request, $id)

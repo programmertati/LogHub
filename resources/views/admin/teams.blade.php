@@ -246,7 +246,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Teams - Admin | Loghub - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Teams - Admin | Loghub - PT TATI ';
         </script>
     @endsection
 @endsection

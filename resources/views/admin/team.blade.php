@@ -12,7 +12,6 @@
 
                 <!-- Tampilan Foto & Nama Tim -->
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('showTeams') }}"><i class="fa-solid fa-house fa-fade fa-2xl" style="position: relative; bottom: 3px;"></i></a>&nbsp;
                     <p class="text-xl font-bold" style="margin-bottom: 3px;">Team: <p class="text-xl" style="margin-bottom: 3px;">{{ $team->name }}</p></p>
                 </div>
 
@@ -346,7 +345,25 @@
     </div>
     <!-- /Page Wrapper -->
 
-    <style> 
+    <style>
+        .fa-pencil:hover{
+            color: rgb(0 0 0 / 50%);
+        }
+        .fa-trash:active{
+            color: #ffffff
+        }
+        .fa-pencil:active{
+            color: #ffffff !important
+        }
+        .fa-user-gear:active {
+            color: #ffffff
+        }
+        .fa-user-plus:active {
+            color: #ffffff
+        }
+        .fa-table-columns:active {
+            color: #ffffff
+        }
         .p-4 {
             padding: 1rem !important;
         }
@@ -557,7 +574,7 @@
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Team Board - Admin | Loghub - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Team Board - Admin | Loghub - PT TATI ';
         </script>
     @endsection
 @endsection

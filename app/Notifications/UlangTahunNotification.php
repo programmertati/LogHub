@@ -49,13 +49,13 @@ class UlangTahunNotification extends Notification
         return [
             'name'      => $result_user->name,
             'avatar'    => $result_user->avatar,
-            'message'  => 'Selamat Ulang Tahun',
-            'message2'  => 'Pegawai pada',
+            'message'  => 'Happy Birthday',
+            'message2'  => 'Employee on',
             'message3'  => 'PT. Tatacipta Teknologi Indonesia',
-            'message4'  => 'Kota Surabaya.',
-            'message5'  => 'Atas Nama PT. TATI Kota Surabaya Mengucapkan Selamat Ulang Tahun Yang ke-',
+            'message4'  => 'City of Surabaya.',
+            'message5'  => 'On behalf of PT. TATI Surabaya City Wishes You a Happy Birthday the ',
             'message6'  => ''.$result_usia.'',
-            'message7'  => 'Semoga Senantiasa Selalu Diberikan Kesehatan dan Kelancaran.'
+            'message7'  => 'May you always be given health and smoothness.'
         ];
     }
 }

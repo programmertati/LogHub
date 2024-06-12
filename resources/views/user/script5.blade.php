@@ -2,13 +2,20 @@
     document.addEventListener('DOMContentLoaded', function() {
         const users = [
             @foreach ($UserTeams as $result_team)
-                { username: "{{ $result_team->username }}", name: "{{ $result_team->name }}", email: "{{ $result_team->email }}", avatar: "{{ URL::to('/assets/images/' . $result_team->avatar) }}" },
+                {
+                    username: "{{ $result_team->username }}",
+                    name: "{{ $result_team->name }}",
+                    email: "{{ $result_team->email }}",
+                    avatar: "{{ URL::to('/assets/images/' . $result_team->avatar) }}"
+                },
             @endforeach
         ];
 
         window.mentionTags = function(inputId) {
             const inputTag = document.getElementById(inputId);
             const mentionTag = document.getElementById(`mention-tag-${inputId}`);
+            let selectedUsers = [];
+
             inputTag.addEventListener('input', function(e) {
                 const value = e.target.value;
                 const atPosition = value.lastIndexOf('@');
@@ -69,7 +76,7 @@
                     item.addEventListener('click', function() {
 
                         // Untuk inputan yang dikeluarkan //
-                        const newValue = (currentValue.substring(0, atPosition + 1) + user.username + ' ').toLowerCase();
+                        const newValue = currentValue.substring(0, atPosition + 1) + (user.username).toLowerCase() + ' ';
                         // /Untuk inputan yang dikeluarkan //
 
                         inputTag.value = newValue;
@@ -77,7 +84,9 @@
 
                         // Kembali fokus ke input setelah memilih //
                         inputTag.focus();
+                        selectedUsers.push(user);
                         // /Kembali fokus ke input setelah memilih //
+
                     });
                     mentionTag.appendChild(item);
                 });
@@ -90,6 +99,47 @@
                 }
             });
             // /Kalau tidak ada @ maka akan hidden container //
+
+            // Kirimkan data mention ke notifikasi //
+            document.querySelectorAll('[id^="saveButtonChecklist"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const inputId = button.id.replace('saveButtonChecklist', 'checklist');
+                    const checklistInput = document.getElementById(inputId);
+                    const name = checklistInput.value;
+
+                    if (selectedUsers.length > 0) {
+                        const promises = selectedUsers.map(user => {
+                            return fetch('/mention-tag-checklist', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    username: user.username,
+                                    name: name
+                                })
+                            });
+                        });
+
+                        Promise.all(promises)
+                            .then(responses => {
+                                const allSuccessful = responses.every(response => response.ok);
+                                if (allSuccessful) {
+                                    toastr.success('Berhasil mengirimkan mention tag!');
+                                    console.log('Notifikasi dikirim.');
+                                } else {
+                                    toastr.error('Gagal mengirimkan mention tag!');
+                                    console.error('Gagal mengirim notifikasi.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    }
+                });
+            });
+            // /Kirimkan data mention ke notifikasi //
 
         }
     });

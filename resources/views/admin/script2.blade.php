@@ -100,14 +100,20 @@
                     $('#cancelButtonChecklist'+title_id).addClass('hidden');
                     progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     toastr.success('Berhasil membuat checklist!');
-                    var newForm = `<div class="input-checklist2">
-                                        <form id="myFormChecklistUpdate${response.checklist.id}" method="POST" class="form-checklist gap-5">
+                    var newForm = `<div class="input-checklist flex justify-content">
+                                        <form id="myFormChecklistUpdate${response.checklist.id}" method="POST" class="form-checklist">
                                             @csrf
-                                            <input class="dynamicCheckbox" type="checkbox" id="${response.checklist.id}" name="${response.checklist.id}" ${response.checklist.is_active ? 'checked' : ''}>
-                                            <label class="dynamicCheckboxLabel border border-1 border-darks w-407s p-2 rounded-xl ${response.checklist.is_active ? 'strike-through' : ''}" id="labelCheckbox-${response.checklist.id}" for="labelCheckbox-${response.checklist.id}">${response.checklist.name}</label>
+                                            <input class="dynamicCheckbox" type="checkbox" id="${response.checklist.id}" name="${response.checklist.id}" ${response.checklist.is_active ? 'checked' : ''} style="margin-left: -20px;">
+                                            <label class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl ${response.checklist.is_active ? 'strike-through' : ''}" id="labelCheckbox-${response.checklist.id}" for="labelCheckbox-${response.checklist.id}">${response.checklist.name}</label>
                                             <input type="hidden" id="checklist_id" name="checklist_id" value="${response.checklist.id}">
                                             <input type="hidden" id="card_id" name="card_id" value="${response.titlechecklist.cards_id}">
-                                            <input type="text" class="dynamicCheckboxValue border border-1 border-darks w-407s p-2 rounded-xl hidden" id="checkbox-${response.checklist.id}" name="checkbox-${response.checklist.id}" value="${response.checklist.name}">
+                                            <input onclick="mentionTags4('checkbox-${response.checklist.id}')" type="text" class="dynamicCheckboxValue border border-1 border-darks w-402 p-2 rounded-xl hidden" id="checkbox-${response.checklist.id}" name="checkbox-${response.checklist.id}" value="${response.checklist.name}" placeholder="Enter a checklist">
+                                            <div class="mention-tag" id="mention-tag-checkbox${response.checklist.id}"></div>
+
+                                            <div class="aksi-update-checklist gap-2 margin-bottom-0">
+                                                <button type="button" class="saves btn btn-outline-info hidden" id="saveButtonChecklistUpdate-${response.checklist.id}">Save</button>
+                                                <button type="button" class="cancels btn btn-outline-danger hidden" id="cancelButtonChecklistUpdate-${response.checklist.id}">Cancel</button>
+                                            </div>
                                         </form>
                                         <form id="myFormChecklistDelete${response.checklist.id}" method="POST">
                                             @csrf
@@ -117,16 +123,12 @@
                                             <div class="icon-hapus-checklist" id="hapus-checklist${response.checklist.id}">
                                                 <button type="button" class="deletes" id="deleteButtonChecklist-${response.checklist.id}" style="border: none; background: none; padding: 0;">
                                                     <div class="info-status6">
-                                                        <i class="fa-solid fa-trash fa-lg" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
+                                                        <i class="fa-solid fa-trash fa-lg icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
                                                         <span class="text-status6"><b>Delete Checklist</b></span>
                                                     </div>
                                                 </button>
                                             </div>
                                         </form>
-                                        <div class="aksi-update-checklist2 gap-2">
-                                            <button type="button" class="saves btn btn-outline-info hidden" id="saveButtonChecklistUpdate-${response.checklist.id}">Save</button>
-                                            <button type="button" class="cancels btn btn-outline-danger hidden" id="cancelButtonChecklistUpdate-${response.checklist.id}">Cancel</button>
-                                        </div>
                                     </div>`;
                     $('#checkbox-container-'+title_id).append(newForm);
                 },
@@ -238,6 +240,153 @@
             } else if (percentage > 75) {
                 progressBar.addClass('bg-success');
             }
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const users = [
+            @foreach ($UserTeams as $result_team)
+                {
+                    username: "{{ $result_team->username }}",
+                    name: "{{ $result_team->name }}",
+                    email: "{{ $result_team->email }}",
+                    avatar: "{{ URL::to('/assets/images/' . $result_team->avatar) }}"
+                },
+            @endforeach
+        ];
+
+        window.mentionTags4 = function(inputId) {
+            const inputTag = document.getElementById(inputId);
+            const mentionTag = document.getElementById(`mention-tag-checkbox${inputId.replace('checkbox-', '')}`);
+            let selectedUsers = [];
+
+            inputTag.addEventListener('input', function(e) {
+                const value = e.target.value;
+                const atPosition = value.lastIndexOf('@');
+                if (atPosition !== -1) {
+                    const query = value.substring(atPosition + 1).toLowerCase();
+                    const filteredUsers = users.filter(user => user.username.toLowerCase().startsWith(query));
+                    showMention4(filteredUsers, atPosition, value, inputTag, mentionTag);
+                } else {
+                    mentionTag.style.display = 'none';
+                }
+            });
+
+            function showMention4(users, atPosition, currentValue, inputTag, mentionTag) {
+                mentionTag.innerHTML = '';
+                if (users.length === 0) {
+                    mentionTag.style.display = 'none';
+                    return;
+                }
+                mentionTag.style.display = 'block';
+                users.forEach(user =>
+                {
+                    // Untuk div avatar, username, name/email //
+                    const item = document.createElement('div');
+                    item.className = 'mention-tag-item';
+                    item.style.display = 'flex';
+                    item.style.alignItems = 'flex-end';
+                    // /Untuk div avatar, username, name/email //
+
+                    // Untuk img avatar //
+                    const avatarImg = document.createElement('img');
+                    avatarImg.className = 'avatar-mention';
+                    avatarImg.src = user.avatar;
+                    avatarImg.loading = 'lazy';
+                    // /Untuk img avatar //
+
+                    // Untuk inputan yang dikeluarkan //
+                    const userInfo = document.createElement('div');
+                    const username = document.createElement('div');
+                    username.innerText = user.username;
+                    // /Untuk inputan yang dikeluarkan //
+
+                    // Untuk email //
+                    // const email = document.createElement('div');
+                    // email.innerText = user.email;
+                    // userInfo.appendChild(username);
+                    // userInfo.appendChild(email);
+                    // /Untuk email //
+
+                    // Untuk nama lengkap //
+                    const name = document.createElement('div');
+                    name.innerText = user.name;
+                    userInfo.appendChild(username);
+                    userInfo.appendChild(name);
+                    // /Untuk nama lengkap //
+
+                    item.appendChild(avatarImg);
+                    item.appendChild(userInfo);
+                    item.addEventListener('click', function() {
+
+                        // Untuk inputan yang dikeluarkan //
+                        const newValue = currentValue.substring(0, atPosition + 1) + (user.username).toLowerCase() + ' ';
+                        // /Untuk inputan yang dikeluarkan //
+
+                        inputTag.value = newValue;
+                        mentionTag.style.display = 'none';
+
+                        // Kembali fokus ke input setelah memilih //
+                        inputTag.focus();
+                        selectedUsers.push(user);
+                        // /Kembali fokus ke input setelah memilih //
+                        
+                    });
+                    mentionTag.appendChild(item);
+                });
+            }
+
+            // Kalau tidak ada @ maka akan hidden container //
+            document.addEventListener('click', function(event) {
+                if (!mentionTag.contains(event.target) && event.target !== inputTag) {
+                    mentionTag.style.display = 'none';
+                }
+            });
+            // /Kalau tidak ada @ maka akan hidden container //
+
+            // Kirimkan data mention ke notifikasi //
+            document.querySelectorAll('[id^="saveButtonChecklistUpdate"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const inputId = button.id.replace('saveButtonChecklistUpdate', 'checkbox');
+                    const checklistInput = document.getElementById(inputId);
+                    const name = checklistInput.value;
+
+                    if (selectedUsers.length > 0) {
+                        const promises = selectedUsers.map(user => {
+                            return fetch('/mention-tag-checklist', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    username: user.username,
+                                    name: name
+                                })
+                            });
+                        });
+
+                        Promise.all(promises)
+                            .then(responses => {
+                                const allSuccessful = responses.every(response => response.ok);
+                                if (allSuccessful) {
+                                    toastr.success('Berhasil mengirimkan mention tag!');
+                                    console.log('Notifikasi dikirim.');
+                                } else {
+                                    toastr.error('Gagal mengirimkan mention tag!');
+                                    console.error('Gagal mengirim notifikasi.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    }
+                });
+            });
+            // /Kirimkan data mention ke notifikasi //
+            
         }
     });
 </script>
