@@ -603,9 +603,9 @@
                                             <input type="hidden" name="card_id" value="{{ $isianKartu->id }}">
                                             <textarea onclick="saveComment('{{ $isianKartu->id }}'); mentionTags3('contentarea{{ $isianKartu->id }}')" class="form-control border border-1 border-dark rounded-xl" rows="1" cols="77" id="contentarea{{ $isianKartu->id }}" name="content" placeholder="Write a comment..."></textarea>
                                             <div class="mention-tag-comment" id="mention-tag-comment{{ $isianKartu->id }}"></div>
-                                            <button type="submit" class="btn btn-outline-info icon-comment hidden" id="simpanButton{{ $isianKartu->id }}">Save</button>
+                                            <button type="submit" class="btn btn-outline-info hidden" style="margin-top: 1%;" id="simpanButton{{ $isianKartu->id }}">Save</button>
                                         </form>
-                                        {{-- @include('user.comment') --}}
+                                        @include('user.comment')
                                         @include('user.script7')
                                     </div>
                                     <div class="activity-tag hiddens" id="showActivity{{ $isianKartu->id }}">

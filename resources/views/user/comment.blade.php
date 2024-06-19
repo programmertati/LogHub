@@ -43,14 +43,5 @@
                 }
             });
         });
-
-        $textarea.on('input', function() {
-            if ($(this).val().trim() !== '') {
-                $submitButton.removeClass('hidden');
-            } else {
-                $submitButton.addClass('hidden');
-            }
-        });
-        
     });
 </script>

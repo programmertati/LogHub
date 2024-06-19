@@ -13750,6 +13750,7 @@ ul.nav-tabs > li > a {
 }
 .overflow-x-scroll {
 	overflow-x: scroll !important;
+	scrollbar-width: thin;
 }
 .border-2 {
 	border-width: 2px !important;
@@ -14783,6 +14784,7 @@ ul.nav-tabs > li > a {
 	margin-top: 0.75rem;
 	margin-bottom: 1rem;
 	overflow: auto;
+	scrollbar-width: thin;
 }
 
 .mention-tag-container {
