@@ -29,7 +29,7 @@ class CardDataSeeder extends Seeder
         //     "29 Juli - 2 Agustus 2024", "5 Agustus - 9 Agustus 2024", "12 Agustus - 16 Agustus 2024", "19 Agustus - 23 Agustus 2024",
         //     "26 Agustus - 30 Agustus 2024"];
 
-        $tgl = ["3 Juni - 7 Juni 2024", "10 Juni - 14 Juni 2024", "17 Juni - 21 Juni 2024", "24 Juni - 28 Juni 2024"];
+        $tgl = ["19 Juni - 21 Juni 2024", "24 Juni - 28 Juni 2024"];
 
         $hari = ['Target Mingguan','Senin','Selasa','Rabu','Kamis','Jumat'];
 
@@ -43,12 +43,12 @@ class CardDataSeeder extends Seeder
                         'column_id' => $column->id,
                         'name' => $value2,
                     ]);
-                    foreach($hari as $value3){
-                        TitleChecklists::create([
-                            'cards_id' => $card->id,
-                            'name' => $value3,
-                        ]);
-                    }
+                    // foreach($hari as $value3){
+                    //     TitleChecklists::create([
+                    //         'cards_id' => $card->id,
+                    //         'name' => $value3,
+                    //     ]);
+                    // }
                 }
             }
     }
