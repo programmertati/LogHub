@@ -597,14 +597,15 @@
                                     </div>
                                     <div class="input-komentar flex gap-4">
                                         <img class="avatar-comment" src="{{ URL::to('/assets/images/' . Auth::user()->avatar) }}" loading="lazy">
-                                        <form action="{{ route('komentarKartu2', ['card_id' => $isianKartu->id]) }}" method="POST">
+                                        <form id="commentForm{{ $isianKartu->id }}" action="{{ route('komentarKartu2', ['card_id' => $isianKartu->id]) }}" method="POST">
                                             @csrf
-                                            <input type="hidden" name="user_id" value="{{ Auth::user()->id  }}">
+                                            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                             <input type="hidden" name="card_id" value="{{ $isianKartu->id }}">
                                             <textarea onclick="saveComment('{{ $isianKartu->id }}'); mentionTags3('contentarea{{ $isianKartu->id }}')" class="form-control border border-1 border-dark rounded-xl" rows="1" cols="77" id="contentarea{{ $isianKartu->id }}" name="content" placeholder="Write a comment..."></textarea>
                                             <div class="mention-tag-comment" id="mention-tag-comment{{ $isianKartu->id }}"></div>
                                             <button type="submit" class="btn btn-outline-info icon-comment hidden" id="simpanButton{{ $isianKartu->id }}">Save</button>
                                         </form>
+                                        @include('user.comment')
                                         @include('user.script7')
                                     </div>
                                     <div class="activity-tag hiddens" id="showActivity{{ $isianKartu->id }}">
@@ -619,7 +620,7 @@
                                                 @endphp
                                                 @foreach($isianHistory as $history)
                                                     @foreach ($isianKartu->titleChecklists as $titleChecklists)
-                                                        <div class="isian-tag">
+                                                        <div class="isian-tag" id="isianTag{{ $isianKartu->id }}">
                                                             @if ($history->type === 'event')
                                                                 <div class="isian-history">
                                                                     <img class="avatar-activity" src="{{ URL::to('/assets/images/' . $history->avatar) }}" loading="lazy">
@@ -665,9 +666,9 @@
                                                                 </div>
                                                             @endif
                                                             @if ($history->type === 'comment')
-                                                                <div class="isian-history flex gap-1">
+                                                                <div class="isian-history{{ $isianKartu->id }}">
                                                                     <img class="avatar-activity" src="{{ URL::to('/assets/images/' . $history->avatar) }}" loading="lazy">
-                                                                    <div class="title-activity flex gap-1">
+                                                                    <div class="title-activity">
                                                                         <p>{{ $history->name }}<br><span>{{ $history->content }}</span></p>
                                                                     </div>
                                                                 </div>
@@ -881,6 +882,18 @@
                     height: 1%;
                     cursor: pointer;
                 }
+                @foreach ($dataKolom->cards as $isianKartu)
+                    .isian-history{{ $isianKartu->id }} {
+                        display: flex;
+                        width: 100%;
+                        gap: 0.25rem !important;
+                        --loghub-border-opacity: 1;
+                        background-color: #f1f2f4;
+                        box-shadow: 0px 1px 1px #091e4240;
+                        border-color: rgb(229 231 235 / var(--loghub-border-opacity));
+                        border-radius: 12px;
+                    }
+                @endforeach
             @endforeach
             .kolom-card {
                 --loghub-border-opacity: 1;
