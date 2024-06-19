@@ -625,7 +625,7 @@
                                             <div class="mention-tag-comment" id="mention-tag-comment{{ $isianKartu->id }}"></div>
                                             <button type="submit" class="btn btn-outline-info icon-comment hidden" id="simpanButton{{ $isianKartu->id }}">Save</button>
                                         </form>
-                                        @include('admin.comment')
+                                        {{-- @include('admin.comment') --}}
                                         @include('admin.script7')
                                     </div>
                                     <div class="activity-tag hiddens" id="showActivity{{ $isianKartu->id }}">
