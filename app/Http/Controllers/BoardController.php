@@ -720,6 +720,19 @@ class BoardController extends Controller
     }
     // /Untuk Pindah Posisi Kolom //
 
+    // Untuk Pindah Posisi Kartu //
+    public function perbaharuiPosisiKartu(Request $request)
+    {
+        $positions = $request->input('positions');
+
+        foreach ($positions as $id => $position) {
+            Card::where('id', $id)->update(['position' => $position]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+    // /Untuk Pindah Posisi Kartu //
+
     // Mendapatkan Data Admin & User //
     public function getData($team_id, $board_id)
     {

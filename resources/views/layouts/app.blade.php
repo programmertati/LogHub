@@ -8,7 +8,9 @@
 		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
         <meta name="author" content="PT TATI">
         <meta name="robots" content="noindex, nofollow">
-        <title id="pageTitle">Login | Loghub - PT TATI</title>
+        <title id="pageTitle">Login | Loghub - PT TATI </title>
+        <script src="{{ asset('assets/js/title-move.js') }}"></script>
+        
 		<!-- Favicon -->
         <link rel="shortcut icon" type="image/x-icon" sizes="512x512" href="{{ URL::to('assets/img/favicon.png') }}">
 		<!-- Bootstrap CSS -->

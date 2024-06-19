@@ -104,7 +104,8 @@
     document.addEventListener('DOMContentLoaded', function() {
         var coverCards = document.querySelectorAll('.cover-card');
         coverCards.forEach(function(card) {
-            var pattern = card.classList.contains('card-cover2-NULL') ? 'NULL' : card.className.match(/card-cover2-(\S+)/)[1];
+            var patternMatch = card.className.match(/card-cover2-(\S+)/);
+            var pattern = card.classList.contains('card-cover2-NULL') ? 'NULL' : (patternMatch ? patternMatch[1] : '');
             if (pattern === 'NULL' || pattern === '') {
                 card.classList.add('hiddens');
             } else {
@@ -115,7 +116,8 @@
         var links = document.querySelectorAll('.dropdown-item');
         links.forEach(function(link) {
             var cardId = link.id.split('-')[1];
-            var pattern = link.classList.contains('hiddens') ? 'NULL' : link.className.match(/card-cover4-(\S+)/)[1];
+            var patternMatch = link.className.match(/card-cover4-(\S+)/);
+            var pattern = link.classList.contains('hiddens') ? 'NULL' : (patternMatch ? patternMatch[1] : '');
             updateTextCover(cardId, pattern);
         });
     });

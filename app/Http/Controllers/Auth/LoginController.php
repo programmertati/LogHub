@@ -41,7 +41,7 @@ class LoginController extends Controller
     // Tampilan Masuk Aplikasi //
     public function login(Request $request)
     {
-        // return view('auth.login'); //
+        // return view('auth.login');
         return view('auth.landing');
     }
     // /Tampilan Masuk Aplikasi //
@@ -150,7 +150,7 @@ class LoginController extends Controller
         ];
         DB::table('users')->where('id', $user->id)->update($updateStatus);
 
-        Toastr::success('Anda berhasil masuk aplikasi', 'Success');
+        Toastr::success('Anda berhasil masuk aplikasi!', 'Success');
         $route = $user->role_name == 'Admin' ? 'showTeams' : 'showTeams2';
         // return redirect()->intended('home');
         return redirect()->route($route);
@@ -180,6 +180,7 @@ class LoginController extends Controller
         DB::table('activity_logs')->insert($activityLog);
 
         $message = 'Terima kasih, Anda telah keluar aplikasi!';
+        $message2 = 'Anda berhasil keluar aplikasi!';
         
         $request->session()->forget('name');
         $request->session()->forget('email');
@@ -193,9 +194,8 @@ class LoginController extends Controller
         $request->session()->flush();
         
         Auth::logout();
-        Toastr::success('Anda berhasil keluar aplikasi','Success');
         // return redirect('login'); //
-        return view('auth.landing', compact('message')); 
+        return view('auth.landing', compact('message', 'message2')); 
     }
     // Untuk Keluar Aplikasi //
 }

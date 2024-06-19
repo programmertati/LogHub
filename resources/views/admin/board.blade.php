@@ -5,7 +5,6 @@
         <div class="page-wrapper" style="height: 100vh">
 
             <!-- Tampilan Background Kolom & Card -->
-            {{-- <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" style="height: 93vh !important"> --}}
             <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" style="height: 100%">
 
                 <!-- Tampilan Kolom & Kartu -->
@@ -16,7 +15,12 @@
                     </a>
 
                     <!-- Tampilan Kolom -->
-                    @foreach ($dataColumnCard->count() > 0 ? $dataColumnCard->sortBy('position') : $dataColumnCard->sortBy('id') as $dataKolom)
+                    @php
+                    $sortedData = $dataColumnCard->count() > 0 ? $dataColumnCard->sortBy(function($item) {
+                        return $item->position == 0 ? PHP_INT_MAX : $item->position;
+                    }) : $dataColumnCard->sortBy('id');
+                    @endphp
+                    @foreach ($sortedData as $dataKolom)
                         <div class="kolom-card-{{ $dataKolom->id }}" id="kolom-card-{{ $dataKolom->id }}" data-id="{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
 
                             <!-- Tampilan Aksi Edit & Hapus -->
@@ -42,95 +46,100 @@
                             <ul class="card-container">
 
                                 <!-- Tampilan Kartu -->
-                                    @foreach ($dataKolom->cards as $dataKartu)
-                                        <li class="kartu-loghub" id="kartu-loghub" onmouseenter="aksiKartuShow({{ $dataKartu->id }})" onmouseleave="aksiKartuHide({{ $dataKartu->id }})" style="position: relative;">
-                                            
-                                            <!-- Tampilan Aksi Edit -->
-                                            <div class="cover-card card-cover2-{{ $dataKartu->pattern }} {{ $dataKartu->pattern ? '' : 'hiddens' }}" id="cover-card-{{ $dataKartu->id }}"></div>
-                                            <a href="#" data-toggle="modal" data-target="#editCard{{ $dataKartu->id }}">
-                                                <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}" style="position: absolute !important;">
-                                                    <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
-                                                </div>
-                                            </a>
-                                            <a href="#" data-toggle="modal" data-target="#editCard{{ $dataKartu->id }}">
-                                                <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}">
-                                                    <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
-                                                </div>
-                                            </a>
-                                            <!-- /Tampilan Aksi Edit -->
+                                @php
+                                $sortedData = $dataKolom->cards->count() > 0 ? $dataKolom->cards->sortBy(function($item) {
+                                    return $item->position == 0 ? PHP_INT_MAX : $item->position;
+                                }) : $dataKolom->cards->sortBy('id');
+                                @endphp
+                                @foreach ($sortedData as $dataKartu)
+                                    <li class="kartu-loghub" data-id="{{ $dataKartu->id }}" onmouseenter="aksiKartuShow({{ $dataKartu->id }})" onmouseleave="aksiKartuHide({{ $dataKartu->id }})" style="position: relative;">
+                                        
+                                        <!-- Tampilan Aksi Edit -->
+                                        <div class="cover-card card-cover2-{{ $dataKartu->pattern }} {{ $dataKartu->pattern ? '' : 'hiddens' }}" id="cover-card-{{ $dataKartu->id }}"></div>
+                                        <a href="#" data-toggle="modal" data-target="#editCard{{ $dataKartu->id }}">
+                                            <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}" style="position: absolute !important;">
+                                                <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
+                                            </div>
+                                        </a>
+                                        <a href="#" data-toggle="modal" data-target="#editCard{{ $dataKartu->id }}">
+                                            <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}">
+                                                <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
+                                            </div>
+                                        </a>
+                                        <!-- /Tampilan Aksi Edit -->
 
-                                            <!-- Tampilan Kartu Pengguna -->
-                                            {{-- @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
-                                                <a href="#" data-toggle="modal" data-target="#isianKartu{{ $dataKartu->id }}">
-                                                    <div class="card-nama" @if(!empty($dataKartu->pattern)) style="border-top-right-radius: 0 !important; border-bottom-right-radius: 8px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 8px !important; @endif">
-                                                        <span class="flex ms-3" style="width: 150px; @if(!empty($dataKartu->description)) margin-bottom: 10px; @endif">{{ $dataKartu->name }}</span>
-                                                        <div class="tampilan-info gap-2">
+                                        <!-- Tampilan Kartu Pengguna -->
+                                        {{-- @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
+                                            <a href="#" data-toggle="modal" data-target="#isianKartu{{ $dataKartu->id }}">
+                                                <div class="card-nama" @if(!empty($dataKartu->pattern)) style="border-top-right-radius: 0 !important; border-bottom-right-radius: 8px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 8px !important; @endif">
+                                                    <span class="flex ms-3" style="width: 150px; @if(!empty($dataKartu->description)) margin-bottom: 10px; @endif">{{ $dataKartu->name }}</span>
+                                                    <div class="tampilan-info gap-2">
     
-                                                            <!-- Muncul apabila terdapat deskripsi pada kartu -->
-                                                            @if(!empty($dataKartu->description))
-                                                                <div class="info-status8" id="descriptionStatus{{ $dataKartu->id }}">
-                                                                    <i class="fa-solid fa-align-left" style="color: #489bdb; margin-right: 5px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach"></i>
-                                                                    <span class="text-status8"><b>This card has a description.</b></span>
-                                                                </div>
-                                                            @else
-                                                                <div class="info-status8 hidden" id="descriptionStatus{{ $dataKartu->id }}">
-                                                                    <i class="fa-solid fa-align-left" style="color: #489bdb; margin-right: 5px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach"></i>
-                                                                    <span class="text-status8"><b>This card has a description.</b></span>
+                                                        <!-- Muncul apabila terdapat deskripsi pada kartu -->
+                                                        @if(!empty($dataKartu->description))
+                                                            <div class="info-status8" id="descriptionStatus{{ $dataKartu->id }}">
+                                                                <i class="fa-solid fa-align-left" style="color: #489bdb; margin-right: 5px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach"></i>
+                                                                <span class="text-status8"><b>This card has a description.</b></span>
+                                                            </div>
+                                                        @else
+                                                            <div class="info-status8 hidden" id="descriptionStatus{{ $dataKartu->id }}">
+                                                                <i class="fa-solid fa-align-left" style="color: #489bdb; margin-right: 5px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach"></i>
+                                                                <span class="text-status8"><b>This card has a description.</b></span>
+                                                            </div>
+                                                        @endif
+                                                        <!-- /Muncul apabila terdapat deskripsi pada kartu -->
+
+                                                        <!-- Muncul apabila terdapat checklist pada kartu -->
+                                                        <div class="
+                                                            @php
+                                                                $totalPercentage = 0;
+                                                                $totalCount = 0;
+                                                            @endphp
+                                                            @foreach ($dataKartu->titleChecklists as $titleChecklistss)
+                                                                @php
+                                                                    $totalCount++;
+                                                                    $totalPercentage += $titleChecklistss->percentage;
+                                                                @endphp
+                                                            @endforeach
+                                                            @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
+                                                                border
+                                                            @endif
+                                                                flex">
+                                                            @php
+                                                                $perChecklist = 0;
+                                                                $jumlahChecklist = 0;
+                                                            @endphp
+                                                            @foreach ($dataKartu->titleChecklists as $titleChecklists)
+                                                                @foreach ($titleChecklists->checklists as $checklists)
+                                                                    @if(!empty($checklists->is_active))
+                                                                        @php
+                                                                            $perChecklist++;
+                                                                        @endphp
+                                                                    @endif
+                                                                    @if(!empty($checklists->title_checklists_id))
+                                                                        @php
+                                                                            $jumlahChecklist++;
+                                                                        @endphp
+                                                                    @endif
+                                                                @endforeach
+                                                            @endforeach
+                                                            @if($perChecklist > 0 || $jumlahChecklist > 0)
+                                                                <div class="info-status9">
+                                                                    <i class="fa-regular fa-square-check" style="color: #489bdb; @if ($totalCount > 0 && $totalPercentage / $totalCount == 100) color: white; @endif margin-right: 5px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach"></i>
+                                                                    <span class="text-status9"><b>Checklist items</b></span>
+                                                                    <span class="total">{{ $perChecklist }}/{{ $jumlahChecklist }}</span>
                                                                 </div>
                                                             @endif
-                                                            <!-- /Muncul apabila terdapat deskripsi pada kartu -->
-
-                                                            <!-- Muncul apabila terdapat checklist pada kartu -->
-                                                            <div class="
-                                                                @php
-                                                                    $totalPercentage = 0;
-                                                                    $totalCount = 0;
-                                                                @endphp
-                                                                @foreach ($dataKartu->titleChecklists as $titleChecklistss)
-                                                                    @php
-                                                                        $totalCount++;
-                                                                        $totalPercentage += $titleChecklistss->percentage;
-                                                                    @endphp
-                                                                @endforeach
-                                                                @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
-                                                                    border
-                                                                @endif
-                                                                    flex">
-                                                                @php
-                                                                    $perChecklist = 0;
-                                                                    $jumlahChecklist = 0;
-                                                                @endphp
-                                                                @foreach ($dataKartu->titleChecklists as $titleChecklists)
-                                                                    @foreach ($titleChecklists->checklists as $checklists)
-                                                                        @if(!empty($checklists->is_active))
-                                                                            @php
-                                                                                $perChecklist++;
-                                                                            @endphp
-                                                                        @endif
-                                                                        @if(!empty($checklists->title_checklists_id))
-                                                                            @php
-                                                                                $jumlahChecklist++;
-                                                                            @endphp
-                                                                        @endif
-                                                                    @endforeach
-                                                                @endforeach
-                                                                @if($perChecklist > 0 || $jumlahChecklist > 0)
-                                                                    <div class="info-status9">
-                                                                        <i class="fa-regular fa-square-check" style="color: #489bdb; @if ($totalCount > 0 && $totalPercentage / $totalCount == 100) color: white; @endif margin-right: 5px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach"></i>
-                                                                        <span class="text-status9"><b>Checklist items</b></span>
-                                                                        <span class="total">{{ $perChecklist }}/{{ $jumlahChecklist }}</span>
-                                                                    </div>
-                                                                @endif
-                                                            </div>
-                                                            <!-- /Muncul apabila terdapat checklist pada kartu -->
-
                                                         </div>
+                                                        <!-- /Muncul apabila terdapat checklist pada kartu -->
+
                                                     </div>
-                                                </a>
-                                            {{-- @endif --}}
-                                            <!-- /Tampilan Kartu Pengguna -->
-                                        </li>
-                                    @endforeach
+                                                </div>
+                                            </a>
+                                        {{-- @endif --}}
+                                        <!-- /Tampilan Kartu Pengguna -->
+                                    </li>
+                                @endforeach
                                 <!-- /Tampilan Kartu -->
 
                             </ul>
@@ -254,9 +263,6 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        {{-- @isset($dataKartu)
-                            <form action="{{ route('addCol', ['board_id' => $board->id, 'team_id' => $board->team_id, 'card_id' => $dataKartu->id]) }}" id="addColForm" method="POST">
-                        @endif --}}
                         <form action="{{ route('addCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" id="addColForm" method="POST">
                             @csrf
                             <input type="hidden" class="form-control" name="board_id" value="{{ $board->id }}">
@@ -533,11 +539,11 @@
                                     <!-- Perbaharui & Hapus Checklist -->
                                     @include('admin.script2')
                                     @foreach ($titleChecklists->checklists as $checklists)
-                                    <div class="input-checklist flex justify-content">
+                                    <div class="input-checklist">
                                         <!-- Tampilan Checklist -->
                                         <form id="myFormChecklistUpdate{{ $checklists->id }}" method="POST" class="form-checklist">
                                             @csrf
-                                            <input class="dynamicCheckbox" type="checkbox" id="{{$checklists->id}}" name="{{$checklists->id}}" {{$checklists->is_active == '1' ? 'checked' : ''}} style="margin-left: -20px;">
+                                            <input class="dynamicCheckbox" type="checkbox" id="{{$checklists->id}}" name="{{$checklists->id}}" {{$checklists->is_active == '1' ? 'checked' : ''}}>
                                             <label class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl  {{$checklists->is_active == '1' ? 'strike-through' : ''}}" id="labelCheckbox-{{$checklists->id}}" for="labelCheckbox-{{$checklists->id}}">{{$checklists->name}}</label>
                                             <input type="hidden" id="checklist_id" name="checklist_id" value="{{ $checklists->id }}">
                                             <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
@@ -823,7 +829,6 @@
             .strike-through {
                 text-decoration: line-through;
                 font-weight: 600;
-                /* color: #dc3545; */
             }
             .progress {
                 display:-ms-flexbox;

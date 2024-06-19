@@ -69,4 +69,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(CardHistory::class);
     }
+
+    public function isOnline()
+    {
+        return $this->status_online === 'Online';
+    }
 }

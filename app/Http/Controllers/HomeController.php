@@ -237,7 +237,8 @@ class HomeController extends Controller
 
         // Kirim notifikasi jika pengguna ditemukan
         if ($user) {
-            $notification = new MentionDescriptionNotification($user, $keterangan);
+            $authId = auth()->id();
+            $notification = new MentionDescriptionNotification($user, $keterangan, $authId);
             $user->notify($notification);
             return response()->json(['message' => 'Notifikasi mention berhasil dikirim.']);
         } else {
@@ -261,7 +262,8 @@ class HomeController extends Controller
 
         // Kirim notifikasi jika pengguna ditemukan
         if ($user) {
-            $notification = new MentionChecklistNotification($user, $name);
+            $authId = auth()->id();
+            $notification = new MentionChecklistNotification($user, $name, $authId);
             $user->notify($notification);
             return response()->json(['message' => 'Notifikasi mention berhasil dikirim.']);
         } else {
@@ -285,7 +287,8 @@ class HomeController extends Controller
 
         // Kirim notifikasi jika pengguna ditemukan
         if ($user) {
-            $notification = new MentionCommentNotification($user, $content);
+            $authId = auth()->id();
+            $notification = new MentionCommentNotification($user, $content, $authId);
             $user->notify($notification);
             return response()->json(['message' => 'Notifikasi mention berhasil dikirim.']);
         } else {

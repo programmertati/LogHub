@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+{{-- <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"> --}}
 <head>
     <link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/css/landing.css') }}">
+    {{-- <title id="pageTitle">Logout | Loghub - PT TATI </title> --}}
+    <title id="pageTitle">{{ $pageTitle ?? $pageTitle2 }}</title>
+
+    {{-- Moving Title --}}
+    <script src="{{ asset('assets/js/title-move.js') }}"></script>
+
+    {{-- Favicon URL --}}
+    <link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/favicon.png') }}">
+
+    {{-- Message Toastr --}}
+    <link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
+    <script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
+    <script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
 </head>
 <body>
+
+  <!-- Message Toast Ketika Keluar Aplikasi -->
+  <script type="text/javascript">
+    @if (isset($message2))
+      toastr.success('{{ $message2 }}', 'Success');
+    @endif
+  </script>
+  <!-- /Message Toast Ketika Keluar Aplikasi -->
+
   <main>
     <div class="container">
       <div class="row">

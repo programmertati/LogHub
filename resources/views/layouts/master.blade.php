@@ -372,6 +372,10 @@
                     .icon-comment:active {color: #146c43 !important;}
                     .isian-history{background: rgb(31 28 54) !important}
                     .isian-activity{color: white !important}
+                    .mention-tag-container {border-bottom: 1px solid rgba(9, 45, 66, 0.13) !important; background: {{ $mode_tema->warna_sistem }} !important; box-shadow: 0 1px 1px rgba(9, 45, 66, 0.25), 0 0 0 1px rgba(9, 45, 66, 0.08) !important;}
+                    .mention-nama{color: #B6C2CF !important;}
+                    .mention-waktu{color: #8C9BAB !important;}
+                    .isian-mention-tag{background-color: {{ $mode_tema->warna_mode }} !important; color: #B6C2CF !important; box-shadow: 0px 1px 1px #5a5e6f, 0px 0px 1px #464a5b !important;}
 
                     @foreach ($belum_dibaca as $notifikasi_belum_dibaca)
                         #popup-notifikasi_{{ $notifikasi_belum_dibaca->id }} {background: {{ $mode_tema->warna_mode }} !important}
@@ -406,8 +410,9 @@
                 border-color: #e74a3b;
                 color: #fff;
                 border: none;
-                padding: 10px 20px;
-                border-radius: 15px;
+                padding: 3px 20px;
+                border-radius: 7px;
+                font-size: 20px;
             }
 
             #close-popup_{{ $notifikasi_belum_dibaca->id }}:hover {
@@ -418,7 +423,7 @@
             .close-notifikasi {
                 position: absolute;
                 bottom: 20px;
-                left: 45%;
+                left: 41%;
             }
             
             .logo-pttati2 img{
@@ -458,8 +463,8 @@
                 border-color: #e74a3b;
                 color: #fff;
                 border: none;
-                padding: 0px 5px;
-                border-radius: 20px;
+                padding: 0px 7px 4px 8px;
+                border-radius: 10px;
             }
 
             #close-popup_{{ $notifikasi_dibaca->id }}:hover {
@@ -833,7 +838,7 @@
                     $created_at = \Carbon\Carbon::parse($notifikasi_belum_dibaca->created_at);
                     $read_at = \Carbon\Carbon::parse($notifikasi_belum_dibaca->read_at);
                 @endphp
-                <div id="popup-notifikasi_{{ $notifikasi_belum_dibaca->id }}" style="width: 30%">
+                <div id="popup-notifikasi_{{ $notifikasi_belum_dibaca->id }}" style="width: 575px;">
                     <li class="notification-message noti-unread">
                         <div class="media">
                             <div class="media-body">
@@ -849,13 +854,58 @@
                                         to <b>{{ $notifikasiDataBelumDibaca->name }}</b> @if (!empty($notifikasiDataBelumDibaca->message7)) {{ $notifikasiDataBelumDibaca->message7 }} @endif
                                     @endif
                                     @if ($notifikasiDataBelumDibaca->message == 'Mention Tag Description')
-                                        {{ $notifikasiDataBelumDibaca->message3 }}
+                                        <div class="mention-tag-container">
+                                            <div class="header-mention-tag">
+                                                @php
+                                                    $userAvatar = '';
+                                                    if (!empty($notifikasiDataBelumDibaca->message6)) { $user = \App\Models\User::find($notifikasiDataBelumDibaca->message6); if ($user) { $userAvatar = URL::to('/assets/images/' . $user->avatar); } }
+                                                @endphp
+                                                <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
+                                                    <img class="avatar-notif" src="{{ $userAvatar }}" loading="lazy">
+                                                </a>
+                                                <p class="mention-nama">{{ $notifikasiDataBelumDibaca->message4 }}</p>
+                                                <p class="mention-waktu">{{ \Carbon\Carbon::parse($notifikasiDataBelumDibaca->message5)->isoFormat('D MMMM [at] h:mm') }}</p>
+                                            </div>
+                                            <div class="isian-mention-tag">
+                                                {{ $notifikasiDataBelumDibaca->message3 }}
+                                            </div>
+                                        </div>
                                     @endif
                                     @if ($notifikasiDataBelumDibaca->message == 'Mention Tag Checklist')
-                                        {{ $notifikasiDataBelumDibaca->message3 }}
+                                        <div class="mention-tag-container">
+                                            <div class="header-mention-tag">
+                                                @php
+                                                    $userAvatar = '';
+                                                    if (!empty($notifikasiDataBelumDibaca->message6)) { $user = \App\Models\User::find($notifikasiDataBelumDibaca->message6); if ($user) { $userAvatar = URL::to('/assets/images/' . $user->avatar); } }
+                                                @endphp
+                                                <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
+                                                    <img class="avatar-notif" src="{{ $userAvatar }}" loading="lazy">
+                                                </a>
+                                                <p class="mention-nama">{{ $notifikasiDataBelumDibaca->message4 }}</p>
+                                                <p class="mention-waktu">{{ \Carbon\Carbon::parse($notifikasiDataBelumDibaca->message5)->isoFormat('D MMMM [at] h:mm') }}</p>
+                                            </div>
+                                            <div class="isian-mention-tag">
+                                                {{ $notifikasiDataBelumDibaca->message3 }}
+                                            </div>
+                                        </div>
                                     @endif
                                     @if ($notifikasiDataBelumDibaca->message == 'Mention Tag Comment')
-                                        {{ $notifikasiDataBelumDibaca->message3 }}
+                                        <div class="mention-tag-container">
+                                            <div class="header-mention-tag">
+                                                @php
+                                                    $userAvatar = '';
+                                                    if (!empty($notifikasiDataBelumDibaca->message6)) { $user = \App\Models\User::find($notifikasiDataBelumDibaca->message6); if ($user) { $userAvatar = URL::to('/assets/images/' . $user->avatar); } }
+                                                @endphp
+                                                <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
+                                                    <img class="avatar-notif" src="{{ $userAvatar }}" loading="lazy">
+                                                </a>
+                                                <p class="mention-nama">{{ $notifikasiDataBelumDibaca->message4 }}</p>
+                                                <p class="mention-waktu">{{ \Carbon\Carbon::parse($notifikasiDataBelumDibaca->message5)->isoFormat('D MMMM [at] h:mm') }}</p>
+                                            </div>
+                                            <div class="isian-mention-tag">
+                                                {{ $notifikasiDataBelumDibaca->message3 }}
+                                            </div>
+                                        </div>
                                     @endif
                                 <br><br></p>
                                 <p class="logo-pttati2">
@@ -875,7 +925,7 @@
                         </div>
                     </li>
                     <div class="close-notifikasi">
-                        <a href="{{ route('notifikasi.dibaca', $notifikasi_belum_dibaca->id) }}"><button id="close-popup_{{ $notifikasi_belum_dibaca->id }}">Tutup</button></a>
+                        <a href="{{ route('notifikasi.dibaca', $notifikasi_belum_dibaca->id) }}"><button id="close-popup_{{ $notifikasi_belum_dibaca->id }}">Close</button></a>
                     </div>
                 </div>
                 @endforeach
@@ -888,7 +938,7 @@
                     $created_at = \Carbon\Carbon::parse($notifikasi_dibaca->created_at);
                     $read_at = \Carbon\Carbon::parse($notifikasi_dibaca->read_at);
                 @endphp
-                <div id="popup-notifikasi_{{ $notifikasi_dibaca->id }}" style="width: 30%">
+                <div id="popup-notifikasi_{{ $notifikasi_dibaca->id }}" style="width: 575px;">
                     <li class="notification-message noti-unread">
                         <div class="media">
                             <div class="media-body">
@@ -904,13 +954,58 @@
                                         to <b>{{ $notifikasiDataDibaca->name }}</b> @if (!empty($notifikasiDataDibaca->message7)) {{ $notifikasiDataDibaca->message7 }} @endif
                                     @endif
                                     @if ($notifikasiDataDibaca->message == 'Mention Tag Description')
-                                        {{ $notifikasiDataDibaca->message3 }}
+                                        <div class="mention-tag-container">
+                                            <div class="header-mention-tag">
+                                                @php
+                                                    $userAvatar = '';
+                                                    if (!empty($notifikasiDataDibaca->message6)) { $user = \App\Models\User::find($notifikasiDataDibaca->message6); if ($user) { $userAvatar = URL::to('/assets/images/' . $user->avatar); } }
+                                                @endphp
+                                                <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
+                                                    <img class="avatar-notif" src="{{ $userAvatar }}" loading="lazy">
+                                                </a>
+                                                <p class="mention-nama">{{ $notifikasiDataDibaca->message4 }}</p>
+                                                <p class="mention-waktu">{{ \Carbon\Carbon::parse($notifikasiDataDibaca->message5)->isoFormat('D MMMM [at] h:mm') }}</p>
+                                            </div>
+                                            <div class="isian-mention-tag">
+                                                {{ $notifikasiDataDibaca->message3 }}
+                                            </div>
+                                        </div>
                                     @endif
                                     @if ($notifikasiDataDibaca->message == 'Mention Tag Checklist')
-                                        {{ $notifikasiDataDibaca->message3 }}
+                                        <div class="mention-tag-container">
+                                            <div class="header-mention-tag">
+                                                @php
+                                                    $userAvatar = '';
+                                                    if (!empty($notifikasiDataDibaca->message6)) { $user = \App\Models\User::find($notifikasiDataDibaca->message6); if ($user) { $userAvatar = URL::to('/assets/images/' . $user->avatar); } }
+                                                @endphp
+                                                <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
+                                                    <img class="avatar-notif" src="{{ $userAvatar }}" loading="lazy">
+                                                </a>
+                                                <p class="mention-nama">{{ $notifikasiDataDibaca->message4 }}</p>
+                                                <p class="mention-waktu">{{ \Carbon\Carbon::parse($notifikasiDataDibaca->message5)->isoFormat('D MMMM [at] h:mm') }}</p>
+                                            </div>
+                                            <div class="isian-mention-tag">
+                                                {{ $notifikasiDataDibaca->message3 }}
+                                            </div>
+                                        </div>
                                     @endif
                                     @if ($notifikasiDataDibaca->message == 'Mention Tag Comment')
-                                        {{ $notifikasiDataDibaca->message3 }}
+                                        <div class="mention-tag-container">
+                                            <div class="header-mention-tag">
+                                                @php
+                                                    $userAvatar = '';
+                                                    if (!empty($notifikasiDataDibaca->message6)) { $user = \App\Models\User::find($notifikasiDataDibaca->message6); if ($user) { $userAvatar = URL::to('/assets/images/' . $user->avatar); } }
+                                                @endphp
+                                                <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
+                                                    <img class="avatar-notif" src="{{ $userAvatar }}" loading="lazy">
+                                                </a>
+                                                <p class="mention-nama">{{ $notifikasiDataDibaca->message4 }}</p>
+                                                <p class="mention-waktu">{{ \Carbon\Carbon::parse($notifikasiDataDibaca->message5)->isoFormat('D MMMM [at] h:mm') }}</p>
+                                            </div>
+                                            <div class="isian-mention-tag">
+                                                {{ $notifikasiDataDibaca->message3 }}
+                                            </div>
+                                        </div>
                                     @endif
                                 <br><br></p>
                                 <p class="logo-pttati2">
@@ -949,15 +1044,19 @@
                         <span style="font-weight: 900">{{ Session::get('name') }}</span>
                         <span class="user-img">
                             <img src="{{ URL::to('/assets/images/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" loading="lazy">
-                            <span class="status online"></span>
+                            @if (Auth::user()->isOnline())
+                                <span class="status online"></span>
+                            @else
+                                <span class="status offline"></span>
+                            @endif
                         </span>
                     </a>
                     <div class="dropdown-menu">
                         @if (Auth::user()->role_name == 'Admin')
-                            <a class="dropdown-item" href="{{ route('admin-profile') }}">Profil Saya</a>
+                            <a class="dropdown-item" href="{{ route('admin-profile') }}">Profile</a>
                         @endif
                         @if (Auth::user()->role_name == 'User')
-                            <a class="dropdown-item" href="{{ route('user-profile') }}">Profil Saya</a>
+                            <a class="dropdown-item" href="{{ route('user-profile') }}">Profile</a>
                         @endif                        
                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                     </div>
@@ -972,11 +1071,12 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     @if (Auth::user()->role_name == 'Admin')
-                        <a class="dropdown-item" href="{{ route('admin-profile') }}">Profil Saya</a>
+                        <a class="dropdown-item" href="{{ route('admin-profile') }}">Profile</a>
                     @endif
                     @if (Auth::user()->role_name == 'User')
-                        <a class="dropdown-item" href="{{ route('user-profile') }}">Profil Saya</a>
-                    @endif                        
+                        <a class="dropdown-item" href="{{ route('user-profile') }}">Profile</a>
+                    @endif
+                    <a class="dropdown-item" href="{{ route('tampilan-semua-notifikasi') }}">Notification</a>
                     <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                 </div>
             </div>
@@ -1070,6 +1170,20 @@
             }
         });
     </script>
+
+    <!-- FancyBox Foto Profil -->
+    <script>
+        $(document).ready(function() {
+            $('[data-fancybox="mention-foto"]').fancybox({
+            });
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <!-- /FancyBox Foto Profil -->
+
+    <script src="{{ asset('assets/js/checking-online.js') }}"></script>
+    
     @yield('script')
     
 </body>

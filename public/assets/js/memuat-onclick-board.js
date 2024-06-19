@@ -22,20 +22,30 @@ function hideAdd() {
         element.classList.add("hidden");
     });
 }
-function aksiKolomShow(id){
+function aksiKolomShow(id) {
     const aksiKolom = document.getElementById(`aksi-kolom${id}`);
     const aksiKolom2 = document.getElementById(`aksi-kolom2${id}`);
-    aksiKolom.classList.add("flex");
-    aksiKolom2.classList.add("flex");
+    if (aksiKolom) {
+        aksiKolom.classList.remove("hidden");
+        aksiKolom.classList.add("flex");
+    }
+    if (aksiKolom2) {
+        aksiKolom2.classList.remove("hidden");
+        aksiKolom2.classList.add("flex");
+    }
 }
-function aksiKolomHide(id){
+function aksiKolomHide(id) {
     const aksiKolom = document.getElementById(`aksi-kolom${id}`);
     const aksiKolom2 = document.getElementById(`aksi-kolom2${id}`);
-    aksiKolom.classList.remove("flex");
-    aksiKolom2.classList.remove("flex");
-    aksiKolom.classList.add("hidden");
-    aksiKolom2.classList.add("hidden");
-    hideAdd()
+    if (aksiKolom) {
+        aksiKolom.classList.remove("flex");
+        aksiKolom.classList.add("hidden");
+    }
+    if (aksiKolom2) {
+        aksiKolom2.classList.remove("flex");
+        aksiKolom2.classList.add("hidden");
+    }
+    hideAdd();
 }
 // /Khusus untuk menghilangkan dan memunculkan edit & delete beserta menghilangkan text yang ada di +Tambah Kartu //
 

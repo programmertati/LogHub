@@ -42,7 +42,7 @@
 
                 <!-- Semua Notifikasi -->
                 <div id="semua_notif" class="pro-overview tab-pane fade show active">
-                    <ul class="notification-list @if(auth()->user()->unreadNotifications->isEmpty() && auth()->user()->readNotifications->isEmpty()) empty @endif" style="margin-top: 10%;">
+                    <ul class="notification-list @if(auth()->user()->unreadNotifications->isEmpty() && auth()->user()->readNotifications->isEmpty()) empty @endif" id="allNotificationList" style="margin-top: 10%;">
                         @if(auth()->user()->unreadNotifications->isEmpty() && auth()->user()->readNotifications->isEmpty())
                             <li class="notification-message noti-unread">
                                 <p class="noti-details" style="margin-top: 30px; text-align: center;">
@@ -325,16 +325,61 @@
                                         </p><br>
                                         <p class="noti-details4">
                                             @if ($notifikasiData->message == 'Happy Birthday')
-                                                {{ $notifikasiData->message2 }} <b>{{ $notifikasiData->message3 }}</b> {{ $notifikasiData->message4 }} {{ $notifikasiData->message5 }}<b>{{ $notifikasiData->message6 }}th</b> year to <b>{{ $notifikasiData->name }}</b> {{ $notifikasiData->message7 }}</i>
+                                                {{ $notifikasiData->message2 }} <b>{{ $notifikasiData->message3 }}</b> {{ $notifikasiData->message4 }} {{ $notifikasiData->message5 }}<b>{{ $notifikasiData->message6 }}th</b> year to <b>{{ $notifikasiData->name }}</b> {{ $notifikasiData->message7 }}
                                             @endif
                                             @if ($notifikasiData->message == 'Mention Tag Description')
-                                                {{ $notifikasiData->message3 }}
+                                                <div class="mention-tag-container" style="width: 398px; margin: 0px 0px 0px 20px;">
+                                                    <div class="header-mention-tag">
+                                                        @php
+                                                            $userAvatar = '';
+                                                            if (!empty($notifikasiData->message6)) { $user = \App\Models\User::find($notifikasiData->message6); if ($user) { $userAvatar = URL::to('/assets/images/' . $user->avatar); } }
+                                                        @endphp
+                                                        <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
+                                                            <img class="avatar-notif" src="{{ $userAvatar }}" loading="lazy">
+                                                        </a>
+                                                        <p class="mention-nama">{{ $notifikasiData->message4 }}</p>
+                                                        <p class="mention-waktu">{{ \Carbon\Carbon::parse($notifikasiData->message5)->isoFormat('D MMMM [at] h:mm') }}</p>
+                                                    </div>
+                                                    <div class="isian-mention-tag">
+                                                        {{ $notifikasiData->message3 }}
+                                                    </div>
+                                                </div>
                                             @endif
                                             @if ($notifikasiData->message == 'Mention Tag Checklist')
-                                                {{ $notifikasiData->message3 }}
+                                                <div class="mention-tag-container" style="width: 398px; margin: 0px 0px 0px 20px;">
+                                                    <div class="header-mention-tag">
+                                                        @php
+                                                            $userAvatar = '';
+                                                            if (!empty($notifikasiData->message6)) { $user = \App\Models\User::find($notifikasiData->message6); if ($user) { $userAvatar = URL::to('/assets/images/' . $user->avatar); } }
+                                                        @endphp
+                                                        <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
+                                                            <img class="avatar-notif" src="{{ $userAvatar }}" loading="lazy">
+                                                        </a>
+                                                        <p class="mention-nama">{{ $notifikasiData->message4 }}</p>
+                                                        <p class="mention-waktu">{{ \Carbon\Carbon::parse($notifikasiData->message5)->isoFormat('D MMMM [at] h:mm') }}</p>
+                                                    </div>
+                                                    <div class="isian-mention-tag">
+                                                        {{ $notifikasiData->message3 }}
+                                                    </div>
+                                                </div>
                                             @endif
                                             @if ($notifikasiData->message == 'Mention Tag Comment')
-                                                {{ $notifikasiData->message3 }}
+                                                <div class="mention-tag-container" style="width: 398px; margin: 0px 0px 0px 20px;">
+                                                    <div class="header-mention-tag">
+                                                        @php
+                                                            $userAvatar = '';
+                                                            if (!empty($notifikasiData->message6)) { $user = \App\Models\User::find($notifikasiData->message6); if ($user) { $userAvatar = URL::to('/assets/images/' . $user->avatar); } }
+                                                        @endphp
+                                                        <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
+                                                            <img class="avatar-notif" src="{{ $userAvatar }}" loading="lazy">
+                                                        </a>
+                                                        <p class="mention-nama">{{ $notifikasiData->message4 }}</p>
+                                                        <p class="mention-waktu">{{ \Carbon\Carbon::parse($notifikasiData->message5)->isoFormat('D MMMM [at] h:mm') }}</p>
+                                                    </div>
+                                                    <div class="isian-mention-tag">
+                                                        {{ $notifikasiData->message3 }}
+                                                    </div>
+                                                </div>
                                             @endif
                                         </p><br>
                                         @if ($notifikasiData->message == 'Happy Birthday')
@@ -554,11 +599,22 @@
         </script>
 
         <script>
+            var unreadNotifications = {!! json_encode($unreadNotifications) !!};
+            var readNotifications = {!! json_encode($readNotifications) !!};
+            var allNotificationList = document.getElementById('allNotificationList');
+            if (unreadNotifications.length > 0 || readNotifications.length > 0) {
+                allNotificationList.classList.add('hiddens');
+            } else {
+                allNotificationList.classList.remove('hiddens');
+            }
+        </script>
+
+        <script>
             history.pushState({}, "", '/tampilan/semua/notifikasi');
         </script>
         
         <script>
-            document.getElementById('pageTitle').innerHTML = 'All Notifications | Loghub - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'All Notifications | Loghub - PT TATI ';
         </script>
         
     @endsection

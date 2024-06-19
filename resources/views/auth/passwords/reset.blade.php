@@ -135,7 +135,7 @@
         <script src="{{ asset('assets/js/indicatorkatasandi.js') }}"></script>
 
         <script>
-            document.getElementById('pageTitle').innerHTML = 'Ubah Kata Sandi | Loghub - PT TATI';
+            document.getElementById('pageTitle').innerHTML = 'Ubah Kata Sandi | Loghub - PT TATI ';
         </script>
 
         <script>
