@@ -53,10 +53,10 @@
                             <!-- /Tampilan Aksi Edit & Hapus Bersama Auth -->
 
                             <!-- Tampilan Nama Kolom -->
-                            <h5 class="kolom-nama mb-3 font-semibold text-lgs dark:text-white">{{ $dataKolom->name }}</h5>
+                            <h5 id="kolomNama{{ $dataKolom->id }}" class="kolom-nama mb-3 font-semibold text-lgs dark:text-white">{{ $dataKolom->name }}</h5>
                             <!-- /Tampilan Nama Kolom -->
 
-                            <ul class="card-container">
+                            <ul class="card-container" id="containerCard{{ $dataKolom->id }}">
 
                                 <!-- Tampilan Kartu -->
                                 @php
@@ -85,8 +85,8 @@
 
                                         <!-- Tampilan Kartu Pengguna -->
                                         <a href="#" data-toggle="modal" data-target="#isianKartu{{ $dataKartu->id }}">
-                                            <div class="card-nama" @if(!empty($dataKartu->pattern)) style="border-top-right-radius: 0 !important; border-bottom-right-radius: 8px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 8px !important; @endif">
-                                                <span class="flex ms-3" style="width: 150px; @if(!empty($dataKartu->description)) margin-bottom: 10px; @endif">{{ $dataKartu->name }}</span>
+                                            <div class="card-nama" @if(!empty($dataKartu->pattern)) style="border-top-right-radius: 0 !important; border-bottom-right-radius: 8px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 8px !important;" @endif>
+                                                <span class="flex ms-3" id="span-nama-{{ $dataKartu->id }}" style="width: 150px; @if(!empty($dataKartu->description)) margin-bottom: 10px; @endif">{{ $dataKartu->name }}</span>
                                                 <div class="tampilan-info gap-2">
 
                                                     <!-- Muncul apabila terdapat deskripsi pada kartu -->
@@ -156,7 +156,7 @@
                                 <!-- /Tampilan Kartu -->
 
                             </ul>
-                            <li class="card-loghub hidden" id="cardLoghub{{ $dataKolom->id }}">
+                            <div class="card-loghub hidden" id="cardLoghub{{ $dataKolom->id }}">
                                 <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
                                     <form action="{{ route('addCard2', ['board_id' => $board->id, 'team_id' => $board->team_id, 'column_id' => $dataKolom->id ]) }}" method="POST">
                                         @csrf
@@ -167,7 +167,7 @@
                                         <button type="submit" class="btn btn-outline-info btn-add">Add card</button>
                                     </form>
                                 </div>
-                            </li>
+                            </div>
                             <button onclick="openAdd('{{ $dataKolom->id }}')" class="btn btn-outline-info" id="btn-add{{ $dataKolom->id }}">
                                 <i class="fa-solid fa-plus"></i> Add a card...
                             </button>
@@ -222,8 +222,8 @@
         <!-- /Buat Kolom Modal -->
 
         <!-- Perbaharui Kolom Modal -->
-        @foreach ( $dataColumnCard as $perbaharuiKolom )
-            <div id="updateColumn{{ $perbaharuiKolom->id }}" class="modal custom-modal fade" role="dialog">
+        @foreach ( $dataColumnCard as $dataKolom )
+            <div id="updateColumn{{ $dataKolom->id }}" class="modal custom-modal fade" role="dialog">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -233,12 +233,12 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('updateCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST">
+                            <form id="updateColumnForm{{ $dataKolom->id }}" action="{{ route('updateCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="column_id" id="column_id" value="{{ $perbaharuiKolom->id  }}">
+                                <input type="hidden" name="column_id" id="column_id" value="{{ $dataKolom->id }}">
                                 <div class="form-group">
                                     <label>Column's Name</label><span class="text-danger">*</span>
-                                    <input type="text" class="form-control @error('column_name') is-invalid @enderror" id="column_name" name="column_name" placeholder="Enter a column's name" value="{{ $perbaharuiKolom->name  }}" required />
+                                    <input type="text" class="form-control @error('column_name') is-invalid @enderror" id="column_name" name="column_name" placeholder="Enter a column's name" value="{{ $dataKolom->name }}" required />
                                     @error('column_name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -253,6 +253,7 @@
                     </div>
                 </div>
             </div>
+            @include('user.updatecolumn')
         @endforeach
         <!-- /Perbaharui Kolom Modal -->
 
@@ -267,9 +268,9 @@
                                 <p>Are you sure you want to delete this column?</p>
                             </div>
                             <div class="modal-btn delete-action">
-                                <form action="{{ route('deleteCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST">
+                                <form id="deleteColumnForm-{{ $hapusKolom->id }}" class="deleteColumnForm" data-column-id="{{ $hapusKolom->id }}" action="{{ route('deleteCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="column_id" id="column_id" value="{{ $hapusKolom->id  }}">
+                                    <input type="hidden" name="column_id" value="{{ $hapusKolom->id }}">
                                     <div class="row">
                                         <div class="col-6">
                                             <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
@@ -285,6 +286,7 @@
                 </div>
             </div>
         @endforeach
+        @include('user.deletecolumn')
         <!-- /Hapus Kolom Modal Dicomment ketika menggunakan auth -->
 
         <!-- Isian Kartu Modal -->
@@ -299,7 +301,7 @@
                                     <i class="fa-solid fa-credit-card fa-lg"></i>
                                 </div>
                                 <div>
-                                    <h5 class="nama-kartu">{{ $isianKartu->name  }}</h5>
+                                    <h5 class="nama-kartu" data-kartu-id="{{ $isianKartu->id }}">{{ $isianKartu->name  }}</h5>
                                     {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
 
                                         <!-- Untuk Pembaharuan Cover dan Hapus Kartu -->
@@ -344,12 +346,13 @@
                                                     </a>
                                                     @include('user.script4')
                                                     <a href="#" class="dropdown-item" data-toggle="modal">
-                                                        <form action="{{ route('hapusKartu2', ['card_id' => $isianKartu->id]) }}" method="POST">
+                                                        <form id="deleteCardForm{{ $isianKartu->id }}" class="deleteCardForm" data-id="{{ $isianKartu->id }}" action="{{ route('hapusKartu2', ['card_id' => $isianKartu->id]) }}" method="POST">
                                                             @csrf
-                                                            <input type="hidden" name="id" value="{{ $isianKartu->id  }}">
+                                                            <input type="hidden" name="id" value="{{ $isianKartu->id }}">
                                                             <button type="submit" class="deleteCard" style="@foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach"><i class='fa fa-trash-o m-r-5'></i> Delete Card</button>
                                                         </form>
                                                     </a>
+                                                    @include('user.deletecard')
                                                 </div>
                                             </div>
                                             <span class="text-status4" style="line-height: 20px"><b>Delete / Cover</b></span>
@@ -360,7 +363,7 @@
                                     <div class="aksi-move-card">
                                         <p class="tag-list">in list</p>
                                         <div class="dropdown info-status10">
-                                            <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false" data-auto-close="outside" style="color: #489bdb; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: #489bdb !important; @endif @endforeach margin-left: -12px; text-decoration: underline;">{{ $dataKolom->name }}</a>
+                                            <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false" data-auto-close="outside" data-kolom-id="{{ $dataKolom->id }}" style="color: #489bdb; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: #489bdb !important; @endif @endforeach margin-left: -12px; text-decoration: underline;">{{ $dataKolom->name }}</a>
                                             <span class="text-status10"><b>Move Card's</b></span>
                                             <form class="dropdown-menu p-4" style="min-width: 18rem !important; margin-left: 34px !important;">
                                                 <div class="topnav-dropdown-header">
@@ -693,8 +696,8 @@
 
         <!-- Perbaharui Kartu Modal -->
         @foreach ( $dataColumnCard as $dataKolom )
-            @foreach ($dataKolom->cards as $perbaharuiKartu)
-                <div id="editCard{{ $perbaharuiKartu->id }}" class="modal custom-modal fade" role="dialog">
+            @foreach ($dataKolom->cards as $dataKartu)
+                <div id="editCard{{ $dataKartu->id }}" class="modal custom-modal fade" role="dialog">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -704,12 +707,12 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="{{ route('perbaharuiKartu2', ['card_id' => $perbaharuiKartu->id]) }}" method="POST">
+                                <form id="updateCardForm{{ $dataKartu->id }}" action="{{ route('perbaharuiKartu2', ['card_id' => $dataKartu->id]) }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="id" value="{{ $perbaharuiKartu->id  }}">
+                                    <input type="hidden" name="id" value="{{ $dataKartu->id  }}">
                                     <div class="form-group">
                                         <label>Card's Name</label><span class="text-danger">*</span>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $perbaharuiKartu->name  }}" placeholder="Enter a card's name" required />
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $dataKartu->name  }}" placeholder="Enter a card's name" required />
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -724,6 +727,7 @@
                         </div>
                     </div>
                 </div>
+                @include('user.updatecard')
             @endforeach
         @endforeach
         <!-- /Perbaharui Kartu Modal -->

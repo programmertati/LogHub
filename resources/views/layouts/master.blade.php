@@ -650,11 +650,11 @@
                                 @endif
 
                                 @foreach ($belum_dibaca->where('notifiable_id', auth()->id()) as $notifikasi_belum_dibaca)
-                                @php
-                                    $notifikasiDataBelumDibaca = json_decode($notifikasi_belum_dibaca->data);
-                                    $created_at = \Carbon\Carbon::parse($notifikasi_belum_dibaca->created_at);
-                                    $read_at = \Carbon\Carbon::parse($notifikasi_belum_dibaca->read_at);
-                                @endphp
+                                    @php
+                                        $notifikasiDataBelumDibaca = json_decode($notifikasi_belum_dibaca->data);
+                                        $created_at = \Carbon\Carbon::parse($notifikasi_belum_dibaca->created_at);
+                                        $read_at = \Carbon\Carbon::parse($notifikasi_belum_dibaca->read_at);
+                                    @endphp
                                     <li class="notification-message noti-unread">
                                         <a href="#" id="open-popup_{{ $notifikasi_belum_dibaca->id }}">
                                             @if ($notifikasiDataBelumDibaca->message == 'Happy Birthday')
@@ -738,11 +738,11 @@
                                 @endforeach
 
                                 @foreach ($dibaca->where('notifiable_id', auth()->id()) as $notifikasi_dibaca)
-                                @php
-                                    $notifikasiDataDibaca = json_decode($notifikasi_dibaca->data);
-                                    $created_at = \Carbon\Carbon::parse($notifikasi_dibaca->created_at);
-                                    $read_at = \Carbon\Carbon::parse($notifikasi_dibaca->read_at);
-                                @endphp
+                                    @php
+                                        $notifikasiDataDibaca = json_decode($notifikasi_dibaca->data);
+                                        $created_at = \Carbon\Carbon::parse($notifikasi_dibaca->created_at);
+                                        $read_at = \Carbon\Carbon::parse($notifikasi_dibaca->read_at);
+                                    @endphp
                                     <li class="notification-message noti-read">
                                         <a href="#" id="open-popup_{{ $notifikasi_dibaca->id }}">
                                             @if ($notifikasiDataDibaca->message == 'Happy Birthday')

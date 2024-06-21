@@ -362,13 +362,11 @@ class BoardController extends Controller
         $col_id = intval($request->column_id);
         $column = Column::find($col_id);
         if (!$column) {
-            Toastr::error('Kolom tidak ditemukan atau terhapus harap menghubungi pemiliknya', 'Error');
-            return redirect()->back();
+            return response()->json(['error' => 'Kolom tidak ditemukan atau terhapus harap menghubungi pemiliknya'], 404);
         }
         $column->name = $request->column_name;
         $column->save();
-        Toastr::success('Berhasil memperbaharui kolom!', 'Success');
-        return redirect()->back();
+        return response()->json(['name' => $column->name], 200);
     }
     // /Perbaharui Kolom Admin //
 
@@ -383,13 +381,11 @@ class BoardController extends Controller
         $col_id = intval($request->column_id);
         $column = Column::find($col_id);
         if (!$column) {
-            Toastr::error('Kolom tidak ditemukan atau terhapus harap menghubungi pemiliknya', 'Error');
-            return redirect()->back();
+            return response()->json(['error' => 'Kolom tidak ditemukan atau terhapus harap menghubungi pemiliknya'], 404);
         }
         $column->name = $request->column_name;
         $column->save();
-        Toastr::success('Berhasil memperbaharui kolom!', 'Success');
-        return redirect()->back();
+        return response()->json(['name' => $column->name], 200);
     }
     // /Perbaharui Kolom User //
 
@@ -399,8 +395,8 @@ class BoardController extends Controller
         $request->validate(["column_id" => "required"]);
         $col_id = intval($request->column_id);
         $this->boardLogic->deleteCol($col_id);
-        Toastr::success('Berhasil menghapus kolom!', 'Success');
-        return redirect()->back();
+
+        return response()->json(['message' => 'Berhasil menghapus kolom!']);
     }
     // /Menghapus Kolom Admin //
 
@@ -409,9 +405,9 @@ class BoardController extends Controller
     {
         $request->validate(["column_id" => "required"]);
         $col_id = intval($request->column_id);
-        $this->boardLogic->deleteCol2($col_id);
-        Toastr::success('Berhasil menghapus kolom!', 'Success');
-        return redirect()->back();
+        $this->boardLogic->deleteCol($col_id);
+
+        return response()->json(['message' => 'Berhasil menghapus kolom!']);
     }
     // /Menghapus Kolom User //
 
@@ -456,7 +452,7 @@ class BoardController extends Controller
                 "name" => "required|max:200"
             ]);
 
-            $user_id = AUth::user()->id;
+            $user_id = Auth::user()->id;
             $card_id = intval($card_id);
             $card = Card::find($card_id);
 
@@ -465,17 +461,14 @@ class BoardController extends Controller
                 'name'          => $request->name,
             ];
 
-            $card->save();
-            Card::where('id', $request->id)->update($updateKartu);
+            $card->update($updateKartu);
             $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Kartu");
 
             DB::commit();
-            Toastr::success('Berhasil memperbaharui kartu!', 'Success');
-            return redirect()->back();
+            return response()->json(['name' => $request->name], 200);
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Gagal memperbaharui kartu!', 'Error');
-            return redirect()->back();
+            return response()->json(['error' => 'Gagal memperbaharui kartu!'], 500);
         }
     }
     // Perbaharui Kartu Admin //
@@ -489,7 +482,7 @@ class BoardController extends Controller
                 "name" => "required|max:200"
             ]);
 
-            $user_id = AUth::user()->id;
+            $user_id = Auth::user()->id;
             $card_id = intval($card_id);
             $card = Card::find($card_id);
 
@@ -498,17 +491,14 @@ class BoardController extends Controller
                 'name'          => $request->name,
             ];
 
-            $card->save();
-            Card::where('id', $request->id)->update($updateKartu);
+            $card->update($updateKartu);
             $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Kartu");
 
             DB::commit();
-            Toastr::success('Berhasil memperbaharui kartu!', 'Success');
-            return redirect()->back();
+            return response()->json(['name' => $request->name], 200);
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Gagal memperbaharui kartu!', 'Error');
-            return redirect()->back();
+            return response()->json(['error' => 'Gagal memperbaharui kartu!'], 500);
         }
     }
     // Perbaharui Kartu User //
@@ -521,12 +511,10 @@ class BoardController extends Controller
             $this->cardLogic->deleteCard(intval($card_id));
 
             DB::commit();
-            Toastr::success('Berhasil menghapus kartu!', 'Success');
-            return redirect()->back();
+            return response()->json(['message' => 'Berhasil menghapus kartu!']);
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Gagal menghapus kartu!', 'Error');
-            return redirect()->back();
+            return response()->json(['message' => 'Gagal menghapus kartu!']);
         }
     }
     // Perbaharui Kartu Admin //
@@ -536,15 +524,13 @@ class BoardController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->cardLogic->deleteCard2(intval($card_id));
+            $this->cardLogic->deleteCard(intval($card_id));
 
             DB::commit();
-            Toastr::success('Berhasil menghapus kartu!', 'Success');
-            return redirect()->back();
+            return response()->json(['message' => 'Berhasil menghapus kartu!']);
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Gagal menghapus kartu!', 'Error');
-            return redirect()->back();
+            return response()->json(['message' => 'Gagal menghapus kartu!']);
         }
     }
     // Perbaharui Kartu Admin //
