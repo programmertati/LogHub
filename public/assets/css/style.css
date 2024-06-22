@@ -3871,7 +3871,7 @@ table.dataTable thead > tr > td.sorting {
 
 .notification-message.noti-unread .noti-details {
     /* color:  #7460ee; */
-	color: #4999de;
+	color: #4999de !important;
 }
 
 .notification-message.noti-unread .noti-title {
@@ -12197,12 +12197,13 @@ ul.nav-tabs > li > a {
     background-color: #44546f;
     padding: 0px 5px 0px 5px;
     bottom: 10%;
-    margin-bottom: -24px;
+    margin-bottom: -29px;
     left: 13px;
     margin-right: -150px;
 	margin-left: -27px;
     border-radius: 5px;
     transition: opacity 0.3s;
+	z-index: 1;
 }
 
 .info-status9 .text-status9 {
@@ -12214,12 +12215,13 @@ ul.nav-tabs > li > a {
     background-color: #44546f;
     padding: 0px 5px 0px 5px;
     bottom: 10%;
-    margin-bottom: -24px;
+    margin-bottom: -29px;
     left: 13px;
     margin-right: -80px;
 	margin-left: -40px;
     border-radius: 5px;
     transition: opacity 0.3s;
+	z-index: 1;
 }
 
 .info-status10 .text-status10 {
@@ -14847,4 +14849,64 @@ ul.nav-tabs > li > a {
     height: 30px;
     border-radius: 50%;
     bottom: 4px;
+}
+
+.icon-deskripsi-light {
+	color: #44546F;
+	margin-right: 5px;
+}
+
+.icon-deskripsi-dark {
+	color: #9FADBC;
+	margin-right: 5px;
+}
+
+.icon-check-not-full-light {
+	color: #44546F;
+	margin-right: 5px;
+}
+
+.icon-check-not-full-dark {
+	color: #9FADBC;
+	margin-right: 5px;
+}
+
+.icon-check-full-light {
+	color: #ffffff;
+	margin-right: 5px;
+}
+
+.icon-check-full-dark {
+	color: #1D2125;
+	margin-right: 5px;
+}
+
+.progress-checklist-light {
+	position: relative;
+	color: #44546F;
+}
+
+.progress-checklist-dark {
+	position: relative;
+	color: #9FADBC;
+}
+
+.progress-checklist-100-light {
+	position: relative;
+	background: #1F845A;
+	color: #FFFFFF;
+	height: 22px;
+	padding: 0px 6px 0px 6px;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.progress-checklist-100-dark {
+	position: relative;
+	background: #4BCE97;
+	color: #1D2125;
+	height: 22px;
+	padding: 0px 6px 0px 6px;
+	border-radius: 4px;
+	font-size: 14px;
 }
