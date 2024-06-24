@@ -27,7 +27,7 @@
                     let newComment = `<div class="isian-history{{ $isianKartu->id }}" style="margin-bottom: -7px;">
                                         <img class="avatar-activity" src="{{ URL::to('/assets/images/' . Auth::user()->avatar) }}" loading="lazy">
                                         <div class="title-activity">
-                                            <p>${response.name}<br><span>${response.content}</span></p>
+                                            <p class="isian-activity">${response.name}<br><span>${response.content}</span></p>
                                         </div>
                                       </div>
                                       <div class="waktu-history" style="margin-top: 7px; margin-bottom: -21px;">

@@ -21,7 +21,7 @@
                     }) : $dataColumnCard->sortBy('id');
                     @endphp
                     @foreach ($sortedData as $dataKolom)
-                        <div class="kolom-card-{{ $dataKolom->id }}" id="kolom-card-{{ $dataKolom->id }}" data-id="{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
+                        <div class="kolom-card" id="kolom-card-{{ $dataKolom->id }}" data-id="{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
 
                             <!-- Tampilan Aksi Edit & Hapus -->
                             <div class="dropdown dropdown-action aksi-kolom" id="aksi-kolom{{ $dataKolom->id }}">
@@ -730,7 +730,7 @@
                                                                 <div class="isian-history{{ $isianKartu->id }}">
                                                                     <img class="avatar-activity" src="{{ URL::to('/assets/images/' . $history->avatar) }}" loading="lazy">
                                                                     <div class="title-activity">
-                                                                        <p>{{ $history->name }}<br><span>{{ $history->content }}</span></p>
+                                                                        <p class="isian-activity">{{ $history->name }}<br><span>{{ $history->content }}</span></p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="waktu-history">
@@ -917,32 +917,6 @@
             .card-cover-black:hover {
                 background-color: #596773;
             }
-            @foreach ( $dataColumnCard as $dataKolom )
-                .kolom-card-{{ $dataKolom->id }} {
-                    --loghub-border-opacity: 1;
-                    color: #44546F !important;
-                    min-width: 325px !important;
-                    padding: 1rem !important;
-                    border-radius: 12px;
-                    box-shadow: 0px 1px 1px #091e4240 !important;
-                    background-color: #f1f2f4 !important;
-                    border-color: rgb(229 231 235 / var(--loghub-border-opacity)) !important;
-                    height: 1%;
-                    cursor: pointer;
-                }
-                @foreach ($dataKolom->cards as $isianKartu)
-                    .isian-history{{ $isianKartu->id }} {
-                        display: flex;
-                        width: 100%;
-                        gap: 0.25rem !important;
-                        --loghub-border-opacity: 1;
-                        background-color: #f1f2f4;
-                        box-shadow: 0px 1px 1px #091e4240;
-                        border-color: rgb(229 231 235 / var(--loghub-border-opacity));
-                        border-radius: 12px;
-                    }
-                @endforeach
-            @endforeach
             .kolom-card {
                 --loghub-border-opacity: 1;
                 color: #44546F !important;
@@ -960,6 +934,21 @@
             .border-darks:focus {border-color: #343a40 !important; cursor: pointer;}
             .border-dark:hover {background-color: #091E420F; !important; cursor: pointer;}
             .border-darks:hover {background-color: #091E420F; !important; cursor: pointer;}
+
+            @foreach ( $dataColumnCard as $dataKolom )
+                @foreach ($dataKolom->cards as $isianKartu)
+                    .isian-history{{ $isianKartu->id }} {
+                        display: flex;
+                        width: 100%;
+                        gap: 0.25rem !important;
+                        --loghub-border-opacity: 1;
+                        background-color: #f1f2f4;
+                        box-shadow: 0px 1px 1px #091e4240;
+                        border-color: rgb(229 231 235 / var(--loghub-border-opacity));
+                        border-radius: 12px;
+                    }
+                @endforeach
+            @endforeach
             
             @foreach($result_tema as $sql_mode => $mode_tema)
                 @if ($mode_tema->tema_aplikasi == 'Gelap')
@@ -981,9 +970,6 @@
                     .dynamicCheckboxLabel {background-color: {{ $mode_tema->warna_mode }} !important}
                     input[type="checkbox"] {background-color: {{ $mode_tema->warna_mode }} !important; border: 2px solid white !important}
                     input[type="checkbox"]:checked {border-color: {{ $mode_tema->warna_sistem_tulisan }} !important}
-                    @foreach ( $dataColumnCard as $dataKolom )
-                        .kolom-card-{{ $dataKolom->id }} {background-color: {{ $mode_tema->warna_sistem }} !important; border-color: {{ $mode_tema->warna_sistem_tulisan }} !important; color: {{ $mode_tema->warna_sistem_tulisan }} !important}
-                    @endforeach
                     .kolom-card {background-color: {{ $mode_tema->warna_sistem }} !important; border-color: {{ $mode_tema->warna_sistem_tulisan }} !important; color: {{ $mode_tema->warna_sistem_tulisan }} !important}
                     .progress{background-color: {{ $mode_tema->warna_sistem }} !important;}
                     .move-card {color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
@@ -1010,6 +996,13 @@
                     .card-cover2-pink {background-color: #943D73;}
                     .card-cover2-black {background-color: #596773;}
                     .sidebar-menu li a:hover {color: #ffffff !important}
+
+                    @foreach ( $dataColumnCard as $dataKolom )
+                        @foreach ($dataKolom->cards as $isianKartu)
+                            .isian-history{{ $isianKartu->id }} {background: rgb(31 28 54) !important}
+                        @endforeach
+                    @endforeach
+                    
                 @endif
             @endforeach
         </style>
