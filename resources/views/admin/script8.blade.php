@@ -76,7 +76,7 @@
                     item.addEventListener('click', function() {
 
                         // Untuk inputan yang dikeluarkan //
-                        const newValue = currentValue.substring(0, atPosition + 1) + (user.username).toLowerCase() + ' ';
+                        const newValue = currentValue.substring(0, atPosition + 1) + user.username.toLowerCase() + ' ';
                         // /Untuk inputan yang dikeluarkan //
 
                         inputTag.value = newValue;
@@ -101,11 +101,12 @@
             // /Kalau tidak ada @ maka akan hidden container //
 
             // Kirimkan data mention ke notifikasi //
-            document.querySelectorAll('[id^="saveButtonChecklistUpdate"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const inputId = button.id.replace('saveButtonChecklistUpdate', 'checkbox');
-                    const checklistInput = document.getElementById(inputId);
-                    const name = checklistInput.value;
+            const saveButtonId = `saveButtonChecklistUpdate${inputId.replace('checkbox', '')}`;
+            const saveButton = document.getElementById(saveButtonId);
+
+            if (saveButton) {
+                saveButton.addEventListener('click', function() {
+                    const name = inputTag.value;
 
                     if (selectedUsers.length > 0) {
                         const promises = selectedUsers.map(user => {
@@ -127,10 +128,8 @@
                                 const allSuccessful = responses.every(response => response.ok);
                                 if (allSuccessful) {
                                     toastr.success('Berhasil mengirimkan mention tag!');
-                                    console.log('Notifikasi dikirim.');
                                 } else {
                                     toastr.error('Gagal mengirimkan mention tag!');
-                                    console.error('Gagal mengirim notifikasi.');
                                 }
                             })
                             .catch(error => {
@@ -138,7 +137,7 @@
                             });
                     }
                 });
-            });
+            };
             // /Kirimkan data mention ke notifikasi //
             
         }
@@ -146,22 +145,26 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
+    document.addEventListener('DOMContentLoaded', function () {
+        const dynamicCheckboxValue = document.getElementById('checkbox-{{$checklists->id}}');
+        const aksiUpdateChecklist = document.getElementById('checklist-{{$checklists->id}}');
         const saveButton = document.getElementById('saveButtonChecklistUpdate-{{ $checklists->id }}');
-        const cancelButton = document.getElementById('cancelButtonChecklistUpdate-{{ $checklists->id }}');
-        const container = document.getElementById('checklist-{{ $checklists->id }}');
-        function updateMargin() {
-            if (!saveButton.classList.contains('hidden') || !cancelButton.classList.contains('hidden')) {
-                container.classList.remove('margin-bottom-0');
-                container.classList.add('margin-bottom-10');
-            } else {
-                container.classList.remove('margin-bottom-10');
-                container.classList.add('margin-bottom-0');
-            }
-        }
-        updateMargin();
-        const observer = new MutationObserver(updateMargin);
-        observer.observe(saveButton, { attributes: true, attributeFilter: ['class'] });
-        observer.observe(cancelButton, { attributes: true, attributeFilter: ['class'] });
+        const cancelButton = document.getElementById('cancelButtonChecklistUpdate-{{$checklists->id}}');
+        
+
+        dynamicCheckboxValue.addEventListener('click', function () {
+            aksiUpdateChecklist.style.marginBottom = '10px';
+            aksiUpdateChecklist.style.marginTop = '5px';
+        });
+
+        saveButton.addEventListener('click', function () {
+            aksiUpdateChecklist.style.marginBottom = '0';
+            aksiUpdateChecklist.style.marginTop = '0';
+        });
+
+        cancelButton.addEventListener('click', function () {
+            aksiUpdateChecklist.style.marginBottom = '0';
+            aksiUpdateChecklist.style.marginTop = '0';
+        });
     });
 </script>

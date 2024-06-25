@@ -14,16 +14,17 @@
                 onEnd: function (evt) {
                     updateCardPositions(e);
                 },
-            })
+            });
         });
 
         function updateColumnPositions() {
             const positions = {};
-            const columns = document.querySelectorAll('[id^="kolom-card"]');
-            columns.forEach((column, index) => {
+            const columnIds = columnContainer.children;
+            for (let i = 0; i < columnIds.length; i++) {
+                const column = columnIds[i];
                 const id = column.dataset.id;
-                positions[id] = index + 1;
-            });
+                positions[id] = i + 1;
+            }
 
             fetch('{{ route("perbaharuiPosisiKolom") }}', {
                 method: 'POST',
@@ -54,11 +55,12 @@
 
         function updateCardPositions(e) {
             const positions = {};
-            const cards = $(e).children().toArray();
-            cards.forEach((card, index) => {
+            const cards = e.children;
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i];
                 const id = card.dataset.id;
-                positions[id] = index + 1;
-            });
+                positions[id] = i + 1;
+            }
 
             fetch('{{ route("perbaharuiPosisiKartu") }}', {
                 method: 'POST',

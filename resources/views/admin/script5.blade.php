@@ -76,7 +76,7 @@
                     item.addEventListener('click', function() {
 
                         // Untuk inputan yang dikeluarkan //
-                        const newValue = currentValue.substring(0, atPosition + 1) + (user.username).toLowerCase() + ' ';
+                        const newValue = currentValue.substring(0, atPosition + 1) + user.username.toLowerCase() + ' ';
                         // /Untuk inputan yang dikeluarkan //
 
                         inputTag.value = newValue;
@@ -101,11 +101,12 @@
             // /Kalau tidak ada @ maka akan hidden container //
 
             // Kirimkan data mention ke notifikasi //
-            document.querySelectorAll('[id^="saveButtonChecklist"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const inputId = button.id.replace('saveButtonChecklist', 'checklist');
-                    const checklistInput = document.getElementById(inputId);
-                    const name = checklistInput.value;
+            const saveButtonId = `saveButtonChecklist${inputId.replace('checklist', '')}`;
+            const saveButton = document.getElementById(saveButtonId);
+
+            if (saveButton) {
+                saveButton.addEventListener('click', function() {
+                    const name = inputTag.value;
 
                     if (selectedUsers.length > 0) {
                         const promises = selectedUsers.map(user => {
@@ -127,10 +128,8 @@
                                 const allSuccessful = responses.every(response => response.ok);
                                 if (allSuccessful) {
                                     toastr.success('Berhasil mengirimkan mention tag!');
-                                    console.log('Notifikasi dikirim.');
                                 } else {
                                     toastr.error('Gagal mengirimkan mention tag!');
-                                    console.error('Gagal mengirim notifikasi.');
                                 }
                             })
                             .catch(error => {
@@ -138,7 +137,7 @@
                             });
                     }
                 });
-            });
+            };
             // /Kirimkan data mention ke notifikasi //
 
         }

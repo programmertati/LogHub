@@ -76,7 +76,7 @@
                     item.addEventListener('click', function() {
 
                         // Untuk inputan yang dikeluarkan //
-                        const newValue = currentValue.substring(0, atPosition + 1) + (user.username).toLowerCase() + ' ';
+                        const newValue = currentValue.substring(0, atPosition + 1) + user.username.toLowerCase() + ' ';
                         // /Untuk inputan yang dikeluarkan //
 
                         inputTag.value = newValue;
@@ -101,43 +101,41 @@
             // /Kalau tidak ada @ maka akan hidden container //
 
             // Kirimkan data mention ke notifikasi //
-            document.querySelectorAll('[id^="simpanButton"]').forEach(button => {
-                button.addEventListener('click', function() {
-                    const inputId = button.id.replace('simpanButton', 'contentarea');
-                    const contentTextarea = document.getElementById(inputId);
-                    const content = contentTextarea.value;
+            const saveButtonId = `simpanButton${inputId.replace('contentarea', '')}`;
+            const saveButton = document.getElementById(saveButtonId);
 
-                    if (selectedUsers.length > 0) {
-                        const promises = selectedUsers.map(user => {
-                            return fetch('/mention-tag-comment', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                                body: JSON.stringify({
-                                    username: user.username,
-                                    content: content
-                                })
-                            });
-                        });
+            saveButton.addEventListener('click', function() {
+                const contentTextarea = document.getElementById(inputId);
+                const content = contentTextarea.value;
 
-                        Promise.all(promises)
-                            .then(responses => {
-                                const allSuccessful = responses.every(response => response.ok);
-                                if (allSuccessful) {
-                                    toastr.success('Berhasil mengirimkan mention tag!');
-                                    console.log('Notifikasi dikirim.');
-                                } else {
-                                    toastr.error('Gagal mengirimkan mention tag!');
-                                    console.error('Gagal mengirim notifikasi.');
-                                }
+                if (selectedUsers.length > 0) {
+                    const promises = selectedUsers.map(user => {
+                        return fetch('/mention-tag-comment', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                username: user.username,
+                                content: content
                             })
-                            .catch(error => {
-                                console.error('Error:', error);
-                            });
-                    }
-                });
+                        });
+                    });
+
+                    Promise.all(promises)
+                        .then(responses => {
+                            const allSuccessful = responses.every(response => response.ok);
+                            if (allSuccessful) {
+                                toastr.success('Berhasil mengirimkan mention tag!');
+                            } else {
+                                toastr.error('Gagal mengirimkan mention tag!');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                };
             });
             // /Kirimkan data mention ke notifikasi //
 

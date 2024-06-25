@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\LockScreen;
 use App\Http\Controllers\Auth\RegisterController;
@@ -12,7 +11,6 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\BoardController;
-use App\Http\Controllers\CardController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\ChecklistController;
 
@@ -51,12 +49,6 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/mention-tag-description', 'mentionDescriptionNotification')->name('mention-tag-description');
     Route::post('/mention-tag-checklist', 'mentionChecklistNotification')->name('mention-tag-checklist');
     Route::post('/mention-tag-comment', 'mentionCommentNotification')->name('mention-tag-comment');
-});
-
-// ----------------------------- Pengaturan Perusahaan ----------------------------- //
-Route::controller(SettingController::class)->group(function () {
-    Route::get('pengaturan/perusahaan', 'pengaturanPerusahaan')->middleware('auth')->name('pengaturan-perusahaan');
-    Route::post('pengaturan/perusahaan/save', 'tambahPengaturan')->middleware('auth')->name('pengaturan-perusahaan-save');
 });
 
 // ----------------------------- Masuk Aplikasi ----------------------------- //
@@ -111,7 +103,6 @@ Route::controller(UserManagementController::class)->group(function () {
     Route::post('change/password/db', 'perbaharuiKataSandi')->name('change/password/db');
     Route::get('get-history-activity', 'getHistoryActivity')->name('get-history-activity');
     Route::get('get-aktivitas-pengguna', 'getAktivitasPengguna')->name('get-aktivitas-pengguna');
- 
 });
 
 // ----------------------------- Profil Pengguna By ID Akun ----------------------------- //
@@ -158,7 +149,6 @@ Route::controller(BoardController::class)->group(function () {
     Route::post("admin/tim/papan/{team_id}/{board_id}", "updateBoard")->middleware("auth", "auth.session", "boardAccess")->name("updateBoard");
     Route::post("admin/tim/papan/hapus/{team_id}/{board_id}", "deleteBoard")->middleware("auth", "auth.session", "boardAccess")->name("deleteBoard");
     Route::post("admin/tim/{team_id}/papan/{board_id}/kolom", "addColumn")->middleware("auth", "auth.session", "boardAccess")->name("addCol");
-    // Route::post("admin/tim/{team_id}/papan/{board_id}/kolom/{card_id}", "addColumn")->middleware("auth", "auth.session", "boardAccess")->name("addCol");
     Route::post("admin/tim/papan/kolom/perbaharui/{team_id}/{board_id}", "updateCol")->middleware("auth", "auth.session", "boardAccess")->name("updateCol");
     Route::post("admin/tim/papan/kolom/hapus/{team_id}/{board_id}", "deleteCol")->middleware("auth", "auth.session", "boardAccess")->name("deleteCol");
     Route::post("admin/tim/{team_id}/papan/{board_id}/kolom/{column_id}/kartu", "addCard")->middleware("auth", "auth.session", "boardAccess")->name("addCard");
@@ -174,7 +164,6 @@ Route::controller(BoardController::class)->group(function () {
     // ----------------------------- User ----------------------------- //
     Route::get("user/tim/papan/{team_id}/{board_id}", "showBoard2")->middleware("auth", "auth.session", "boardAccess")->name("board2");
     Route::post("user/tim/{team_id}/papan/{board_id}/kolom", "addColumn2")->middleware("auth", "auth.session", "boardAccess")->name("addCol2");
-    // Route::post("user/tim/{team_id}/papan/{board_id}/kolom/{card_id}", "addColumn2")->middleware("auth", "auth.session", "boardAccess")->name("addCol2");
     Route::post("user/tim/papan/kolom/perbaharui/{team_id}/{board_id}", "updateCol2")->middleware("auth", "auth.session", "boardAccess")->name("updateCol2");
     Route::post("user/tim/papan/kolom/hapus/{team_id}/{board_id}", "deleteCol2")->middleware("auth", "auth.session", "boardAccess")->name("deleteCol2");
     Route::post("user/tim/{team_id}/papan/{board_id}/kolom/{column_id}/kartu", "addCard2")->middleware("auth", "auth.session", "boardAccess")->name("addCard2");
@@ -184,15 +173,9 @@ Route::controller(BoardController::class)->group(function () {
     Route::post("user/tim/papan/kolom/kartu/komentar/{card_id}", "komentarKartu2")->name("komentarKartu2");
     Route::post("user/tim/papan/kolom/kartu/cover/perbaharui", "perbaharuiCover2")->name("perbaharuiCover2");
     Route::post("user/tim/papan/kolom/kartu/cover/hapus", "hapusCover2")->name("hapusCover2");
-    
-
-
-    Route::get("team/{team_id}/board/{board_id}/data", "getData")->middleware("auth", "auth.session", "boardAccess")->name("boardJson");
-    Route::post("team/{team_id}/board/{board_id}/card/reorder", "reorderCard")->middleware("auth", "auth.session", "boardAccess")->name("reorderCard");
-    Route::post("team/{team_id}/board/{board_id}/column/reorder", "reorderCol")->middleware("auth", "auth.session", "boardAccess")->name("reorderCol");
-    Route::post("team/{team_id}/board/{board_id}/column/reorder", "reorderCol2")->middleware("auth", "auth.session", "boardAccess")->name("reorderCol2");
 });
 
+// ----------------------------- Checklist ----------------------------- //
 Route::controller(ChecklistController::class)->group(function () {
     // ----------------------------- Admin ----------------------------- //
     Route::post("admin/tim/papan/kolom/kartu/judul/tambah", "addTitle")->name("addTitle");
@@ -211,22 +194,4 @@ Route::controller(ChecklistController::class)->group(function () {
     Route::post("user/tim/checklist/tambah", "addChecklist2")->name("addChecklist2");
     Route::post("user/tim/checklist/perbaharui", "updateChecklist2")->name("updateChecklist2");
     Route::get('/user/tim/checklist/perbaharui/{title_checklists_id}', 'getProgress2');
-});
-
-// ----------------------------- Card ----------------------------- //
-Route::controller(CardController::class)->group(function () {
-    // ----------------------------- Admin ----------------------------- //
-    Route::post("admin/tim/{team_id}/papan/{board_id}/kartu/{card_id}/perbaharui", "updateCard")->middleware("auth", "auth.session", "boardAccess","cardExist")->name("updateCard");
-
-
-
-    Route::get("team/{team_id}/board/{board_id}/card/{card_id}/view", "showCard")->middleware("auth", "auth.session", "boardAccess","cardExist")->name("viewCard");
-    Route::post("team/{team_id}/board/{board_id}/card/{card_id}/assign", "assignCard")->middleware("auth", "auth.session", "boardAccess","cardExist")->name("assignCard");
-    Route::post("team/{team_id}/board/{board_id}/card/{card_id}/assignself", "assignSelf")->middleware("auth", "auth.session", "boardAccess","cardExist")->name("assignSelf");
-    Route::post("team/{team_id}/board/{board_id}/card/{card_id}/leave", "leaveCard")->middleware("auth", "auth.session", "boardAccess","cardExist")->name("leaveCard");
-    Route::post("team/{team_id}/board/{board_id}/card/{card_id}/delete", "deleteCard")->middleware("auth", "auth.session", "boardAccess","cardExist")->name("deleteCard");
-    Route::post("team/{team_id}/board/{board_id}/card/{card_id}/comment", "addComment")->middleware("auth", "auth.session", "boardAccess","cardExist")->name("commentCard");
-
-    // ----------------------------- User ----------------------------- //
-    Route::post("user/tim/{team_id}/papan/{board_id}/kartu/{card_id}/perbaharui", "updateCard2")->middleware("auth", "auth.session", "boardAccess","cardExist")->name("updateCard2");
 });
