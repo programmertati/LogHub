@@ -29,10 +29,10 @@
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateColumn{{ $dataKolom->id }}">
+                                    <a href="#" class="dropdown-item" onclick="updateColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('updateCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');" id="edit-column-{{ $dataKolom->id }}">
                                         <i class="fa fa-pencil m-r-5"></i> Edit
                                     </a>
-                                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteColumn{{ $dataKolom->id }}">
+                                    <a href="#" class="dropdown-item" onclick="deleteColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('deleteCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');">
                                         <i class='fa fa-trash-o m-r-5'></i> Delete
                                     </a>
                                 </div>
@@ -56,12 +56,12 @@
                                         
                                         <!-- Tampilan Aksi Edit -->
                                         <div class="cover-card card-cover2-{{ $dataKartu->pattern }} {{ $dataKartu->pattern ? '' : 'hiddens' }}" id="cover-card-{{ $dataKartu->id }}"></div>
-                                        <a href="#" data-toggle="modal" data-target="#editCard{{ $dataKartu->id }}">
+                                        <a href="#" onclick="updateCardModal({{ $dataKartu->id }}, '{{ $dataKartu->name }}', '{{ route('perbaharuiKartu', ['card_id' => $dataKartu->id]) }}');" id="edit-card-{{ $dataKartu->id }}">
                                             <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}" style="position: absolute !important;">
                                                 <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
                                             </div>
                                         </a>
-                                        <a href="#" data-toggle="modal" data-target="#editCard{{ $dataKartu->id }}">
+                                        <a href="#" onclick="updateCardModal({{ $dataKartu->id }}, '{{ $dataKartu->name }}', '{{ route('perbaharuiKartu', ['card_id' => $dataKartu->id]) }}');" id="edit-card-{{ $dataKartu->id }}">
                                             <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}">
                                                 <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
                                             </div>
@@ -325,71 +325,61 @@
         <!-- /Buat Kolom Modal -->
 
         <!-- Perbaharui Kolom Modal -->
-        @foreach ( $dataColumnCard as $dataKolom )
-            <div id="updateColumn{{ $dataKolom->id }}" class="modal custom-modal fade" role="dialog">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Update Columns</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+        <div id="updateColumn" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Columns</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="updateColumnForm" method="POST">
+                            @csrf
+                            <input type="hidden" name="column_id" id="update-column-id">
+                            <div class="form-group">
+                                <label>Column's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control" id="update-column-name" name="column_name" placeholder="Enter a column's name" required />
+                                <span class="invalid-feedback" role="alert" id="column-name-error"></span>
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Perbaharui Kolom Modal -->
+
+        <!-- Hapus Kolom Modal -->
+        <div id="deleteColumn" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Columns "<span id="columnName"></span>"?</h3>
+                            <p>Are you sure you want to delete this column?</p>
                         </div>
-                        <div class="modal-body">
-                            <form id="updateColumnForm{{ $dataKolom->id }}" action="{{ route('updateCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST">
+                        <div class="modal-btn delete-action">
+                            <form id="deleteColumnForm" method="POST">
                                 @csrf
-                                <input type="hidden" name="column_id" id="column_id" value="{{ $dataKolom->id }}">
-                                <div class="form-group">
-                                    <label>Column's Name</label><span class="text-danger">*</span>
-                                    <input type="text" class="form-control @error('column_name') is-invalid @enderror" id="column_name" name="column_name" placeholder="Enter a column's name" value="{{ $dataKolom->name }}" required />
-                                    @error('column_name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="submit-section">
-                                    <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
+                                <input type="hidden" name="column_id" id="column-id">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-            @include('admin.updatecolumn')
-        @endforeach
-        <!-- /Perbaharui Kolom Modal -->
-
-        <!-- Hapus Kolom Modal -->
-        @foreach ( $dataColumnCard as $hapusKolom )
-            <div id="deleteColumn{{ $hapusKolom->id }}" class="modal custom-modal fade" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="form-header">
-                                <h3>Delete Columns "{{ $hapusKolom->name }}"?</h3>
-                                <p>Are you sure you want to delete this column?</p>
-                            </div>
-                            <div class="modal-btn delete-action">
-                                <form id="deleteColumnForm-{{ $hapusKolom->id }}" class="deleteColumnForm" data-column-id="{{ $hapusKolom->id }}" action="{{ route('deleteCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="column_id" value="{{ $hapusKolom->id }}">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
-                                        </div>
-                                        <div class="col-6">
-                                            <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-        @include('admin.deletecolumn')
+        </div>
         <!-- /Hapus Kolom Modal -->
 
         <!-- Isian Kartu Modal -->
@@ -448,14 +438,9 @@
                                                         </form>
                                                     </a>
                                                     @include('admin.script4')
-                                                    <a href="#" class="dropdown-item" data-toggle="modal">
-                                                        <form id="deleteCardForm{{ $isianKartu->id }}" class="deleteCardForm" data-id="{{ $isianKartu->id }}" action="{{ route('hapusKartu', ['card_id' => $isianKartu->id]) }}" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="id" value="{{ $isianKartu->id }}">
-                                                            <button type="submit" class="deleteCard" style="@foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; @endif @endforeach"><i class='fa fa-trash-o m-r-5'></i> Delete Card</button>
-                                                        </form>
+                                                    <a href="#" class="dropdown-item" onclick="deleteCardModal('{{ $isianKartu->id }}', '{{ $isianKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu', ['card_id' => $isianKartu->id]) }}');">
+                                                        <i class='fa fa-trash-o m-r-5'></i> Delete Card
                                                     </a>
-                                                    @include('admin.deletecard')
                                                 </div>
                                             </div>
                                             <span class="text-status4" style="line-height: 20px"><b>Delete / Cover</b></span>
@@ -753,47 +738,64 @@
         <!-- /Isian Kartu Modal -->
 
         <!-- Perbaharui Kartu Modal -->
-        @foreach ( $dataColumnCard as $dataKolom )
-            @foreach ($dataKolom->cards as $dataKartu)
-                <div id="editCard{{ $dataKartu->id }}" class="modal custom-modal fade" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Update Cards</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+        <div id="updateCard" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Cards</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="updateCardForm" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" id="update-card-id">
+                            <div class="form-group">
+                                <label>Card's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control" id="update-card-name" name="name" placeholder="Enter a card's name" required />
+                                <span class="invalid-feedback" role="alert" id="card-name-error"></span>
                             </div>
-                            <div class="modal-body">
-                                <form id="updateCardForm{{ $dataKartu->id }}" action="{{ route('perbaharuiKartu', ['card_id' => $dataKartu->id]) }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $dataKartu->id  }}">
-                                    <div class="form-group">
-                                        <label>Card's Name</label><span class="text-danger">*</span>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $dataKartu->name  }}" placeholder="Enter a card's name" required />
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="submit-section">
-                                        <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
-                                    </div>
-                                </form>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Perbaharui Kartu Modal -->
+
+        <!-- Hapus Kartu Modal -->
+        <div id="deleteCard" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Cards "<span id="cardName2"></span>"?</h3>
+                            <p>Are you sure you want to delete this card in the <span id="columnName2"></span> column?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <form id="deleteCardForm" class="deleteCardForm" method="POST">
+                                @csrf
+                                <input type="hidden" name="id" id="card-id">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                @include('admin.updatecard')
-            @endforeach
-        @endforeach
-        <!-- /Perbaharui Kartu Modal -->
+            </div>
+        </div>
+        <!-- /Hapus Kartu Modal -->
 
         <style>
-            .deleteCard:active {
-                color: #ffffff
-            }
             .deleteCover:active {
                 color: #ffffff
             }
@@ -1012,6 +1014,7 @@
         <script src="{{ asset('assets/js/memuat-data-kolom-board.js') }}"></script>
         <script src="{{ asset('assets/js/memuat-onclick-board.js') }}"></script>
         <script src="{{ asset('assets/js/memuat-ulang.js') }}"></script>
+        <script src="{{ asset('assets/js/memuat-modal.js') }}"></script>
 
         <script>
             history.pushState({}, "", '/admin/tim/papan/{{ $team->id }}/{{ $board->id }}');
