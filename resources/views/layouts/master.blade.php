@@ -26,7 +26,6 @@
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap-datetimepicker.min.css') }}">
     <!-- Chart CSS -->
-    <link rel="stylesheet" href="{{ URL::to('ssets/plugins/morris/morris.css') }}">
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -1101,9 +1100,6 @@
     <!-- Chart JS -->
     <script src="{{ URL::to('assets/plugins/morris/morris.min.js') }}"></script>
     <script src="{{ URL::to('assets/plugins/raphael/raphael.min.js') }}"></script>
-    <script src="{{ URL::to('assets/js/chart.js') }}"></script>
-    <script src="{{ URL::to('assets/js/Chart.min.js') }}"></script>
-    <script src="{{ URL::to('assets/js/line-chart.js') }}"></script>
     <!-- Slimscroll JS -->
     <script src="{{ URL::to('assets/js/jquery.slimscroll.min.js') }}"></script>
     <!-- Select2 JS -->

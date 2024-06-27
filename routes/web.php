@@ -160,6 +160,7 @@ Route::controller(BoardController::class)->group(function () {
     Route::post("admin/tim/papan/kolom/kartu/cover/hapus", "hapusCover")->name("hapusCover");
     Route::post('/perbaharui/posisi/kolom', 'perbaharuiPosisiKolom')->name('perbaharuiPosisiKolom');
     Route::post('/perbaharui/posisi/kartu', 'perbaharuiPosisiKartu')->name('perbaharuiPosisiKartu');
+    Route::get("admin/tim/papan/{team_id}/{board_id}/data", "getData")->middleware("auth", "auth.session", "boardAccess")->name("boardJson");
 
     // ----------------------------- User ----------------------------- //
     Route::get("user/tim/papan/{team_id}/{board_id}", "showBoard2")->middleware("auth", "auth.session", "boardAccess")->name("board2");
@@ -173,6 +174,7 @@ Route::controller(BoardController::class)->group(function () {
     Route::post("user/tim/papan/kolom/kartu/komentar/{card_id}", "komentarKartu2")->name("komentarKartu2");
     Route::post("user/tim/papan/kolom/kartu/cover/perbaharui", "perbaharuiCover2")->name("perbaharuiCover2");
     Route::post("user/tim/papan/kolom/kartu/cover/hapus", "hapusCover2")->name("hapusCover2");
+    Route::get("user/tim/papan/{team_id}/{board_id}/data", "getData")->middleware("auth", "auth.session", "boardAccess")->name("boardJson");
 });
 
 // ----------------------------- Checklist ----------------------------- //

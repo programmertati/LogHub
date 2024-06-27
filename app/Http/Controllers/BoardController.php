@@ -124,7 +124,15 @@ class BoardController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("admin.board", compact('UserTeams', 'dataColumnCard', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("admin.board")
+            ->with("UserTeams", $UserTeams)
+            ->with("dataColumnCard", $dataColumnCard)
+            ->with("result_tema", $result_tema)
+            ->with("unreadNotifications", $unreadNotifications)
+            ->with("readNotifications", $readNotifications)
+            ->with("semua_notifikasi", $semua_notifikasi)
+            ->with("belum_dibaca", $belum_dibaca)
+            ->with("dibaca", $dibaca)
             ->with("team", $team)
             ->with("owner", $teamOwner)
             ->with("board", $board)
@@ -137,7 +145,7 @@ class BoardController extends Controller
     public function showBoard2($team_id, $board_id)
     {
         $board_id = intval($board_id);
-        $board = $this->boardLogic->getData($board_id);
+        $board = $this->boardLogic->getData2($board_id);
         $team = Team::find($board->team_id);
         $teamOwner = $this->teamLogic->getTeamOwner($board->team_id);
         $dataColumnCard = Column::with('cards')
@@ -206,7 +214,15 @@ class BoardController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("user.board", compact('UserTeams', 'dataColumnCard', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("user.board")
+            ->with("UserTeams", $UserTeams)
+            ->with("dataColumnCard", $dataColumnCard)
+            ->with("result_tema", $result_tema)
+            ->with("unreadNotifications", $unreadNotifications)
+            ->with("readNotifications", $readNotifications)
+            ->with("semua_notifikasi", $semua_notifikasi)
+            ->with("belum_dibaca", $belum_dibaca)
+            ->with("dibaca", $dibaca)
             ->with("team", $team)
             ->with("owner", $teamOwner)
             ->with("board", $board)
@@ -729,6 +745,12 @@ class BoardController extends Controller
     public function getData($team_id, $board_id)
     {
         $boardData = $this->boardLogic->getData(intval($board_id));
+        return response()->json($boardData);
+    }
+
+    public function getData2($team_id, $board_id)
+    {
+        $boardData = $this->boardLogic->getData2(intval($board_id));
         return response()->json($boardData);
     }
     // /Mendapatkan Data Admin & User //

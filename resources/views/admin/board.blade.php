@@ -16,11 +16,11 @@
 
                     <!-- Tampilan Kolom -->
                     @php
-                    $sortedData = $dataColumnCard->count() > 0 ? $dataColumnCard->sortBy(function($item) {
+                    $sortedDataKolom = $dataColumnCard->count() > 0 ? $dataColumnCard->sortBy(function($item) {
                         return $item->position == 0 ? PHP_INT_MAX : $item->position;
                     }) : $dataColumnCard->sortBy('id');
                     @endphp
-                    @foreach ($sortedData as $dataKolom)
+                    @foreach ($sortedDataKolom as $dataKolom)
                         <div class="kolom-card" id="kolom-card-{{ $dataKolom->id }}" data-id="{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
 
                             <!-- Tampilan Aksi Edit & Hapus -->
@@ -47,11 +47,11 @@
 
                                 <!-- Tampilan Kartu -->
                                 @php
-                                $sortedData = $dataKolom->cards->count() > 0 ? $dataKolom->cards->sortBy(function($item) {
+                                $sortedDataKartu = $dataKolom->cards->count() > 0 ? $dataKolom->cards->sortBy(function($item) {
                                     return $item->position == 0 ? PHP_INT_MAX : $item->position;
                                 }) : $dataKolom->cards->sortBy('id');
                                 @endphp
-                                @foreach ($sortedData as $dataKartu)
+                                @foreach ($sortedDataKartu as $dataKartu)
                                     <li class="kartu-loghub" data-id="{{ $dataKartu->id }}" onmouseenter="aksiKartuShow({{ $dataKartu->id }})" onmouseleave="aksiKartuHide({{ $dataKartu->id }})" style="position: relative;">
                                         
                                         <!-- Tampilan Aksi Edit -->

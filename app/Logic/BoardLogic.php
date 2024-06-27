@@ -199,6 +199,35 @@ class BoardLogic
         $board->setHidden(["team_id", "image_path", "created_at", "updated_at"]);
         return $board;
     }
+
+    public function getData2(int $board_id)
+    {
+        $columns = collect();
+        $board = Board::find($board_id);
+
+        $column = Column::where("board_id", $board->id)
+            ->whereNull('previous_id')
+            ->first();
+
+        while ($column) {
+            $cards = collect();
+            $card = Card::where("column_id", $column->id)
+                ->whereNull('previous_id')
+                ->first();
+            while ($card) {
+                $card->setHidden(['nextCard', "created_at", "updated_at", "column_id", "previous_id", "next_id"]);
+                $cards->push($card);
+                $card = $card->nextCard;
+            }
+            $column->setHidden(['nextColumn', 'updated_at', 'created_at', 'previous_id', "next_id", "board_id"]);
+            $column->cards = $cards->values();
+            $columns->push($column);
+            $column = $column->nextColumn;
+        }
+        $board->columns = $columns->values();
+        $board->setHidden(["team_id", "image_path", "created_at", "updated_at"]);
+        return $board;
+    }
     // /Mendapatkan Data //
 
     // Memindahkan Kartu //
