@@ -2,6 +2,12 @@
     $(document).ready(function(){
         const id = '{{ $isianKartu->id }}';
         // Section Keterangan
+        
+        // Set height Keterangan 
+        const keterangan = $('#keterangan'+id).val();
+        const lineCount = keterangan.split('\n').length;
+        $('#keterangan' + id).attr('rows', Math.max(lineCount, 4));
+        
         // Input keterangan
         $('#keterangan'+id).on('click', function(){
             $('#saveButton'+id).removeClass('hidden');

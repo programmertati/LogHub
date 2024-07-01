@@ -5,14 +5,18 @@
         <div class="page-wrapper" style="height: 100vh">
 
             <!-- Tampilan Background Kolom & Card -->
-            <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" style="height: 100%">
+            <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" id="bgGrad" style="height: 100%">
+            @include('user.bg-sistem')
 
                 <!-- Tampilan Kolom & Kartu -->
                 <div class="tampilan-kolom gap-4 p-4" id="cardContainer">
 
-                    <a href="#" data-toggle="modal" data-target="#addCol" class="flex-col flex-shrink-0 gap-2 px-4 py-2 transition shadow-lg cursor-pointer select-none h-4h w-72 rounded-xl bg-slate-100 hover:scale-105 hover:relative">
-                        <p class="flex items-center justify-center gap-4 text-black"><i class="fa-solid fa-plus fa-lg"></i>Add list...</p>
-                    </a>
+                    <div class="info-status12">
+                        <a href="#" data-toggle="modal" data-target="#addCol" class="add-column hover:scale-105 hover:relative">
+                            <p class="flex items-center justify-center gap-4 text-black"><i class="fa-solid fa-plus fa-lg"></i>Add another list</p>
+                            <span class="text-status12"><b>CTRL + B (Add New List)</b></span>
+                        </a>
+                    </div>
 
                     <!-- Tampilan Kolom -->
                     @php
@@ -70,16 +74,32 @@
                                         <!-- Tampilan Aksi Edit -->
                                         {{-- @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
                                             <div class="cover-card card-cover2-{{ $dataKartu->pattern }} {{ $dataKartu->pattern ? '' : 'hiddens' }}" id="cover-card-{{ $dataKartu->id }}"></div>
-                                            <a href="#" onclick="updateCardModal({{ $dataKartu->id }}, '{{ $dataKartu->name }}', '{{ route('perbaharuiKartu', ['card_id' => $dataKartu->id]) }}');" id="edit-card-{{ $dataKartu->id }}">
-                                                <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}" style="position: absolute !important;">
+                                            <div class="dropdown dropdown-action aksi-card" id="aksi-card{{ $dataKartu->id }}" style="position: absolute !important;">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                     <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a href="#" class="dropdown-item" onclick="updateCardModal({{ $dataKartu->id }}, '{{ $dataKartu->name }}', '{{ route('perbaharuiKartu', ['card_id' => $dataKartu->id]) }}');" id="edit-card-{{ $dataKartu->id }}">
+                                                        <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
+                                                    </a>
+                                                    <a href="#" class="dropdown-item" onclick="deleteCardModal2('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu', ['card_id' => $dataKartu->id]) }}');">
+                                                        <i class='fa fa-trash-o m-r-5'></i> Delete
+                                                    </a>
                                                 </div>
-                                            </a>
-                                            <a href="#" onclick="updateCardModal({{ $dataKartu->id }}, '{{ $dataKartu->name }}', '{{ route('perbaharuiKartu', ['card_id' => $dataKartu->id]) }}');" id="edit-card-{{ $dataKartu->id }}">
-                                                <div class="aksi-card" id="aksi-card{{ $dataKartu->id }}">
+                                            </div>
+                                            <div class="dropdown dropdown-action aksi-card" id="aksi-card{{ $dataKartu->id }}">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                     <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a href="#" class="dropdown-item" onclick="updateCardModal({{ $dataKartu->id }}, '{{ $dataKartu->name }}', '{{ route('perbaharuiKartu', ['card_id' => $dataKartu->id]) }}');" id="edit-card-{{ $dataKartu->id }}">
+                                                        <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
+                                                    </a>
+                                                    <a href="#" class="dropdown-item" onclick="deleteCardModal2('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu', ['card_id' => $dataKartu->id]) }}');">
+                                                        <i class='fa fa-trash-o m-r-5'></i> Delete
+                                                    </a>
                                                 </div>
-                                            </a>
+                                            </div>
                                         {{-- @endif --}}
                                         <!-- /Tampilan Aksi Edit -->
 
@@ -338,7 +358,7 @@
                                                     <i class="fa-solid fa-ellipsis"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-left">
-                                                    <a href="#" class="dropdown-item card-cover4-{{ $isianKartu->pattern }}" data-toggle="dropdown" data-auto-close="outside" id="formCover-{{ $isianKartu->id }}" aria-expanded="false"><i class="fa-solid fa-clapperboard"></i>  <span id="coverText">{{ $isianKartu->pattern ? 'Change Cover' : 'Add Cover' }}</span></a>
+                                                    <a href="#" class="dropdown-item card-cover4-{{ $isianKartu->pattern }}" data-toggle="dropdown" data-auto-close="outside" id="formCover-{{ $isianKartu->id }}" aria-expanded="false"><i class="fa-solid fa-clapperboard m-r-5"></i><span id="coverText">{{ $isianKartu->pattern ? 'Change Cover' : 'Add Cover' }}</span></a>
                                                     <form id="updateCoverForm" class="dropdown-menu p-4" style="min-width: 16rem !important; margin-top: -37px !important; margin-left: -19px !important;">
                                                         @csrf
                                                         <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
@@ -405,7 +425,10 @@
                                     </div>
                                 </div>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                    <div class="info-status13">
+                                        <span class="text-status13"><b>ESC (Close Modal)</b></span>
+                                        <span aria-hidden="true">&times;</span>
+                                    </div>
                                 </button>
                             </div>
                             <div class="modal-body">
@@ -421,7 +444,7 @@
                                         <form id="myForm{{ $isianKartu->id }}" method="POST">
                                             @csrf
                                             <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                                            <textarea onclick="mentionTags2('keterangan{{ $isianKartu->id }}')" class="border border-1 border-dark w-40l p-2 rounded-xl" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white !important; background-color: #292D3E" @endif @endforeach rows="4" id="keterangan{{ $isianKartu->id }}" name="keterangan" placeholder="Enter a description">{{ $isianKartu->description }}</textarea><br>
+                                            <textarea onclick="mentionTags2('keterangan{{ $isianKartu->id }}')" class="isian-deskripsi" rows="4" id="keterangan{{ $isianKartu->id }}" name="keterangan" placeholder="Enter a description">{{ $isianKartu->description }}</textarea><br>
                                             <div class="mention-tag-keterangan" id="mention-tag-keterangan{{ $isianKartu->id }}"></div>
                                             <div class="aksi-update-keterangan gap-2">
                                                 <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButton{{ $isianKartu->id }}">Save</button>
@@ -774,6 +797,35 @@
         </div>
         <!-- /Hapus Kartu Modal -->
 
+        <!-- Hapus Kartu Modal Depan -->
+        <div id="deleteCard2" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Cards "<span id="cardName3"></span>"?</h3>
+                            <p>Are you sure you want to delete this card in the <span id="columnName3"></span> column?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <form id="deleteCardForm2" class="deleteCardForm" method="POST">
+                                @csrf
+                                <input type="hidden" name="id" id="card-id">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Hapus Kartu Modal Depan -->
+
         <style>
             .deleteCover:active {
                 color: #ffffff
@@ -930,6 +982,31 @@
             .border-dark:hover {background-color: #091E420F; !important; cursor: pointer;}
             .border-darks:hover {background-color: #091E420F; !important; cursor: pointer;}
 
+            .bg-grad-system {
+                position: relative;
+                background: #FFFFFF;
+                border: 1px solid #dee2e6;
+            }
+
+            .bg-grad-system::after {
+                content: "System";
+                position: absolute;
+                font-size: 16px;
+                top: 60%;
+                left: 45px;
+                color: #87919a;
+                font-weight: bold;
+            }
+
+            .bg-grad-system.system {
+                background: #FFFFFF !important;
+                border: 0;
+            }
+
+            .bg-grad-system.no-after::after {
+                display: none;
+            }
+
             @foreach ( $dataColumnCard as $dataKolom )
                 @foreach ($dataKolom->cards as $isianKartu)
                     .isian-history{{ $isianKartu->id }} {
@@ -992,6 +1069,9 @@
                     .card-cover2-pink {background-color: #943D73;}
                     .card-cover2-black {background-color: #596773;}
                     .sidebar-menu li a:hover {color: #ffffff !important}
+                    .bg-grad-system.system {background: #292D3E !important}
+                    .bg-grad-system {background: #737788; border: 0}
+                    .bg-grad-system::after{color: #3e3f43;}
 
                     @foreach ( $dataColumnCard as $dataKolom )
                         @foreach ($dataKolom->cards as $isianKartu)
@@ -1004,10 +1084,11 @@
         </style>
 
     @section('script')
-        <script src="{{ asset('assets/js/memuat-data-kolom-board.js') }}"></script>
-        <script src="{{ asset('assets/js/memuat-onclick-board.js') }}"></script>
-        <script src="{{ asset('assets/js/memuat-ulang.js') }}"></script>
-        <script src="{{ asset('assets/js/memuat-modal.js') }}"></script>
+        <script src="{{ asset('assets/js/memuat-data-kolom-board.js?v='.time()) }}"></script>
+        <script src="{{ asset('assets/js/memuat-onclick-board.js?v='.time()) }}"></script>
+        <script src="{{ asset('assets/js/memuat-ulang.js?v='.time()) }}"></script>
+        <script src="{{ asset('assets/js/memuat-modal.js?v='.time()) }}"></script>
+        <script src="{{ asset('assets/js/memuat-shortcut.js?v='.time()) }}"></script>
 
         <script>
             history.pushState({}, "", '/user/tim/papan/{{ $team->id }}/{{ $board->id }}');

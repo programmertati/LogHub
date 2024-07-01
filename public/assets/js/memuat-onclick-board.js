@@ -1,16 +1,16 @@
 // Khusus ketika klik button +Tambah Kartu //
-function openAdd(id){
+function openAdd(id) {
     const cardLoghub = document.getElementById(`cardLoghub${id}`);
     const btnadd = document.getElementById(`btn-add${id}`);
 
-    let style = cardLoghub.getAttribute("class")
+    let style = cardLoghub.getAttribute("class");
     
     if (style.includes('flex')) {
         cardLoghub.classList.remove("flex");
-        btnadd.innerHTML="<i class='fa-solid fa-plus'></i> Add a card...";
+        btnadd.innerHTML = "<i class='fa-solid fa-plus'></i> Add a card...";
     } else {
         cardLoghub.classList.add("flex");
-        btnadd.innerHTML="Cancel";
+        btnadd.innerHTML = "Cancel";
     }
 }
 // /Khusus ketika klik button +Tambah Kartu //
@@ -111,7 +111,9 @@ function changeCard(id) {
             if (modalTarget !== "-- Select Card --") {
                 $('.modal').modal('hide');
                 setTimeout(function() {
-                    $(modalTarget).modal('show');
+                    $('#isianKartu').modal('show');
+                    $('#card_id').val(modalTarget);
+                    $('#form_kartu').submit();
                 }, 500);
             }
         });
@@ -120,13 +122,13 @@ function changeCard(id) {
 // /Untuk menyembunyikan dan melihat simpan komentar //
 
 // Textarea mengikuti jumlah data yang ada //
-document.addEventListener('DOMContentLoaded', (event) => {
-    const textareas = document.querySelectorAll('textarea');
-    textareas.forEach(textarea => {
-        if (textarea.id.startsWith('keterangan')) {
-            const lineCount = textarea.value.split('\n').length;
-            textarea.rows = Math.max(lineCount, 4);
-        }
-    });
-});
+// document.addEventListener('DOMContentLoaded', (event) => {
+//     const textareas = document.querySelectorAll('textarea');
+//     textareas.forEach(textarea => {
+//         if (textarea.id.startsWith('keterangan')) {
+//             const lineCount = textarea.value.split('\n').length;
+//             textarea.rows = Math.max(lineCount, 4);
+//         }
+//     });
+// });
 // /Textarea mengikuti jumlah data yang ada //

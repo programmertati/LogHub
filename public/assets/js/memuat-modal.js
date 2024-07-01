@@ -28,9 +28,17 @@ function deleteCardModal(cardId, cardName, columnName, formAction) {
     $('#cardName2').text(cardName);
     $('#card-id').val(cardId);
     $('#deleteCardForm').attr('action', formAction);
-    $('#isianKartu' + cardId).modal('hide').one('hidden.bs.modal', function () {
+    $('#isianKartu').modal('hide').one('hidden.bs.modal', function () {
         $('#deleteCard').modal('show');
     });
+}
+
+function deleteCardModal2(cardId, cardName, columnName, formAction) {
+    $('#columnName3').text(columnName);
+    $('#cardName3').text(cardName);
+    $('#card-id').val(cardId);
+    $('#deleteCardForm2').attr('action', formAction);
+    $('#deleteCard2').modal('show');
 }
 
 $(document).ready(function() {
@@ -147,7 +155,29 @@ $(document).ready(function() {
     $(document).on('click', '.cancel-btn', function() {
         var cardId = $('#card-id').val();
         $('#deleteCard').modal('hide').one('hidden.bs.modal', function () {
-            $('#isianKartu' + cardId).modal('show');
+            $('#isianKartu').modal('show');
+        });
+    });
+});
+
+$(document).ready(function() {
+    $('#deleteCardForm2').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var cardId = $('#card-id').val();
+        var formData = form.serialize();
+        $.ajax({
+            url: form.attr('action'),
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                $('#deleteCard2').modal('hide');
+                $('li[data-id="' + cardId + '"]').addClass('hidden');
+                toastr.success('Berhasil menghapus kartu!');
+            },
+            error: function(response) {
+                toastr.error('Gagal menghapus kartu!');
+            }
         });
     });
 });

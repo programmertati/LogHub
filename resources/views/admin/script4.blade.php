@@ -94,9 +94,9 @@
         var linkElement = document.querySelector('#formCover-' + cardId);
         if (linkElement) {
             if (cover === 'NULL' || cover === '') {
-                linkElement.innerHTML = '<i class="fa-solid fa-clapperboard"></i> Add Cover';
+                linkElement.innerHTML = '<i class="fa-solid fa-clapperboard m-r-5"></i> Add Cover';
             } else {
-                linkElement.innerHTML = '<i class="fa-solid fa-clapperboard"></i> Change Cover';
+                linkElement.innerHTML = '<i class="fa-solid fa-clapperboard m-r-5"></i> Change Cover';
             }
         }
     }

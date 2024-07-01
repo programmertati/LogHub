@@ -207,6 +207,14 @@
     </div>
     <!-- /Page Wrapper -->
 
+    <style>
+        @foreach($result_tema as $sql_mode => $mode_tema)
+            @if ($mode_tema->tema_aplikasi == 'Gelap')
+                .sidebar-menu li a:hover {color: #ffffff !important}
+            @endif
+        @endforeach
+    </style>
+
     @section('script')
         <script src="{{ asset('assets/js/memuat-ulang.js') }}"></script>
 

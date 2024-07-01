@@ -141,6 +141,42 @@ class BoardController extends Controller
     }
     // /Tampilan Papan Admin //
 
+    // Ambil Data Modal Kartu Admin //
+    public function getDataKartu(Request $request)
+    {
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
+        $isianKartu = Card::find($request->card_id);
+        $dataKolom = Column::find($isianKartu->column_id);
+        $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
+        $result_tema = DB::table('mode_aplikasi')
+            ->select(
+                'mode_aplikasi.id',
+                'mode_aplikasi.tema_aplikasi',
+                'mode_aplikasi.warna_sistem',
+                'mode_aplikasi.warna_sistem_tulisan',
+                'mode_aplikasi.warna_mode',
+                'mode_aplikasi.tabel_warna',
+                'mode_aplikasi.tabel_tulisan_tersembunyi',
+                'mode_aplikasi.warna_dropdown_menu',
+                'mode_aplikasi.ikon_plugin',
+                'mode_aplikasi.bayangan_kotak_header',
+                'mode_aplikasi.warna_mode_2',
+                )
+            ->where('user_id', auth()->user()->user_id)
+            ->get();
+
+        return view('admin.isi-kartu')
+            ->with("isianKartu", $isianKartu)
+            ->with("dataKolom", $dataKolom)
+            ->with("result_tema", $result_tema)
+            ->with("UserTeams", $UserTeams)
+            ->with("patterns", BoardLogic::PATTERN)
+            ->with("covers", BoardLogic::COVER);
+    }
+    // /Ambil Data Modal Kartu Admin //
+
     // Tampilan Papan User //
     public function showBoard2($team_id, $board_id)
     {
@@ -230,6 +266,42 @@ class BoardController extends Controller
             ->with("covers", BoardLogic::COVER);
     }
     // /Tampilan Papan User //
+
+    // Ambil Data Modal Kartu User //
+    public function getDataKartu2(Request $request)
+    {
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
+        $isianKartu = Card::find($request->card_id);
+        $dataKolom = Column::find($isianKartu->column_id);
+        $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
+        $result_tema = DB::table('mode_aplikasi')
+            ->select(
+                'mode_aplikasi.id',
+                'mode_aplikasi.tema_aplikasi',
+                'mode_aplikasi.warna_sistem',
+                'mode_aplikasi.warna_sistem_tulisan',
+                'mode_aplikasi.warna_mode',
+                'mode_aplikasi.tabel_warna',
+                'mode_aplikasi.tabel_tulisan_tersembunyi',
+                'mode_aplikasi.warna_dropdown_menu',
+                'mode_aplikasi.ikon_plugin',
+                'mode_aplikasi.bayangan_kotak_header',
+                'mode_aplikasi.warna_mode_2',
+                )
+            ->where('user_id', auth()->user()->user_id)
+            ->get();
+
+        return view('user.isi-kartu')
+            ->with("isianKartu", $isianKartu)
+            ->with("dataKolom", $dataKolom)
+            ->with("result_tema", $result_tema)
+            ->with("UserTeams", $UserTeams)
+            ->with("patterns", BoardLogic::PATTERN)
+            ->with("covers", BoardLogic::COVER);
+    }
+    // /Ambil Data Modal Kartu User //
 
     // Perbaharui Papan Khusus Admin //
     public function updateBoard(Request $request)
@@ -740,20 +812,6 @@ class BoardController extends Controller
         return response()->json(['success' => true]);
     }
     // /Untuk Pindah Posisi Kartu //
-
-    // Mendapatkan Data Admin & User //
-    public function getData($team_id, $board_id)
-    {
-        $boardData = $this->boardLogic->getData(intval($board_id));
-        return response()->json($boardData);
-    }
-
-    public function getData2($team_id, $board_id)
-    {
-        $boardData = $this->boardLogic->getData2(intval($board_id));
-        return response()->json($boardData);
-    }
-    // /Mendapatkan Data Admin & User //
 
     // Memindahkan Kartu Admin & User //
     public function reorderCard(Request $request, $team_id, $board_id)

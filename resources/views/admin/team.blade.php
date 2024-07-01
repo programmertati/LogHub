@@ -380,6 +380,7 @@
             @if ($mode_tema->tema_aplikasi == 'Gelap')
                 .rounded-xl {background-color: {{ $mode_tema->warna_mode }} !important;}
                 .border-dark {border-color: white !important;}
+                .sidebar-menu li a:hover {color: #ffffff !important}
             @endif
         @endforeach
     </style>

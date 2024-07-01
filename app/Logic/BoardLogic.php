@@ -25,7 +25,8 @@ class BoardLogic
         'sunset',
         'cosmic',
         'police',
-        'morning'
+        'morning',
+        'system'
     ];
 
     public const COVER = [

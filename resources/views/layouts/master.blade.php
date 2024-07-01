@@ -85,6 +85,7 @@
             .mention-tag-keterangan-item:hover{background-color : {{ $mode_tema->warna_sistem }} !important;}
             .mention-tag-comment-item:hover{background-color : {{ $mode_tema->warna_sistem }} !important;}
             .aksi-kolom{background-color: {{ $mode_tema->warna_sistem }} !important;}
+            .add-column{background-color: {{ $mode_tema->warna_sistem }} !important;}
 
             .card-title{color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
             .table{color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
@@ -220,6 +221,7 @@
             .text-gray-400{color: {{ $mode_tema->warna_sistem_tulisan }} !important}
             .icon-view-team {color: {{ $mode_tema->warna_sistem_tulisan }} !important}
             .icon-view-board {color: {{ $mode_tema->warna_sistem_tulisan }} !important}
+            .text-latensi {color: {{ $mode_tema->warna_sistem_tulisan }} !important}
 
             .apexcharts-xaxistooltip, .apexcharts-yaxistooltip{background: {{ $mode_tema->warna_mode }} !important; color : {{ $mode_tema->warna_sistem_tulisan }} !important;}
             .form-control{background-color: {{ $mode_tema->warna_mode }} !important; color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
@@ -363,6 +365,9 @@
                     .info-status8 .text-status8{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status9 .text-status9{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status10 .text-status10{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status11 .text-status11{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status12 .text-status12{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status13 .text-status13{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .icon-trash {color: #B6C2CF !important;}
                     .icon-trash:hover {color: #dc3546e1 !important;}
                     .icon-trash:active {color: #e62034 !important;}
@@ -375,6 +380,7 @@
                     .mention-nama{color: #B6C2CF !important;}
                     .mention-waktu{color: #8C9BAB !important;}
                     .isian-mention-tag{background-color: {{ $mode_tema->warna_mode }} !important; color: #B6C2CF !important; box-shadow: 0px 1px 1px #5a5e6f, 0px 0px 1px #464a5b !important;}
+                    .isian-deskripsi{color: white; background-color: #292D3E; border-color: white !important}
 
                     @foreach ($belum_dibaca as $notifikasi_belum_dibaca)
                         #popup-notifikasi_{{ $notifikasi_belum_dibaca->id }} {background: {{ $mode_tema->warna_mode }} !important}

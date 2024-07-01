@@ -8787,6 +8787,14 @@ ul.comment-list li ul.children {
 		left: 61% !important;
 	}
 
+	.info-status12 .text-status12 {
+		left: 82% !important;
+	}
+
+	.info-status13 .text-status13 {
+		left: 61% !important;
+	}
+
 	.fa-backward {
 		margin-left: 25px !important;
 		margin-top: 30px !important;
@@ -8873,6 +8881,14 @@ ul.comment-list li ul.children {
 	}
 
 	.info-status11 .text-status11 {
+		left: 67% !important;
+	}
+
+	.info-status12 .text-status12 {
+		left: 82% !important;
+	}
+
+	.info-status13 .text-status13 {
 		left: 67% !important;
 	}
 
@@ -8965,6 +8981,14 @@ ul.comment-list li ul.children {
 		left: 68% !important;
 	}
 
+	.info-status12 .text-status12 {
+		left: 82% !important;
+	}
+
+	.info-status13 .text-status13 {
+		left: 68% !important;
+	}
+
 	.fa-backward {
 		margin-left: 25px !important;
 		margin-top: 30px !important;
@@ -9054,6 +9078,14 @@ ul.comment-list li ul.children {
 		left: 70% !important;
 	}
 
+	.info-status12 .text-status12 {
+		left: 82% !important;
+	}
+
+	.info-status13 .text-status13 {
+		left: 70% !important;
+	}
+
 	.fa-backward {
 		margin-left: 25px !important;
 		margin-top: 30px !important;
@@ -9140,6 +9172,14 @@ ul.comment-list li ul.children {
 	}
 
 	.info-status11 .text-status11 {
+		left: 83% !important;
+	}
+
+	.info-status12 .text-status12 {
+		left: 82% !important;
+	}
+
+	.info-status13 .text-status13 {
 		left: 83% !important;
 	}
 
@@ -12026,6 +12066,15 @@ ul.nav-tabs > li > a {
 	position: relative;
 }
 
+.info-status12 {
+	position: relative;
+	display: contents;
+}
+
+.info-status13 {
+	position: relative;
+}
+
 .fitur-kembali-2 .fitur-text {
 	visibility: hidden;
 	width: 120px;
@@ -12258,6 +12307,41 @@ ul.nav-tabs > li > a {
     transition: opacity 0.3s;
 }
 
+.info-status12 .text-status12 {
+    visibility: hidden;
+    position: absolute;
+    font-size: 14px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
+    bottom: 10%;
+    margin-bottom: -30px;
+    left: 235px;
+    margin-left: -180px;
+    border-radius: 5px;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+.info-status13 .text-status13 {
+    visibility: hidden;
+    position: absolute;
+    font-size: 12px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
+    bottom: 10%;
+    margin-bottom: 23px;
+    left: 17px;
+    margin-right: -15px;
+	margin-left: -101px;
+    border-radius: 5px;
+    transition: opacity 0.3s;
+	z-index: 1;
+}
+
 .fitur-kembali-2:hover .fitur-text {
 	visibility: visible;
 	opacity: 1;
@@ -12319,6 +12403,16 @@ ul.nav-tabs > li > a {
 }
 
 .info-status11:hover .text-status11 {
+	visibility: visible;
+	opacity: 1;
+}
+
+.info-status12:hover .text-status12 {
+	visibility: visible;
+	opacity: 1;
+}
+
+.info-status13:hover .text-status13 {
 	visibility: visible;
 	opacity: 1;
 }
@@ -14928,12 +15022,38 @@ ul.nav-tabs > li > a {
 
 .item-latensi {
 	position: relative;
-    margin-top: -27px;
-    margin-right: -25px;
-	line-height: 10px;
+    margin-top: -17px;
 }
 
-.icon-download {
-	margin-top: 10px;
-	margin-bottom: -10px;
+.text-latensi {
+	color: #44546F;
+}
+
+.add-column {
+	--loghub-bg-opacity: 1;
+	--loghub-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --loghub-shadow-colored: 0 10px 15px -3px var(--loghub-shadow-color), 0 4px 6px -4px var(--loghub-shadow-color);
+	width: 18rem;
+	height: 2.5rem;
+	padding-top: 0.5rem;
+	padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 0.5rem;
+	flex-shrink: 0;
+    background-color: rgb(241 245 249 / var(--loghub-bg-opacity));
+    box-shadow: var(--loghub-ring-offset-shadow, 0 0 #0000), var(--loghub-ring-shadow, 0 0 #0000), var(--loghub-shadow);
+	transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 150ms;
+	border-radius: 0.75rem;
+}
+
+.isian-deskripsi {
+	width: 85%;
+	border-radius: 0.75rem;
+	padding: .5rem;
+	border-color: #343a40 !important;
+	border: 1px solid #dee2e6;
+	scrollbar-width: auto;
+	scrollbar-color: #fff6 #00000026;
 }
