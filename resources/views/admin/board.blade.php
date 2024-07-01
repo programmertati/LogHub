@@ -704,11 +704,11 @@
         </style>
 
     @section('script')
-        <script src="{{ asset('assets/js/memuat-pattern-board.js') }}"></script>
-        <script src="{{ asset('assets/js/memuat-data-kolom-board.js') }}"></script>
-        <script src="{{ asset('assets/js/memuat-onclick-board.js') }}"></script>
-        <script src="{{ asset('assets/js/memuat-ulang.js') }}"></script>
-        <script src="{{ asset('assets/js/memuat-modal.js') }}"></script>
+        <script src="{{ asset('assets/js/memuat-pattern-board.js?v='.time()) }}"></script>
+        <script src="{{ asset('assets/js/memuat-data-kolom-board.js?v='.time()) }}"></script>
+        <script src="{{ asset('assets/js/memuat-onclick-board.js?v='.time()) }}"></script>
+        <script src="{{ asset('assets/js/memuat-ulang.js?v='.time()) }}"></script>
+        <script src="{{ asset('assets/js/memuat-modal.js?v='.time()) }}"></script>
 
         <script>
             history.pushState({}, "", '/admin/tim/papan/{{ $team->id }}/{{ $board->id }}');
