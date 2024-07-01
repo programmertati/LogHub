@@ -28,9 +28,12 @@ function deleteCardModal(cardId, cardName, columnName, formAction) {
     $('#cardName2').text(cardName);
     $('#card-id').val(cardId);
     $('#deleteCardForm').attr('action', formAction);
-    $('#isianKartu' + cardId).modal('hide').one('hidden.bs.modal', function () {
+    $('#isianKartu').modal('hide').one('hidden.bs.modal', function () {
         $('#deleteCard').modal('show');
     });
+    // $('#isianKartu' + cardId).modal('hide').one('hidden.bs.modal', function () {
+    //     $('#deleteCard').modal('show');
+    // });
 }
 
 $(document).ready(function() {

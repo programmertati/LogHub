@@ -51,6 +51,36 @@ class BoardController extends Controller
     }
     // /Membuat Papan Khusus Admin //
 
+    public function getDataKartu(Request $request)
+    {
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 0);
+
+        $isianKartu = Card::find($request->card_id);
+        $dataKolom = Column::find($isianKartu->column_id);
+        $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
+        $result_tema = DB::table('mode_aplikasi')
+            ->select(
+                'mode_aplikasi.id',
+                'mode_aplikasi.tema_aplikasi',
+                'mode_aplikasi.warna_sistem',
+                'mode_aplikasi.warna_sistem_tulisan',
+                'mode_aplikasi.warna_mode',
+                'mode_aplikasi.tabel_warna',
+                'mode_aplikasi.tabel_tulisan_tersembunyi',
+                'mode_aplikasi.warna_dropdown_menu',
+                'mode_aplikasi.ikon_plugin',
+                'mode_aplikasi.bayangan_kotak_header',
+                'mode_aplikasi.warna_mode_2',
+                )
+            ->where('user_id', auth()->user()->user_id)
+            ->get();
+     
+        return view('admin.isi-kartu', compact('isianKartu', 'dataKolom', 'result_tema', 'UserTeams'))
+        ->with("patterns", BoardLogic::PATTERN)
+        ->with("covers", BoardLogic::COVER);;
+    }
+
     // Tampilan Papan Admin //
     public function showBoard($team_id, $board_id)
     {

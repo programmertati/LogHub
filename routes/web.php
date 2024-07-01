@@ -160,6 +160,7 @@ Route::controller(BoardController::class)->group(function () {
     Route::post("admin/tim/papan/kolom/kartu/cover/hapus", "hapusCover")->name("hapusCover");
     Route::post('/perbaharui/posisi/kolom', 'perbaharuiPosisiKolom')->name('perbaharuiPosisiKolom');
     Route::post('/perbaharui/posisi/kartu', 'perbaharuiPosisiKartu')->name('perbaharuiPosisiKartu');
+    Route::post('/get/data/kartu', 'getDataKartu')->name('getDataKartu');
 
     // ----------------------------- User ----------------------------- //
     Route::get("user/tim/papan/{team_id}/{board_id}", "showBoard2")->middleware("auth", "auth.session", "boardAccess")->name("board2");
