@@ -111,7 +111,6 @@ function changeCard(id) {
             if (modalTarget !== "-- Select Card --") {
                 $('.modal').modal('hide');
                 setTimeout(function() {
-                    $(modalTarget).modal('show');
                     $('#isianKartu').modal('show');
                     $('#card_id').val(modalTarget);
                     $('#form_kartu').submit();
