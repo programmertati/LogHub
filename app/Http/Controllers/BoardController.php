@@ -338,106 +338,56 @@ class BoardController extends Controller
             "board_id" => "required",
             "column_name" => "required",
         ]);
+
         $team_id = intval($team_id);
         $board_id = intval($request->board_id);
-
-        // $user_id = AUth::user()->id;
-        // $user_id = AUth::user()->id;
-        // $card_id = intval($card_id);
-        // $card = Card::find($card_id);
-        // $card->save();
-        // $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Kolom");
 
         $createdColumn = $this->boardLogic->addColumn($board_id, $request->column_name);
 
         if ($createdColumn == null) {
-            Toastr::error('Gagal membuat kolom, silahkan coba lagi!', 'Error');
-            return redirect()->back();
+            return response()->json(['error' => 'Gagal membuat kolom, silahkan coba lagi!'], 500);
         }
 
-        return response()->json($createdColumn);
+        return response()->json([
+            'id' => $createdColumn->id,
+            'name' => $createdColumn->name,
+            'updateUrl' => route('updateCol', ['board_id' => $board_id, 'team_id' => $team_id]),
+            'deleteUrl' => route('deleteCol', ['board_id' => $board_id, 'team_id' => $team_id]),
+            'addCardUrl' => route('addCard', ['board_id' => $board_id, 'team_id' => $team_id, 'column_id' => $createdColumn->id]),
+            'board_id' => $board_id,
+            'team_id' => $team_id
+        ]);
     }
-
-    // public function addColumn(Request $request, $team_id, $board_id, $card_id)
-    // {
-    //     $request->validate([
-    //         "board_id" => "required",
-    //         "column_name" => "required",
-    //     ]);
-    //     $team_id = intval($team_id);
-    //     $board_id = intval($request->board_id);
-
-    //     $user_id = AUth::user()->id;
-    //     $user_id = AUth::user()->id;
-    //     $card_id = intval($card_id);
-    //     $card = Card::find($card_id);
-    //     $card->save();
-    //     $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Kolom");
-
-    //     $createdColumn = $this->boardLogic->addColumn($board_id, $request->column_name);
-
-    //     if ($createdColumn == null) {
-    //         Toastr::error('Gagal membuat kolom, silahkan coba lagi!', 'Error');
-    //         return redirect()->back();
-    //     }
-
-    //     return response()->json($createdColumn);
-    // }
     // /Membuat Kolom Admin //
 
-    // Membuat Kolom Admin //
+    // Membuat Kolom User //
     public function addColumn2(Request $request, $team_id, $board_id)
     {
         $request->validate([
             "board_id" => "required",
             "column_name" => "required",
         ]);
+
         $team_id = intval($team_id);
         $board_id = intval($request->board_id);
 
-        // $user_id = AUth::user()->id;
-        // $user_id = AUth::user()->id;
-        // $card_id = intval($card_id);
-        // $card = Card::find($card_id);
-        // $card->save();
-        // $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Kolom");
-
-        $createdColumn = $this->boardLogic->addColumn($board_id, $request->column_name);
+        $createdColumn = $this->boardLogic->addColumn2($board_id, $request->column_name);
 
         if ($createdColumn == null) {
-            Toastr::error('Gagal membuat kolom, silahkan coba lagi!', 'Error');
-            return redirect()->back();
+            return response()->json(['error' => 'Gagal membuat kolom, silahkan coba lagi!'], 500);
         }
 
-        return response()->json($createdColumn);
+        return response()->json([
+            'id' => $createdColumn->id,
+            'name' => $createdColumn->name,
+            'updateUrl' => route('updateCol', ['board_id' => $board_id, 'team_id' => $team_id]),
+            'deleteUrl' => route('deleteCol', ['board_id' => $board_id, 'team_id' => $team_id]),
+            'addCardUrl' => route('addCard', ['board_id' => $board_id, 'team_id' => $team_id, 'column_id' => $createdColumn->id]),
+            'board_id' => $board_id,
+            'team_id' => $team_id
+        ]);
     }
-
-    // public function addColumn2(Request $request, $team_id, $board_id, $card_id)
-    // {
-    //     $request->validate([
-    //         "board_id" => "required",
-    //         "column_name" => "required",
-    //     ]);
-    //     $team_id = intval($team_id);
-    //     $board_id = intval($request->board_id);
-
-    //     $user_id = AUth::user()->id;
-    //     $user_id = AUth::user()->id;
-    //     $card_id = intval($card_id);
-    //     $card = Card::find($card_id);
-    //     $card->save();
-    //     $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Kolom");
-
-    //     $createdColumn = $this->boardLogic->addColumn($board_id, $request->column_name);
-
-    //     if ($createdColumn == null) {
-    //         Toastr::error('Gagal membuat kolom, silahkan coba lagi!', 'Error');
-    //         return redirect()->back();
-    //     }
-
-    //     return response()->json($createdColumn);
-    // }
-    // /Membuat Kolom Admin //
+    // /Membuat Kolom User //
 
     // Perbaharui Kolom Admin //
     public function updateCol(Request $request, $team_id, $board_id)
@@ -502,32 +452,88 @@ class BoardController extends Controller
     // Membuat Kartu Admin //
     public function addCard(Request $request, $team_id, $board_id, $column_id)
     {
+        // Mendapatkan data board->id dan column->id
         $board_id = intval($board_id);
         $column_id = intval($column_id);
+
+        // Dapatkan nama kartu dari permintaan
         $card_name = $request->name;
 
+        // Tambahkan kartu baru menggunakan boardLogic
         $newCard = $this->boardLogic->addCard($column_id, $card_name);
+
+        // Membuat histori pembuatan kartu
         $this->cardLogic->cardAddEvent($newCard->id, Auth::user()->id, "Membuat Kartu");
 
-        Toastr::success('Berhasil membuat kartu!', 'Success');
-        return redirect()->back();
-        // return response()->json($newCard);
+        // Temukan column->id tempat kartu ditambahkan
+        $newColumn = Column::where('id', $column_id)->first();
+
+        // Periksa apakah newCard dan newColumn berhasil dibuat dan diambil
+        if ($newCard && $newColumn) {
+            return response()->json([
+                'success' => true,
+
+                'column' => [
+                    'id' => $newColumn->id,
+                    'name' => $newColumn->name,
+                ],
+
+                'card' => [
+                    'id' => $newCard->id,
+                    'name' => $newCard->name,
+                    'pattern' => $newCard->pattern,
+                    'description' => $newCard->description,
+                    'updateUrl' => route('perbaharuiKartu', ['card_id' => $newCard->id]),
+                    'deleteUrl' => route('hapusKartu', ['card_id' => $newCard->id])
+                ]
+            ]);
+        } else {
+            return response()->json(['success' => false]);
+        }
     }
     // /Membuat Kartu Admin //
 
     // Membuat Kartu User //
     public function addCard2(Request $request, $team_id, $board_id, $column_id)
     {
+        // Mendapatkan data board->id dan column->id
         $board_id = intval($board_id);
         $column_id = intval($column_id);
+
+        // Dapatkan nama kartu dari permintaan
         $card_name = $request->name;
 
+        // Tambahkan kartu baru menggunakan boardLogic
         $newCard = $this->boardLogic->addCard2($column_id, $card_name);
+
+        // Membuat histori pembuatan kartu
         $this->cardLogic->cardAddEvent($newCard->id, Auth::user()->id, "Membuat Kartu");
 
-        Toastr::success('Berhasil membuat kartu!', 'Success');
-        return redirect()->back();
-        // return response()->json($newCard);
+        // Temukan column->id tempat kartu ditambahkan
+        $newColumn = Column::where('id', $column_id)->first();
+
+        // Periksa apakah newCard dan newColumn berhasil dibuat dan diambil
+        if ($newCard && $newColumn) {
+            return response()->json([
+                'success' => true,
+
+                'column' => [
+                    'id' => $newColumn->id,
+                    'name' => $newColumn->name,
+                ],
+
+                'card' => [
+                    'id' => $newCard->id,
+                    'name' => $newCard->name,
+                    'pattern' => $newCard->pattern,
+                    'description' => $newCard->description,
+                    'updateUrl' => route('perbaharuiKartu', ['card_id' => $newCard->id]),
+                    'deleteUrl' => route('hapusKartu', ['card_id' => $newCard->id])
+                ]
+            ]);
+        } else {
+            return response()->json(['success' => false]);
+        }
     }
     // /Membuat Kartu User //
 

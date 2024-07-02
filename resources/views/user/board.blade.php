@@ -87,19 +87,6 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="dropdown dropdown-action aksi-card" id="aksi-card{{ $dataKartu->id }}">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#" class="dropdown-item" onclick="updateCardModal({{ $dataKartu->id }}, '{{ $dataKartu->name }}', '{{ route('perbaharuiKartu', ['card_id' => $dataKartu->id]) }}');" id="edit-card-{{ $dataKartu->id }}">
-                                                        <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
-                                                    </a>
-                                                    <a href="#" class="dropdown-item" onclick="deleteCardModal2('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu', ['card_id' => $dataKartu->id]) }}');">
-                                                        <i class='fa fa-trash-o m-r-5'></i> Delete
-                                                    </a>
-                                                </div>
-                                            </div>
                                         {{-- @endif --}}
                                         <!-- /Tampilan Aksi Edit -->
 
@@ -215,7 +202,7 @@
                             </ul>
                             <div class="card-loghub hidden" id="cardLoghub{{ $dataKolom->id }}">
                                 <div class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
-                                    <form action="{{ route('addCard2', ['board_id' => $board->id, 'team_id' => $board->team_id, 'column_id' => $dataKolom->id ]) }}" method="POST">
+                                    <form id="addCardForm{{ $dataKolom->id }}" action="{{ route('addCard', ['board_id' => $board->id, 'team_id' => $board->team_id, 'column_id' => $dataKolom->id ]) }}" method="POST" onsubmit="addCardScript(event, '{{ $dataKolom->id }}')">
                                         @csrf
                                         <input type="hidden" class="form-control" name="board_id" value="{{ $board->id }}">
                                         <input type="hidden" class="form-control" name="team_id" value="{{ $team->id }}">
@@ -231,6 +218,7 @@
                         </div>
                     @endforeach
                     @include('allrole.pindahkolom')
+                    @include('allrole.tambah-kolom-kartu')
                     <!-- /Tampilan Kolom -->
                     
                 </div>
@@ -255,7 +243,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('addCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" id="addColForm" method="POST">
+                        <form id="addColForm" action="{{ route('addCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST" onsubmit="addColumnScript(event)">
                             @csrf
                             <input type="hidden" class="form-control" name="board_id" value="{{ $board->id }}">
                             <input type="hidden" class="form-control" name="team_id" value="{{ $team->id }}">
@@ -697,7 +685,6 @@
         </style>
 
     @section('script')
-        <script src="{{ asset('assets/js/memuat-data-kolom-board.js?v='.time()) }}"></script>
         <script src="{{ asset('assets/js/memuat-onclick-board.js?v='.time()) }}"></script>
         <script src="{{ asset('assets/js/memuat-ulang.js?v='.time()) }}"></script>
         <script src="{{ asset('assets/js/memuat-modal.js?v='.time()) }}"></script>
