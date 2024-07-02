@@ -6,7 +6,8 @@
         // Set height Keterangan 
         const keterangan = $('#keterangan'+id).val();
         const lineCount = keterangan.split('\n').length;
-        $('#keterangan' + id).attr('rows', Math.max(lineCount, 4));
+        const desiredRows = lineCount + 2;
+        $('#keterangan' + id).attr('rows', Math.max(desiredRows, 4));
         
         // Input keterangan
         $('#keterangan'+id).on('click', function(){

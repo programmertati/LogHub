@@ -4,7 +4,8 @@ $(document).ready(function() {
     textareas.forEach(textarea => {
         if (textarea.id.startsWith('keterangan')) {
             const lineCount = textarea.value.split('\n').length;
-            textarea.rows = Math.max(lineCount, 4);
+            const desiredRows = lineCount + 1;
+            textarea.rows = Math.max(desiredRows, 4);
         }
     });
 });

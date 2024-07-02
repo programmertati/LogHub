@@ -61,7 +61,8 @@
                     <div class="tampilan-papan">
                         @isset($boards)
                             @foreach ($boards as $board)
-                                <a href="{{ route('board2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" class="flex cursor-pointer select-none flex-col transition duration-300 border border-gray-200 shadow-xl rounded-xl w-72 hover:shadow-2xl bg-grad-{{ $board->pattern }}" style="margin-bottom: 15px;">
+                                <a href="{{ route('board2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" class="flex cursor-pointer select-none flex-col transition duration-300 border border-gray-200 shadow-xl rounded-xl w-72 hover:shadow-2xl bg-grad-{{ $board->pattern }}" id="bgGrad" style="margin-bottom: 15px;">
+                                    @include('user.bg-sistem')
                                     <div class="flex-grow w-full p-4" style="padding: 3rem !important;"></div>
                                     <article class="flex flex-col w-full gap-1 px-4 py-2 bg-white border-t rounded-b-lg border-t-gray-200">
                                         <h4 class="overflow-hidden font-semibold truncate text-bold" style="font-size: 15px">{{ $board->name }}</h4>
@@ -152,7 +153,10 @@
     </div>
     <!-- /Page Wrapper -->
 
-    <style> 
+    <style>
+        .bg-grad-system.system {
+            background: rgb(235 235 235) !important;
+        }
         .p-4 {
             padding: 1rem !important;
         }
@@ -169,6 +173,7 @@
             @if ($mode_tema->tema_aplikasi == 'Gelap')
                 .rounded-xl {background-color: {{ $mode_tema->warna_mode }} !important;}
                 .sidebar-menu li a:hover {color: #ffffff !important}
+                .bg-grad-system.system {background: #464a5b !important}
             @endif
         @endforeach
     </style>
