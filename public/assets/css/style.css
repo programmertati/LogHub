@@ -14290,7 +14290,8 @@ ul.nav-tabs > li > a {
 }
 .input-checklist2 {
     position: relative;
-	margin-top: -3%;
+    display: flex;
+    justify-content: space-evenly;
     align-items: baseline;
 }
 .update-title {

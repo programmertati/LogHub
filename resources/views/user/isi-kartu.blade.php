@@ -71,8 +71,8 @@
                         <label for="select-card" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach>List Card</label>
                         <select onclick="changeCard('{{ $isianKartu->id }}')" id="select-card{{ $isianKartu->id }}" class="theSelect" style="width: 100% !important; height: 36px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; background-color: #292D3E; @endif @endforeach cursor:pointer">
                             <option selected disabled>-- Select Card --</option>
-                            @foreach ($dataKolom->cards->sortBy('column_id') as $dataKartu)
-                                <option value="#isianKartu{{ $dataKartu->id }}">{{ $dataKartu->name }}</option>
+                            @foreach ($dataKolom->cards->sortBy('id') as $dataKartu)
+                                <option value="{{ $dataKartu->id }}">{{ $dataKartu->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -142,14 +142,15 @@
         </div>
         <div class="keterangan-tag">
             <p class="deskripsi-keterangan">Description</p>
-            <textarea class="border border-1 border-dark w-403 p-2 rounded-xl" rows="4" readonly @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white !important; background-color: #292D3E" @endif @endforeach>{{ $isianKartu->description }}</textarea><br>
+            <textarea class="isian-deskripsi" rows="4" readonly id="keterangan{{ $isianKartu->id }}">{{ $isianKartu->description }}</textarea><br>
         </div>
+        <script src="{{ asset('assets/js/memuat-onclick-auth.js?v='.time()) }}"></script>
     </div>
     <!-- /Tampilan Keterangan Apabila Bukan Punyanya -->
 @endif --}}
     
 {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
-    @foreach ($isianKartu->titleChecklists as $titleChecklists)
+    @foreach ($isianKartu->titleChecklists->sortBy('id') as $titleChecklists)
     <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl">
         <!-- Perbaharui & Hapus Judul Checklist -->
         <div class="header-checklist flex justify-content">
@@ -260,14 +261,14 @@
     @foreach ($isianKartu->titleChecklists as $titleChecklists)
         <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl">
             <!-- Perbaharui & Hapus Judul Checklist -->
-            <div class="header-checklist flex gap-4">
+            <div class="header-checklist flex justify-content">
                 <i class="fa-regular fa-square-check fa-xl" style="position: absolute; color: #489bdb; margin-top: 20px;"></i>
-                <p class="isian-title border border-1 border-darks w-408 p-2 rounded-xl" style="font-size: 17px; margin-left: 20px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white !important @endif @endforeach">{{$titleChecklists->name}}</p>
+                <p class="isian-title border border-1 border-darks w-408 p-2 rounded-xl" style="font-size: 17px; margin-left: 20px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white !important @endif @endforeach" id="titleChecklistUpdate{{ $titleChecklists->id }}">{{$titleChecklists->name}}</p>
             </div>
             <!-- /Perbaharui & Hapus Judul Checklist -->
 
             <!-- Progress Bar Checklist -->
-            <div class="progress2" data-checklist-id="{{ $titleChecklists->id }}">
+            <div class="progress" data-checklist-id="{{ $titleChecklists->id }}">
                 <div class="progress-bar progress-bar-{{ $titleChecklists->id }}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
                     0%
                 </div>
@@ -277,10 +278,10 @@
             <!-- Perbaharui & Hapus Checklist -->
             @include('user.script2')
             @foreach ($titleChecklists->checklists as $checklists)
-                <div class="input-checklist">
+                <div class="input-checklist2">
                     <!-- Tampilan Checklist -->
                     <input class="dynamicCheckbox" type="checkbox" id="{{$checklists->id}}" name="{{$checklists->id}}" {{$checklists->is_active == '1' ? 'checked' : ''}} disabled>
-                    <label class="dynamicCheckboxLabel border border-1 border-darks w-408 p-2 rounded-xl  {{$checklists->is_active == '1' ? 'strike-through' : ''}}">{{$checklists->name}}</label>
+                    <label class="dynamicCheckboxLabel border border-1 border-darks w-408 p-2 rounded-xl  {{$checklists->is_active == '1' ? 'strike-through' : ''}}" style="margin-left: -16px; margin-right: 17px;" id="labelCheckbox-{{$checklists->id}}">{{$checklists->name}}</label>
                 </div>
                 <!-- /Tampilan Checklist -->
             @endforeach

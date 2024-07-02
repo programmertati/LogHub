@@ -71,8 +71,8 @@
                         <label for="select-card" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach>List Card</label>
                         <select onclick="changeCard('{{ $isianKartu->id }}')" id="select-card{{ $isianKartu->id }}" class="theSelect" style="width: 100% !important; height: 36px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white; background-color: #292D3E; @endif @endforeach cursor:pointer">
                             <option selected disabled>-- Select Card --</option>
-                            @foreach ($dataKolom->cards->sortBy('column_id') as $dataKartu)
-                                <option value="#isianKartu{{ $dataKartu->id }}">{{ $dataKartu->name }}</option>
+                            @foreach ($dataKolom->cards->sortBy('id') as $dataKartu)
+                                <option value="{{ $dataKartu->id }}">{{ $dataKartu->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -134,7 +134,7 @@
     </div>
     <!-- /Tambah Judul Checklist -->
     
-    @foreach ($isianKartu->titleChecklists as $titleChecklists)
+    @foreach ($isianKartu->titleChecklists->sortBy('id') as $titleChecklists)
     <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl">
         <!-- Perbaharui & Hapus Judul Checklist -->
         <div class="header-checklist flex justify-content">
