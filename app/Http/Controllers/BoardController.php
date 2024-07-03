@@ -380,9 +380,9 @@ class BoardController extends Controller
         return response()->json([
             'id' => $createdColumn->id,
             'name' => $createdColumn->name,
-            'updateUrl' => route('updateCol2', ['board_id' => $board_id, 'team_id' => $team_id]),
-            'deleteUrl' => route('deleteCol2', ['board_id' => $board_id, 'team_id' => $team_id]),
-            'addCardUrl' => route('addCard2', ['board_id' => $board_id, 'team_id' => $team_id, 'column_id' => $createdColumn->id]),
+            'updateUrl' => route('updateCol', ['board_id' => $board_id, 'team_id' => $team_id]),
+            'deleteUrl' => route('deleteCol', ['board_id' => $board_id, 'team_id' => $team_id]),
+            'addCardUrl' => route('addCard', ['board_id' => $board_id, 'team_id' => $team_id, 'column_id' => $createdColumn->id]),
             'board_id' => $board_id,
             'team_id' => $team_id
         ]);
