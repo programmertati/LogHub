@@ -7,7 +7,7 @@
                     <a href="{{ route('home') }}" class="logo" style="font-size: 24px; color: black; font-weight: bold;">
                         {{-- <i class="fa-solid fa-list-check fa-2xl"></i> --}}
                         {{-- <span class="logo-text" style="display: inline-block; font-weight: 900 !important">LogsHub</span> --}}
-                        <img src="{{ URL::to('/assets/images/logo.png') }}" style="width: 70%;display: inline-block; font-weight: 900 !important"" loading="lazy" class="logo-text">
+                        <img src="{{ URL::to('/assets/images/logo.png') }}" style="width: 70%;display: inline-block; font-weight: 900 !important" loading="lazy" class="logo-text">
                     </a>
                 </div>
                 <li class="{{ set_active(['home']) }}">
