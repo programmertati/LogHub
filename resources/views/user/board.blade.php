@@ -184,7 +184,11 @@
                                                                         @endif
                                                                     @endforeach">
                                                                 </i>
-                                                                <span class="text-status9"><b>Checklist items</b></span>
+                                                                @if(!empty($dataKartu->description))
+                                                                    <span class="text-status9"><b>Checklist items</b></span>
+                                                                @else
+                                                                    <span class="text-status9a"><b>Checklist items</b></span>
+                                                                @endif
                                                                 <span class="total">{{ $perChecklist }}/{{ $jumlahChecklist }}</span>
                                                             </div>
                                                         @endif

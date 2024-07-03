@@ -8779,6 +8779,10 @@ ul.comment-list li ul.children {
 		left: 61% !important;
 	}
 
+	.info-status9 .text-status9a {
+		left: 61% !important;
+	}
+
 	.info-status10 .text-status10 {
 		left: 61% !important;
 	}
@@ -8873,6 +8877,10 @@ ul.comment-list li ul.children {
 	}
 	
 	.info-status9 .text-status9 {
+		left: 67% !important;
+	}
+
+	.info-status9 .text-status9a {
 		left: 67% !important;
 	}
 
@@ -8973,6 +8981,10 @@ ul.comment-list li ul.children {
 		left: 68% !important;
 	}
 
+	.info-status9 .text-status9a {
+		left: 68% !important;
+	}
+
 	.info-status10 .text-status10 {
 		left: 68% !important;
 	}
@@ -9070,6 +9082,10 @@ ul.comment-list li ul.children {
 		left: 70% !important;
 	}
 
+	.info-status9 .text-status9a {
+		left: 70% !important;
+	}
+
 	.info-status10 .text-status10 {
 		left: 70% !important;
 	}
@@ -9164,6 +9180,10 @@ ul.comment-list li ul.children {
 	}
 
 	.info-status9 .text-status9 {
+		left: 83% !important;
+	}
+
+	.info-status9 .text-status9a {
 		left: 83% !important;
 	}
 
@@ -12273,6 +12293,24 @@ ul.nav-tabs > li > a {
 	z-index: 1;
 }
 
+.info-status9 .text-status9a {
+    visibility: hidden;
+    position: absolute;
+    font-size: 12px;
+    font-family: 'Nunito';
+    color: #ffffff;
+    background-color: #44546f;
+    padding: 0px 5px 0px 5px;
+    bottom: 10%;
+    margin-bottom: -29px;
+    left: 26px;
+    margin-right: -80px;
+	margin-left: -40px;
+    border-radius: 5px;
+    transition: opacity 0.3s;
+	z-index: 1;
+}
+
 .info-status10 .text-status10 {
     visibility: hidden;
     position: absolute;
@@ -12393,6 +12431,11 @@ ul.nav-tabs > li > a {
 }
 
 .info-status9:hover .text-status9 {
+	visibility: visible;
+	opacity: 1;
+}
+
+.info-status9:hover .text-status9a {
 	visibility: visible;
 	opacity: 1;
 }
