@@ -209,7 +209,7 @@
                             </button>
                         </div>
                     @endforeach
-                    @include('allrole.pindahkolom')
+                    @include('allrole.pindah-kolom-kartu')
                     @include('allrole.tambah-kolom-kartu')
                     <!-- /Tampilan Kolom -->
                     
