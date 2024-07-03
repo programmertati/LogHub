@@ -40,10 +40,8 @@
             .then(data => {
                 if (data.success) {
                     toastr.success('Berhasil perbaharui posisi kolom!');
-                    console.log('Posisi kolom berhasil diperbaharui!');
                 } else {
-                    toastr.success('Gagal perbaharui posisi kolom!');
-                    console.error('Posisi kolom gagal diperbaharui!');
+                    toastr.error('Gagal perbaharui posisi kolom!');
                 }
             })
 
@@ -76,10 +74,8 @@
             .then(data => {
                 if (data.success) {
                     toastr.success('Berhasil perbaharui posisi kartu!');
-                    console.log('Posisi kartu berhasil diperbaharui!');
                 } else {
-                    toastr.success('Gagal perbaharui posisi kartu!');
-                    console.error('Posisi kartu gagal diperbaharui!');
+                    toastr.error('Gagal perbaharui posisi kartu!');
                 }
             })
 

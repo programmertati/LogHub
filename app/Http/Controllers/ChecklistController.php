@@ -18,32 +18,40 @@ class ChecklistController extends Controller
     // Tambahkan Title Kartu Admin //
     public function addTitle(Request $request)
     {
-        TitleChecklists::create([
+        $newTitle = TitleChecklists::create([
             'cards_id' => $request->card_id,
             'name' => $request->titleChecklist
         ]);
 
-        $user_id = AUth::user()->id;
+        $user_id = Auth::user()->id;
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Judul Checklist");
 
-        return response()->json(['message' => 'Data berhasil disimpan!', 'card_id' => $request->card_id]);
+        return response()->json([
+            'message' => 'Data berhasil disimpan!',
+            'card_id' => $request->card_id,
+            'newTitle' => $newTitle
+        ]);
     }
     // /Tambahkan Title Kartu Admin //
 
     // Tambahkan Title Kartu User //
     public function addTitle2(Request $request)
     {
-        TitleChecklists::create([
+        $newTitle = TitleChecklists::create([
             'cards_id' => $request->card_id,
             'name' => $request->titleChecklist
         ]);
 
-        $user_id = AUth::user()->id;
+        $user_id = Auth::user()->id;
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Judul Checklist");
 
-        return response()->json(['message' => 'Data berhasil disimpan!', 'card_id' => $request->card_id]);
+        return response()->json([
+            'message' => 'Data berhasil disimpan!',
+            'card_id' => $request->card_id,
+            'newTitle' => $newTitle
+        ]);
     }
     // /Tambahkan Title Kartu User //
 

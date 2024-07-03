@@ -29,7 +29,6 @@
                 url: "{{ route('addDescription2') }}",
                 data: formData,
                 success: function(response){
-                    console.log(response);
                     $('#saveButton'+id).addClass('hidden');
                     $('#cancelButton'+id).addClass('hidden');
                     toastr.success('Berhasil memperbaharui keterangan!');
@@ -75,26 +74,18 @@
                 url: "{{ route('addTitle2') }}",
                 data: formData,
                 success: function(response){
-                    console.log(response.card_id);
                     $('#titleChecklist'+id).addClass('hidden');
                     $('#saveButtonTitle'+id).addClass('hidden');
                     $('#cancelButtonTitle'+id).addClass('hidden');
                     $('#iconCheck-'+id).addClass('hidden');
                     $('#addTitle-'+id).removeClass('hidden');
                     localStorage.setItem('modal_id', response.card_id);
-                    window.location.reload();
                     toastr.success('Berhasil menambahkan judul!');
                 },
                 error: function(){
                     toastr.error('Terjadi kesalahan, silakan coba lagi!');
                 }
             });
-        });
-        // Show modal after create title
-        var modal_id = localStorage.getItem('modal_id');
-        $('#isianKartu'+modal_id).modal('show');
-        $('#isianKartu'+id).on('click', function(){
-            localStorage.clear();
         });
         // End Section Title
     });
