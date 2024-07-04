@@ -136,7 +136,13 @@
     
     <div class="title-container" id="titleContainer">
 
-        @foreach ($isianKartu->titleChecklists->sortBy('id') as $titleChecklists)
+        @php
+        $sortedDataTitle = $isianKartu->titleChecklists->count() > 0 ? $isianKartu->titleChecklists->sortBy(function($item) {
+            return $item->position == 0 ? PHP_INT_MAX : $item->position;
+        }) : $isianKartu->titleChecklists->sortBy('id');
+        @endphp
+        
+        @foreach ($sortedDataTitle as $titleChecklists)
             <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl" data-id="{{ $titleChecklists->id }}">
                 <!-- Perbaharui & Hapus Judul Checklist -->
                 <div class="header-checklist flex justify-content">
@@ -180,7 +186,14 @@
                 <!-- Perbaharui & Hapus Checklist -->
                 <div class="checklist-container" id="checklist-container-{{ $titleChecklists->id }}">
                     @include('admin.script2')
-                    @foreach ($titleChecklists->checklists as $checklists)
+                    
+                    @php
+                    $sortedDataChecklist = $titleChecklists->checklists->count() > 0 ? $titleChecklists->checklists->sortBy(function($item) {
+                        return $item->position == 0 ? PHP_INT_MAX : $item->position;
+                    }) : $titleChecklists->checklists->sortBy('id');
+                    @endphp
+                    
+                    @foreach ($sortedDataChecklist as $checklists)
                         <div class="input-checklist" data-id="{{ $checklists->id }}">
                             <!-- Tampilan Checklist -->
                             <form id="myFormChecklistUpdate{{ $checklists->id }}" method="POST" class="form-checklist">
