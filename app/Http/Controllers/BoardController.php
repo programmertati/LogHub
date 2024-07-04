@@ -10,6 +10,8 @@ use App\Models\Board;
 use App\Models\Card;
 use App\Models\Column;
 use App\Models\Team;
+use App\Models\TitleChecklists;
+use App\Models\Checklists;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response as HttpResponse;
 use Brian2694\Toastr\Facades\Toastr;
@@ -818,6 +820,32 @@ class BoardController extends Controller
         return response()->json(['success' => true]);
     }
     // /Untuk Pindah Posisi Kartu //
+
+    // Untuk Pindah Posisi Judul //
+    public function perbaharuiPosisiJudul(Request $request)
+    {
+        $positions = $request->input('positions');
+
+        foreach ($positions as $id => $position) {
+            TitleChecklists::where('id', $id)->update(['position' => $position]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+    // /Untuk Pindah Posisi Judul //
+
+    // Untuk Pindah Posisi Checklist //
+    public function perbaharuiPosisiCeklist(Request $request)
+    {
+        $positions = $request->input('positions');
+
+        foreach ($positions as $id => $position) {
+            Checklists::where('id', $id)->update(['position' => $position]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+    // /Untuk Pindah Posisi Checklist //
 
     // Memindahkan Kartu Admin & User //
     public function reorderCard(Request $request, $team_id, $board_id)

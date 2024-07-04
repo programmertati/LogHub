@@ -149,146 +149,152 @@
     <!-- /Tampilan Keterangan Apabila Bukan Punyanya -->
 @endif --}}
     
-{{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
-    @foreach ($isianKartu->titleChecklists->sortBy('id') as $titleChecklists)
-    <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl">
-        <!-- Perbaharui & Hapus Judul Checklist -->
-        <div class="header-checklist flex justify-content">
-            <i class="fa-regular fa-square-check fa-xl" style="position: absolute; color: #489bdb; margin-top: 20px;"></i>
-            <form id="myFormTitleUpdate{{ $titleChecklists->id }}" method="POST" class="update-title">
-                @csrf
-                    <input type="hidden" id="title_id" name="title_id" value="{{ $titleChecklists->id }}">
-                    <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                    <input type="text" class="isian-title border border-1 border-darks w-402 p-2 rounded-xl" style="font-size: 17px" id="titleChecklistUpdate{{ $titleChecklists->id }}" name="titleChecklistUpdate" placeholder="Enter a title" value="{{$titleChecklists->name}}">
-                    <div class="aksi-update-title gap-2">
-                        <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitleUpdate{{ $titleChecklists->id }}">Save</button>
-                        <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonTitleUpdate{{ $titleChecklists->id }}">Cancel</button>
-                    </div>
-            </form>
-            <form id="myFormTitleDelete{{ $titleChecklists->id }}" method="POST">
-                @csrf
-                <input type="hidden" id="id" name="id" value="{{ $titleChecklists->id }}">
-                <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                <div class="icon-hapus-title" id="hapus-title{{ $titleChecklists->id }}">
-                    <button type="submit" style="border: none; background: none; padding: 0;">
-                        <div class="info-status5">
-                            <i class="fa-solid fa-trash fa-lg icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
-                            <span class="text-status5"><b>Delete Title's</b></span>
-                        </div>
-                    </button>
-                </div>
-            </form>
-        </div>
-        <!-- /Perbaharui & Hapus Judul Checklist -->
-
-        <!-- Progress Bar Checklist -->
-        <div class="progress" data-checklist-id="{{ $titleChecklists->id }}">
-            <div class="progress-bar progress-bar-{{ $titleChecklists->id }}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                0%
-            </div>
-        </div>
-        <!-- Progress Bar Checklist -->
-        
-        <!-- Perbaharui & Hapus Checklist -->
-        @include('user.script2')
-        @foreach ($titleChecklists->checklists as $checklists)
-        <div class="input-checklist">
-            <!-- Tampilan Checklist -->
-            <form id="myFormChecklistUpdate{{ $checklists->id }}" method="POST" class="form-checklist">
-                @csrf
-                <input class="dynamicCheckbox" type="checkbox" id="{{$checklists->id}}" name="{{$checklists->id}}" {{$checklists->is_active == '1' ? 'checked' : ''}}>
-                <label class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl  {{$checklists->is_active == '1' ? 'strike-through' : ''}}" id="labelCheckbox-{{$checklists->id}}" for="labelCheckbox-{{$checklists->id}}">{{$checklists->name}}</label>
-                <input type="hidden" id="checklist_id" name="checklist_id" value="{{ $checklists->id }}">
-                <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                <input onclick="mentionTags4('checkbox-{{ $checklists->id }}')" type="text" class="dynamicCheckboxValue border border-1 border-darks w-402 p-2 rounded-xl hidden" id="checkbox-{{$checklists->id}}" name="checkbox-{{$checklists->id}}" value="{{$checklists->name}}" placeholder="Enter a checklist">
-                <div class="mention-tag" id="mention-tag-checkbox{{ $checklists->id }}"></div>
-                @include('user.script8')
-                
-                <!-- Aksi Update Checklist -->
-                <div class="aksi-update-checklist gap-2 margin-bottom-0" id="checklist-{{ $checklists->id }}">
-                    <button type="submit" class="saves btn btn-outline-info hidden" id="saveButtonChecklistUpdate-{{ $checklists->id }}">Save</button>
-                    <button type="button" class="cancels btn btn-outline-danger hidden" id="cancelButtonChecklistUpdate-{{ $checklists->id }}">Cancel</button>
-                </div>
-                <!-- /Aksi Update Checklist -->
-            </form>
-            <!-- Icon Hapus Checklist -->
-            {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
-                <form id="myFormChecklistDelete{{ $checklists->id }}" method="POST">
-                    @csrf
-                    <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                    <input type="hidden" id="title_checklists_id" name="title_checklists_id" value="{{ $titleChecklists->id }}">
-                    <input type="hidden" id="id" name="id" value="{{ $checklists->id }}">
-                    <div class="icon-hapus-checklist" id="hapus-checklist{{ $checklists->id }}">
-                        <button type="submit" class="deletes" id="deleteButtonChecklist-{{ $checklists->id }}" style="border: none; background: none; padding: 0;">
-                            <div class="info-status6">
-                                <i class="fa-solid fa-trash fa-lg icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
-                                <span class="text-status6"><b>Delete Checklist</b></span>
+<div class="title-container" id="titleContainer">
+    
+    {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
+        @foreach ($isianKartu->titleChecklists->sortBy('id') as $titleChecklists)
+            <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl" data-id="{{ $titleChecklists->id }}">
+                <!-- Perbaharui & Hapus Judul Checklist -->
+                <div class="header-checklist flex justify-content">
+                    <i class="fa-regular fa-square-check fa-xl" style="position: absolute; color: #489bdb; margin-top: 20px;"></i>
+                    <form id="myFormTitleUpdate{{ $titleChecklists->id }}" method="POST" class="update-title">
+                        @csrf
+                            <input type="hidden" id="title_id" name="title_id" value="{{ $titleChecklists->id }}">
+                            <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                            <input type="text" class="isian-title border border-1 border-darks w-402 p-2 rounded-xl" style="font-size: 17px" id="titleChecklistUpdate{{ $titleChecklists->id }}" name="titleChecklistUpdate" placeholder="Enter a title" value="{{$titleChecklists->name}}">
+                            <div class="aksi-update-title gap-2">
+                                <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitleUpdate{{ $titleChecklists->id }}">Save</button>
+                                <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonTitleUpdate{{ $titleChecklists->id }}">Cancel</button>
                             </div>
-                        </button>
+                    </form>
+                    <form id="myFormTitleDelete{{ $titleChecklists->id }}" method="POST">
+                        @csrf
+                        <input type="hidden" id="id" name="id" value="{{ $titleChecklists->id }}">
+                        <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                        <div class="icon-hapus-title" id="hapus-title{{ $titleChecklists->id }}">
+                            <button type="submit" style="border: none; background: none; padding: 0;">
+                                <div class="info-status5">
+                                    <i class="fa-solid fa-trash fa-lg icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
+                                    <span class="text-status5"><b>Delete Title's</b></span>
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /Perbaharui & Hapus Judul Checklist -->
+
+                <!-- Progress Bar Checklist -->
+                <div class="progress" data-checklist-id="{{ $titleChecklists->id }}">
+                    <div class="progress-bar progress-bar-{{ $titleChecklists->id }}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        0%
                     </div>
+                </div>
+                <!-- Progress Bar Checklist -->
+                
+                <!-- Perbaharui & Hapus Checklist -->
+                <div class="checklist-container" id="checklist-container-{{ $titleChecklists->id }}">
+                    @include('user.script2')
+                    @foreach ($titleChecklists->checklists as $checklists)
+                        <div class="input-checklist" data-id="{{ $checklists->id }}">
+                            <!-- Tampilan Checklist -->
+                            <form id="myFormChecklistUpdate{{ $checklists->id }}" method="POST" class="form-checklist">
+                                @csrf
+                                <input class="dynamicCheckbox" type="checkbox" id="{{$checklists->id}}" name="{{$checklists->id}}" {{$checklists->is_active == '1' ? 'checked' : ''}}>
+                                <label class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl  {{$checklists->is_active == '1' ? 'strike-through' : ''}}" id="labelCheckbox-{{$checklists->id}}" for="labelCheckbox-{{$checklists->id}}">{{$checklists->name}}</label>
+                                <input type="hidden" id="checklist_id" name="checklist_id" value="{{ $checklists->id }}">
+                                <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                                <input onclick="mentionTags4('checkbox-{{ $checklists->id }}')" type="text" class="dynamicCheckboxValue border border-1 border-darks w-402 p-2 rounded-xl hidden" id="checkbox-{{$checklists->id}}" name="checkbox-{{$checklists->id}}" value="{{$checklists->name}}" placeholder="Enter a checklist">
+                                <div class="mention-tag" id="mention-tag-checkbox{{ $checklists->id }}"></div>
+                                @include('user.script8')
+                                
+                                <!-- Aksi Update Checklist -->
+                                <div class="aksi-update-checklist gap-2 margin-bottom-0" id="checklist-{{ $checklists->id }}">
+                                    <button type="submit" class="saves btn btn-outline-info hidden" id="saveButtonChecklistUpdate-{{ $checklists->id }}">Save</button>
+                                    <button type="button" class="cancels btn btn-outline-danger hidden" id="cancelButtonChecklistUpdate-{{ $checklists->id }}">Cancel</button>
+                                </div>
+                                <!-- /Aksi Update Checklist -->
+                            </form>
+                            <!-- Icon Hapus Checklist -->
+                            {{-- @if($isianKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
+                                <form id="myFormChecklistDelete{{ $checklists->id }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                                    <input type="hidden" id="title_checklists_id" name="title_checklists_id" value="{{ $titleChecklists->id }}">
+                                    <input type="hidden" id="id" name="id" value="{{ $checklists->id }}">
+                                    <div class="icon-hapus-checklist" id="hapus-checklist{{ $checklists->id }}">
+                                        <button type="submit" class="deletes" id="deleteButtonChecklist-{{ $checklists->id }}" style="border: none; background: none; padding: 0;">
+                                            <div class="info-status6">
+                                                <i class="fa-solid fa-trash fa-lg icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
+                                                <span class="text-status6"><b>Delete Checklist</b></span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </form>
+                            {{-- @endif --}}
+                            <!-- /Icon Hapus Checklist -->
+                        </div>
+                        <!-- /Tampilan Checklist -->
+                        
+                    @include('user.script3')
+                    @endforeach
+                </div>
+                <!-- /Perbaharui & Hapus Checklist -->
+
+                <!-- Tambah baru checklist -->
+                <form id="myFormChecklist{{ $titleChecklists->id }}" method="POST">
+                    @csrf
+                        <input type="hidden" id="title_id" name="title_id" value="{{ $titleChecklists->id }}">
+                        <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                        <div class="header-tambah-checklist flex gap-4">
+                            <i class="fa-xl"></i>
+                            <input onclick="mentionTags('checklist{{ $titleChecklists->id }}')" type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist{{ $titleChecklists->id }}" name="checklist" placeholder="Enter a checklist" required>
+                            <div class="mention-tag" id="mention-tag-checklist{{ $titleChecklists->id }}"></div>
+                            @include('user.script5')
+                        </div>
+                        <div class="aksi-update-checklist gap-2">
+                            <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist{{ $titleChecklists->id }}">Save</button>
+                            <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist{{ $titleChecklists->id }}">Cancel</button>
+                        </div>
                 </form>
-            {{-- @endif --}}
-            <!-- /Icon Hapus Checklist -->
-        </div>
-        <!-- /Tampilan Checklist -->
-
-        @include('user.script3')
+                <button type="button" class="btn btn-outline-info" id="AddChecklist{{ $titleChecklists->id }}">Add an item</button>
+                <!-- Tambah baru checklist -->
+            </div>
         @endforeach
-        <!-- /Perbaharui & Hapus Checklist -->
+        @include('allrole.pindah-title-checklist')
+    {{-- @else
+        @foreach ($isianKartu->titleChecklists as $titleChecklists)
+            <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl">
+                <!-- Perbaharui & Hapus Judul Checklist -->
+                <div class="header-checklist flex justify-content">
+                    <i class="fa-regular fa-square-check fa-xl" style="position: absolute; color: #489bdb; margin-top: 20px;"></i>
+                    <p class="isian-title border border-1 border-darks w-408 p-2 rounded-xl" style="font-size: 17px; margin-left: 20px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white !important @endif @endforeach" id="titleChecklistUpdate{{ $titleChecklists->id }}">{{$titleChecklists->name}}</p>
+                </div>
+                <!-- /Perbaharui & Hapus Judul Checklist -->
 
-        <!-- Tambah baru checklist -->
-        <div id="checkbox-container-{{ $titleChecklists->id }}"></div>
-        <form id="myFormChecklist{{ $titleChecklists->id }}" method="POST">
-            @csrf
-                <input type="hidden" id="title_id" name="title_id" value="{{ $titleChecklists->id }}">
-                <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                <div class="header-tambah-checklist flex gap-4">
-                    <i class="fa-xl"></i>
-                    <input onclick="mentionTags('checklist{{ $titleChecklists->id }}')" type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist{{ $titleChecklists->id }}" name="checklist" placeholder="Enter a checklist" required>
-                    <div class="mention-tag" id="mention-tag-checklist{{ $titleChecklists->id }}"></div>
-                    @include('user.script5')
+                <!-- Progress Bar Checklist -->
+                <div class="progress" data-checklist-id="{{ $titleChecklists->id }}">
+                    <div class="progress-bar progress-bar-{{ $titleChecklists->id }}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        0%
+                    </div>
                 </div>
-                <div class="aksi-update-checklist gap-2">
-                    <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist{{ $titleChecklists->id }}">Save</button>
-                    <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist{{ $titleChecklists->id }}">Cancel</button>
-                </div>
-        </form>
-        <button type="button" class="btn btn-outline-info" id="AddChecklist{{ $titleChecklists->id }}">Add an item</button>
-        <!-- Tambah baru checklist -->
-        </div>
-    @endforeach
-{{-- @else
-    @foreach ($isianKartu->titleChecklists as $titleChecklists)
-        <div class="menu-checklist border border-1 border-darkss p-2 rounded-xl">
-            <!-- Perbaharui & Hapus Judul Checklist -->
-            <div class="header-checklist flex justify-content">
-                <i class="fa-regular fa-square-check fa-xl" style="position: absolute; color: #489bdb; margin-top: 20px;"></i>
-                <p class="isian-title border border-1 border-darks w-408 p-2 rounded-xl" style="font-size: 17px; margin-left: 20px; @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') color: white !important @endif @endforeach" id="titleChecklistUpdate{{ $titleChecklists->id }}">{{$titleChecklists->name}}</p>
+                <!-- Progress Bar Checklist -->
+            
+                <!-- Perbaharui & Hapus Checklist -->
+                @include('user.script2')
+                @foreach ($titleChecklists->checklists as $checklists)
+                    <div class="input-checklist2">
+                        <!-- Tampilan Checklist -->
+                        <input class="dynamicCheckbox" type="checkbox" id="{{$checklists->id}}" name="{{$checklists->id}}" {{$checklists->is_active == '1' ? 'checked' : ''}} disabled>
+                        <label class="dynamicCheckboxLabel border border-1 border-darks w-408 p-2 rounded-xl  {{$checklists->is_active == '1' ? 'strike-through' : ''}}" style="margin-left: -16px; margin-right: 17px;" id="labelCheckbox-{{$checklists->id}}">{{$checklists->name}}</label>
+                    </div>
+                    <!-- /Tampilan Checklist -->
+                @endforeach
+                <!-- /Perbaharui & Hapus Checklist -->
             </div>
-            <!-- /Perbaharui & Hapus Judul Checklist -->
+        @endforeach
+    @endif --}}
+</div>
 
-            <!-- Progress Bar Checklist -->
-            <div class="progress" data-checklist-id="{{ $titleChecklists->id }}">
-                <div class="progress-bar progress-bar-{{ $titleChecklists->id }}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                    0%
-                </div>
-            </div>
-            <!-- Progress Bar Checklist -->
-        
-            <!-- Perbaharui & Hapus Checklist -->
-            @include('user.script2')
-            @foreach ($titleChecklists->checklists as $checklists)
-                <div class="input-checklist2">
-                    <!-- Tampilan Checklist -->
-                    <input class="dynamicCheckbox" type="checkbox" id="{{$checklists->id}}" name="{{$checklists->id}}" {{$checklists->is_active == '1' ? 'checked' : ''}} disabled>
-                    <label class="dynamicCheckboxLabel border border-1 border-darks w-408 p-2 rounded-xl  {{$checklists->is_active == '1' ? 'strike-through' : ''}}" style="margin-left: -16px; margin-right: 17px;" id="labelCheckbox-{{$checklists->id}}">{{$checklists->name}}</label>
-                </div>
-                <!-- /Tampilan Checklist -->
-            @endforeach
-            <!-- /Perbaharui & Hapus Checklist -->
-        </div>
-    @endforeach
-@endif --}}
     <div class="menu-activity">
         <div class="header-activity flex">
             <i class="fa-solid fa-list-ul fa-lg"></i>
