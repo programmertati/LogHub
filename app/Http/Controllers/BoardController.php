@@ -898,6 +898,8 @@ class BoardController extends Controller
     {
         $positions = $request->input('positions');
 
+        dd($positions);
+
         foreach ($positions as $id => $position) {
             Checklists::where('id', $id)->update(['position' => $position]);
         }
