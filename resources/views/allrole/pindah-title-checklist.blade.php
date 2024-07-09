@@ -23,7 +23,7 @@
             for (let i = 0; i < titleIds.length; i++) {
                 const title = titleIds[i];
                 const id = title.dataset.id;
-                if(positions[id] !== 'undefined'){
+                if(typeof positions[id] !== 'undefined'){
                     positions[id] = i + 1;
                 }
             }
