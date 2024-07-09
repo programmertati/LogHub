@@ -27,6 +27,7 @@
             }
 
             console.log(positions);
+            console.log(titleIds.length);
 
             fetch('{{ route("perbaharuiPosisiJudul") }}', {
                 method: 'POST',
