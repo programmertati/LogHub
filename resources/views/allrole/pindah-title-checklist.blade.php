@@ -28,9 +28,6 @@
                 }
             }
 
-            console.log(positions);
-            console.log(titleIds.length);
-
             fetch('{{ route("perbaharuiPosisiJudul") }}', {
                 method: 'POST',
                 headers: {
@@ -62,7 +59,9 @@
             for (let i = 0; i < checklists.length; i++) {
                 const checklist = checklists[i];
                 const id = checklist.dataset.id;
-                positions[id] = i + 1;
+                if (id !== undefined) {
+                    positions[id] = i + 1;
+                }
             }
 
             fetch('{{ route("perbaharuiPosisiCeklist") }}', {
