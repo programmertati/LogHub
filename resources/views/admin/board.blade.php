@@ -21,7 +21,7 @@
                     <!-- Tampilan Kolom -->
                     @php
                     $sortedDataKolom = $dataColumnCard->count() > 0 ? $dataColumnCard->sortBy(function($item) {
-                        return $item->position == 0 ? PHP_INT_MAX : $item->position;
+                        return $item->position == 0 ? $item->id : $item->position;
                     }) : $dataColumnCard->sortBy('id');
                     @endphp
                     @foreach ($sortedDataKolom as $dataKolom)
@@ -55,7 +55,7 @@
                                 <!-- Tampilan Kartu -->
                                 @php
                                 $sortedDataKartu = $dataKolom->cards->count() > 0 ? $dataKolom->cards->sortBy(function($item) {
-                                    return $item->position == 0 ? PHP_INT_MAX : $item->position;
+                                    return $item->position == 0 ? $item->id : $item->position;
                                 }) : $dataKolom->cards->sortBy('id');
                                 @endphp
                                 @foreach ($sortedDataKartu as $dataKartu)

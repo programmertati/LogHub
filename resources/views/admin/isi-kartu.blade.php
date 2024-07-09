@@ -189,7 +189,7 @@
                     
                     @php
                     $sortedDataChecklist = $titleChecklists->checklists->count() > 0 ? $titleChecklists->checklists->sortBy(function($item) {
-                        return $item->position == 0 ? PHP_INT_MAX : $item->position;
+                        return $item->position == 0 ? $item->id : $item->position;
                     }) : $titleChecklists->checklists->sortBy('id');
                     @endphp
                     
