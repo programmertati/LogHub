@@ -60,9 +60,6 @@
                 positions[id] = i + 1;
             }
 
-            console.log(positions);
-            console.log(cards.length);
-
             fetch('{{ route("perbaharuiPosisiKartu") }}', {
                 method: 'POST',
                 headers: {
