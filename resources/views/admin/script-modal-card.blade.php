@@ -19,11 +19,11 @@
                 data: $(this).serialize(),
                 success: function(data) {
                     $("#div_hasil").html(data);
-                    toastr.success('Berhasil memuat data kartu!');
+                    // toastr.success('Berhasil memuat data kartu!');
                 },
                 error: function(error, textStatus) {
                     $("#div_hasil").html(textStatus);
-                    toastr.error('Gagal memuat data kartu!');
+                    // toastr.error('Gagal memuat data kartu!');
                 }
             });
         });

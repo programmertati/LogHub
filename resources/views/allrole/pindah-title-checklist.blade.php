@@ -26,6 +26,8 @@
                 positions[id] = i + 1;
             }
 
+            console.log(positions);
+
             fetch('{{ route("perbaharuiPosisiJudul") }}', {
                 method: 'POST',
                 headers: {
