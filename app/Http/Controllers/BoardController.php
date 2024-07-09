@@ -899,9 +899,7 @@ class BoardController extends Controller
         $positions = $request->input('positions');
 
         foreach ($positions as $id => $position) {
-            if(!empty($id)){
-                Checklists::where('id', $id)->update(['position' => $position]);
-            }
+            Checklists::where('id', $id)->update(['position' => $position]);
         }
 
         return response()->json(['success' => true]);
