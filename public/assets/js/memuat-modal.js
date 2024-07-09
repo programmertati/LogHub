@@ -124,7 +124,7 @@ $(document).ready(function() {
                 $('#kolom-card-' + columnId).addClass('hidden');
                 toastr.success('Berhasil menghapus kolom!');
             },
-            error: function(response) {
+            error: function(error) {
                 toastr.error('Gagal menghapus kolom!');
             }
         });
@@ -146,7 +146,7 @@ $(document).ready(function() {
                 $('li[data-id="' + cardId + '"]').addClass('hidden');
                 toastr.success('Berhasil menghapus kartu!');
             },
-            error: function(response) {
+            error: function(error) {
                 toastr.error('Gagal menghapus kartu!');
             }
         });
@@ -175,7 +175,7 @@ $(document).ready(function() {
                 $('li[data-id="' + cardId + '"]').addClass('hidden');
                 toastr.success('Berhasil menghapus kartu!');
             },
-            error: function(response) {
+            error: function(error) {
                 toastr.error('Gagal menghapus kartu!');
             }
         });

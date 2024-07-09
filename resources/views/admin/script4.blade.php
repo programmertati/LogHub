@@ -33,7 +33,7 @@
                 updateTextCover(cardId, cover);
                 // var aksiCard = document.querySelector('#aksi-card' + cardId);
             },
-            error: function() {
+            error: function(error) {
                 toastr.error('Gagal perbaharui cover!');
             }
         });
@@ -54,7 +54,7 @@
                 updateCoverCard('NULL', cardId);
                 updateTextCover(cardId, 'NULL');
             },
-            error: function() {
+            error: function(error) {
                 toastr.error('Gagal menghapus cover!');
             }
         });

@@ -73,22 +73,22 @@
                     </div>
                     <!-- /Tampilan Papan -->
 
-                    {{-- <div class="flex flex-wrap gap-x-8 gap-y-6">
+                    <div class="flex flex-wrap gap-x-8 gap-y-6">
 
                         <!-- Fitur Buat Papan -->
                         @isset($boards)
                             @if ($boards->isEmpty() && Auth::user()->id == $owner->id)
                                 <a href="#" data-toggle="modal" data-target="#createBoard">
                                     <div class="flex flex-col items-center justify-center gap-2 text-gray-400 transition duration-300 bg-gray-100 shadow-md cursor-pointer select-none w-72 h-52 rounded-xl hover:shadow-2xl" style="background-color: rgb(243 244 246 / 1) !important; @foreach($result_tema as $sql_mode => $mode_tema)@if($mode_tema->tema_aplikasi == 'Gelap')background-color: #292D3E !important; @endif @endforeach">
-                                        <i class="fa-solid fa-plus fa-2xl"></i><br>
-                                        <h4>Buat Papan</h4>
+                                        <i class="fa-solid fa-plus fa-2xl" style="margin-top: 14px; margin-bottom: -16px;"></i><br>
+                                        <h4>Create Board</h4>
                                     </div>
                                 </a>
                             @endif
                         @endif
                         <!-- /Fitur Buat Papan -->
 
-                    </div> --}}
+                    </div>
                 </div>
 
                 {!! Toastr::message() !!}
@@ -121,6 +121,228 @@
         </div>
         <!-- /Page Content -->
 
+        <!-- Perbaharui Tim Modal -->
+        <div id="updateTeam" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Team</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('doTeamDataUpdate2', ['team_id' => $team->id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="team_id" value="{{ $team->id }}">
+                            <div class="form-group">
+                                <label>Team's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control @error('team_name') is-invalid @enderror" id="team_name" name="team_name" placeholder="Enter a team's name" value="{{ $team->name }}" required>
+                                @error('team_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Team's Description</label><span class="text-danger">*</span>
+                                <textarea class="form-control @error('team_description') is-invalid @enderror" id="team_description" name="team_description" placeholder="Enter a team's description" required></textarea>
+                                @error('team_description')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="flex flex-col w-full gap-2">
+                                <label>Team's Background</label>
+                                <input type="hidden" id="pattern-field" name="team_pattern" value="{{ isset($patterns[0]) ? $patterns[0] : 'default_value' }}">
+                                <div class="flex items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-hidden overflow-x-scroll border-2 border-gray-200 h-36 rounded-xl">
+                                    @isset($patterns)
+                                        @foreach ($patterns as $pattern)
+                                            <div onclick="selectPattern('{{ $pattern }}')" class="{{ $pattern == $patterns[0] ? 'order-first' : '' }} h-full flex-shrink-0 border-4 rounded-lg w-36 bg-pattern-{{ $pattern }} hover:border-black" id="pattern-{{ $pattern }}" style="cursor: pointer">
+                                                <div id="check-{{ $pattern }}" class="flex items-center justify-center w-full h-full {{ $pattern == $patterns[0] ? 'opacity-100' : 'opacity-0' }}">
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <small class="text-danger">*Please select again (Team's Background) when updating.</small>
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Perbaharui Tim Modal -->
+
+        <!-- Anggota Tim Modal -->
+        <div id="manageMember" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Manage Members</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="member-name">Team Member</label>
+                            <select class="theSelect" id="member-name2" name="member-name" style="width: 100% !important">
+                                <option selected disabled>-- Select Team Members --</option>
+                                @foreach ($members as $member)
+                                    <option value="{{ $member->email }}">{{ $member->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="border border-dark rounded-lg overflow-auto" style="max-height: 20rem;">
+                            <div class="d-flex flex-wrap p-2">
+                                @foreach ($members as $member)
+                                    <div data-role="member-card" data-email="{{ $member->email }}" data-name="{{ $member->name }}">
+                                        <p class="card-text font-weight-bold" style="cursor: pointer">{{ $member->name }}, {{ $member->email }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="submit-section">
+                            <button type="button" class="btn btn-outline-danger submit-btn" id="save-btn">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Anggota Tim Modal -->
+
+        <!-- Undangan Anggota Modal -->
+        <div id="inviteMember" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Invite People</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="input-text-inv-email" class="form-label">E-mail Address</label>
+                            <div class="input-group gap-2">
+                                <input type="email" class="form-control" id="inv-email" placeholder="Enter member email">
+                                <button class="btn btn-outline-info" type="button" id="add-btn">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-group gap-2" style="flex-wrap: nowrap;">
+                                <select class="theSelect" id="inv-email2" style="width: 100% !important">
+                                    <option selected disabled>-- Select Team Members --</option>
+                                    @foreach ($UserTeams as $result_team)
+                                        <option value="{{ $result_team->email }}">{{ $result_team->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button class="btn btn-outline-info" type="button" id="add-btn2">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <form method="POST" id="invite-members-form" action="{{ route('doInviteMembers2', ['team_id' => $team->id]) }}">
+                            @csrf
+                            <input type="hidden" name="team_id" value="{{ $team->id }}">
+                            <div class="border border-2 border-dark p-2 rounded" style="max-height: 300px; overflow-y: auto;" id="invite-container">
+                                
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-outline-info submit-btn" id="save-btn">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Undangan Anggota Modal -->
+
+        <!-- Buat Papan Modal -->
+        <div id="createBoard" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Board</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('createBoard2', ['team_id' => $team->id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="team_id" value="{{ $team->id }}">
+                            <div class="form-group">
+                                <label>Board's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control @error('board_name') is-invalid @enderror" id="board_name" name="board_name" placeholder="Enter a board's name" required>
+                                @error('board_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="flex flex-col w-full gap-2">
+                                <label>Board's Color</label>
+                                <input type="hidden" id="background-field" name="board_pattern" value="{{ isset($backgrounds[0]) ? $backgrounds[0] : 'default_value' }}">
+                                <div class="flex items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-hidden overflow-x-scroll border-2 border-gray-200 h-36 rounded-xl">
+                                    @isset($backgrounds)
+                                        @foreach ($backgrounds as $background)
+                                            <div onclick="selectPattern2('{{ $background }}')" class="{{ $background == $backgrounds[0] ? 'order-first' : '' }} h-full flex-shrink-0 border-4 rounded-lg w-36 bg-grad-{{ $background }} hover:border-black" id="background-{{ $background }}" style="cursor: pointer">
+                                                <div id="check-{{ $background }}" class="flex items-center justify-center w-full h-full {{ $background == $backgrounds[0] ? 'opacity-100' : 'opacity-0' }}">
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Buat Papan Modal -->
+        
+        <!-- Hapus Papan Modal -->
+        <div id="deleteTeam" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Team "{{ $team->name }}"?</h3>
+                            <p>Are you sure you want to delete this team?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <form action="{{ route('doDeleteTeam2', ['team_id' => $team->id]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="team_id" value="{{ $team->id }}">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Hapus Papan Modal -->
+
         <!-- Keluar dari Tim Modal -->
         <div id="leaveTeam" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
@@ -131,7 +353,7 @@
                             <p>Are you sure you want to leave this team?</p>
                         </div>
                         <div class="modal-btn delete-action">
-                            <form action="{{ route('doLeaveTeam', ['team_id' => $team->id]) }}" method="POST">
+                            <form action="{{ route('doLeaveTeam2', ['team_id' => $team->id]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="team_id" value="{{ $team->id }}">
                                 <div class="row">
@@ -157,6 +379,24 @@
         .bg-grad-system.system {
             background: rgb(235 235 235) !important;
         }
+        .fa-pencil:hover{
+            color: rgb(0 0 0 / 50%);
+        }
+        .fa-trash:active{
+            color: #ffffff
+        }
+        .fa-pencil:active{
+            color: #ffffff !important
+        }
+        .fa-user-gear:active {
+            color: #ffffff
+        }
+        .fa-user-plus:active {
+            color: #ffffff
+        }
+        .fa-table-columns:active {
+            color: #ffffff
+        }
         .p-4 {
             padding: 1rem !important;
         }
@@ -172,13 +412,184 @@
         @foreach($result_tema as $sql_mode => $mode_tema)
             @if ($mode_tema->tema_aplikasi == 'Gelap')
                 .rounded-xl {background-color: {{ $mode_tema->warna_mode }} !important;}
+                .border-dark {border-color: white !important;}
                 .sidebar-menu li a:hover {color: #ffffff !important}
                 .bg-grad-system.system {background: #464a5b !important}
+                .bg-red-200 {background-color: rgb(255 91 91)}
             @endif
         @endforeach
     </style>
 
     @section('script')
+        <script>
+            function selectPattern(pattern) {
+                var selectedPattern = document.querySelector('#pattern-field');
+                selectedPattern.value = pattern;
+        
+                var allPatterns = document.querySelectorAll('.h-full');
+                allPatterns.forEach(function(item) {
+                    item.classList.remove('border-black');
+                });
+        
+                var selectedPatternElement = document.getElementById('pattern-' + pattern);
+                selectedPatternElement.classList.add('border-black');
+        
+                var allChecks = document.querySelectorAll('.fa-circle-check');
+                allChecks.forEach(function(item) {
+                    item.parentElement.style.opacity = '0';
+                });
+        
+                var selectedCheck = document.getElementById('check-' + pattern);
+                selectedCheck.style.opacity = '100';
+            }
+
+            function selectPattern2(background) {
+                var selectedPattern = document.querySelector('#background-field');
+                selectedPattern.value = background;
+        
+                var allPatterns = document.querySelectorAll('.h-full');
+                allPatterns.forEach(function(item) {
+                    item.classList.remove('border-black');
+                });
+        
+                var selectedPatternElement = document.getElementById('background-' + background);
+                selectedPatternElement.classList.add('border-black');
+        
+                var allChecks = document.querySelectorAll('.fa-circle-check');
+                allChecks.forEach(function(item) {
+                    item.parentElement.style.opacity = '0';
+                });
+        
+                var selectedCheck = document.getElementById('check-' + background);
+                selectedCheck.style.opacity = '100';
+            }
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                let selectedMembers = [];
+                $('#manageMember').on('shown.bs.modal', function () {
+                    $('#member-name').trigger('focus');
+                    $('#member-name2').trigger('focus');
+                });
+
+                $('#save-btn').on('click', function() {
+                    $('[data-role="member-card"].selected').each(function() {
+                        selectedMembers.push($(this).data('email'));
+                    });
+            
+                    if (selectedMembers.length > 0) {
+                        $.ajax({
+                            url: '{{ route('deleteTeamMember2', ['team_id' => $team->id]) }}',
+                            method: 'POST',
+                            data: { emails: selectedMembers, _token:"{{ csrf_token() }}" },
+                            success: function(response) {
+                                $('#manageMember').modal('hide');
+                                toastr.success('Berhasil menghapus anggota tim Anda!');
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
+                            },
+                            error: function(error) {
+                                toastr.error('Terjadi kesalahan saat menghapus anggota tim Anda!');
+                            }
+                        });
+                    } else {
+                        toastr.error('Tidak ada anggota tim yang Anda pilih!');
+                    }
+                });
+            
+                $('[data-role="member-card"]').on('click', function() {
+                    $(this).toggleClass('selected border-info bg-red-200');
+                });
+            
+                $('#member-name, #member-name2').on('change', function() {
+                    let email = $(this).val().trim();
+                    if (email !== "") {
+                        let emailExists = false;
+                        $('[data-role="member-card"]').each(function() {
+                            if ($(this).data('email') === email) {
+                                emailExists = true;
+                                return false;
+                            }
+                        });
+                        if (!emailExists) {
+                            toastr.error('Email yang Anda masukkan tidak tersedia, silahkan memasukkannya kembali!');
+                            return;
+                        }
+                        if (!selectedMembers.includes(email)) {
+                            selectedMembers.push(email);
+                            $(this).val('');
+                        }
+                    } else {
+                        toastr.error('Email tidak boleh kosong!');
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const addBtn = document.getElementById('add-btn');
+                const addBtn2 = document.getElementById('add-btn2');
+                const emailInput = document.getElementById('inv-email');
+                const emailInput2 = document.getElementById('inv-email2');
+                const inviteContainer = document.getElementById('invite-container');
+                const form = document.getElementById('invite-members-form');
+                
+                addBtn.addEventListener('click', () => {
+                    const email = emailInput.value.trim();
+                    if (email && email !== '-- Select Team Members --') {
+                        const emailDiv = document.createElement('div');
+                        emailDiv.className = 'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
+                        emailDiv.innerHTML = `
+                        <span>${email}</span>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
+                        <input type="hidden" name="emails[]" value="${email}">
+                    `;
+                    inviteContainer.appendChild(emailDiv);
+                    emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
+                        inviteContainer.removeChild(emailDiv);
+                    });
+                    emailInput.value = '';
+                    }
+                });
+
+                addBtn2.addEventListener('click', () => {
+                    const email = emailInput2.value.trim();
+                    if (email && email !== '-- Select Team Members --') {
+                        const emailDiv = document.createElement('div');
+                        emailDiv.className = 'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
+                        emailDiv.innerHTML = `
+                        <span>${email}</span>
+                        <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
+                        <input type="hidden" name="emails[]" value="${email}">
+                    `;
+                    inviteContainer.appendChild(emailDiv);
+                    emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
+                        inviteContainer.removeChild(emailDiv);
+                    });
+                    emailInput2.value = '';
+                    }
+                });
+
+                form.addEventListener('submit', (e) => {
+                    if (inviteContainer.children.length === 0) {
+                    e.preventDefault();
+                    toastr.error('Harap tambahkan email anggota tim Anda sebelum menyimpan!');
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var teamDescription = "{{ $team->description }}";
+                var textarea = document.getElementById("team_description");
+                textarea.value = teamDescription;
+            });
+        </script>
+
         <!-- FancyBox Foto Profil -->
         <script>
             $(document).ready(function() {
@@ -190,7 +601,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
         <!-- /FancyBox Foto Profil -->
 
-        <script src="{{ asset('assets/js/memuat-ulang.js') }}"></script>
+        <script>
+            $(".theSelect").select2();
+        </script>
 
         <script>
             history.pushState({}, "", '/user/tim/lihat-papan/{{ $team->id }}');

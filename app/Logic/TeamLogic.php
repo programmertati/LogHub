@@ -57,6 +57,23 @@ class TeamLogic
 
         return $newTeam;
     }
+
+    function createTeam2(int $user_id, string $team_name, string $team_description, string $team_pattern)
+    {
+        $newTeam = Team::create([
+            "name" => $team_name,
+            "description" => $team_description,
+            "pattern" => $team_pattern
+        ]);
+
+        UserTeam::create([
+            "user_id" => $user_id,
+            "team_id" => $newTeam->id,
+            "status" => "Owner"
+        ]);
+
+        return $newTeam;
+    }
     // /Membuat Tim //
 
     /**
@@ -138,6 +155,17 @@ class TeamLogic
         $teamStatus->status = "Member";
         return;
     }
+
+    public function inviteAccept2(int $user_id, int $team_id)
+    {
+        $teamStatus = UserTeam::where([
+            "user_id", $user_id,
+            "team_id", $team_id,
+        ])->first();
+
+        $teamStatus->status = "Member";
+        return;
+    }
     // /Mengundang Pengguna pada Tim //
 
     /**
@@ -206,6 +234,20 @@ class TeamLogic
 
         return;
     }
+
+    public function deleteMembers2(int $team_id, array $emails)
+    {
+        $deletedUser = User::whereIn("email", $emails)->get();
+
+        foreach ($deletedUser as $user) {
+            UserTeam::where("team_id", $team_id)
+                ->where("user_id", $user->id)
+                ->where("status", "Member")
+                ->delete();
+        }
+
+        return;
+    }
     // /Menghapus Anggota //
 
     /**
@@ -217,6 +259,14 @@ class TeamLogic
 
     // Menghapus Tim //
     public function deleteTeam(int $team_id)
+    {
+        Board::where("team_id", $team_id)->delete();
+        UserTeam::where("team_id", $team_id)->delete();
+        Team::where("id", $team_id)->delete();
+        return;
+    }
+
+    public function deleteTeam2(int $team_id)
     {
         Board::where("team_id", $team_id)->delete();
         UserTeam::where("team_id", $team_id)->delete();

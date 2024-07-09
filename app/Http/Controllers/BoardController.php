@@ -53,9 +53,35 @@ class BoardController extends Controller
     }
     // /Membuat Papan Khusus Admin //
 
+    // Membuat Papan Khusus User //
+    public function createBoard2(Request $request, $team_id)
+    {
+        $request->validate([
+            "team_id" => "required",
+            "board_name" => "required",
+            "board_pattern" => "required"
+        ]);
+        $team_id = intval($request->team_id);
+
+        $createdBoard = $this->boardLogic->createBoard2(
+            $team_id,
+            $request->board_name,
+            $request->board_pattern,
+        );
+
+        if ($createdBoard == null)
+            Toastr::error('Gagal membuat papan, silahkan coba lagi!', 'Error');
+            return redirect()->back();
+
+        Toastr::success('Papan berhasil dibuat!', 'Success');
+        return redirect()->back();
+    }
+    // /Membuat Papan Khusus User //
+
     // Tampilan Papan Admin //
     public function showBoard($team_id, $board_id)
     {
+        $userID = Auth::id();
         $board_id = intval($board_id);
         $board = $this->boardLogic->getData($board_id);
         $team = Team::find($board->team_id);
@@ -64,6 +90,7 @@ class BoardController extends Controller
             ->where('board_id', '=', $board_id )
             ->get();
         $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
+        $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -128,6 +155,7 @@ class BoardController extends Controller
 
         return view("admin.board")
             ->with("UserTeams", $UserTeams)
+            ->with("actionTeams", $actionTeams)
             ->with("dataColumnCard", $dataColumnCard)
             ->with("result_tema", $result_tema)
             ->with("unreadNotifications", $unreadNotifications)
@@ -182,6 +210,7 @@ class BoardController extends Controller
     // Tampilan Papan User //
     public function showBoard2($team_id, $board_id)
     {
+        $userID = Auth::id();
         $board_id = intval($board_id);
         $board = $this->boardLogic->getData2($board_id);
         $team = Team::find($board->team_id);
@@ -190,6 +219,7 @@ class BoardController extends Controller
             ->where('board_id', '=', $board_id )
             ->get();
         $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
+        $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -254,6 +284,7 @@ class BoardController extends Controller
 
         return view("user.board")
             ->with("UserTeams", $UserTeams)
+            ->with("actionTeams", $actionTeams)
             ->with("dataColumnCard", $dataColumnCard)
             ->with("result_tema", $result_tema)
             ->with("unreadNotifications", $unreadNotifications)
@@ -324,12 +355,40 @@ class BoardController extends Controller
     }
     // /Perbaharui Papan Khusus Admin //
 
+    // Perbaharui Papan Khusus User //
+    public function updateBoard2(Request $request)
+    {
+        $request->validate([
+            "board_id"      => "required",
+            "board_name"    => "required",
+            "board_pattern" => "required",
+        ]);
+
+        $board = Board::find(intval($request->board_id));
+        $board->name = $request->board_name;
+        $board->pattern = $request->board_pattern;
+        $board->save();
+
+        Toastr::success('Papan berhasil diperbaharui!', 'Success');
+        return redirect()->back();
+    }
+    // /Perbaharui Papan Khusus User //
+
     // Hapus Papan Khusus Admin //
     public function deleteBoard($team_id, $board_id)
     {
         Board::where("id", intval($board_id))->delete();
         Toastr::success('Papan berhasil dihapus!', 'Success');
         return redirect()->route("viewTeam", ["team_id" => intval($team_id)]);
+    }
+    // /Hapus Papan Khusus Admin //
+
+    // Hapus Papan Khusus Admin //
+    public function deleteBoard2($team_id, $board_id)
+    {
+        Board::where("id", intval($board_id))->delete();
+        Toastr::success('Papan berhasil dihapus!', 'Success');
+        return redirect()->route("viewTeam2", ["team_id" => intval($team_id)]);
     }
     // /Hapus Papan Khusus Admin //
 

@@ -15113,3 +15113,10 @@ ul.nav-tabs > li > a {
 	scrollbar-width: auto;
 	scrollbar-color: #fff6 #00000026;
 }
+
+.sidebar-menu li.active-home a:hover,
+.sidebar-menu li.active-manajemen-pengguna a:hover,
+.sidebar-menu li.active-riwayat-aktivitas a:hover,
+.sidebar-menu li.active-profile a:hover {
+	color: rgba(0, 0, 0, 1) !important;
+}

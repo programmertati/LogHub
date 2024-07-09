@@ -17,8 +17,8 @@
                     progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     toastr.success('Berhasil menghapus checklist!');
                 },
-                error: function(){
-                    alert('Terjadi kesalahan, silakan coba lagi!');
+                error: function(error){
+                    toastr.error('Gagal menghapus checklist!');
                 }
             });
         });

@@ -17,7 +17,7 @@
         .then(data => {
             if (data.id) {
                 let newColumn = document.createElement('div');
-                newColumn.classList.add('kolom-card');
+                newColumn.classList.add('kolom-card', 'hover:scale-105', 'hover:relative');
                 newColumn.id = `kolom-card-${data.id}`;
                 newColumn.setAttribute('onmouseenter', 'aksiKolomShow(' + data.id + ')');
                 newColumn.setAttribute('onmouseleave', 'aksiKolomHide(' + data.id + ')');
@@ -35,6 +35,9 @@
                             </a>
                             <a href="#" class="dropdown-item" onclick="deleteColumnModal(${data.id}, '${data.name}', '${data.deleteUrl}');">
                                 <i class='fa fa-trash-o m-r-5'></i> Delete
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-recycle m-r-5"></i> Recycle Bin
                             </a>
                         </div>
                     </div>
@@ -76,13 +79,13 @@
                 }
 
             } else {
-                toastr.error('Gagal membuat kolom, silahkan coba lagi!');
+                toastr.error('Gagal membuat kolom!');
             }
         })
 
         .catch(error => {
             console.error('Kesalahan:', error);
-            toastr.error('Gagal membuat kolom, silahkan coba lagi!');
+            toastr.error('Gagal membuat kolom!');
         });
     }
 
@@ -126,6 +129,9 @@
                             </a>
                             <a href="#" class="dropdown-item" onclick="deleteCardModal2('${data.card.id}', '${data.card.name}', '${data.column.name}', '${data.card.deleteUrl}');">
                                 <i class='fa fa-trash-o m-r-5'></i> Delete
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-regular fa-copy m-r-5"></i> Copy Card
                             </a>
                         </div>
                     </div>
@@ -186,7 +192,7 @@
                 // End Fitur Buka dan Tutup Tambah Kartu
 
             } else {
-                toastr.error('Gagal menambahkan kartu!');
+                toastr.error('Gagal membuat kartu!');
             }
         })
         .catch(error => {

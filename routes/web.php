@@ -43,8 +43,8 @@ Auth::routes();
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', 'index')->name('home');
     Route::patch('/update-tema/{id}', 'updateTemaAplikasi')->name('updateTemaAplikasi');
-    Route::get('/notifikasi/dibaca/{id}', 'bacaNotifikasi')->name('notifikasi.dibaca');
-    Route::post('/notifikasi/dibaca/semua', 'bacasemuaNotifikasi')->name('notifikasi.dibaca-semua');
+    Route::post('/notifikasi/dibaca/{id}', 'bacaNotifikasi')->name('bacaNotifikasi');
+    Route::post('/notifikasi/dibaca-semua', 'bacasemuaNotifikasi')->name('bacasemuaNotifikasi');
     Route::get('/ulangtahun', 'ulangtahun')->name('ulangtahun');
     Route::post('/mention-tag-description', 'mentionDescriptionNotification')->name('mention-tag-description');
     Route::post('/mention-tag-checklist', 'mentionChecklistNotification')->name('mention-tag-checklist');
@@ -123,6 +123,8 @@ Route::controller(TeamController::class)->group(function () {
     Route::get("admin/tim", "showTeams")->middleware(["auth", "auth.session"])->name("showTeams");
     Route::get("admin/tim/cari", "search")->middleware(["auth", "auth.session"])->name("searchTeam");
     Route::get("admin/tim/lihat-papan/{team_id}", "showTeam")->middleware(["auth", "auth.session", "userInTeam"])->name("viewTeam");
+    Route::get("admin/tim/undangan/diterima/{team_id}/{user_id}", "acceptInvite")->middleware(["auth", "auth.session", ])->name("acceptTeamInvite");
+    Route::get("admin/tim/undangan/ditolak/{team_id}/{user_id}", "rejectInvite")->middleware(["auth", "auth.session", ])->name("rejectTeamInvite");
     Route::get("admin/tim/lihat-papan/cari/papan/{team_id}", "searchBoard")->middleware(["auth", "auth.session", "userInTeam"])->name("searchBoard");
     Route::post("admin/tim/perbaharui/tim/{team_id}", "updateData")->middleware(["auth", "auth.session", "userInTeam"])->name("doTeamDataUpdate");
     Route::post("admin/tim/hapus/tim/{team_id}", "deleteTeam")->middleware(["auth", "auth.session", "userInTeam"])->name("doDeleteTeam");
@@ -130,15 +132,21 @@ Route::controller(TeamController::class)->group(function () {
     Route::post("admin/tim/undangan/{team_id}", "inviteMembers")->middleware(["auth", "auth.session", "userInTeam"])->name("doInviteMembers");
     Route::post("admin/tim/perbaharui/foto/{team_id}", "updateImage")->middleware(["auth", "auth.session", "userInTeam"])->name("doChangeTeamImage");
     Route::get("admin/tim/undangan/{team_id}/{user_id}", "getInvite")->middleware(["auth", "auth.session", ])->name("getInvite");
+    Route::post("admin/tim/tinggalkan/{team_id}", "leaveTeam")->middleware(["auth", "auth.session", "userInTeam"])->name("doLeaveTeam");
 
     // ----------------------------- User ----------------------------- //
+    Route::post("user/tim", "createTeam2")->middleware(["auth", "auth.session"])->name("doCreateTeam2");
     Route::get("user/tim", "showTeams2")->middleware(["auth", "auth.session"])->name("showTeams2");
     Route::get("user/tim/cari", "search2")->middleware(["auth", "auth.session"])->name("searchTeam2");
     Route::get("user/tim/lihat-papan/{team_id}", "showTeam2")->middleware(["auth", "auth.session", "userInTeam"])->name("viewTeam2");
-    Route::get("user/tim/undangan/diterima/{team_id}/{user_id}", "acceptInvite")->middleware(["auth", "auth.session", ])->name("acceptTeamInvite");
-    Route::get("user/tim/undangan/ditolak/{team_id}/{user_id}", "rejectInvite")->middleware(["auth", "auth.session", ])->name("rejectTeamInvite");
+    Route::get("user/tim/undangan/diterima/{team_id}/{user_id}", "acceptInvite2")->middleware(["auth", "auth.session", ])->name("acceptTeamInvite2");
+    Route::get("user/tim/undangan/ditolak/{team_id}/{user_id}", "rejectInvite2")->middleware(["auth", "auth.session", ])->name("rejectTeamInvite2");
     Route::get("user/tim/lihat-papan/cari/papan/{team_id}", "searchBoard2")->middleware(["auth", "auth.session", "userInTeam"])->name("searchBoard2");
-    Route::post("user/tim/tinggalkan/{team_id}", "leaveTeam")->middleware(["auth", "auth.session", "userInTeam"])->name("doLeaveTeam");
+    Route::post("user/tim/perbaharui/tim/{team_id}", "updateData2")->middleware(["auth", "auth.session", "userInTeam"])->name("doTeamDataUpdate2");
+    Route::post("user/tim/hapus/tim/{team_id}", "deleteTeam2")->middleware(["auth", "auth.session", "userInTeam"])->name("doDeleteTeam2");
+    Route::post("user/tim/hapus/pengguna/{team_id}", "deleteMembers2")->middleware(["auth", "auth.session", "userInTeam"])->name("deleteTeamMember2");
+    Route::post("user/tim/undangan/{team_id}", "inviteMembers2")->middleware(["auth", "auth.session", "userInTeam"])->name("doInviteMembers2");
+    Route::post("user/tim/tinggalkan/{team_id}", "leaveTeam2")->middleware(["auth", "auth.session", "userInTeam"])->name("doLeaveTeam2");
 });
 
 // ----------------------------- Board ----------------------------- //
@@ -167,7 +175,10 @@ Route::controller(BoardController::class)->group(function () {
     Route::post('/perbaharui/posisi/ceklist', 'perbaharuiPosisiCeklist')->name('perbaharuiPosisiCeklist');
 
     // ----------------------------- User ----------------------------- //
+    Route::post("user/tim/papan/{team_id}", "createBoard2")->middleware("auth", "auth.session", "userInTeam")->name("createBoard2");
     Route::get("user/tim/papan/{team_id}/{board_id}", "showBoard2")->middleware("auth", "auth.session", "boardAccess")->name("board2");
+    Route::post("user/tim/papan/{team_id}/{board_id}", "updateBoard2")->middleware("auth", "auth.session", "boardAccess")->name("updateBoard2");
+    Route::post("user/tim/papan/hapus/{team_id}/{board_id}", "deleteBoard2")->middleware("auth", "auth.session", "boardAccess")->name("deleteBoard2");
     Route::post("user/tim/{team_id}/papan/{board_id}/kolom", "addColumn2")->middleware("auth", "auth.session", "boardAccess")->name("addCol2");
     Route::post("user/tim/papan/kolom/perbaharui/{team_id}/{board_id}", "updateCol2")->middleware("auth", "auth.session", "boardAccess")->name("updateCol2");
     Route::post("user/tim/papan/kolom/hapus/{team_id}/{board_id}", "deleteCol2")->middleware("auth", "auth.session", "boardAccess")->name("deleteCol2");

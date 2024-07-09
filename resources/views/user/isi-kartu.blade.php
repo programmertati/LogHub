@@ -48,7 +48,7 @@
                             </form>
                         </a>
                         @include('user.script4')
-                        <a href="#" class="dropdown-item" onclick="deleteCardModal('{{ $isianKartu->id }}', '{{ $isianKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu', ['card_id' => $isianKartu->id]) }}');">
+                        <a href="#" class="dropdown-item" onclick="deleteCardModal('{{ $isianKartu->id }}', '{{ $isianKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu2', ['card_id' => $isianKartu->id]) }}');">
                             <i class='fa fa-trash-o m-r-5'></i> Delete Card
                         </a>
                     </div>

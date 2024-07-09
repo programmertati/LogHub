@@ -46,6 +46,26 @@ class TeamController extends Controller
     }
     // /Membuat Tim Khusus Admin //
 
+    // Membuat Tim Khusus User //
+    public function createTeam2(Request $request)
+    {
+        $request->validate([
+            "team_name"         => "required|min:5|max:20",
+            "team_description"  => "required|min:5|max:90",
+            "team_pattern"      => 'required',
+        ]);
+
+        $createdTeam = $this->teamLogic->createTeam2(
+            Auth::user()->id,
+            $request->team_name,
+            $request->team_description,
+            $request->team_pattern,
+        );
+
+        return redirect()->route("viewTeam2", ['team_id' => $createdTeam->id]);
+    }
+    // /Membuat Tim Khusus User //
+
     // Menampilkan Tim Admin //
     public function showTeams()
     {
@@ -365,13 +385,16 @@ class TeamController extends Controller
     // Menampilkan Tim Admin //
     public function showTeam($team_id)
     {
+        $userID = Auth::id();
         $team_id = intval($team_id);
         $selected_team = Team::find($team_id);
         $team_owner = $this->teamLogic->getTeamOwner($selected_team->id);
         $team_members = $this->teamLogic->getTeamMember($selected_team->id);
         $team_boards = $this->teamLogic->getBoards($selected_team->id);
         $UserTeams = DB::table('users')->select('name', 'email')->get();
-        $statusTeams = DB::table('user_team')->pluck('status');
+        $statusTeams = DB::table('user_team')->where('team_id', '=', $team_id)->pluck('status');
+        $leaveTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Member')->where('user_id', '=', $userID)->get();
+        $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -434,7 +457,17 @@ class TeamController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("admin.team", compact('statusTeams', 'UserTeams','result_tema','unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("admin.team")
+            ->with("statusTeams", $statusTeams)
+            ->with("leaveTeams", $leaveTeams)
+            ->with("actionTeams", $actionTeams)
+            ->with("UserTeams", $UserTeams)
+            ->with("result_tema", $result_tema)
+            ->with("unreadNotifications", $unreadNotifications)
+            ->with("readNotifications", $readNotifications)
+            ->with("semua_notifikasi", $semua_notifikasi)
+            ->with("belum_dibaca", $belum_dibaca)
+            ->with("dibaca", $dibaca)
             ->with("team", $selected_team)
             ->with("owner", $team_owner)
             ->with("members", $team_members)
@@ -447,11 +480,16 @@ class TeamController extends Controller
     // Menampilkan Tim User //
     public function showTeam2($team_id)
     {
+        $userID = Auth::id();
         $team_id = intval($team_id);
         $selected_team = Team::find($team_id);
         $team_owner = $this->teamLogic->getTeamOwner($selected_team->id);
         $team_members = $this->teamLogic->getTeamMember($selected_team->id);
         $team_boards = $this->teamLogic->getBoards($selected_team->id);
+        $UserTeams = DB::table('users')->select('name', 'email')->get();
+        $statusTeams = DB::table('user_team')->where('team_id', '=', $team_id)->pluck('status');
+        $leaveTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Member')->where('user_id', '=', $userID)->get();
+        $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -514,7 +552,17 @@ class TeamController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("user.team", compact('result_tema','unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("user.team")
+            ->with("statusTeams", $statusTeams)
+            ->with("leaveTeams", $leaveTeams)
+            ->with("actionTeams", $actionTeams)
+            ->with("UserTeams", $UserTeams)
+            ->with("result_tema", $result_tema)
+            ->with("unreadNotifications", $unreadNotifications)
+            ->with("readNotifications", $readNotifications)
+            ->with("semua_notifikasi", $semua_notifikasi)
+            ->with("belum_dibaca", $belum_dibaca)
+            ->with("dibaca", $dibaca)
             ->with("team", $selected_team)
             ->with("owner", $team_owner)
             ->with("members", $team_members)
@@ -524,8 +572,33 @@ class TeamController extends Controller
     }
     // /Menampilkan Tim User //
 
-    // Fitur Terima Undangan Khusus User //
+    // Fitur Terima Undangan Khusus Admin //
     public function acceptInvite($team_id, $user_id)
+    {
+        $user_id = intval($user_id);
+        $team_id = intval($team_id);
+
+        $userInvite = UserTeam::all()
+            ->where("user_id", $user_id)
+            ->where("team_id", $team_id)
+            ->first();
+
+        if ($userInvite == null) {
+
+            Toastr::error('Undangan tidak ditemukan, mungkin dibatalkan atau masa berlakunya sudah habis hubungi pemilik tim.', 'Error');
+            return redirect()->back();
+        }
+
+        $userInvite->status = "Member";
+        $userInvite->save();
+
+        Toastr::success('Undangan telah diterima!', 'Success');
+        return redirect()->back();
+    }
+    // /Fitur Terima Undangan Khusus Admin //
+
+    // Fitur Terima Undangan Khusus User //
+    public function acceptInvite2($team_id, $user_id)
     {
         $user_id = intval($user_id);
         $team_id = intval($team_id);
@@ -549,8 +622,30 @@ class TeamController extends Controller
     }
     // /Fitur Terima Undangan Khusus User //
 
-    // Fitur Menolak Undangan Khusus User //
+    // Fitur Menolak Undangan Khusus Admin //
     public function rejectInvite($team_id, $user_id)
+    {
+        $user_id = intval($user_id);
+        $team_id = intval($team_id);
+
+        $userInvite = UserTeam::all()
+            ->where("user_id", $user_id)
+            ->where("team_id", $team_id)
+            ->first();
+
+        if ($userInvite == null) {
+            return redirect()->back();
+        }
+
+        $userInvite->delete();
+
+        Toastr::success('Undangan telah ditolak!', 'Success');
+        return redirect()->back();
+    }
+    // /Fitur Menolak Undangan Khusus Admin //
+
+    // Fitur Menolak Undangan Khusus User //
+    public function rejectInvite2($team_id, $user_id)
     {
         $user_id = intval($user_id);
         $team_id = intval($team_id);
@@ -582,6 +677,7 @@ class TeamController extends Controller
 
         $team_id = intval($request->team_id);
 
+        $userID = Auth::id();
         $request->session()->flash("__old_board_name", $request->board_name);
         $team_id = intval($request->team_id);
         $selected_team = Team::find($team_id);
@@ -589,7 +685,9 @@ class TeamController extends Controller
         $team_members = $this->teamLogic->getTeamMember($selected_team->id);
         $team_boards = $this->teamLogic->getBoards($selected_team->id, $request->board_name);
         $UserTeams = DB::table('users')->select('name', 'email')->get();
-        $statusTeams = DB::table('user_team')->pluck('status');
+        $statusTeams = DB::table('user_team')->where('team_id', '=', $team_id)->pluck('status');
+        $leaveTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Member')->where('user_id', '=', $userID)->get();
+        $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -652,7 +750,17 @@ class TeamController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("admin.team", compact('statusTeams', 'UserTeams','result_tema','unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("admin.team")
+            ->with("statusTeams", $statusTeams)
+            ->with("leaveTeams", $leaveTeams)
+            ->with("actionTeams", $actionTeams)
+            ->with("UserTeams", $UserTeams)
+            ->with("result_tema", $result_tema)
+            ->with("unreadNotifications", $unreadNotifications)
+            ->with("readNotifications", $readNotifications)
+            ->with("semua_notifikasi", $semua_notifikasi)
+            ->with("belum_dibaca", $belum_dibaca)
+            ->with("dibaca", $dibaca)
             ->with("team", $selected_team)
             ->with("owner", $team_owner)
             ->with("members", $team_members)
@@ -673,12 +781,17 @@ class TeamController extends Controller
 
         $team_id = intval($request->team_id);
 
+        $userID = Auth::id();
         $request->session()->flash("__old_board_name", $request->board_name);
         $team_id = intval($request->team_id);
         $selected_team = Team::find($team_id);
         $team_owner = $this->teamLogic->getTeamOwner($selected_team->id);
         $team_members = $this->teamLogic->getTeamMember($selected_team->id);
         $team_boards = $this->teamLogic->getBoards($selected_team->id, $request->board_name);
+        $UserTeams = DB::table('users')->select('name', 'email')->get();
+        $statusTeams = DB::table('user_team')->where('team_id', '=', $team_id)->pluck('status');
+        $leaveTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Member')->where('user_id', '=', $userID)->get();
+        $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -741,7 +854,17 @@ class TeamController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("user.team", compact('result_tema','unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("user.team")
+            ->with("statusTeams", $statusTeams)
+            ->with("leaveTeams", $leaveTeams)
+            ->with("actionTeams", $actionTeams)
+            ->with("UserTeams", $UserTeams)
+            ->with("result_tema", $result_tema)
+            ->with("unreadNotifications", $unreadNotifications)
+            ->with("readNotifications", $readNotifications)
+            ->with("semua_notifikasi", $semua_notifikasi)
+            ->with("belum_dibaca", $belum_dibaca)
+            ->with("dibaca", $dibaca)
             ->with("team", $selected_team)
             ->with("owner", $team_owner)
             ->with("members", $team_members)
@@ -751,7 +874,7 @@ class TeamController extends Controller
     }
     // /Fitur Pencarian Papan User //
 
-    // Fitur Keluar dari Tim Khusus User //
+    // Fitur Keluar dari Tim Khusus Admin //
     public function leaveTeam(Request $request, $team_id)
     {
         $request->validate([
@@ -761,6 +884,22 @@ class TeamController extends Controller
         $user_email  = Auth::user()->email;
         $team_id = intval($request->team_id);
         $this->teamLogic->deleteMembers($team_id, [$user_email]);
+
+        Toastr::success('Berhasil keluar dari tim!', 'Success');
+        return redirect()->route("showTeams");
+    }
+    // /Fitur Keluar dari Tim Khusus Admin //
+
+    // Fitur Keluar dari Tim Khusus User //
+    public function leaveTeam2(Request $request, $team_id)
+    {
+        $request->validate([
+            "team_id" => "required",
+        ]);
+
+        $user_email  = Auth::user()->email;
+        $team_id = intval($request->team_id);
+        $this->teamLogic->deleteMembers2($team_id, [$user_email]);
 
         Toastr::success('Berhasil keluar dari tim!', 'Success');
         return redirect()->route("showTeams2");
@@ -781,6 +920,21 @@ class TeamController extends Controller
         return redirect()->route("showTeams");
     }
     // /Fitur Menghapus Tim Khusus Admin //
+
+    // Fitur Menghapus Tim Khusus User //
+    public function deleteTeam2(Request $request, $team_id)
+    {
+        $request->validate([
+            "team_id" => "required"
+        ]);
+
+        $team_id = intval($request->team_id);
+        $this->teamLogic->deleteTeam2($team_id);
+
+        Toastr::success('Tim berhasil dihapus!', 'Success');
+        return redirect()->route("showTeams2");
+    }
+    // /Fitur Menghapus Tim Khusus User //
 
     // Perbaharui Data Tim Khusus Admin //
     public function updateData(Request $request)
@@ -810,6 +964,34 @@ class TeamController extends Controller
     }
     // /Perbaharui Data Tim Khusus Admin //
 
+    // Perbaharui Data Tim Khusus User //
+    public function updateData2(Request $request)
+    {
+        $request->validate([
+            "team_id"           => "required|integer",
+            "team_name"         => "required|min:5|max:20",
+            "team_description"  => 'required|min:8|max:90',
+            "team_pattern"      => 'required',
+        ]);
+
+        $team_id = intval($request->team_id);
+        $selectedTeam = Team::find($team_id);
+
+        if ($selectedTeam == null) {
+            Toastr::error('Tim ini sudah dihapus, silakan hubungi pemilik tim', 'Error');
+            return redirect()->route("showTeams2");
+        }
+
+        $selectedTeam->name = $request->team_name;
+        $selectedTeam->description = $request->team_description;
+        $selectedTeam->pattern = $request->team_pattern;
+        $selectedTeam->save();
+
+        Toastr::success('Berhasil perbaharui data tim!', 'Success');
+        return redirect()->back();
+    }
+    // /Perbaharui Data Tim Khusus User //
+
     // Fitur Menghapus Anggota Khusus Admin //
     public function deleteMembers(Request $request)
     {
@@ -818,6 +1000,15 @@ class TeamController extends Controller
         return response()->json(["message" => "Anggota berhasil dihapus"]);
     }
     // /Fitur Menghapus Anggota Khusus Admin //
+
+    // Fitur Menghapus Anggota Khusus User //
+    public function deleteMembers2(Request $request)
+    {
+        $team_id = intval($request->team_id);
+        $this->teamLogic->deleteMembers2($team_id, $request->emails);
+        return response()->json(["message" => "Anggota berhasil dihapus"]);
+    }
+    // /Fitur Menghapus Anggota Khusus User //
 
     // Fitur Mengundang Anggota Khusus Admin //
     public function inviteMembers(Request $request, $team_id)
@@ -849,6 +1040,37 @@ class TeamController extends Controller
         return redirect()->back();
     }
     // /Fitur Mengundang Anggota Khusus Admin //
+
+    // Fitur Mengundang Anggota Khusus User //
+    public function inviteMembers2(Request $request, $team_id)
+    {
+        $emails = $request->emails;
+        $team_id = intval($request->team_id);
+
+        if ($emails == null)
+            return redirect()->back();
+
+
+        foreach ($emails as $email) {
+            $user = User::where("email", $email)->first();
+            if ($user == null) continue;
+            $existingInvite = UserTeam::where('user_id', $user->id)
+                ->where('team_id', $team_id)
+                ->first();
+
+            if ($existingInvite != null) continue;
+
+            UserTeam::create([
+                "user_id"   => $user->id,
+                "team_id"   => $team_id,
+                "status"    => "Pending"
+            ]);
+        }
+
+        Toastr::success('Undangan terkirim!', 'Success');
+        return redirect()->back();
+    }
+    // /Fitur Mengundang Anggota Khusus User //
 
     // Perbaharui Background Tim //
     public function updateImage(Request $request)

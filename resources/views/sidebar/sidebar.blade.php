@@ -10,7 +10,7 @@
                         <img src="{{ URL::to('/assets/images/logo.png') }}" style="width: 70%;display: inline-block; font-weight: 900 !important" loading="lazy" class="logo-text">
                     </a>
                 </div>
-                <li class="{{ set_active(['home']) }}">
+                <li class="{{ set_active(['home']) }} active-home">
                     <a href="{{ route('home') }}">
                         <i class="fa-solid fa-building-columns"></i>
                         <span style="font-weight: 900">Home</span>
@@ -19,13 +19,13 @@
 
                 @if (Auth::user()->role_name == 'Admin')
                     <li class="menu-title"> <span style="font-weight: 900">System Management</span> </li>
-                    <li class="{{ set_active(['manajemen/pengguna']) }}">
+                    <li class="{{ set_active(['manajemen/pengguna']) }} active-manajemen-pengguna">
                         <a href="{{ route('manajemen-pengguna') }}">
                             <i class="fa-solid fa-person"></i>
                             <span style="font-weight: 900">List User</span>
                         </a>
                     </li>
-                    <li class="{{ set_active(['riwayat/aktivitas']) }}">
+                    <li class="{{ set_active(['riwayat/aktivitas']) }} active-riwayat-aktivitas">
                         <a href="{{ route('riwayat-aktivitas') }}">
                             <i class="fa-solid fa-clock-rotate-left"></i>
                             <span style="font-weight: 900">History Activity</span>
@@ -38,37 +38,6 @@
                             <span style="font-weight: 900">Team</span>
                         </a>
                     </li>
-                    @if (Route::is('viewTeam') || Route::is('searchBoard'))
-                    <div class="dropdown dropdown-action opsi-sidebar">
-                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-ellipsis" style="color: white"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
-                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateTeam">
-                                <i class="icon-view-team fa-solid fa-pencil"></i>
-                                <span style="font-weight: 900">Edit</span>
-                            </a>
-                            @if ($statusTeams->contains('Member'))
-                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#manageMember">
-                                    <i class="icon-view-team fa-solid fa-user-gear"></i>
-                                    <span style="font-weight: 900">Members</span>
-                                </a>
-                            @endif
-                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#inviteMember">
-                                <i class="icon-view-team fa-solid fa-user-plus"></i>
-                                <span style="font-weight: 900">Invite</span>
-                            </a>
-                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#createBoard">
-                                <i class="icon-view-team fa-solid fa-table-columns"></i>
-                                <span style="font-weight: 900">Add Board</span>
-                            </a>
-                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteTeam">
-                                <i class="icon-view-team fa-solid fa-trash"></i>
-                                <span style="font-weight: 900">Delete</span>
-                            </a>
-                        </div>
-                    </div>
-                    @endif
                     @if (Route::is('showTeams') || Route::is('searchTeam'))
                     <li class="add-teams btn btn-outline-danger">
                         <a href="#" class="link-add-teams" data-toggle="modal" data-target="#createTeam">
@@ -78,6 +47,49 @@
                     </li>
                     @endif
                     @if (Route::is('viewTeam') || Route::is('searchBoard'))
+                        @foreach ($actionTeams as $iconAction)
+                            @if ($iconAction->status == 'Owner')
+                                <div class="dropdown dropdown-action opsi-sidebar">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis" style="color: white"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateTeam">
+                                            <i class="icon-view-team fa-solid fa-pencil"></i>
+                                            <span style="font-weight: 900">Edit</span>
+                                        </a>
+                                        @if ($statusTeams->contains('Member'))
+                                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#manageMember">
+                                                <i class="icon-view-team fa-solid fa-user-gear"></i>
+                                                <span style="font-weight: 900">Members</span>
+                                            </a>
+                                        @endif
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#inviteMember">
+                                            <i class="icon-view-team fa-solid fa-user-plus"></i>
+                                            <span style="font-weight: 900">Invite</span>
+                                        </a>
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#createBoard">
+                                            <i class="icon-view-team fa-solid fa-table-columns"></i>
+                                            <span style="font-weight: 900">Add Board</span>
+                                        </a>
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteTeam">
+                                            <i class="icon-view-team fa-solid fa-trash"></i>
+                                            <span style="font-weight: 900">Delete</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                        @foreach ($leaveTeams as $iconLeave)
+                            @if ($iconLeave->status == 'Member')
+                                <li class="add-teams btn btn-outline-danger">
+                                    <a href="#" data-toggle="modal" data-target="#leaveTeam" class="link-add-teams">
+                                        <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                        <span style="font-weight: 900">Leave Team</span>
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
                         <li class="add-teams btn btn-outline-danger">
                             <a href="{{ route('showTeams') }}" class="link-add-teams">
                                 <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
@@ -86,21 +98,25 @@
                         </li>
                     @endif
                     @if (Route::is('board'))
-                        <div class="dropdown dropdown-action opsi-sidebar">
-                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-ellipsis" style="color: white"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
-                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateBoard">
-                                    <i class="icon-view-board fa-solid fa-pencil"></i>
-                                    <span style="font-weight: 900">Edit</span>
-                                </a>
-                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteBoard">
-                                    <i class="icon-view-board fa-solid fa-trash"></i>
-                                    <span style="font-weight: 900">Delete</span>
-                                </a>
-                            </div>
-                        </div>
+                        @foreach ($actionTeams as $iconAction)
+                            @if ($iconAction->status == 'Owner')
+                                <div class="dropdown dropdown-action opsi-sidebar">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis" style="color: white"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateBoard">
+                                            <i class="icon-view-board fa-solid fa-pencil"></i>
+                                            <span style="font-weight: 900">Edit</span>
+                                        </a>
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteBoard">
+                                            <i class="icon-view-board fa-solid fa-trash"></i>
+                                            <span style="font-weight: 900">Delete</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
                         <a href="#">
                             <div class="view-board btn btn-outline-danger">
                                 <span style="font-weight: 900"><h4>Board:</h4></span>
@@ -115,7 +131,7 @@
                         </li>
                     @endif
                     <li class="menu-title"> <span style="font-weight: 900">Setting</span> </li>
-                    <li class="{{ set_active(['admin/profile']) }}">
+                    <li class="{{ set_active(['admin/profile']) }} active-profile">
                         <a href="{{ route('admin-profile') }}">
                             <i class="la la-user"></i>
                             <span style="font-weight: 900"> Profile</span>
@@ -131,13 +147,58 @@
                             <span style="font-weight: 900">Team</span>
                         </a>
                     </li>
+                    @if (Route::is('showTeams2') || Route::is('searchTeam2'))
+                    <li class="add-teams btn btn-outline-danger">
+                        <a href="#" class="link-add-teams" data-toggle="modal" data-target="#createTeam">
+                            <i class="icon-add-teams fa-solid fa-cubes"></i>
+                            <span style="font-weight: 900">Add Teams</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (Route::is('viewTeam2') || Route::is('searchBoard2'))
-                        <li class="link-view-team-user btn btn-outline-danger">
-                            <a href="#" data-toggle="modal" data-target="#leaveTeam">
-                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
-                                <span style="font-weight: 900">Leave Team</span>
-                            </a>
-                        </li>
+                        @foreach ($actionTeams as $iconAction)
+                            @if ($iconAction->status == 'Owner')
+                                <div class="dropdown dropdown-action opsi-sidebar">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis" style="color: white"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateTeam">
+                                            <i class="icon-view-team fa-solid fa-pencil"></i>
+                                            <span style="font-weight: 900">Edit</span>
+                                        </a>
+                                        @if ($statusTeams->contains('Member'))
+                                            <a href="#" class="dropdown-item" data-toggle="modal" data-target="#manageMember">
+                                                <i class="icon-view-team fa-solid fa-user-gear"></i>
+                                                <span style="font-weight: 900">Members</span>
+                                            </a>
+                                        @endif
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#inviteMember">
+                                            <i class="icon-view-team fa-solid fa-user-plus"></i>
+                                            <span style="font-weight: 900">Invite</span>
+                                        </a>
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#createBoard">
+                                            <i class="icon-view-team fa-solid fa-table-columns"></i>
+                                            <span style="font-weight: 900">Add Board</span>
+                                        </a>
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteTeam">
+                                            <i class="icon-view-team fa-solid fa-trash"></i>
+                                            <span style="font-weight: 900">Delete</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                        @foreach ($leaveTeams as $iconLeave)
+                            @if ($iconLeave->status == 'Member')
+                                <li class="add-teams btn btn-outline-danger">
+                                    <a href="#" data-toggle="modal" data-target="#leaveTeam" class="link-add-teams">
+                                        <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                        <span style="font-weight: 900">Leave Team</span>
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
                         <li class="add-teams btn btn-outline-danger">
                             <a href="{{ route('showTeams2') }}" class="link-add-teams">
                                 <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
@@ -146,6 +207,25 @@
                         </li>
                     @endif
                     @if (Route::is('board2'))
+                        @foreach ($actionTeams as $iconAction)
+                            @if ($iconAction->status == 'Owner')
+                                <div class="dropdown dropdown-action opsi-sidebar">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis" style="color: white"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateBoard">
+                                            <i class="icon-view-board fa-solid fa-pencil"></i>
+                                            <span style="font-weight: 900">Edit</span>
+                                        </a>
+                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteBoard">
+                                            <i class="icon-view-board fa-solid fa-trash"></i>
+                                            <span style="font-weight: 900">Delete</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
                         <a href="#">
                             <div class="view-board btn btn-outline-danger">
                                 <span style="font-weight: 900"><h4>Board:</h4></span>
@@ -158,10 +238,9 @@
                                 <span style="font-weight: 900">Back to Board's</span>
                             </a>
                         </li>
-
                     @endif
                     <li class="menu-title"> <span style="font-weight: 900">Setting</span> </li>
-                    <li class="{{ set_active(['user/profile']) }}">
+                    <li class="{{ set_active(['user/profile']) }} active-profile">
                         <a href="{{ route('user-profile') }}">
                             <i class="la la-user"></i>
                             <span style="font-weight: 900"> Profile</span>

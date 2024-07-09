@@ -185,20 +185,27 @@ class HomeController extends Controller
     {
         if($id)
         {
-            auth()->user()->notifications->where('id',$id)->markAsRead();
-            Toastr::success('Notifikasi Telah Dibaca','Success');
+            $notification = auth()->user()->notifications->where('id', $id)->first();
+            if ($notification) {
+                $notification->markAsRead();
+                return response()->json(['message' => 'Berhasil membaca notifikasi!'], 200);
+            }
         }
-        return back();
+        return response()->json(['message' => 'Gagal membaca notifikasi'], 500);
     }
     // /Baca Notifikasi Per ID //
 
     // Baca Semua Notifikasi //
-    public function bacasemuaNotifikasi()
+    public function bacasemuaNotifikasi(Request $request)
     {
         $user = auth()->user();
         $user->notifications->markAsRead();
-        Toastr::success('Semua Notifikasi Telah Dibaca','Success');
-        return redirect()->back();
+
+        if ($request->ajax()) {
+            return response()->json(['success' => 'Berhasil membaca semua notifikasi!']);
+        }
+
+        return response()->json(['message' => 'Gagal membaca semua notifikasi!'], 500);
     }
     // /Baca Semua Notifikasi //
 

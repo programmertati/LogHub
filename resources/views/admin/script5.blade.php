@@ -106,7 +106,16 @@
             const saveButton = document.getElementById(saveButtonId);
 
             if (saveButton) {
-                saveButton.addEventListener('click', function() {
+                saveButton.addEventListener('click', sendData);
+
+                // Menambahkan event listener untuk tombol "Enter"
+                inputTag.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        sendData();
+                    }
+                });
+
+                function sendData() {
                     const name = inputTag.value;
 
                     if (selectedUsers.length > 0) {
@@ -137,7 +146,7 @@
                                 console.error('Error:', error);
                             });
                     }
-                });
+                };
             };
             // /Kirimkan data mention ke notifikasi //
 

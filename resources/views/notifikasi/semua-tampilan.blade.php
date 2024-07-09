@@ -46,9 +46,9 @@
                         @if(auth()->user()->unreadNotifications->isEmpty() && auth()->user()->readNotifications->isEmpty())
                             <li class="notification-message noti-unread">
                                 <p class="noti-details" style="margin-top: 30px; text-align: center;">
-                                    <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
+                                    <img src="{{ URL::to('/assets/images/notification-icon.svg') }}" style="position: relative; width: 120px;" loading="lazy">
                                 </p>
-                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 22px;">No new notifications</p>
                             </li>
                         @endif
                     </ul>
@@ -114,13 +114,23 @@
 
                 <!-- Mention Description -->
                 <div id="mention_description" class="tab-pane fade">
-                    <ul class="notification-list @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Description'; })->isEmpty()) empty @endif" style="margin-top: 10%;">
-                        @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Description'; })->isEmpty())
+                    @php
+                        $mentionTagDescriptionUnread = auth()->user()->unreadNotifications->filter(function ($notification) {
+                            return $notification->data['message'] === 'Mention Tag Description';
+                        })->isEmpty();
+
+                        $mentionTagDescriptionRead = auth()->user()->readNotifications->filter(function ($notification) {
+                            return $notification->data['message'] === 'Mention Tag Description';
+                        })->isEmpty();
+                    @endphp
+
+                    <ul class="notification-list {{ $mentionTagDescriptionUnread && $mentionTagDescriptionRead ? 'empty' : '' }}" style="margin-top: 10%;">
+                        @if($mentionTagDescriptionUnread && $mentionTagDescriptionRead)
                             <li class="notification-message noti-unread">
                                 <p class="noti-details" style="margin-top: 30px; text-align: center;">
-                                    <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
+                                    <img src="{{ URL::to('/assets/images/notification-icon.svg') }}" style="position: relative; width: 120px;" loading="lazy">
                                 </p>
-                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 22px;">No new notifications</p>
                             </li>
                         @endif
                     </ul>
@@ -159,13 +169,23 @@
 
                 <!-- Mention Checklist -->
                 <div id="mention_checklist" class="tab-pane fade">
-                    <ul class="notification-list @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Checklist'; })->isEmpty()) empty @endif" style="margin-top: 10%;">
-                        @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Checklist'; })->isEmpty())
+                    @php
+                        $mentionTagChecklistUnread = auth()->user()->unreadNotifications->filter(function ($notification) {
+                            return $notification->data['message'] === 'Mention Tag Checklist';
+                        })->isEmpty();
+
+                        $mentionTagChecklistRead = auth()->user()->readNotifications->filter(function ($notification) {
+                            return $notification->data['message'] === 'Mention Tag Checklist';
+                        })->isEmpty();
+                    @endphp
+
+                    <ul class="notification-list {{ $mentionTagChecklistUnread && $mentionTagChecklistRead ? 'empty' : '' }}" style="margin-top: 10%;">
+                        @if($mentionTagChecklistUnread && $mentionTagChecklistRead)
                             <li class="notification-message noti-unread">
                                 <p class="noti-details" style="margin-top: 30px; text-align: center;">
-                                    <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
+                                    <img src="{{ URL::to('/assets/images/notification-icon.svg') }}" style="position: relative; width: 120px;" loading="lazy">
                                 </p>
-                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 22px;">No new notifications</p>
                             </li>
                         @endif
                     </ul>
@@ -204,13 +224,23 @@
 
                 <!-- Mention Comment -->
                 <div id="mention_comment" class="tab-pane fade">
-                    <ul class="notification-list @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Comment'; })->isEmpty()) empty @endif" style="margin-top: 10%;">
-                        @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Mention Tag Comment'; })->isEmpty())
+                    @php
+                        $mentionTagCommentUnread = auth()->user()->unreadNotifications->filter(function ($notification) {
+                            return $notification->data['message'] === 'Mention Tag Comment';
+                        })->isEmpty();
+
+                        $mentionTagCommentRead = auth()->user()->readNotifications->filter(function ($notification) {
+                            return $notification->data['message'] === 'Mention Tag Comment';
+                        })->isEmpty();
+                    @endphp
+
+                    <ul class="notification-list {{ $mentionTagCommentUnread && $mentionTagCommentRead ? 'empty' : '' }}" style="margin-top: 10%;">
+                        @if($mentionTagCommentUnread && $mentionTagCommentRead)
                             <li class="notification-message noti-unread">
                                 <p class="noti-details" style="margin-top: 30px; text-align: center;">
-                                    <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
+                                    <img src="{{ URL::to('/assets/images/notification-icon.svg') }}" style="position: relative; width: 120px;" loading="lazy">
                                 </p>
-                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 22px;">No new notifications</p>
                             </li>
                         @endif
                     </ul>
@@ -249,13 +279,23 @@
 
                 <!-- Notifikasi Ulang Tahun -->
                 <div id="ulang_tahun" class="tab-pane fade">
-                    <ul class="notification-list @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Happy Birthday'; })->isEmpty()) empty @endif" style="margin-top: 10%;">
-                        @if(auth()->user()->unreadNotifications->filter(function ($notification) { return $notification->data['message'] === 'Happy Birthday'; })->isEmpty())
+                    @php
+                        $mentionTagHappyBirthdayUnread = auth()->user()->unreadNotifications->filter(function ($notification) {
+                            return $notification->data['message'] === 'Happy Birthday';
+                        })->isEmpty();
+
+                        $mentionTagHappyBirthdayRead = auth()->user()->readNotifications->filter(function ($notification) {
+                            return $notification->data['message'] === 'Happy Birthday';
+                        })->isEmpty();
+                    @endphp
+
+                    <ul class="notification-list {{ $mentionTagHappyBirthdayUnread && $mentionTagHappyBirthdayRead ? 'empty' : '' }}" style="margin-top: 10%;">
+                        @if($mentionTagHappyBirthdayUnread && $mentionTagHappyBirthdayRead)
                             <li class="notification-message noti-unread">
                                 <p class="noti-details" style="margin-top: 30px; text-align: center;">
-                                    <i class="fa-solid fa-bell-slash fa-fade fa-2xl" style="font-size: 40px !important"></i>
+                                    <img src="{{ URL::to('/assets/images/notification-icon.svg') }}" style="position: relative; width: 120px;" loading="lazy">
                                 </p>
-                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 18px;">No new notifications</p>
+                                <p class="noti-details" style="margin-top: 20px; text-align: center; font-size: 22px;">No new notifications</p>
                             </li>
                         @endif
                     </ul>

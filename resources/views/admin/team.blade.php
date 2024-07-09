@@ -80,7 +80,7 @@
                             @if ($boards->isEmpty() && Auth::user()->id == $owner->id)
                                 <a href="#" data-toggle="modal" data-target="#createBoard">
                                     <div class="flex flex-col items-center justify-center gap-2 text-gray-400 transition duration-300 bg-gray-100 shadow-md cursor-pointer select-none w-72 h-52 rounded-xl hover:shadow-2xl" style="background-color: rgb(243 244 246 / 1) !important; @foreach($result_tema as $sql_mode => $mode_tema)@if($mode_tema->tema_aplikasi == 'Gelap')background-color: #292D3E !important; @endif @endforeach">
-                                        <i class="fa-solid fa-plus fa-2xl"></i><br>
+                                        <i class="fa-solid fa-plus fa-2xl" style="margin-top: 14px; margin-bottom: -16px;"></i><br>
                                         <h4>Create Board</h4>
                                     </div>
                                 </a>
@@ -343,6 +343,35 @@
         </div>
         <!-- /Hapus Papan Modal -->
 
+        <!-- Keluar dari Tim Modal -->
+        <div id="leaveTeam" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Leave the Team "{{ $team->name }}"?</h3>
+                            <p>Are you sure you want to leave this team?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <form action="{{ route('doLeaveTeam', ['team_id' => $team->id]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="team_id" value="{{ $team->id }}">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Leave the Team</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Keluar dari Tim Modal -->
+
     </div>
     <!-- /Page Wrapper -->
 
@@ -386,6 +415,7 @@
                 .border-dark {border-color: white !important;}
                 .sidebar-menu li a:hover {color: #ffffff !important}
                 .bg-grad-system.system {background: #464a5b !important}
+                .bg-red-200 {background-color: rgb(255 91 91)}
             @endif
         @endforeach
     </style>
@@ -460,7 +490,7 @@
                                     location.reload();
                                 }, 1000);
                             },
-                            error: function(response) {
+                            error: function(error) {
                                 toastr.error('Terjadi kesalahan saat menghapus anggota tim Anda!');
                             }
                         });

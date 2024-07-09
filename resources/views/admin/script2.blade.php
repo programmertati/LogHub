@@ -29,8 +29,8 @@
                     toastr.success('Berhasil memperbaharui judul!');
                     localStorage.clear();
                 },
-                error: function(){
-                    toastr.error('Terjadi kesalahan, silakan coba lagi!');
+                error: function(error){
+                    toastr.error('Gagal memperbaharui judul!');
                 }
             });
         });
@@ -60,8 +60,8 @@
                             localStorage.clear();
                         });
                     },
-                    error: function(){
-                        toastr.error('Terjadi kesalahan, silakan coba lagi!');
+                    error: function(error){
+                        toastr.error('Gagal menghapus judul!');
                     }
                 });
             });
@@ -88,6 +88,19 @@
         $('#myFormChecklist'+title_id).on('submit', function(event){
             event.preventDefault();
             var formData = $(this).serialize();
+
+            // Periksa masukan yang kosong
+            var isEmpty = false;
+            $(this).find('input, textarea').each(function() {
+                if ($(this).val().trim() === '') {
+                    isEmpty = true;
+                }
+            });
+            if (isEmpty) {
+                toastr.error('Gagal membuat checklist!');
+                return;
+            }
+            
             $.ajax({
                 type: 'POST',
                 url: "{{ route('addChecklist') }}",
@@ -132,8 +145,8 @@
                                     </div>`;
                     $('#checklist-container-'+title_id).append(newForm);
                 },
-                error: function(){
-                    toastr.error('Terjadi kesalahan, silakan coba lagi!');
+                error: function(error){
+                    toastr.error('Gagal membuat checklist!');
                 }
             });
         });
@@ -180,10 +193,23 @@
         });
         // Button saves form checklist
         $(document).off('click', '.saves');
-        $(document).on('click', '.saves', function() {
+        $(document).on('click', '.saves', function(event) {
             var id = $(this).attr('id').split('-');
             event.preventDefault(); 
             var formData = $('#myFormChecklistUpdate' + id[1]).serialize();
+
+            // Periksa masukan yang kosong
+            var isEmpty = false;
+            $('#myFormChecklistUpdate' + id).find('input, textarea').each(function() {
+                if ($(this).val().trim() === '') {
+                    isEmpty = true;
+                }
+            });
+            if (isEmpty) {
+                toastr.error('Gagal memperbaharui checklist!');
+                return;
+            }
+            
             $.ajax({
                 type: 'POST',
                 url: "{{ route('updateChecklist') }}",
@@ -197,8 +223,8 @@
                     toastr.success('Berhasil memperbaharui checklist!');
                     localStorage.clear();
                 },
-                error: function(){
-                    toastr.error('Terjadi kesalahan, silakan coba lagi!');
+                error: function(error){
+                    toastr.error('Gagal memperbaharui checklist!');
                 }
             });
         });
@@ -219,11 +245,39 @@
                     progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     localStorage.clear();
                 },
-                error: function(){
-                    toastr.error('Terjadi kesalahan, silakan coba lagi!');
+                error: function(error){
+                    toastr.error('Gagal memperbaharui checklist!');
                 }
             });
         }
+
+        // Tambahkan key Enter untuk validasi input dan menyimpan checklist
+        $(document).on('keypress', function(e) {
+            if(e.which == 13) {
+                var activeElement = $(document.activeElement);
+                if (activeElement.is('input') || activeElement.is('textarea')) {
+                    var form = activeElement.closest('form');
+                    var isEmpty = false;
+
+                    form.find('input, textarea').each(function() {
+                        if ($(this).val().trim() === '') {
+                            isEmpty = true;
+                        }
+                    });
+
+                    if (isEmpty) {
+                        toastr.error('Gagal memperbaharui checklist!');
+                        return false;
+                    }
+
+                    // Picu klik tombol simpan jika dalam bentuk pembaruan
+                    if (form.attr('id').startsWith('myFormChecklistUpdate')) {
+                        form.find('.saves').click();
+                        return false;
+                    }
+                }
+            }
+        });
         // End Section Checklist
         function progressBar(id,percentage ) {
             var progressBar = $('.progress-bar-' + id);
@@ -351,7 +405,16 @@
             const saveButton = document.getElementById(saveButtonId);
 
             if (saveButton) {
-                saveButton.addEventListener('click', function() {
+                saveButton.addEventListener('click', sendData);
+
+                // Menambahkan event listener untuk tombol "Enter"
+                inputTag.addEventListener('keydown', function(event) {
+                    if (event.key === 'Enter') {
+                        sendData();
+                    }
+                });
+
+                function sendData() {
                     const name = inputTag.value;
 
                     if (selectedUsers.length > 0) {
@@ -382,7 +445,7 @@
                                 console.error('Error:', error);
                             });
                     }
-                });
+                };
             };
             // /Kirimkan data mention ke notifikasi //
             

@@ -25,7 +25,7 @@
                     }) : $dataColumnCard->sortBy('id');
                     @endphp
                     @foreach ($sortedDataKolom as $dataKolom)
-                        <div class="kolom-card" id="kolom-card-{{ $dataKolom->id }}" data-id="{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
+                        <div class="kolom-card hover:scale-105 hover:relative" id="kolom-card-{{ $dataKolom->id }}" data-id="{{ $dataKolom->id }}" onmouseenter="aksiKolomShow({{ $dataKolom->id }})" onmouseleave="aksiKolomHide({{ $dataKolom->id }})">
 
                             <!-- Tampilan Aksi Edit & Hapus -->
                             <div class="dropdown dropdown-action aksi-kolom" id="aksi-kolom{{ $dataKolom->id }}">
@@ -33,11 +33,14 @@
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="#" class="dropdown-item" onclick="updateColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('updateCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');" id="edit-column-{{ $dataKolom->id }}">
+                                    <a href="#" class="dropdown-item" onclick="updateColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('updateCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');" id="edit-column-{{ $dataKolom->id }}">
                                         <i class="fa fa-pencil m-r-5"></i> Edit
                                     </a>
-                                    <a href="#" class="dropdown-item" onclick="deleteColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('deleteCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');">
+                                    <a href="#" class="dropdown-item" onclick="deleteColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('deleteCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');">
                                         <i class='fa fa-trash-o m-r-5'></i> Delete
+                                    </a>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fa-solid fa-recycle m-r-5"></i> Recycle Bin
                                     </a>
                                 </div>
                             </div>
@@ -49,8 +52,11 @@
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a href="#" class="dropdown-item" onclick="updateColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('updateCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');" id="edit-column-{{ $dataKolom->id }}">
+                                    <a href="#" class="dropdown-item" onclick="updateColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('updateCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');" id="edit-column-{{ $dataKolom->id }}">
                                         <i class="fa fa-pencil m-r-5"></i> Edit
+                                    </a>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fa-solid fa-recycle m-r-5"></i> Recycle Bin
                                     </a>
                                 </div>
                             </div> --}}
@@ -72,18 +78,21 @@
                                     <li class="kartu-loghub" data-id="{{ $dataKartu->id }}" onmouseenter="aksiKartuShow({{ $dataKartu->id }})" onmouseleave="aksiKartuHide({{ $dataKartu->id }})" style="position: relative;">
                                         
                                         <!-- Tampilan Aksi Edit -->
+                                        <div class="cover-card card-cover2-{{ $dataKartu->pattern }} {{ $dataKartu->pattern ? '' : 'hiddens' }}" id="cover-card-{{ $dataKartu->id }}"></div>
                                         {{-- @if($dataKartu->history->where('content', 'Membuat Kartu')->where('user_id', auth()->user()->id)->isNotEmpty()) --}}
-                                            <div class="cover-card card-cover2-{{ $dataKartu->pattern }} {{ $dataKartu->pattern ? '' : 'hiddens' }}" id="cover-card-{{ $dataKartu->id }}"></div>
                                             <div class="dropdown dropdown-action aksi-card" id="aksi-card{{ $dataKartu->id }}" style="position: absolute !important;">
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                     <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#" class="dropdown-item" onclick="updateCardModal({{ $dataKartu->id }}, '{{ $dataKartu->name }}', '{{ route('perbaharuiKartu', ['card_id' => $dataKartu->id]) }}');" id="edit-card-{{ $dataKartu->id }}">
+                                                    <a href="#" class="dropdown-item" onclick="updateCardModal({{ $dataKartu->id }}, '{{ $dataKartu->name }}', '{{ route('perbaharuiKartu2', ['card_id' => $dataKartu->id]) }}');" id="edit-card-{{ $dataKartu->id }}">
                                                         <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
                                                     </a>
-                                                    <a href="#" class="dropdown-item" onclick="deleteCardModal2('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu', ['card_id' => $dataKartu->id]) }}');">
+                                                    <a href="#" class="dropdown-item" onclick="deleteCardModal2('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu2', ['card_id' => $dataKartu->id]) }}');">
                                                         <i class='fa fa-trash-o m-r-5'></i> Delete
+                                                    </a>
+                                                    <a href="#" class="dropdown-item">
+                                                        <i class="fa-regular fa-copy m-r-5"></i> Copy Card
                                                     </a>
                                                 </div>
                                             </div>
@@ -236,6 +245,84 @@
 
         {!! Toastr::message() !!}
 
+        <!-- Perbaharui Papan Modal -->
+        <div id="updateBoard" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Update Boards</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('updateBoard2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="board_id" value="{{ $board->id }}">
+                            <div class="form-group">
+                                <label>Board's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control @error('board_name') is-invalid @enderror" id="board_name" name="board_name" placeholder="Enter a board's name" value="{{ $board->name }}" required />
+                                @error('board_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="flex flex-col w-full gap-2">
+                                <label>Board's Color</label>
+                                <input type="hidden" id="pattern-field" name="board_pattern" value="{{ isset($patterns[0]) ? $patterns[0] : 'default_value' }}">
+                                <div class="flex items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-hidden overflow-x-scroll border-2 border-gray-200 h-36 rounded-xl">
+                                    @isset($patterns)
+                                        @foreach ($patterns as $pattern)
+                                            <div onclick="selectPattern('{{ $pattern }}')" class="{{ $pattern == $patterns[0] ? 'order-first' : '' }} h-full flex-shrink-0 border-4 rounded-lg w-36 bg-grad-{{ $pattern }} hover:border-black" id="pattern-{{ $pattern }}" style="cursor: pointer">
+                                                <div id="check-{{ $pattern }}" class="flex items-center justify-center w-full h-full {{ $pattern == $patterns[0] ? 'opacity-100' : 'opacity-0' }}">
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <small class="text-danger">*Please select (Board's Color) again when updating.</small>
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Perbaharui Papan Modal -->
+
+        <!-- Hapus Papan Modal -->
+        <div id="deleteBoard" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Board's "{{ $board->name }}"?</h3>
+                            <p>Are you sure you want to delete this board?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <form action="{{ route('deleteBoard2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="board_id" value="{{ $board->id }}">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <button type="submit" class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Hapus Papan Modal -->
+
         <!-- Buat Kolom Modal -->
         <div id="addCol" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -247,7 +334,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="addColForm" action="{{ route('addCol', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST" onsubmit="addColumnScript(event)">
+                        <form id="addColForm" action="{{ route('addCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}" method="POST" onsubmit="addColumnScript(event)">
                             @csrf
                             <input type="hidden" class="form-control" name="board_id" value="{{ $board->id }}">
                             <input type="hidden" class="form-control" name="team_id" value="{{ $team->id }}">
@@ -689,6 +776,7 @@
         </style>
 
     @section('script')
+        <script src="{{ asset('assets/js/memuat-pattern-board.js?v='.time()) }}"></script>
         <script src="{{ asset('assets/js/memuat-onclick-board.js?v='.time()) }}"></script>
         <script src="{{ asset('assets/js/memuat-ulang.js?v='.time()) }}"></script>
         <script src="{{ asset('assets/js/memuat-modal.js?v='.time()) }}"></script>

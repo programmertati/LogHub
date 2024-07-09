@@ -69,7 +69,7 @@
                 @if ($teams->isEmpty())
                     <a href="#" data-toggle="modal" data-target="#createTeam">
                         <div class="flex flex-col items-center justify-center gap-2 text-gray-400 transition duration-300 bg-gray-100 shadow-md cursor-pointer select-none w-72 h-52 rounded-xl hover:shadow-2xl">
-                            <i class="fa-solid fa-plus fa-2xl"></i><br>
+                            <i class="fa-solid fa-plus fa-2xl" style="margin-top: 14px; margin-bottom: -16px;"></i><br>
                             <h4>Create Team</h4>
                         </div>
                     </a>
@@ -173,7 +173,7 @@
                                     <div class="w-full p-4 h-28 bg-pattern-{{ $result_team->team->pattern }}" id="header-overlay">
                                         <div class="relative flex items-center justify-center w-20 overflow-hidden bg-black border-4 border-white rounded-full aspect-square">
                                             <img class="absolute top-0 left-0 z-40 object-fill w-full h-full" src="{{ URL::to('/assets/images/' . $result_team->user->avatar) }}" loading="lazy">
-                                        </div><hr><hr>
+                                        </div>
                                     </div><br>
                                     <div class="flex flex-col">
                                         <p>You are invited to join team <span class="font-bold">{{ $result_team->team->name }}</span></p>

@@ -364,6 +364,7 @@
                     .info-status7 .text-status7{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status8 .text-status8{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status9 .text-status9{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status9 .text-status9a{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status10 .text-status10{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status11 .text-status11{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status12 .text-status12{background-color: #9fadbc !important; color: #1D2125 !important;}
@@ -637,20 +638,29 @@
                     </a>
                     <div class="dropdown-menu notifications">
                         <div class="topnav-dropdown-header">
-                            <span class="notification-title">Notifikasi</span>
-                            <form method="POST" action="{{ route('notifikasi.dibaca-semua') }}">
-                                @csrf
-                                <button type="submit" class="clear-noti">Tandai Semua Dibaca</button>
-                            </form>
+                            <span class="notification-title">Notification</span>
+                            @if (count($unreadNotifications) > 0 )
+                                <form id="mark-all" method="POST" action="{{ route('bacasemuaNotifikasi') }}">
+                                    @csrf
+                                    <button type="submit" class="clear-noti">Mark All Read</button>
+                                </form>
+                            @endif
                         </div>
                         <div class="noti-content">
                             <ul class="notification-list" style="display: block">
-                                @if(auth()->user()->unreadNotifications->isEmpty() && auth()->user()->readNotifications->isEmpty())
-                                    <li class="notification-message noti-unread">
+                                @if(auth()->user()->unreadNotifications()->count() > 0)
+                                    <li class="notification-message noti-unread hidden" id="noNewNotifications">
                                         <p class="noti-details" style="margin-top: 30px; text-align: center;">
-                                            <i class="fa-solid fa-bell-slash fa-fade fa-2xl"></i>
+                                            <img src="{{ URL::to('/assets/images/notification-icon.svg') }}" style="position: relative;" loading="lazy">
                                         </p>
-                                        <p class="noti-details" style="margin-top: 10px; text-align: center;">Tidak ada notifikasi baru</p>
+                                        <p class="noti-details" style="font-size: 20px; margin-top: 10px; text-align: center;">No new notifications</p>
+                                    </li>
+                                @else
+                                    <li class="notification-message noti-unread" id="noNewNotifications">
+                                        <p class="noti-details" style="margin-top: 30px; text-align: center;">
+                                            <img src="{{ URL::to('/assets/images/notification-icon.svg') }}" style="position: relative;" loading="lazy">
+                                        </p>
+                                        <p class="noti-details" style="font-size: 20px; margin-top: 10px; text-align: center;">No new notifications</p>
                                     </li>
                                 @endif
 
@@ -742,7 +752,7 @@
                                     </li>
                                 @endforeach
 
-                                @foreach ($dibaca->where('notifiable_id', auth()->id()) as $notifikasi_dibaca)
+                                {{-- @foreach ($dibaca->where('notifiable_id', auth()->id()) as $notifikasi_dibaca)
                                     @php
                                         $notifikasiDataDibaca = json_decode($notifikasi_dibaca->data);
                                         $created_at = \Carbon\Carbon::parse($notifikasi_dibaca->created_at);
@@ -828,10 +838,14 @@
                                             @endif
                                         </a>
                                     </li>
-                                @endforeach
+                                @endforeach --}}
                             </ul>
                         </div>
-                        <div class="topnav-dropdown-footer"><a href="{{ route('tampilan-semua-notifikasi') }}">Lihat Semua Notifikasi</a></div>
+                        @if (count($unreadNotifications) > 0 )
+                            <div class="topnav-dropdown-footer"><a href="{{ route('tampilan-semua-notifikasi') }}">All Notifications</a></div>
+                        @elseif (count($readNotifications) > 0 )
+                            <div class="topnav-dropdown-footer"><a href="{{ route('tampilan-semua-notifikasi') }}">All Notifications</a></div>
+                        @endif
                     </div>
                 </li>
 				<!-- /Notifications -->
@@ -930,10 +944,13 @@
                         </div>
                     </li>
                     <div class="close-notifikasi">
-                        <a href="{{ route('notifikasi.dibaca', $notifikasi_belum_dibaca->id) }}"><button id="close-popup_{{ $notifikasi_belum_dibaca->id }}">Close</button></a>
+                        <a href="#" class="close-notification" data-id="{{ $notifikasi_belum_dibaca->id }}">
+                            <button id="close-popup_{{ $notifikasi_belum_dibaca->id }}">Close</button>
+                        </a>
                     </div>
                 </div>
                 @endforeach
+                @include('allrole.membaca-notifikasi')
                 <!-- /Notifikasi Belum Dibaca Modal -->
 
                 <!-- Notifikasi Dibaca Modal -->

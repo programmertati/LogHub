@@ -40,8 +40,8 @@
                         $('#descriptionStatus' + id).removeClass('hidden');
                     }
                 },
-                error: function(){
-                    toastr.error('Terjadi kesalahan, silakan coba lagi!');
+                error: function(error){
+                    toastr.error('Gagal memperbaharui keterangan!');
                 }
             });
         });
@@ -80,10 +80,11 @@
                     $('#iconCheck-'+id).addClass('hidden');
                     $('#addTitle-'+id).removeClass('hidden');
                     localStorage.setItem('modal_id', response.card_id);
+                    window.location.reload();
                     toastr.success('Berhasil menambahkan judul!');
                 },
-                error: function(){
-                    toastr.error('Terjadi kesalahan, silakan coba lagi!');
+                error: function(error){
+                    toastr.error('Gagal menambahkan judul!');
                 }
             });
         });

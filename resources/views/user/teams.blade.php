@@ -66,14 +66,14 @@
             
             <div class="flex flex-wrap gap-x-8 gap-y-6">
                 <!-- Fitur Buat Tim -->
-                {{-- @if ($teams->isEmpty())
+                @if ($teams->isEmpty())
                     <a href="#" data-toggle="modal" data-target="#createTeam">
                         <div class="flex flex-col items-center justify-center gap-2 text-gray-400 transition duration-300 bg-gray-100 shadow-md cursor-pointer select-none w-72 h-52 rounded-xl hover:shadow-2xl">
-                            <i class="fa-solid fa-plus fa-2xl"></i><br>
-                            <h4>Buat Tim</h4>
+                            <i class="fa-solid fa-plus fa-2xl" style="margin-top: 14px; margin-bottom: -16px;"></i><br>
+                            <h4>Create Team</h4>
                         </div>
                     </a>
-                @endif --}}
+                @endif
                 <!-- /Fitur Buat Tim -->
 
                 <!-- Tampilan Tim -->
@@ -98,21 +98,21 @@
         <!-- /Page Content -->
 
         <!-- Buat Tim Modal -->
-        <!-- <div id="createTeam" class="modal custom-modal fade" role="dialog">
+        <div id="createTeam" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Buat Tim</h5>
+                        <h5 class="modal-title">Create Team</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('doCreateTeam') }}" method="POST">
+                        <form action="{{ route('doCreateTeam2') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label>Nama Tim</label><span class="text-danger">*</span>
-                                <input type="text" class="form-control @error('team_name') is-invalid @enderror" id="team_name" name="team_name" required>
+                                <label>Team's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control @error('team_name') is-invalid @enderror" id="team_name" name="team_name" placeholder="Enter a team's name" value="{{ old('team_name') }}">
                                 @error('team_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -120,8 +120,8 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label>Deskripsi Tim</label><span class="text-danger">*</span>
-                                <textarea class="form-control @error('team_description') is-invalid @enderror" id="team_description" name="team_description" required></textarea>
+                                <label>Team's Description</label><span class="text-danger">*</span>
+                                <textarea class="form-control @error('team_description') is-invalid @enderror" id="team_description" placeholder="Enter a team's description" name="team_description">{{ old('team_description') }}</textarea>
                                 @error('team_description')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -129,7 +129,7 @@
                                 @enderror
                             </div>
                             <div class="flex flex-col w-full gap-2">
-                                <label>Latar Belakang Tim</label>
+                                <label>Team's Background</label>
                                 {{-- <input type="hidden" id="pattern-field" name="team_pattern" value="{{ $patterns[0] }}"> --}}
                                 <input type="hidden" id="pattern-field" name="team_pattern" value="{{ isset($patterns[0]) ? $patterns[0] : 'default_value' }}">
                                 <div class="flex items-center justify-start w-full max-w-2xl gap-2 px-4 py-2 overflow-hidden overflow-x-scroll border-2 border-gray-200 h-36 rounded-xl">
@@ -151,7 +151,7 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
         <!-- /Buat Tim Modal -->
 
         <!-- Terima Undangan Modal -->
@@ -167,13 +167,13 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('acceptTeamInvite', ['user_id' => Auth::user()->id, 'team_id' => $result_team->team_id]) }}" method="GET">
+                            <form action="{{ route('acceptTeamInvite2', ['user_id' => Auth::user()->id, 'team_id' => $result_team->team_id]) }}" method="GET">
                                 @csrf
                                 <div class="flex flex-col gap-4">
                                     <div class="w-full p-4 h-28 bg-pattern-{{ $result_team->team->pattern }}" id="header-overlay">
                                         <div class="relative flex items-center justify-center w-20 overflow-hidden bg-black border-4 border-white rounded-full aspect-square">
                                             <img class="absolute top-0 left-0 z-40 object-fill w-full h-full" src="{{ URL::to('/assets/images/' . $result_team->user->avatar) }}" loading="lazy">
-                                        </div><hr><hr>
+                                        </div>
                                     </div><br>
                                     <div class="flex flex-col">
                                         <p>You are invited to join team <span class="font-bold">{{ $result_team->team->name }}</span></p>
@@ -189,7 +189,7 @@
                                         <button type="submit" class="btn btn-primary continue-btn submit-btn">Accept</button>
                                     </div>
                             </form>
-                            <form action="{{ route('rejectTeamInvite', ['user_id' => Auth::user()->id, 'team_id' => $result_team->team_id]) }}" method="GET">
+                            <form action="{{ route('rejectTeamInvite2', ['user_id' => Auth::user()->id, 'team_id' => $result_team->team_id]) }}" method="GET">
                                 @csrf
                                     <div class="col-6">
                                         <button type="submit" class="btn btn-primary continue-btn submit-btn">Reject</button>
@@ -216,6 +216,37 @@
     </style>
 
     @section('script')
+        <script>
+            function selectPattern(pattern) {
+                var selectedPattern = document.querySelector('#pattern-field');
+                selectedPattern.value = pattern;
+        
+                var allPatterns = document.querySelectorAll('.h-full');
+                allPatterns.forEach(function(item) {
+                    item.classList.remove('border-black');
+                });
+        
+                var selectedPatternElement = document.getElementById('pattern-' + pattern);
+                selectedPatternElement.classList.add('border-black');
+        
+                var allChecks = document.querySelectorAll('.fa-circle-check');
+                allChecks.forEach(function(item) {
+                    item.parentElement.style.opacity = '0';
+                });
+        
+                var selectedCheck = document.getElementById('check-' + pattern);
+                selectedCheck.style.opacity = '100';
+            }
+        </script>
+
+        @if ($errors->any())
+            <script>
+                $(document).ready(function() {
+                    $('#createTeam').modal('show');
+                });
+            </script>
+        @endif
+
         <script src="{{ asset('assets/js/memuat-ulang.js') }}"></script>
 
         <script>
