@@ -13,6 +13,7 @@ class Checklists extends Model
         'name',
         'title_checklists_id',
         'is_active',
+        'position'
     ];
 
     public function titleChecklists()
