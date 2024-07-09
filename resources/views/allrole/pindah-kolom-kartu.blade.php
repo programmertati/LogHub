@@ -61,7 +61,7 @@
             }
 
             console.log(positions);
-            console.log(titleIds.length);
+            console.log(cards.length);
 
             fetch('{{ route("perbaharuiPosisiKartu") }}', {
                 method: 'POST',
