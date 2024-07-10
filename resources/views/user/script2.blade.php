@@ -299,7 +299,7 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function() {
         const users = [
             @foreach ($UserTeams as $result_team)
                 {

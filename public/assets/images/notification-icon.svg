@@ -84,7 +84,7 @@
         </g>
     </g>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    $(document).ready(function() {
         var titleElement = document.getElementById('pageTitle');
         var text = titleElement.textContent;
         var index = 0;

@@ -101,7 +101,7 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function() {
         var coverCards = document.querySelectorAll('.cover-card');
         coverCards.forEach(function(card) {
             var patternMatch = card.className.match(/card-cover2-(\S+)/);
@@ -126,7 +126,7 @@
         event.preventDefault();
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function() {
         var coverTextElement = document.getElementById('coverText');
         if (!coverTextElement) return;
         if ('{{ $isianKartu->pattern }}') {

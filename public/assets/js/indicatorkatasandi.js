@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
     // Indicator Kata Sandi 1 //
     const passwordInput1 = document.getElementById('passwordInput1');
     const IndicatorKekuatan1 = document.getElementById('indicator-kata-sandi-1');

@@ -18,7 +18,7 @@ class ChecklistController extends Controller
     // Tambahkan Title Kartu Admin //
     public function addTitle(Request $request)
     {
-        $newTitle = TitleChecklists::create([
+        $titlechecklist = TitleChecklists::create([
             'cards_id' => $request->card_id,
             'name' => $request->titleChecklist
         ]);
@@ -30,7 +30,7 @@ class ChecklistController extends Controller
         return response()->json([
             'message' => 'Data berhasil disimpan!',
             'card_id' => $request->card_id,
-            'newTitle' => $newTitle
+            'titlechecklist' => $titlechecklist
         ]);
     }
     // /Tambahkan Title Kartu Admin //
@@ -38,7 +38,7 @@ class ChecklistController extends Controller
     // Tambahkan Title Kartu User //
     public function addTitle2(Request $request)
     {
-        $newTitle = TitleChecklists::create([
+        $titlechecklist = TitleChecklists::create([
             'cards_id' => $request->card_id,
             'name' => $request->titleChecklist
         ]);
@@ -50,7 +50,7 @@ class ChecklistController extends Controller
         return response()->json([
             'message' => 'Data berhasil disimpan!',
             'card_id' => $request->card_id,
-            'newTitle' => $newTitle
+            'titlechecklist' => $titlechecklist
         ]);
     }
     // /Tambahkan Title Kartu User //

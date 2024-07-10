@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
     const togglePassword = function(passwordInput, icon) {
         if (passwordInput && icon) {
             if (passwordInput.type === 'password') {

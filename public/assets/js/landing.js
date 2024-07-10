@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
   gsap.set("svg", { visibility: "visible" });
 
   gsap.to("#headStripe", {

@@ -19,6 +19,7 @@ class Column extends Model
         'board_id',
         'previous_id',
         'next_id',
+        'position'
     ];
 
     /**

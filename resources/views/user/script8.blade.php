@@ -1,5 +1,4 @@
 <script>
-    // document.addEventListener('DOMContentLoaded', function() {
     $(document).ready(function() {
         const users = [
             @foreach ($UserTeams as $result_team)
@@ -155,7 +154,7 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    $(document).ready(function() {
         const dynamicCheckboxValue = document.getElementById('checkbox-{{$checklists->id}}');
         const aksiUpdateChecklist = document.getElementById('checklist-{{$checklists->id}}');
         const saveButton = document.getElementById('saveButtonChecklistUpdate-{{ $checklists->id }}');

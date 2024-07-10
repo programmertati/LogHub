@@ -23,7 +23,7 @@
                 },
                 error: function(error, textStatus) {
                     $("#div_hasil").html(textStatus);
-                    // toastr.error('Gagal memuat data kartu!');
+                    toastr.error('Gagal memuat data kartu!');
                 }
             });
         });

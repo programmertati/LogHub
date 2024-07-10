@@ -39,6 +39,6 @@ function checkConnectionQuality() {
 window.addEventListener('online', checkNetwork);
 window.addEventListener('offline', checkNetwork);
 
-document.addEventListener('DOMContentLoaded', (event) => {
+$(document).ready(function(event) {
     checkNetwork();
 });

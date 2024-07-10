@@ -122,7 +122,7 @@ function changeCard(id) {
 // /Untuk menyembunyikan dan melihat simpan komentar //
 
 // Textarea mengikuti jumlah data yang ada //
-// document.addEventListener('DOMContentLoaded', (event) => {
+// $(document).ready(function(event) {
 //     const textareas = document.querySelectorAll('textarea');
 //     textareas.forEach(textarea => {
 //         if (textarea.id.startsWith('keterangan')) {

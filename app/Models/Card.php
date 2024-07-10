@@ -20,6 +20,7 @@ class Card extends Model
         'description',
         'previous_id',
         'next_id',
+        'position'
     ];
 
     /**

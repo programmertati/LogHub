@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+$(document).ready(function() {
     // Untuk Slide Card Atas
     const slideCard = document.getElementById('slide-card-atas');
     

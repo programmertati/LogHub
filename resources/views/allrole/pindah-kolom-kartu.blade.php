@@ -1,5 +1,5 @@
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function(){
         const columnContainer = document.getElementById('cardContainer');
         const sortable = new Sortable(columnContainer, {
             animation: 150,
