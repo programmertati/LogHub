@@ -880,6 +880,19 @@ class BoardController extends Controller
     }
     // /Untuk Pindah Posisi Kartu //
 
+    // Untuk Pindah Posisi Kartu Ke Dalam Kolom //
+    public function perbaharuiPosisiKartuKeKolom(Request $request)
+    {
+        $cardId = $request->input('card_id');
+        $newColumnId = $request->input('new_column_id');
+
+        // Update the card's column_id
+        Card::where('id', $cardId)->update(['column_id' => $newColumnId]);
+
+        return response()->json(['success' => true]);
+    }
+    // /Untuk Pindah Posisi Kartu Ke Dalam Kolom //
+
     // Untuk Pindah Posisi Judul //
     public function perbaharuiPosisiJudul(Request $request)
     {
@@ -898,11 +911,40 @@ class BoardController extends Controller
     {
         $positions = $request->input('positions');
 
-        foreach ($positions as $id => $position) {
-            Checklists::where('id', $id)->update(['position' => $position]);
+        foreach ($positions as $id => $data) {
+            Checklists::where('id', $id)->update([
+                'position' => $data['position'],
+                'title_checklists_id' => $data['title_id'],
+            ]);
         }
 
-        return response()->json(['success' => true]);
+        $titleChecklist = TitleChecklists::find($data['title_id']);
+        $getTitleChecklist = TitleChecklists::where('cards_id', $titleChecklist->cards_id)->get();
+
+        $titleChecklistsWithProgress = [];
+        foreach ($getTitleChecklist as $id2 => $data2) {
+            // Perbaharui Progress Bar
+            $progressData = $this->progressBar($data2->id);
+            $titleChecklistsWithProgress[] = $progressData;
+        }
+
+        return response()->json([
+            'success' => true,
+            'titlechecklist' => $titleChecklistsWithProgress,
+        ]);
+    }
+
+    public static function progressBar($title_checklists_id)
+    {
+        $totData = Checklists::where('title_checklists_id', $title_checklists_id)->count();
+        $countActive = Checklists::where('title_checklists_id', $title_checklists_id)->where('is_active', 1)->count();
+        $percentage = !empty($countActive) ? round(($countActive / $totData) * 100) : 0; 
+        TitleChecklists::where('id', $title_checklists_id)->update([
+            'percentage' => $percentage
+        ]);
+        $titleChecklist = TitleChecklists::find($title_checklists_id);
+
+        return $titleChecklist;
     }
     // /Untuk Pindah Posisi Checklist //
 
