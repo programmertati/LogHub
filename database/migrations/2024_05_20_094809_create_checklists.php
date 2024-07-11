@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->boolean('is_active')->default(false);
             $table->foreignId('title_checklists_id')->constrained('title_checklists')->onDelete('cascade');
+            $table->integer('position')->default(0);
             $table->timestamps();
         });
     }
