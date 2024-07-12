@@ -372,7 +372,7 @@
                                 $('#cancelButtonChecklist'+title_id).addClass('hidden');
                                 progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                                 toastr.success('Berhasil membuat checklist!');
-                                var newForm = `<div class="input-checklist" data-id="${response.checklist.id}">
+                                var newForm = `<div id="section-checklist-${response.checklist.id}" class="input-checklist" data-id="${response.checklist.id}">
                                                     <form id="myFormChecklistUpdate${response.checklist.id}" method="POST" class="form-checklist">
                                                         @csrf
                                                         <input class="dynamicCheckbox" type="checkbox" id="${response.checklist.id}" name="${response.checklist.id}" ${response.checklist.is_active ? 'checked' : ''}>
