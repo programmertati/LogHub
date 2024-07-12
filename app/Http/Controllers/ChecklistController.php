@@ -121,10 +121,11 @@ class ChecklistController extends Controller
 
         //Get Checklists
         $checklist = Checklists::where('title_checklists_id', $request->title_id)->where('id', $data->id)->first();
+        
         //Get Progress Bar
         $titleChecklist = $this->progressBar($checklist->title_checklists_id);
 
-        $user_id = AUth::user()->id;
+        $user_id = Auth::user()->id;
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Checklist");
 
@@ -146,10 +147,11 @@ class ChecklistController extends Controller
 
         //Get Checklists
         $checklist = Checklists::where('title_checklists_id', $request->title_id)->where('id', $data->id)->first();
+        
         //Get Progress Bar
         $titleChecklist = $this->progressBar($checklist->title_checklists_id);
 
-        $user_id = AUth::user()->id;
+        $user_id = Auth::user()->id;
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Checklist");
 
@@ -165,6 +167,7 @@ class ChecklistController extends Controller
     public function updateChecklist(Request $request)
     {
         $is_active = $request->{$request->checklist_id} == 'on' ? 1 : 0;
+
         //Update Checklists
         Checklists::where('id', $request->checklist_id)->update([
             'name' => $request->{'checkbox-'.$request->checklist_id},
@@ -173,10 +176,11 @@ class ChecklistController extends Controller
 
         //Get Checklists
         $checklist = Checklists::find($request->checklist_id);
+
         //Get Progress Bar
         $titleChecklist = $this->progressBar($checklist->title_checklists_id);
 
-        $user_id = AUth::user()->id;
+        $user_id = Auth::user()->id;
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Checklist");
 
@@ -192,6 +196,7 @@ class ChecklistController extends Controller
     public function updateChecklist2(Request $request)
     {
         $is_active = $request->{$request->checklist_id} == 'on' ? 1 : 0;
+
         //Update Checklists
         Checklists::where('id', $request->checklist_id)->update([
             'name' => $request->{'checkbox-'.$request->checklist_id},
@@ -200,10 +205,11 @@ class ChecklistController extends Controller
 
         //Get Checklists
         $checklist = Checklists::find($request->checklist_id);
+
         //Get Progress Bar
         $titleChecklist = $this->progressBar($checklist->title_checklists_id);
 
-        $user_id = AUth::user()->id;
+        $user_id = Auth::user()->id;
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Checklist");
 
@@ -216,10 +222,11 @@ class ChecklistController extends Controller
     // /Perbaharui Checklist Admin //
 
     // Hapus Checklist Kartu Admin //
-    public function hapusChecklist(Request $request) 
+    public function hapusChecklist(Request $request)
     {
         //Destroy Checklist
         Checklists::destroy($request->id);
+
         //Get Progress Bar
         $titleChecklist = $this->progressBar($request->title_checklists_id);
 
@@ -236,10 +243,11 @@ class ChecklistController extends Controller
     // /Hapus Checklist Kartu Admin //
 
     // Hapus Checklist Kartu Admin //
-    public function hapusChecklist2(Request $request) 
+    public function hapusChecklist2(Request $request)
     {
         //Destroy Checklist
         Checklists::destroy($request->id);
+
         //Get Progress Bar
         $titleChecklist = $this->progressBar($request->title_checklists_id);
 

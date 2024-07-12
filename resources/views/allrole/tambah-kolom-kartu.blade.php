@@ -176,18 +176,23 @@
 
                 $(document).ready(function(){
                     const columnContainer = document.getElementById('cardContainer');
-                    const sortable = new Sortable(columnContainer, {
+                    new Sortable(columnContainer, {
                         animation: 150,
                         onEnd: function (evt) {
                             updateColumnPositions();
                         },
                     });
                     
-                    [...document.getElementsByClassName('card-container')].forEach(e => {
+                    const cardContainers = document.getElementsByClassName('card-container');
+                    Array.from(cardContainers).forEach(e => {
                         new Sortable(e, {
+                            group: 'shared',
                             animation: 150,
+                            onAdd: function (evt) {
+                                updateCardColumn(evt);
+                            },
                             onEnd: function (evt) {
-                                updateCardPositions(e);
+                                updateCardPositions(evt.to);
                             },
                         });
                     });
@@ -228,13 +233,15 @@
                         
                     }
 
-                    function updateCardPositions(e) {
+                    function updateCardPositions(container) {
                         const positions = {};
-                        const cards = e.children;
+                        const cards = container.children;
                         for (let i = 0; i < cards.length; i++) {
                             const card = cards[i];
                             const id = card.dataset.id;
-                            positions[id] = i + 1;
+                            if (id !== undefined) {
+                                positions[id] = i + 1;
+                            }
                         }
 
                         fetch('{{ route("perbaharuiPosisiKartu") }}', {
@@ -260,6 +267,29 @@
                             console.error('Terjadi kesalahan saat perbaharui posisi kartu:', error);
                         });
                         
+                    }
+
+                    function updateCardColumn(evt) {
+                        const cardId = evt.item.dataset.id;
+                        const newColumnId = evt.to.dataset.id;
+
+                        fetch('{{ route("perbaharuiPosisiKartuKeKolom") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({ card_id: cardId, new_column_id: newColumnId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                            } else {
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Terjadi kesalahan saat memindah kartu ke kolom:', error);
+                        });
                     }
                 });
                 

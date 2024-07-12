@@ -50,7 +50,7 @@
                             <h5 id="kolomNama{{ $dataKolom->id }}" class="kolom-nama mb-3 font-semibold text-lgs dark:text-white">{{ $dataKolom->name }}</h5>
                             <!-- /Tampilan Nama Kolom -->
 
-                            <ul class="card-container" id="containerCard{{ $dataKolom->id }}">
+                            <ul class="card-container" id="containerCard{{ $dataKolom->id }}" data-id="{{ $dataKolom->id }}">
 
                                 <!-- Tampilan Kartu -->
                                 @php
@@ -114,27 +114,23 @@
                                                     <!-- /Muncul apabila terdapat deskripsi pada kartu -->
 
                                                     <!-- Muncul apabila terdapat checklist pada kartu -->
-                                                    <div class="progress-checklist-light
-                                                        @foreach($result_tema as $sql_mode => $mode_tema)
+                                                    <div id="iconChecklist-{{ $dataKartu->id }}" class="progress-checklist-light
+                                                        @foreach($result_tema as $mode_tema)
                                                             @if ($mode_tema->tema_aplikasi == 'Gelap')
                                                                 progress-checklist-dark
                                                             @endif
                                                         @endforeach
-
                                                         @php
                                                             $totalPercentage = 0;
                                                             $totalCount = 0;
-                                                        @endphp
-                                                        @foreach ($dataKartu->titleChecklists as $titleChecklistss)
-                                                            @php
+                                                            foreach ($dataKartu->titleChecklists as $titleChecklists) {
                                                                 $totalCount++;
-                                                                $totalPercentage += $titleChecklistss->percentage;
-                                                            @endphp
-                                                        @endforeach
-
+                                                                $totalPercentage += $titleChecklists->percentage;
+                                                            }
+                                                        @endphp
                                                         @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
                                                             progress-checklist-100-light
-                                                            @foreach($result_tema as $sql_mode => $mode_tema)
+                                                            @foreach($result_tema as $mode_tema)
                                                                 @if ($mode_tema->tema_aplikasi == 'Gelap')
                                                                     progress-checklist-100-dark
                                                                 @endif
@@ -144,30 +140,24 @@
                                                         @php
                                                             $perChecklist = 0;
                                                             $jumlahChecklist = 0;
-                                                        @endphp
-                                                        @foreach ($dataKartu->titleChecklists as $titleChecklists)
-                                                            @foreach ($titleChecklists->checklists as $checklists)
-                                                                @if(!empty($checklists->is_active))
-                                                                    @php
+                                                            foreach ($dataKartu->titleChecklists as $titleChecklists) {
+                                                                foreach ($titleChecklists->checklists as $checklists) {
+                                                                    if(!empty($checklists->is_active)) {
                                                                         $perChecklist++;
-                                                                    @endphp
-                                                                @endif
-                                                                
-                                                                @if(!empty($checklists->title_checklists_id))
-                                                                    @php
+                                                                    }
+                                                                    if(!empty($checklists->title_checklists_id)) {
                                                                         $jumlahChecklist++;
-                                                                    @endphp
-                                                                @endif
-                                                            @endforeach
-                                                        @endforeach
-
+                                                                    }
+                                                                }
+                                                            }
+                                                        @endphp
                                                         @if($perChecklist > 0 || $jumlahChecklist > 0)
                                                             <div class="info-status9">
                                                                 <i class="fa-regular fa-square-check icon-check-not-full-light
                                                                     @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
                                                                         icon-check-full-light
                                                                     @endif
-                                                                    @foreach($result_tema as $sql_mode => $mode_tema)
+                                                                    @foreach($result_tema as $mode_tema)
                                                                         @if ($mode_tema->tema_aplikasi == 'Gelap')
                                                                             icon-check-not-full-dark
                                                                             @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
@@ -181,7 +171,7 @@
                                                                 @else
                                                                     <span class="text-status9a"><b>Checklist items</b></span>
                                                                 @endif
-                                                                <span class="total">{{ $perChecklist }}/{{ $jumlahChecklist }}</span>
+                                                                <span id="perhitunganChecklist-{{ $dataKartu->id }}" class="total">{{ $perChecklist }}/{{ $jumlahChecklist }}</span>
                                                             </div>
                                                         @endif
                                                     </div>

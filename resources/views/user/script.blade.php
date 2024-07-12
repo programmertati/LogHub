@@ -162,11 +162,13 @@
                             },
                         });
 
-                        [...document.getElementsByClassName('checklist-container')].forEach(e => {
+                        const checklistsContainers = [...document.getElementsByClassName('checklist-container')];
+                        checklistsContainers.forEach(e => {
                             new Sortable(e, {
                                 animation: 150,
+                                group: 'checklists',
                                 onEnd: function (evt) {
-                                    updateChecklistPositions(e);
+                                    updateChecklistPositions();
                                 },
                             });
                         });
@@ -207,16 +209,22 @@
                             
                         }
 
-                        function updateChecklistPositions(e) {
+                        function updateChecklistPositions() {
                             const positions = {};
-                            const checklists = e.children;
-                            for (let i = 0; i < checklists.length; i++) {
-                                const checklist = checklists[i];
-                                const id = checklist.dataset.id;
-                                if (id !== undefined) {
-                                    positions[id] = i + 1;
+                            checklistsContainers.forEach(container => {
+                                const titleId = container.closest('.menu-checklist').dataset.id;
+                                const checklists = container.children;
+                                for (let i = 0; i < checklists.length; i++) {
+                                    const checklist = checklists[i];
+                                    const id = checklist.dataset.id;
+                                    if (id !== undefined) {
+                                        positions[id] = {
+                                            position: i + 1,
+                                            title_id: titleId
+                                        };
+                                    }
                                 }
-                            }
+                            });
 
                             fetch('{{ route("perbaharuiPosisiCeklist") }}', {
                                 method: 'POST',
@@ -234,6 +242,13 @@
                                     toastr.success('Berhasil perbaharui posisi checklist!');
                                 } else {
                                     toastr.error('Gagal perbaharui posisi checklist!');
+                                }
+
+                                // Perbaharui Progress Bar pada UI
+                                if (data.titlechecklist) {
+                                    data.titlechecklist.forEach(tc => {
+                                        progressBar(tc.id, tc.percentage);
+                                    });
                                 }
                             })
 
