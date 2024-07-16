@@ -211,7 +211,6 @@ function copyCardModal(cardId, cardName, formAction, columnId) {
             type: 'POST',
             data: $(this).serialize(),
             success: function(response) {
-                console.log($(this).serialize());
                 let cardContainer = document.getElementById('containerCard' + columnId);
                 let newCard = document.createElement('li');
                 newCard.classList.add('kartu-loghub');
