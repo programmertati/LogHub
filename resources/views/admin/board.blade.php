@@ -74,7 +74,7 @@
                                                 <a href="#" class="dropdown-item" onclick="deleteCardModal2('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu', ['card_id' => $dataKartu->id]) }}');">
                                                     <i class='fa fa-trash-o m-r-5'></i> Delete
                                                 </a>
-                                                <a href="#" class="dropdown-item">
+                                                <a href="#" class="dropdown-item" onclick="copyCardModal('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ route('copyCard', ['column_id' => $dataKolom->id, 'id' => $dataKartu->id]) }}', '{{ $dataKolom->id }}');" id="copy-card-{{ $dataKartu->id }}">
                                                     <i class="fa-regular fa-copy m-r-5"></i> Copy Card
                                                 </a>
                                             </div>
@@ -432,6 +432,40 @@
             </div>
         </div>
         <!-- /Perbaharui Kartu Modal -->
+
+        <!-- Salin Kartu Modal -->
+        <div id="copyCard" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Copy Card</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="copyCardForm" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" id="copy-card-id">
+                            <div class="form-group">
+                                <label for="copy-card-name">Card's Name</label><span class="text-danger">*</span>
+                                <input type="text" class="form-control" id="copy-card-name" name="name" placeholder="Enter a card's name" required>
+                                <span class="invalid-feedback" role="alert" id="copy-card-name-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="keep-checklists">Keep…</label><br>
+                                <input type="checkbox" id="keep-checklists" name="keep_checklists" checked>
+                                <label for="total-checklists"></label>
+                            </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-outline-info submit-btn">Create card</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Salin Kartu Modal -->
 
         <!-- Hapus Kartu Modal -->
         <div id="deleteCard" class="modal custom-modal fade" role="dialog">

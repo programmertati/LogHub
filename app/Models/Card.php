@@ -15,12 +15,14 @@ class Card extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'column_id',
         'name',
         'description',
+        'pattern',
+        'column_id',
         'previous_id',
         'next_id',
-        'position'
+        'position',
+        'created_at'
     ];
 
     /**

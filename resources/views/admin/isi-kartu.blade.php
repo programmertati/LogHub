@@ -194,7 +194,7 @@
                     @endphp
                     
                     @foreach ($sortedDataChecklist as $checklists)
-                        <div class="input-checklist" data-id="{{ $checklists->id }}">
+                        <div id="section-checklist-{{ $checklists->id }}" class="input-checklist" data-id="{{ $checklists->id }}">
                             <!-- Tampilan Checklist -->
                             <form id="myFormChecklistUpdate{{ $checklists->id }}" method="POST" class="form-checklist">
                                 @csrf
@@ -233,8 +233,7 @@
                             <!-- /Icon Hapus Checklist -->
                         </div>
                         <!-- /Tampilan Checklist -->
-                        
-                    @include('admin.script3')
+                        @include('admin.script3')
                     @endforeach
                 </div>
                 <!-- /Perbaharui & Hapus Checklist -->
@@ -242,18 +241,18 @@
                 <!-- Tambah baru checklist -->
                 <form id="myFormChecklist{{ $titleChecklists->id }}" method="POST">
                     @csrf
-                        <input type="hidden" id="title_id" name="title_id" value="{{ $titleChecklists->id }}">
-                        <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
-                        <div class="header-tambah-checklist flex gap-4">
-                            <i class="fa-xl"></i>
-                            <input onclick="mentionTags('checklist{{ $titleChecklists->id }}')" type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist{{ $titleChecklists->id }}" name="checklist" placeholder="Enter a checklist" required>
-                            <div class="mention-tag" id="mention-tag-checklist{{ $titleChecklists->id }}"></div>
-                            @include('admin.script5')
-                        </div>
-                        <div class="aksi-update-checklist gap-2">
-                            <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist{{ $titleChecklists->id }}">Save</button>
-                            <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist{{ $titleChecklists->id }}">Cancel</button>
-                        </div>
+                    <input type="hidden" id="title_id" name="title_id" value="{{ $titleChecklists->id }}">
+                    <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
+                    <div class="header-tambah-checklist flex gap-4">
+                        <i class="fa-xl"></i>
+                        <input onclick="mentionTags('checklist{{ $titleChecklists->id }}')" type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist{{ $titleChecklists->id }}" name="checklist" placeholder="Enter a checklist" required>
+                        <div class="mention-tag" id="mention-tag-checklist{{ $titleChecklists->id }}"></div>
+                        @include('admin.script5')
+                    </div>
+                    <div class="aksi-update-checklist gap-2">
+                        <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist{{ $titleChecklists->id }}">Save</button>
+                        <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist{{ $titleChecklists->id }}">Cancel</button>
+                    </div>
                 </form>
                 <button type="button" class="btn btn-outline-info" id="AddChecklist{{ $titleChecklists->id }}">Add an item</button>
                 <!-- Tambah baru checklist -->

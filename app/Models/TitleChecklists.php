@@ -12,7 +12,9 @@ class TitleChecklists extends Model
     protected $fillable = [
         'name',
         'cards_id',
-        'position'
+        'percentage',
+        'position',
+        'created_at'
     ];
 
     public function checklists()

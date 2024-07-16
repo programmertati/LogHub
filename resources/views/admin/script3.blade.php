@@ -11,9 +11,8 @@
                 url: "{{ route('hapusChecklist') }}",
                 data: formData,
                 success: function(response){
-                    // Menghilangkan Data Checklist //
-                    $('#myFormChecklistUpdate' + id[1]).hide();
-                    $('#myFormChecklistDelete' + id[1]).hide();
+                    // Hapus Section Checklist
+                    $('#section-checklist-' + id[1]).remove();
                     progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     toastr.success('Berhasil menghapus checklist!');
                 },

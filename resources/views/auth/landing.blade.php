@@ -4,7 +4,6 @@
 <head>
     <link rel="stylesheet" href="{{ URL::to('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ URL::to('assets/css/landing.css') }}">
-    {{-- <title id="pageTitle">Logout | Loghub - PT TATI </title> --}}
     <title id="pageTitle">{{ $pageTitle ?? ($pageTitle2 ?? 'Loghub - PT TATI' ) }}</title>
 
     {{-- Moving Title --}}

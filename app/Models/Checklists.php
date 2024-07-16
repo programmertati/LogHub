@@ -11,13 +11,19 @@ class Checklists extends Model
 
     protected $fillable = [
         'name',
-        'title_checklists_id',
         'is_active',
-        'position'
+        'title_checklists_id',
+        'position',
+        'created_at'
     ];
 
     public function titleChecklists()
     {
         return $this->belongsTo(TitleChecklists::class);
+    }
+
+    public function titleChecklist()
+    {
+        return $this->belongsTo(TitleChecklists::class, 'title_checklists_id');
     }
 }

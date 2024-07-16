@@ -209,7 +209,7 @@
                     @endphp
                     
                     @foreach ($sortedDataChecklist as $checklists)
-                        <div id="section-checklist-{{ $checklists->id }}" class="input-checklist" data-id="{{ $checklists->id }}" style="background-color: #489bdb">
+                        <div id="section-checklist-{{ $checklists->id }}" class="input-checklist" data-id="{{ $checklists->id }}">
                             <!-- Tampilan Checklist -->
                             <form id="myFormChecklistUpdate{{ $checklists->id }}" method="POST" class="form-checklist">
                                 @csrf
