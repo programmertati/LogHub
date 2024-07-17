@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Brian2694\Toastr\Facades\Toastr;
 
 class SSOController extends Controller
 {
@@ -79,4 +80,5 @@ class SSOController extends Controller
         Toastr::success('Anda berhasil masuk aplikasi!', 'Success');
         $route = $user->role_name == 'Admin' ? 'showTeams' : 'showTeams2';
         return redirect()->route($route);
+    }
 }
