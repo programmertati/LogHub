@@ -45,13 +45,38 @@ class SSOController extends Controller
             return redirect("login")->withErrors("Gagal mendapatkan informasi login, coba lagi!");
         }
 
-        $user = User::where("username", $username)->first();
-
+        $user = User::where("username", $username)->where('status', 'Active')->first();
         if (!$user) {
-            return 'Username tidak ada!';
+            $message = 'Akun Anda Tidak Terdaftar, Silahkan Hubungi Admin!';
+            return view('auth.landing', compact('message'));
         }
-
         Auth::login($user);
-            return redirect('/');
-        }
+        Session::put('name', $user->name);
+        Session::put('email', $user->email);
+        Session::put('username', $user->username);
+        Session::put('employee_id', $user->employee_id);
+        Session::put('user_id', $user->user_id);
+        Session::put('join_date', $user->join_date);
+        Session::put('status', $user->status);
+        Session::put('role_name', $user->role_name);
+        Session::put('avatar', $user->avatar);
+
+        $activityLog = [
+            'name'          => $user->name,
+            'username'      => $user->username,
+            'employee_id'   => $user->employee_id,
+            'email'         => $user->email,
+            'description'   => 'Berhasil Masuk Aplikasi',
+            'date_time'     => $todayDate
+        ];
+        DB::table('activity_logs')->insert($activityLog);
+
+        $updateStatus = [
+            'status_online' => 'Online'
+        ];
+        DB::table('users')->where('id', $user->id)->update($updateStatus);
+
+        Toastr::success('Anda berhasil masuk aplikasi!', 'Success');
+        $route = $user->role_name == 'Admin' ? 'showTeams' : 'showTeams2';
+        return redirect()->route($route);
 }
