@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class SSOController extends Controller
 {
@@ -51,6 +54,9 @@ class SSOController extends Controller
             $message = 'Akun Anda Tidak Terdaftar, Silahkan Hubungi Admin!';
             return view('auth.landing', compact('message'));
         }
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+        
         Auth::login($user);
         Session::put('name', $user->name);
         Session::put('email', $user->email);
