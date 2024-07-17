@@ -12,25 +12,25 @@ class SSOController extends Controller
     {
         $client = new \GuzzleHttp\Client([ 'verify' => false]);
         try {
-            $response = $client->request('POST', 'https://sso.pttati.co.id' . "/oauth/token", [
+            $response = $client->request('POST', "https://sso.pttati.co.id/oauth/token", [
                 'headers' => ['Accept' => 'application/json'],
                 'form_params' => [
                     "grant_type" => "authorization_code",
-                    "client_id" => '9c88d398-15a3-4378-ac95-4725d530ba45',
+                    "client_id" => "9c88d398-15a3-4378-ac95-4725d530ba45",
                     "client_secret" =>"WKJ0dwv3th8ADqosxxZqnpLTh80RI23cFoF1vXFo",
-                    "redirect_uri" => 'https://loghub.pttati.co.id'."/callback",
+                    "redirect_uri" => "https://loghub.pttati.co.id/callback",
                     "code" => $request->code
                 ]
             ]);
             
             $respon = json_decode($response->getBody()->getContents(), true);
         } catch (\Throwable $th) {
-            return $th->getMessage() . '<br>' . '9c88d398-15a3-4378-ac95-4725d530ba45' . '<hr>' . var_dump($request->all());
+            return $th->getMessage() . '<br>' . "9c88d398-15a3-4378-ac95-4725d530ba45" . '<hr>' . var_dump($request->all());
         }
 
         $access_token = $respon['access_token'];
         try {
-            $response = $client->request('GET', 'https://sso.pttati.co.id' . "/api/user", [
+            $response = $client->request('GET', "https://sso.pttati.co.id/api/user", [
                 'headers' => ['Accept' => 'application/json', "Authorization" => "Bearer " . $access_token],
                 'form_params' => null
             ]);
