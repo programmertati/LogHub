@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\TitleChecklists;
 use App\Models\Checklists;
 use Illuminate\Support\Facades\Auth;
@@ -55,6 +56,45 @@ class ChecklistController extends Controller
     }
     // /Tambahkan Title Kartu User //
 
+    // Untuk membuat template judul checklist
+    public function templateTitle(Request $request)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'cards_id' => 'required|exists:cards,id',
+            'name' => 'required|array',
+            'name.*' => 'required|string',
+        ]);
+
+        // Array untuk menyimpan judul checklist yang dibuat
+        $titleChecklists = [];
+
+        // Ulangi setiap nama dan simpan ke database
+        foreach ($validatedData['name'] as $name) {
+            $titleChecklist = new TitleChecklists();
+            $titleChecklist->cards_id = $validatedData['cards_id'];
+            $titleChecklist->name = $name;
+            $titleChecklist->percentage = 0;
+            $titleChecklist->position = 0;
+            $titleChecklist->save();
+            
+            // Simpan setiap judul checklist yang dibuat ke dalam array
+            $titleChecklists[] = $titleChecklist;
+        }
+
+        // Tambahkan acara ke riwayat kartu
+        $userId = Auth::user()->id;
+        $cardId = $request->cards_id;
+        $this->cardLogic->cardAddEvent($cardId, $userId, "Membuat Judul Checklist");
+
+        return response()->json([
+            'message' => 'Template judul checklist berhasil dibuat!',
+            'card_id' => $request->cards_id,
+            'titlechecklists' => $titleChecklists
+        ]);
+    }
+    // /Untuk membuat template judul checklist
+
     // Perbaharui Title Kartu Admin //
     public function updateTitle(Request $request)
     {
@@ -88,26 +128,86 @@ class ChecklistController extends Controller
     // Hapus Judul Kartu Admin //
     public function hapusTitle(Request $request)
     {
-        $user_id = AUth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Judul Checklist");
+        DB::beginTransaction();
+        try {
+            $titleChecklist = TitleChecklists::findOrFail($request->id);
 
-        TitleChecklists::destroy($request->id);
+            // Asumsi title checklist memiliki bidang cards->id
+            $cardId = $titleChecklist->cards_id;
 
-        return response()->json(['message' => 'Data berhasil dihapus!', 'card_id' => $request->card_id]);
+            // Hapus checklist yang terkait terlebih dahulu
+            $Checklist = Checklists::where('title_checklists_id', $titleChecklist->id)->delete();
+
+            // Hapus title checklist
+            $titleChecklist->delete();
+
+            $user_id = Auth::user()->id;
+            $this->cardLogic->cardAddEvent($cardId, $user_id, "Menghapus Judul Checklist");
+
+            // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
+            $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
+            
+            // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+                $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
+            })->onlyTrashed()->count();
+
+            DB::commit();
+            return response()->json([
+                'message' => 'Berhasil menghapus judul checklist!',
+                'softDeletedTitle' => $softDeletedTitle,
+                'softDeletedChecklist' => $softDeletedChecklist,
+                'cardId' => $cardId,
+                'titlechecklist' => $titleChecklist,
+                'checklist' => $Checklist
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Gagal menghapus judul checklist!']);
+        }
     }
     // /Hapus Judul Kartu Admin //
 
     // Hapus Judul Kartu User //
     public function hapusTitle2(Request $request)
     {
-        $user_id = AUth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Judul Checklist");
+        DB::beginTransaction();
+        try {
+            $titleChecklist = TitleChecklists::findOrFail($request->id);
 
-        TitleChecklists::destroy($request->id);
+            // Asumsi title checklist memiliki bidang cards->id
+            $cardId = $titleChecklist->cards_id;
 
-        return response()->json(['message' => 'Data berhasil dihapus!', 'card_id' => $request->card_id]);
+            // Hapus checklist yang terkait terlebih dahulu
+            $Checklist = Checklists::where('title_checklists_id', $titleChecklist->id)->delete();
+
+            // Hapus title checklist
+            $titleChecklist->delete();
+
+            $user_id = Auth::user()->id;
+            $this->cardLogic->cardAddEvent($cardId, $user_id, "Menghapus Judul Checklist");
+
+            // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
+            $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
+            
+            // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+                $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
+            })->onlyTrashed()->count();
+
+            DB::commit();
+            return response()->json([
+                'message' => 'Berhasil menghapus judul checklist!',
+                'softDeletedTitle' => $softDeletedTitle,
+                'softDeletedChecklist' => $softDeletedChecklist,
+                'cardId' => $cardId,
+                'titlechecklist' => $titleChecklist,
+                'checklist' => $Checklist
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Gagal menghapus judul checklist!']);
+        }
     }
     // /Hapus Judul Kartu User //
 
@@ -224,44 +324,316 @@ class ChecklistController extends Controller
     // Hapus Checklist Kartu Admin //
     public function hapusChecklist(Request $request)
     {
-        //Destroy Checklist
-        Checklists::destroy($request->id);
+        DB::beginTransaction();
+        try {
+            $checklist = Checklists::findOrFail($request->id);
+            
+            // Asumsi checklist memiliki bidang title_checklists_id
+            $titleChecklistId = $checklist->title_checklists_id;
 
-        //Get Progress Bar
-        $titleChecklist = $this->progressBar($request->title_checklists_id);
+            // Hapus checklist
+            $checklist->delete();
 
-        $user_id = Auth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Checklist");
+            // Perbarui persentase untuk checklist
+            $titleChecklist = $this->progressBar($request->title_checklists_id);
 
-        return response()->json([
-            'message' => 'Data berhasil dihapus!',
-            'card_id' => $request->card_id,
-            'titlechecklist' => $titleChecklist,
-        ]);
+            // Ambil card_id dari titleChecklists terkait
+            $dataCardID = TitleChecklists::findOrFail($titleChecklistId);
+            $cardId = $dataCardID->cards_id;
+
+            $user_id = Auth::user()->id;
+            $card_id = $request->card_id;
+            $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Checklist");
+
+            // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
+            $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
+            
+            // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+                $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
+            })->onlyTrashed()->count();
+
+            DB::commit();
+            return response()->json([
+                'message' => 'Berhasil menghapus checklist!',
+                'softDeletedTitle' => $softDeletedTitle,
+                'softDeletedChecklist' => $softDeletedChecklist,
+                'cardId' => $cardId,
+                'titleChecklistId' => $titleChecklistId,
+                'titlechecklist' => $titleChecklist,
+                'checklist' => $checklist
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Gagal menghapus checklist!']);
+        }
     }
     // /Hapus Checklist Kartu Admin //
 
     // Hapus Checklist Kartu Admin //
     public function hapusChecklist2(Request $request)
     {
-        //Destroy Checklist
-        Checklists::destroy($request->id);
+        DB::beginTransaction();
+        try {
+            $checklist = Checklists::findOrFail($request->id);
+            
+            // Asumsi checklist memiliki bidang title_checklists_id
+            $titleChecklistId = $checklist->title_checklists_id;
 
-        //Get Progress Bar
-        $titleChecklist = $this->progressBar($request->title_checklists_id);
+            // Hapus checklist
+            $checklist->delete();
 
-        $user_id = Auth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Checklist");
+            // Perbarui persentase untuk checklist
+            $titleChecklist = $this->progressBar($request->title_checklists_id);
 
-        return response()->json([
-            'message' => 'Data berhasil dihapus!',
-            'card_id' => $request->card_id,
-            'titlechecklist' => $titleChecklist,
-        ]);
+            // Ambil card_id dari titleChecklists terkait
+            $dataCardID = TitleChecklists::findOrFail($titleChecklistId);
+            $cardId = $dataCardID->cards_id;
+
+            $user_id = Auth::user()->id;
+            $card_id = $request->card_id;
+            $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Checklist");
+
+            // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
+            $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
+            
+            // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+                $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
+            })->onlyTrashed()->count();
+
+            DB::commit();
+            return response()->json([
+                'message' => 'Berhasil menghapus checklist!',
+                'softDeletedTitle' => $softDeletedTitle,
+                'softDeletedChecklist' => $softDeletedChecklist,
+                'cardId' => $cardId,
+                'titleChecklistId' => $titleChecklistId,
+                'titlechecklist' => $titleChecklist,
+                'checklist' => $checklist
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Gagal menghapus checklist!']);
+        }
     }
     // /Hapus Checklist Kartu Admin //
+
+    // Fitur Pemulihan Data Judul Checklist //
+    public function pulihkanJudulChecklist(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            // Temukan Judul Checklist yang dihapus
+            $titleChecklist = TitleChecklists::withTrashed()->findOrFail($request->id);
+
+            // Pulihkan Judul Checklist
+            $titleChecklist->restore();
+
+            // Pulihkan semua Checklist terkait dengan Judul Checklist ini
+            $checklistsQuery = Checklists::withTrashed()->where('title_checklists_id', $titleChecklist->id);
+            $checklistsQuery->restore();
+
+            // Ambil semua checklist yang terkait setelah pemulihan
+            $checklistsData = $checklistsQuery->get();
+
+            // Asumsi Judul Checklist memiliki bidang cards->id
+            $cardId = $titleChecklist->cards_id;
+
+            // Catat event pemulihan
+            $user_id = Auth::user()->id;
+            $this->cardLogic->cardAddEvent($cardId, $user_id, "Memulihkan Judul Checklist");
+
+            // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
+            $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
+            
+            // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+                $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
+            })->onlyTrashed()->count();
+
+            DB::commit();
+            return response()->json([
+                'message' => 'Berhasil memulihkan judul checklist!',
+                'softDeletedTitle' => $softDeletedTitle,
+                'softDeletedChecklist' => $softDeletedChecklist,
+                'cardId' => $cardId,
+                'titlechecklist' => $titleChecklist,
+                'checklists' => $checklistsData
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Gagal memulihkan judul checklist!']);
+        }
+    }
+    // /Fitur Pemulihan Data Judul Checklist //
+
+    // Fitur Hapus Judul Checklist Permanen //
+    public function hapusJudulChecklistPermanen(Request $request)
+    {
+        $titleChecklist = TitleChecklists::withTrashed()->find($request->id);
+
+        if ($titleChecklist) {
+            // Hapus Checklist
+            $checklistsQuery = Checklists::withTrashed()->where('title_checklists_id', $titleChecklist->id);
+            $checklistsQuery->forceDelete();
+            $checklistsData = $checklistsQuery->get();
+
+            // Hapus Kartu
+            $titleChecklist->forceDelete();
+
+            $cardId = $titleChecklist->cards_id;
+
+            // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
+            $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
+            
+            // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+                $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
+            })->onlyTrashed()->count();
+
+            return response()->json([
+                'message' => 'Berhasil menghapus judul checklist permanen!',
+                'softDeletedTitle' => $softDeletedTitle,
+                'softDeletedChecklist' => $softDeletedChecklist,
+                'cardId' => $cardId,
+                'titlechecklist' => $titleChecklist,
+                'checklists' => $checklistsData
+            ]);
+        } else {
+            return response()->json(['message' => 'Kartu tidak ditemukan!'], 404);
+        }
+    }
+    // /Fitur Hapus Judul Checklist Permanen //
+
+    // Fitur Pemulihan Data Checklist //
+    public function pulihkanChecklist(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            // Temukan Checklist yang dihapus
+            $checklist = Checklists::withTrashed()->findOrFail($request->id);
+
+            // Asumsi checklist memiliki bidang title_checklists_id
+            $titleChecklistId = $checklist->title_checklists_id;
+
+            // Ambil data title checklist sebelum restore
+            $titleChecklistData = TitleChecklists::withTrashed()->findOrFail($titleChecklistId);
+
+            // Pulihkan Checklist
+            $checklist->restore();
+
+            // Asumsi Checklist memiliki bidang cards->id
+            $cardId = $titleChecklistData->cards_id;
+
+            // Perbarui persentase untuk checklist
+            $titleChecklist = $this->progressBar($titleChecklistId);
+
+            // Catat event pemulihan
+            $user_id = Auth::user()->id;
+            $this->cardLogic->cardAddEvent($cardId, $user_id, "Memulihkan Checklist");
+
+            // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
+            $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
+
+            // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+                $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
+            })->onlyTrashed()->count();
+
+            DB::commit();
+            return response()->json([
+                'message' => 'Berhasil memulihkan checklist!',
+                'softDeletedTitle' => $softDeletedTitle,
+                'softDeletedChecklist' => $softDeletedChecklist,
+                'cardId' => $cardId,
+                'titlechecklist' => $titleChecklist,
+                'checklist' => $checklist,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => 'Gagal memulihkan checklist!']);
+        }
+    }
+    // Fitur Pemulihan Data Checklist //
+
+    // Fitur Hapus Checklist Permanen //
+    public function hapusChecklistPermanen(Request $request)
+    {
+        // Mencari data checklist
+        $checklist = Checklists::withTrashed()->where('id', $request->id)->first();
+
+        if ($checklist) {
+            // Mengambil title_checklists yang terkait
+            $titleChecklist = TitleChecklists::withTrashed()->find($checklist->title_checklists_id);
+
+            if ($titleChecklist) {
+                // Menghapus checklist secara permanen
+                $checklist->forceDelete();
+
+                // Mendapatkan semua data checklist setelah penghapusan
+                $checklistsData = Checklists::withTrashed()->where('title_checklists_id', $checklist->title_checklists_id)->get();
+
+                // Asumsi cardId memiliki bidang cards_id
+                $cardId = $titleChecklist->cards_id;
+
+                // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
+                $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
+
+                // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
+                $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+                    $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
+                })->onlyTrashed()->count();
+
+                return response()->json([
+                    'message' => 'Berhasil menghapus checklist permanen!',
+                    'softDeletedTitle' => $softDeletedTitle,
+                    'softDeletedChecklist' => $softDeletedChecklist,
+                    'cardId' => $cardId,
+                    'titlechecklist' => $titleChecklist,
+                    'checklists' => $checklistsData
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Title Checklist tidak ditemukan.',
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Checklist tidak ditemukan.',
+            ], 404);
+        }
+    }
+    // /Fitur Hapus Checklist Permanen //
+
+    // Fitur Pemanggilan Data Title & Checklist //
+    public function dataPulihkanTitleChecklist(Request $request)
+    {
+        // Asumsi title checklist memiliki bidang cards->id
+        $cardId = $request->card_id;
+
+        // Mendapatkan data title checklist
+        $dataTitleRecover = TitleChecklists::onlyTrashed()->where('cards_id', $cardId)->get();
+
+        // Mendapatkan data checklist
+        $dataChecklistRecover = Checklists::onlyTrashed()->whereHas('titleChecklist', function($query) use ($cardId) {
+            $query->where('cards_id', $cardId);
+        })->with('titleChecklist')->get();
+
+        // Menyertakan data name dari TitleChecklists
+        $dataChecklistRecover->each(function($checklist) {
+            $checklist->title_checklist_name = $checklist->titleChecklist->name;
+        });
+    
+        return response()->json([
+            'dataTitleRecover' => $dataTitleRecover,
+            'dataChecklistRecover' => $dataChecklistRecover,
+            'softDeletedTitle' => $dataTitleRecover->count(),
+            'softDeletedChecklist' => $dataChecklistRecover->count(),
+            'cardId' => $cardId
+        ]);
+    }
+    // /Fitur Pemanggilan Data Title & Checklist //
 
     public static function progressBar($title_checklists_id)
     {

@@ -635,6 +635,8 @@
       </style>
 
     @section('script')
+        <script src="{{ asset('assets/js/memuat-shortcut.js?v='.time()) }}"></script>
+        
         <script>
             function toggleCardBody(header) {
             var cardBody = header.nextElementSibling;

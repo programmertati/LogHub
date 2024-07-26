@@ -409,6 +409,8 @@ class BoardController extends Controller
             return response()->json(['error' => 'Gagal membuat kolom, silahkan coba lagi!'], 500);
         }
 
+        $softDeletedCards = Card::where('column_id', $createdColumn->id)->onlyTrashed()->count();
+
         return response()->json([
             'id' => $createdColumn->id,
             'name' => $createdColumn->name,
@@ -416,7 +418,8 @@ class BoardController extends Controller
             'deleteUrl' => route('deleteCol', ['board_id' => $board_id, 'team_id' => $team_id]),
             'addCardUrl' => route('addCard', ['board_id' => $board_id, 'team_id' => $team_id, 'column_id' => $createdColumn->id]),
             'board_id' => $board_id,
-            'team_id' => $team_id
+            'team_id' => $team_id,
+            'softDeletedCards' => $softDeletedCards,
         ]);
     }
     // /Membuat Kolom Admin //
@@ -438,6 +441,8 @@ class BoardController extends Controller
             return response()->json(['error' => 'Gagal membuat kolom, silahkan coba lagi!'], 500);
         }
 
+        $softDeletedCards = Card::where('column_id', $createdColumn->id)->onlyTrashed()->count();
+
         return response()->json([
             'id' => $createdColumn->id,
             'name' => $createdColumn->name,
@@ -445,7 +450,8 @@ class BoardController extends Controller
             'deleteUrl' => route('deleteCol', ['board_id' => $board_id, 'team_id' => $team_id]),
             'addCardUrl' => route('addCard', ['board_id' => $board_id, 'team_id' => $team_id, 'column_id' => $createdColumn->id]),
             'board_id' => $board_id,
-            'team_id' => $team_id
+            'team_id' => $team_id,
+            'softDeletedCards' => $softDeletedCards,
         ]);
     }
     // /Membuat Kolom User //
@@ -545,7 +551,8 @@ class BoardController extends Controller
                     'pattern' => $newCard->pattern,
                     'description' => $newCard->description,
                     'updateUrl' => route('perbaharuiKartu', ['card_id' => $newCard->id]),
-                    'deleteUrl' => route('hapusKartu', ['card_id' => $newCard->id])
+                    'deleteUrl' => route('hapusKartu', ['card_id' => $newCard->id]),
+                    'copyCardUrl' => route('copyCard', ['column_id' => $newColumn->id, 'id' => $newCard->id])
                 ]
             ]);
         } else {
@@ -589,7 +596,8 @@ class BoardController extends Controller
                     'pattern' => $newCard->pattern,
                     'description' => $newCard->description,
                     'updateUrl' => route('perbaharuiKartu', ['card_id' => $newCard->id]),
-                    'deleteUrl' => route('hapusKartu', ['card_id' => $newCard->id])
+                    'deleteUrl' => route('hapusKartu', ['card_id' => $newCard->id]),
+                    'copyCardUrl' => route('copyCard', ['column_id' => $newColumn->id, 'id' => $newCard->id])
                 ]
             ]);
         } else {
@@ -663,10 +671,33 @@ class BoardController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->cardLogic->deleteCard(intval($card_id));
+            $card = Card::findOrFail($card_id);
+
+            // Asumsi kartu memiliki bidang column->id
+            $columnId = $card->column_id;
+            $card->delete();
+
+            TitleChecklists::where('cards_id', $card_id)->get()->each(function ($titleChecklist) {
+                $titleChecklist->delete();
+
+                Checklists::where('title_checklists_id', $titleChecklist->id)->get()->each(function ($checklist) {
+                    $checklist->delete();
+                });
+            });
+
+            $user_id = Auth::user()->id;
+            $card_id = intval($card_id);
+            $card = Card::find($card_id);
+            $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Kartu");
+
+            $softDeletedCards = Card::where('column_id', $columnId)->onlyTrashed()->count();
 
             DB::commit();
-            return response()->json(['message' => 'Berhasil menghapus kartu!']);
+            return response()->json([
+                'message' => 'Berhasil menghapus kartu!',
+                'softDeletedCards' => $softDeletedCards,
+                'columnId' => $columnId
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['message' => 'Gagal menghapus kartu!']);
@@ -679,16 +710,132 @@ class BoardController extends Controller
     {
         DB::beginTransaction();
         try {
-            $this->cardLogic->deleteCard(intval($card_id));
+            $card = Card::findOrFail($card_id);
+
+            // Asumsi kartu memiliki bidang column->id
+            $columnId = $card->column_id;
+            $card->delete();
+
+            TitleChecklists::where('cards_id', $card_id)->get()->each(function ($titleChecklist) {
+                $titleChecklist->delete();
+
+                Checklists::where('title_checklists_id', $titleChecklist->id)->get()->each(function ($checklist) {
+                    $checklist->delete();
+                });
+            });
+
+            $user_id = Auth::user()->id;
+            $card_id = intval($card_id);
+            $card = Card::find($card_id);
+            $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Kartu");
+
+            $softDeletedCards = Card::where('column_id', $columnId)->onlyTrashed()->count();
 
             DB::commit();
-            return response()->json(['message' => 'Berhasil menghapus kartu!']);
+            return response()->json([
+                'message' => 'Berhasil menghapus kartu!',
+                'softDeletedCards' => $softDeletedCards,
+                'columnId' => $columnId
+            ]);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json(['message' => 'Gagal menghapus kartu!']);
         }
     }
     // Perbaharui Kartu Admin //
+
+    // Fitur Pemulihan Data Kartu //
+    public function pulihkanKartu(Request $request)
+    {
+        $card = Card::withTrashed()->find($request->id);
+
+        if ($card) {
+
+            // Asumsi kartu memiliki bidang column->id
+            $columnId = $card->column_id;
+
+            // Pulihkan Kartu
+            $card->restore();
+
+            // Pulihkan Judul Checklist
+            TitleChecklists::withTrashed()->where('cards_id', $card->id)->get()->each(function ($titleChecklist) {
+
+                // Pulihkan Judul Checklist
+                $titleChecklist->restore();
+
+                // Pulihkan Checklist
+                Checklists::withTrashed()->where('title_checklists_id', $titleChecklist->id)->restore();
+            });
+
+            $user_id = Auth::user()->id;
+            $this->cardLogic->cardAddEvent($card->id, $user_id, "Memulihkan Kartu");
+
+            $softDeletedCards = Card::where('column_id', $columnId)->onlyTrashed()->count();
+
+            return response()->json([
+                'message' => 'Berhasil memulihkan kartu!',
+                'softDeletedCards' => $softDeletedCards,
+                'columnId' => $columnId,
+                'new_card' => $card,
+
+                'column' => [
+                    'id' => $columnId,
+                    'name' => $card->name,
+                ],
+
+                'card' => [
+                    'id' => $card->id,
+                    'name' => $card->name,
+                    'pattern' => $card->pattern,
+                    'description' => $card->description,
+                    'position' => $card->position,
+                    'updateUrl' => route('perbaharuiKartu', ['card_id' => $card->id]),
+                    'deleteUrl' => route('hapusKartu', ['card_id' => $card->id]),
+                    'copyCardUrl' => route('copyCard', ['column_id' => $columnId, 'id' => $card->id])
+                ],
+            ]);
+        }
+    }
+
+    public function hapusKartuPermanen(Request $request)
+    {
+        $card = Card::withTrashed()->find($request->id);
+
+        if ($card) {
+
+            // Hapus Judul Checklist
+            TitleChecklists::withTrashed()->where('cards_id', $card->id)->get()->each(function ($titleChecklist) {
+                
+                // Hapus Checklist
+                Checklists::withTrashed()->where('title_checklists_id', $titleChecklist->id)->forceDelete();
+                
+                // Hapus Judul Checklist
+                $titleChecklist->forceDelete();
+            });
+
+            // Hapus Kartu
+            $card->forceDelete();
+
+            $columnId = $card->column_id;
+            $softDeletedCards = Card::where('column_id', $columnId)->onlyTrashed()->count();
+
+            return response()->json([
+                'message' => 'Berhasil menghapus kartu permanen!',
+                'softDeletedCards' => $softDeletedCards,
+                'columnId' => $columnId,
+            ]);
+        } else {
+            return response()->json(['message' => 'Kartu tidak ditemukan!'], 404);
+        }
+    }
+
+    public function dataPulihkanKartu(Request $request)
+    {
+        $dataRecover = Card::onlyTrashed()->where('column_id', $request->column_id)->get();
+
+        return response()->json(['dataRecover' => $dataRecover]);
+    }
+    // /Fitur Pemulihan Data Kartu //
 
     // Perbaharui Deskripsi Kartu Admin //
     public function addDescription(Request $request)

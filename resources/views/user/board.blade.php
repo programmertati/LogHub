@@ -39,8 +39,12 @@
                                     <a href="#" class="dropdown-item" onclick="deleteColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('deleteCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');">
                                         <i class='fa fa-trash-o m-r-5'></i> Delete
                                     </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fa-solid fa-recycle m-r-5"></i> Recycle Bin
+                                    @php
+                                        $softDeletedCards = $dataKolom->cards()->onlyTrashed()->count();
+                                        $displayStyle = $softDeletedCards > 0 ? '' : 'display: none;';
+                                    @endphp
+                                    <a href="#" class="dropdown-item recover-kartu-link" id="recover-kartu-link-{{ $dataKolom->id }}" data-toggle="modal" data-target="#pulihkanKartuModal" data-column-id="{{ $dataKolom->id }}" style="{{ $displayStyle }}">
+                                        <i class="fa-solid fa-recycle m-r-5"></i> Recover Card
                                     </a>
                                 </div>
                             </div>
@@ -55,8 +59,12 @@
                                     <a href="#" class="dropdown-item" onclick="updateColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('updateCol2', ['board_id' => $board->id, 'team_id' => $board->team_id]) }}');" id="edit-column-{{ $dataKolom->id }}">
                                         <i class="fa fa-pencil m-r-5"></i> Edit
                                     </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fa-solid fa-recycle m-r-5"></i> Recycle Bin
+                                    @php
+                                        $softDeletedCards = $dataKolom->cards()->onlyTrashed()->count();
+                                        $displayStyle = $softDeletedCards > 0 ? '' : 'display: none;';
+                                    @endphp
+                                    <a href="#" class="dropdown-item recover-kartu-link" id="recover-kartu-link-{{ $dataKolom->id }}" data-toggle="modal" data-target="#pulihkanKartuModal" data-column-id="{{ $dataKolom->id }}" style="{{ $displayStyle }}">
+                                        <i class="fa-solid fa-recycle m-r-5"></i> Recover Card
                                     </a>
                                 </div>
                             </div> --}}
@@ -91,7 +99,7 @@
                                                     <a href="#" class="dropdown-item" onclick="deleteCardModal2('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu2', ['card_id' => $dataKartu->id]) }}');">
                                                         <i class='fa fa-trash-o m-r-5'></i> Delete
                                                     </a>
-                                                    <a href="#" class="dropdown-item" onclick="copyCardModal('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ route('copyCard', ['column_id' => $dataKolom->id, 'id' => $dataKartu->id]) }}', '{{ $dataKolom->id }}');" id="copy-card-{{ $dataKartu->id }}">
+                                                    <a href="#" class="dropdown-item" onclick="copyCardModal('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ route('copyCard', ['column_id' => $dataKolom->id, 'id' => $dataKartu->id]) }}');" id="copy-card-{{ $dataKartu->id }}">
                                                         <i class="fa-regular fa-copy m-r-5"></i> Copy Card
                                                     </a>
                                                 </div>
@@ -484,6 +492,54 @@
             </div>
         </div>
         <!-- /Salin Kartu Modal -->
+
+        <!-- Pulihkan Kartu Modal -->
+        <div id="pulihkanKartuModal" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content pulihkan-kartu-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Recover Cards</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-pulihkan">Card</p>
+                        <ul class="pulihkan-container" id="listPulihkanKartu"></ul>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @include('allrole.memuat-modal-pulihkan-kartu')
+        <!-- /Pulihkan Kartu Modal -->
+
+        <!-- Pulihkan Title & Checklist Modal -->
+        <div id="pulihkanTitleChecklistModal" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content pulihkan-kartu-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Recover Title & Checklist</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-pulihkan">Title Checklists</p>
+                        <ul class="pulihkan-container2" id="listPulihkanTitleChecklist"></ul>
+                        
+                        <p class="text-pulihkan">Checklist</p>
+                        <ul class="pulihkan-container3" id="listPulihkanChecklist"></ul>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger titlechecklist-btn" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Pulihkan Title & Checklist Modal -->
 
         <!-- Hapus Kartu Modal -->
         <div id="deleteCard" class="modal custom-modal fade" role="dialog">

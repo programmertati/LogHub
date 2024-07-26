@@ -1,6 +1,15 @@
 <script>
     function addColumnScript(event) {
+
+        // Tandai untuk mencegah pengiriman berulang kali
+        let isSubmitting = false;
+
         event.preventDefault();
+
+        // Mencegah pengiriman ganda
+        if (isSubmitting) return;
+        isSubmitting = true;
+
         let form = document.getElementById('addColForm');
         let formData = new FormData(form);
         let url = form.getAttribute('action');
@@ -36,8 +45,8 @@
                             <a href="#" class="dropdown-item" onclick="deleteColumnModal(${data.id}, '${data.name}', '${data.deleteUrl}');">
                                 <i class='fa fa-trash-o m-r-5'></i> Delete
                             </a>
-                            <a href="#" class="dropdown-item">
-                                <i class="fa-solid fa-recycle m-r-5"></i> Recycle Bin
+                            <a href="#" class="dropdown-item recover-kartu-link" id="recover-kartu-link-${data.id}" data-toggle="modal" data-target="#pulihkanKartuModal" data-column-id="${data.id}" style="${data.softDeletedCards > 0 ? '' : 'display: none;'}">
+                                <i class="fa-solid fa-recycle m-r-5"></i> Recover Card
                             </a>
                         </div>
                     </div>
@@ -81,16 +90,31 @@
             } else {
                 toastr.error('Gagal membuat kolom!');
             }
+
+            // Setel ulang tanda
+            isSubmitting = false;
         })
 
         .catch(error => {
             console.error('Kesalahan:', error);
             toastr.error('Gagal membuat kolom!');
+
+            // Setel ulang tanda
+            isSubmitting = false;
         });
     }
 
     function addCardScript(event, columnId) {
+
+        // Tandai untuk mencegah pengiriman berulang kali
+        let isSubmitting = false;
+
         event.preventDefault();
+
+        // Mencegah pengiriman ganda
+        if (isSubmitting) return;
+        isSubmitting = true;
+
         let form = document.getElementById('addCardForm' + columnId);
         let formData = new FormData(form);
         let url = form.getAttribute('action');
@@ -106,7 +130,7 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                let cardContainer = document.getElementById('containerCard' + columnId);
+                let cardContainer = document.getElementById('containerCard' + data.column.id);
                 let newCard = document.createElement('li');
                 newCard.classList.add('kartu-loghub');
                 newCard.setAttribute('data-id', data.card.id);
@@ -130,9 +154,9 @@
                             <a href="#" class="dropdown-item" onclick="deleteCardModal2('${data.card.id}', '${data.card.name}', '${data.column.name}', '${data.card.deleteUrl}');">
                                 <i class='fa fa-trash-o m-r-5'></i> Delete
                             </a>
-                            {{-- <a href="#" class="dropdown-item" onclick="copyCardModal('${data.card.id}', '${data.card.name}', '${data.column.id}', '${data.card.copyCardUrl}');" id="copy-card-${data.card.id}">
+                            <a href="#" class="dropdown-item" onclick="copyCardModal('${data.card.id}', '${data.card.name}', '${data.card.copyCardUrl}');" id="copy-card-${data.card.id}">
                                 <i class="fa-regular fa-copy m-r-5"></i> Copy Card
-                            </a> --}}
+                            </a>
                         </div>
                     </div>
                     <!-- /Tampilan Aksi Edit -->
@@ -314,9 +338,15 @@
             } else {
                 toastr.error('Gagal membuat kartu!');
             }
+
+            // Setel ulang tanda
+            isSubmitting = false;
         })
         .catch(error => {
             console.error('Kesalahan:', error);
+
+            // Setel ulang tanda
+            isSubmitting = false;
         });
     }
 </script>

@@ -176,6 +176,9 @@ Route::controller(BoardController::class)->group(function () {
     Route::post('/perbaharui/posisi/judul', 'perbaharuiPosisiJudul')->name('perbaharuiPosisiJudul');
     Route::post('/perbaharui/posisi/ceklist', 'perbaharuiPosisiCeklist')->name('perbaharuiPosisiCeklist');
     Route::post('/perbaharui/posisi/kartu-ke-kolom', 'perbaharuiPosisiKartuKeKolom')->name('perbaharuiPosisiKartuKeKolom');
+    Route::post('/kartu/pulihkan', 'pulihkanKartu')->name('pulihkanKartu');
+    Route::post('/hapus-kartu-permanen', 'hapusKartuPermanen')->name('hapusKartuPermanen');
+    Route::get('/pulihkan-kartu', 'dataPulihkanKartu')->name('dataPulihkanKartu');
 
     // ----------------------------- User ----------------------------- //
     Route::post("user/tim/papan/{team_id}", "createBoard2")->middleware("auth", "auth.session", "userInTeam")->name("createBoard2");
@@ -205,6 +208,14 @@ Route::controller(ChecklistController::class)->group(function () {
     Route::post("admin/tim/checklist/tambah", "addChecklist")->name("addChecklist");
     Route::post("admin/tim/checklist/perbaharui", "updateChecklist")->name("updateChecklist");
     Route::get('/admin/tim/checklist/perbaharui/{title_checklists_id}', 'getProgress');
+
+    // ----------------------------- All Role ----------------------------- //
+    Route::post('/judul/pulihkan', 'pulihkanJudulChecklist')->name('pulihkanJudulChecklist');
+    Route::post('/hapus-judul-checklist-permanen', 'hapusJudulChecklistPermanen')->name('hapusJudulChecklistPermanen');
+    Route::post('/checklist/pulihkan', 'pulihkanChecklist')->name('pulihkanChecklist');
+    Route::post('/hapus-checklist-permanen', 'hapusChecklistPermanen')->name('hapusChecklistPermanen');
+    Route::get('/pulihkan-title-checklist', 'dataPulihkanTitleChecklist')->name('dataPulihkanTitleChecklist');
+    Route::post('/membuat/template/judul', 'templateTitle')->name('templateTitle');
 
     // ----------------------------- User ----------------------------- //
     Route::post("user/tim/papan/kolom/kartu/judul/tambah", "addTitle2")->name("addTitle2");

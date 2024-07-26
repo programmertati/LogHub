@@ -369,6 +369,13 @@
                     .info-status11 .text-status11{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status12 .text-status12{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status13 .text-status13{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status14 .text-status14{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status15 .text-status15{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status16 .text-status16{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status17 .text-status17{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status18 .text-status18{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status19 .text-status19{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status20 .text-status20{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .icon-trash {color: #B6C2CF !important;}
                     .icon-trash:hover {color: #dc3546e1 !important;}
                     .icon-trash:active {color: #e62034 !important;}
@@ -382,6 +389,28 @@
                     .mention-waktu{color: #8C9BAB !important;}
                     .isian-mention-tag{background-color: {{ $mode_tema->warna_mode }} !important; color: #B6C2CF !important; box-shadow: 0px 1px 1px #5a5e6f, 0px 0px 1px #464a5b !important;}
                     .isian-deskripsi{color: white; background-color: #292D3E; border-color: white !important}
+
+                    {{-- Untuk Pulihkan Kartu --}}
+                    .isian-pulihkan-kartu{background-color: #464a5b; color: {{ $mode_tema->warna_sistem_tulisan }};}
+                    .waktu-pulihkan-kartu {color: {{ $mode_tema->warna_sistem_tulisan }};}
+                    .opsi-pulihkan{background-color: #737788; border: 1px solid #737788;}
+                    .opsi-pulihkan:hover{background-color: #3a3c47; border-color:#3a3c47;}
+                    .opsi-pulihkan2{background-color: #737788; border: 1px solid #737788;}
+                    .opsi-pulihkan2:hover{background-color: #3a3c47; border-color:#3a3c47;}
+                    .isian-pulihkan-title{background-color: #464a5b; color: {{ $mode_tema->warna_sistem_tulisan }};}
+                    .waktu-pulihkan-title {color: {{ $mode_tema->warna_sistem_tulisan }};}
+                    .opsi-pulihkan-title{background-color: #737788; border: 1px solid #737788;}
+                    .opsi-pulihkan-title:hover{background-color: #3a3c47; border-color:#3a3c47;}
+                    .opsi-pulihkan-title2{background-color: #737788; border: 1px solid #737788;}
+                    .opsi-pulihkan-title2:hover{background-color: #3a3c47; border-color:#3a3c47;}
+                    .isian-pulihkan-checklist{background-color: #464a5b; color: {{ $mode_tema->warna_sistem_tulisan }};}
+                    .waktu-pulihkan-checklist {color: {{ $mode_tema->warna_sistem_tulisan }};}
+                    .opsi-pulihkan-checklist{background-color: #737788; border: 1px solid #737788;}
+                    .opsi-pulihkan-checklist:hover{background-color: #3a3c47; border-color:#3a3c47;}
+                    .opsi-pulihkan-checklist2{background-color: #737788; border: 1px solid #737788;}
+                    .opsi-pulihkan-checklist2:hover{background-color: #3a3c47; border-color:#3a3c47;}
+                    .text-pulihkan{color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
+                    .text-from-judul{color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
 
                     @foreach ($belum_dibaca as $notifikasi_belum_dibaca)
                         #popup-notifikasi_{{ $notifikasi_belum_dibaca->id }} {background: {{ $mode_tema->warna_mode }} !important}

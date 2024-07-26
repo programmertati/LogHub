@@ -194,6 +194,19 @@
                 success: function(response){
                     // Hapus Section Checklist
                     $('#section-checklist-' + id[1]).remove();
+
+                    // Perbarui visibilitas tautan Pulihkan Judul & Checklist
+                    var cardId = response.cardId;
+                    var softDeletedTitle = response.softDeletedTitle;
+                    var softDeletedChecklist = response.softDeletedChecklist;
+                    var recoverTitleChecklist = $('#recover-title-checklist-' + cardId);
+
+                    if (softDeletedTitle > 0 || softDeletedChecklist > 0) {
+                        recoverTitleChecklist.show();
+                    } else {
+                        recoverTitleChecklist.hide();
+                    }
+                    
                     progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     toastr.success('Berhasil menghapus checklist!');
                 },
@@ -223,26 +236,28 @@
 </script>
 
 <script>
-    $(document).ready(function() {
-        const dynamicCheckboxValue = document.getElementById('checkbox-{{$checklists->id}}');
-        const aksiUpdateChecklist = document.getElementById('checklist-{{$checklists->id}}');
-        const saveButton = document.getElementById('saveButtonChecklistUpdate-{{ $checklists->id }}');
-        const cancelButton = document.getElementById('cancelButtonChecklistUpdate-{{$checklists->id}}');
-        
+    function checklistUpdate(id) {
+        $(document).ready(function() {
+            const dynamicCheckboxValue = document.getElementById(`checkbox-${id}`);
+            const aksiUpdateChecklist = document.getElementById(`checklist-${id}`);
+            const saveButton = document.getElementById(`saveButtonChecklistUpdate-${id}`);
+            const cancelButton = document.getElementById(`cancelButtonChecklistUpdate-${id}`);
+            
 
-        dynamicCheckboxValue.addEventListener('click', function () {
-            aksiUpdateChecklist.style.marginBottom = '10px';
-            aksiUpdateChecklist.style.marginTop = '5px';
-        });
+            dynamicCheckboxValue.addEventListener('click', function () {
+                aksiUpdateChecklist.style.marginBottom = '10px';
+                aksiUpdateChecklist.style.marginTop = '5px';
+            });
 
-        saveButton.addEventListener('click', function () {
-            aksiUpdateChecklist.style.marginBottom = '0';
-            aksiUpdateChecklist.style.marginTop = '0';
-        });
+            saveButton.addEventListener('click', function () {
+                aksiUpdateChecklist.style.marginBottom = '0';
+                aksiUpdateChecklist.style.marginTop = '0';
+            });
 
-        cancelButton.addEventListener('click', function () {
-            aksiUpdateChecklist.style.marginBottom = '0';
-            aksiUpdateChecklist.style.marginTop = '0';
+            cancelButton.addEventListener('click', function () {
+                aksiUpdateChecklist.style.marginBottom = '0';
+                aksiUpdateChecklist.style.marginTop = '0';
+            });
         });
-    });
+    }
 </script>
