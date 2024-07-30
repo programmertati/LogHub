@@ -210,11 +210,46 @@
                 <!-- /Perbaharui & Hapus Judul Checklist -->
 
                 <!-- Progress Bar Checklist -->
-                <div class="progress" data-checklist-id="{{ $titleChecklists->id }}">
-                    <div class="progress-bar progress-bar-{{ $titleChecklists->id }}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                        0%
+                @php
+                    $hasChecklists = $titleChecklists->checklists->isNotEmpty();
+                    $titleChecklistsPercentage = $titleChecklists->percentage;
+                @endphp
+
+                <div class="checkall-progress" id="checkall-progress-{{ $titleChecklists->id }}">
+                    @if ($hasChecklists)
+                        <div class="checklist-all gap-2" id="checklist-all-{{ $titleChecklists->id }}">
+                            <form id="checklistAllForm{{ $titleChecklists->id }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="title_checklists_id" value="{{ $titleChecklists->id }}">
+                                <div class="info-status21">
+                                    <input type="checkbox" class="checklistform-all" name="checklistform-all" id="checklistform-all-{{ $titleChecklists->id }}" @if($titleChecklistsPercentage == 100) checked @endif>
+                                    <span class="text-status21">
+                                        <b>Check All</b>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    @else
+                        <div class="checklist-all gap-2" id="checklist-all-{{ $titleChecklists->id }}">
+                            <form id="checklistAllForm{{ $titleChecklists->id }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="title_checklists_id" value="{{ $titleChecklists->id }}">
+                                <div class="info-status21">
+                                    <input type="checkbox" class="checklistform-all hidden" name="checklistform-all" id="checklistform-all-{{ $titleChecklists->id }}" @if($titleChecklistsPercentage == 100) checked @endif>
+                                    <span class="text-status21">
+                                        <b>Check All</b>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    @endif
+                    <div class="progress" data-checklist-id="{{ $titleChecklists->id }}">
+                        <div class="progress-bar progress-bar-{{ $titleChecklists->id }}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                            0%
+                        </div>
                     </div>
                 </div>
+                @include('allrole.centang-semua-checklist')
                 <!-- Progress Bar Checklist -->
                 
                 <!-- Perbaharui & Hapus Checklist -->
@@ -232,8 +267,8 @@
                             <!-- Tampilan Checklist -->
                             <form id="myFormChecklistUpdate{{ $checklists->id }}" method="POST" class="form-checklist">
                                 @csrf
-                                <input class="dynamicCheckbox" type="checkbox" id="{{$checklists->id}}" name="{{$checklists->id}}" {{$checklists->is_active == '1' ? 'checked' : ''}}>
-                                <label class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl  {{$checklists->is_active == '1' ? 'strike-through' : ''}}" id="labelCheckbox-{{$checklists->id}}" for="labelCheckbox-{{$checklists->id}}">{{$checklists->name}}</label>
+                                <input class="dynamicCheckbox" type="checkbox" id="{{ $checklists->id }}" name="{{ $checklists->id }}" {{ $checklists->is_active == '1' ? 'checked' : '' }}>
+                                <label class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl {{ $checklists->is_active == '1' ? 'strike-through' : '' }}" id="labelCheckbox-{{ $checklists->id }}" for="labelCheckbox-{{ $checklists->id }}">{{ $checklists->name }}</label>
                                 <input type="hidden" id="checklist_id" name="checklist_id" value="{{ $checklists->id }}">
                                 <input type="hidden" id="card_id" name="card_id" value="{{ $isianKartu->id }}">
                                 <input onclick="mentionTags4('checkbox-{{ $checklists->id }}')" type="text" class="dynamicCheckboxValue border border-1 border-darks w-402 p-2 rounded-xl hidden" id="checkbox-{{$checklists->id}}" name="checkbox-{{$checklists->id}}" value="{{$checklists->name}}" placeholder="Enter a checklist">

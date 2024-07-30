@@ -184,6 +184,11 @@
                     progressBar(titleId, percentage);
                 }
 
+                // Perbarui kotak centang checklist semua berdasarkan nilai persentase
+                let checklistAllForm = $(`#checklist-all-${titleId}`);
+                let checklistCheckbox = checklistAllForm.find(`#checklistform-all-${titleId}`);
+                checklistCheckbox.prop('checked', percentage === 100).removeClass('hidden');
+                
             } else {
                 toastr.error('Gagal memulihkan judul checklist!');
             }
@@ -230,6 +235,18 @@
                 <!-- /Perbaharui & Hapus Judul Checklist -->
 
                 <!-- Progress Bar Checklist -->
+                <div class="checklist-all gap-2" id="checklist-all-${response.titlechecklist.id}">
+                    <form id="checklistAllForm${response.titlechecklist.id}" method="POST">
+                        @csrf
+                        <input type="hidden" name="title_checklists_id" value="${response.titlechecklist.id}">
+                        <div class="info-status21">
+                            <input type="checkbox" class="checklistform-all hidden" name="checklistform-all" id="checklistform-all-${response.titlechecklist.id}" ${response.titleChecklistsPercentage}>
+                            <span class="text-status21">
+                                <b>Check All</b>
+                            </span>
+                        </div>
+                    </form>
+                </div>
                 <div class="progress" data-checklist-id="${response.titlechecklist.id}">
                     <div class="progress-bar progress-bar-${response.titlechecklist.id}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
                         0%
@@ -461,6 +478,18 @@
                         $(`#checklist${titleId}`).val('');
                         $(`#saveButtonChecklist${titleId}`).addClass('hidden');
                         $(`#cancelButtonChecklist${titleId}`).addClass('hidden');
+
+                        // Memunculkan checkbox ketika tambah data checklist
+                        $(`#checklistform-all-${titleId}`).removeClass('hidden');
+
+                        // Pengecekan pada checkbox
+                        var checklistAllCheckbox = $(`#checklistform-all-${titleId}`);
+                        if (response.titlechecklist.percentage === 100) {
+                            checklistAllCheckbox.prop('checked', true);
+                        } else {
+                            checklistAllCheckbox.prop('checked', false);
+                        }
+                        
                         progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                         toastr.success('Berhasil membuat checklist!');
                         var newForm = `
@@ -590,6 +619,15 @@
                         $('#saveButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                         $('#cancelButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                         toastr.success('Berhasil memperbaharui checklist!');
+
+                        // Pengecekan pada checkbox
+                        var checklistAllCheckbox = $('#checklistform-all-' + response.titlechecklist.id);
+                        if (response.titlechecklist.percentage === 100) {
+                            checklistAllCheckbox.prop('checked', true);
+                        } else {
+                            checklistAllCheckbox.prop('checked', false);
+                        }
+                        
                         localStorage.clear();
 
                         // Setel ulang tanda
@@ -623,6 +661,15 @@
                         $('#cancelButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                         toastr.success('Berhasil memperbaharui checklist!');
                         progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
+
+                        // Pengecekan pada checkbox
+                        var checklistAllCheckbox = $('#checklistform-all-' + response.titlechecklist.id);
+                        if (response.titlechecklist.percentage === 100) {
+                            checklistAllCheckbox.prop('checked', true);
+                        } else {
+                            checklistAllCheckbox.prop('checked', false);
+                        }
+
                         localStorage.clear();
 
                         // Setel ulang tanda
@@ -636,6 +683,55 @@
                     }
                 });
             };
+
+            $(`#checklistform-all-${titleId}`).on('change', function() {
+                event.preventDefault();
+
+                // Mencegah pengiriman ganda
+                if (isSubmitting) return;
+
+                isSubmitting = true;
+                var checklistId = $(this).closest('form').find('input[name="title_checklists_id"]').val();
+                var isChecked = $(this).is(':checked');
+                var toastBerhasil = isChecked ? 'Berhasil centang semua checklist!' : 'Berhasil tidak centang semua checklist!';
+
+                $.ajax({
+                    url: '/perbaharui/semua/checklist',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        title_checklists_id: checklistId,
+                        is_active: isChecked ? 1 : 0
+                    },
+                    success: function(response) {
+                        toastr.success(toastBerhasil);
+                        progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
+                        updateCheckboxes(response.checklist);
+
+                        // Setel ulang tanda
+                        isSubmitting = false;
+                    },
+                    error: function(xhr) {
+                        toastr.error('Gagal memperbarui checklist!');
+
+                        // Setel ulang tanda
+                        isSubmitting = false;
+                    }
+                });
+            });
+
+            function updateCheckboxes(checklists) {
+                checklists.forEach(function(checklist) {
+                    var checkbox = $('#'+ checklist.id);
+                    checkbox.prop('checked', checklist.is_active == 1);
+                    var label = $('#labelCheckbox-' + checklist.id);
+                    if (checklist.is_active == 1) {
+                        label.addClass('strike-through');
+                    } else {
+                        label.removeClass('strike-through');
+                    }
+                });
+            }
 
             // Tambahkan key Enter untuk validasi input dan menyimpan checklist
             $(document).ready(function() {
@@ -781,6 +877,11 @@
                 if (response.titlechecklist) {
                     progressBar(titleId, percentage);
                 }
+
+                // Perbarui kotak centang checklist semua berdasarkan nilai persentase
+                let checklistAllForm = $(`#checklist-all-${titleId}`);
+                let checklistCheckbox = checklistAllForm.find(`#checklistform-all-${titleId}`);
+                checklistCheckbox.prop('checked', percentage === 100).removeClass('hidden');
 
             } else {
                 toastr.error('Gagal memulihkan checklist!');

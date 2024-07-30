@@ -216,6 +216,7 @@ Route::controller(ChecklistController::class)->group(function () {
     Route::post('/hapus-checklist-permanen', 'hapusChecklistPermanen')->name('hapusChecklistPermanen');
     Route::get('/pulihkan-title-checklist', 'dataPulihkanTitleChecklist')->name('dataPulihkanTitleChecklist');
     Route::post('/membuat/template/judul', 'templateTitle')->name('templateTitle');
+    Route::post('/perbaharui/semua/checklist', 'perbaharuiSemuaChecklist')->name('perbaharuiSemuaChecklist');
 
     // ----------------------------- User ----------------------------- //
     Route::post("user/tim/papan/kolom/kartu/judul/tambah", "addTitle2")->name("addTitle2");

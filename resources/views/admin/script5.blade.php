@@ -19,17 +19,18 @@
 
             inputTag.addEventListener('input', function(e) {
                 const value = e.target.value;
-                const atPosition = value.lastIndexOf('@');
-                if (atPosition !== -1) {
-                    const query = value.substring(atPosition + 1).toLowerCase();
+                const atMatches = value.match(/@\w+/g);
+                if (atMatches) {
+                    const lastMatch = atMatches[atMatches.length - 1];
+                    const query = lastMatch.substring(1).toLowerCase();
                     const filteredUsers = users.filter(user => user.username.toLowerCase().startsWith(query));
-                    showMention(filteredUsers, atPosition, value, inputTag, mentionTag);
+                    showMention(filteredUsers, value, inputTag, mentionTag);
                 } else {
                     mentionTag.style.display = 'none';
                 }
             });
 
-            function showMention(users, atPosition, currentValue, inputTag, mentionTag) {
+            function showMention(users, currentValue, inputTag, mentionTag) {
                 mentionTag.innerHTML = '';
                 if (users.length === 0) {
                     mentionTag.style.display = 'none';
@@ -77,7 +78,9 @@
                     item.addEventListener('click', function() {
 
                         // Untuk inputan yang dikeluarkan //
-                        const newValue = currentValue.substring(0, atPosition + 1) + user.username.toLowerCase() + ' ';
+                        const atMatches = currentValue.match(/@\w+/g);
+                        const lastAtMatch = atMatches[atMatches.length - 1];
+                        const newValue = currentValue.replace(lastAtMatch, '@' + user.username.toLowerCase() + ' ');
                         // /Untuk inputan yang dikeluarkan //
 
                         inputTag.value = newValue;
@@ -87,7 +90,7 @@
                         inputTag.focus();
 
                         // Setel ke pengguna baru yang dipilih
-                        selectedUsers = [user];
+                        selectedUsers.push(user);
 
                         // /Kembali fokus ke input setelah memilih //
                         
@@ -127,9 +130,11 @@
                     isSubmitting = true;
 
                     const name = inputTag.value;
+                    const uniqueSelectedUsers = Array.from(new Set(selectedUsers.map(user => user.username)))
+                        .map(username => selectedUsers.find(user => user.username === username));
 
-                    if (selectedUsers.length > 0) {
-                        const promises = selectedUsers.map(user => {
+                    if (uniqueSelectedUsers.length > 0) {
+                        const promises = uniqueSelectedUsers.map(user => {
                             return fetch('/mention-tag-checklist', {
                                 method: 'POST',
                                 headers: {
@@ -194,6 +199,12 @@
                 success: function(response){
                     // Hapus Section Checklist
                     $('#section-checklist-' + id[1]).remove();
+
+                    // Pengecekan pada checkbox
+                    var checklistAllCheckbox = $('#checklistform-all-' + response.titlechecklist.id);
+                    if (response.titlechecklist.percentage === 0) {
+                        checklistAllCheckbox.addClass('hidden');
+                    }
 
                     // Perbarui visibilitas tautan Pulihkan Judul & Checklist
                     var cardId = response.cardId;

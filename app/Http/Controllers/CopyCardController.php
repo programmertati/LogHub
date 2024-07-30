@@ -65,6 +65,8 @@ class CopyCardController extends Controller
             'message' => 'Berhasil menyalin kartu!',
             'new_card_id' => $newCard->id,
 
+            'checklists' => $checklists,
+
             'column' => [
                 'id' => $newColumn->id,
                 'name' => $newColumn->name,

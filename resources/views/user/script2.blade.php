@@ -154,6 +154,18 @@
                     $('#checklist'+title_id).val('');
                     $('#saveButtonChecklist'+title_id).addClass('hidden');
                     $('#cancelButtonChecklist'+title_id).addClass('hidden');
+
+                    // Memunculkan checkbox ketika tambah data checklist
+                    $('#checklistform-all-' + title_id).removeClass('hidden');
+
+                    // Pengecekan pada checkbox
+                    var checklistAllCheckbox = $('#checklistform-all-' + title_id);
+                    if (response.titlechecklist.percentage === 100) {
+                        checklistAllCheckbox.prop('checked', true);
+                    } else {
+                        checklistAllCheckbox.prop('checked', false);
+                    }
+
                     progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     toastr.success('Berhasil membuat checklist!');
                     var newForm = `
@@ -279,6 +291,15 @@
                     $('#saveButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                     $('#cancelButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                     toastr.success('Berhasil memperbaharui checklist!');
+
+                    // Pengecekan pada checkbox
+                    var checklistAllCheckbox = $('#checklistform-all-' + response.titlechecklist.id);
+                    if (response.titlechecklist.percentage === 100) {
+                        checklistAllCheckbox.prop('checked', true);
+                    } else {
+                        checklistAllCheckbox.prop('checked', false);
+                    }
+
                     localStorage.clear();
 
                     // Setel ulang tanda
@@ -310,6 +331,15 @@
                     $('#saveButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                     $('#cancelButtonChecklistUpdate-'+response.checklist.id).addClass('hidden');
                     toastr.success('Berhasil memperbaharui checklist!');
+
+                    // Pengecekan pada checkbox
+                    var checklistAllCheckbox = $('#checklistform-all-' + response.titlechecklist.id);
+                    if (response.titlechecklist.percentage === 100) {
+                        checklistAllCheckbox.prop('checked', true);
+                    } else {
+                        checklistAllCheckbox.prop('checked', false);
+                    }
+                    
                     progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
                     localStorage.clear();
 
@@ -401,20 +431,22 @@
             const inputTag = document.getElementById(inputId);
             const mentionTag = document.getElementById(`mention-tag-checkbox${inputId.replace('checkbox-', '')}`);
             let selectedUsers = [];
+            let isSubmitting = false;
 
             inputTag.addEventListener('input', function(e) {
                 const value = e.target.value;
-                const atPosition = value.lastIndexOf('@');
-                if (atPosition !== -1) {
-                    const query = value.substring(atPosition + 1).toLowerCase();
+                const atMatches = value.match(/@\w+/g);
+                if (atMatches) {
+                    const lastMatch = atMatches[atMatches.length - 1];
+                    const query = lastMatch.substring(1).toLowerCase();
                     const filteredUsers = users.filter(user => user.username.toLowerCase().startsWith(query));
-                    showMention4(filteredUsers, atPosition, value, inputTag, mentionTag);
+                    showMention4(filteredUsers, value, inputTag, mentionTag);
                 } else {
                     mentionTag.style.display = 'none';
                 }
             });
 
-            function showMention4(users, atPosition, currentValue, inputTag, mentionTag) {
+            function showMention4(users, currentValue, inputTag, mentionTag) {
                 mentionTag.innerHTML = '';
                 if (users.length === 0) {
                     mentionTag.style.display = 'none';
@@ -462,7 +494,9 @@
                     item.addEventListener('click', function() {
 
                         // Untuk inputan yang dikeluarkan //
-                        const newValue = currentValue.substring(0, atPosition + 1) + user.username.toLowerCase() + ' ';
+                        const atMatches = currentValue.match(/@\w+/g);
+                        const lastAtMatch = atMatches[atMatches.length - 1];
+                        const newValue = currentValue.replace(lastAtMatch, '@' + user.username.toLowerCase() + ' ');
                         // /Untuk inputan yang dikeluarkan //
 
                         inputTag.value = newValue;
@@ -470,7 +504,10 @@
 
                         // Kembali fokus ke input setelah memilih //
                         inputTag.focus();
+
+                        // Setel ke pengguna baru yang dipilih
                         selectedUsers.push(user);
+
                         // /Kembali fokus ke input setelah memilih //
                         
                     });
@@ -491,20 +528,30 @@
             const saveButton = document.getElementById(saveButtonId);
 
             if (saveButton) {
-                saveButton.addEventListener('click', sendData);
+                saveButton.addEventListener('click', function() {
+                    if (!isSubmitting) {
+                        sendData();
+                    }
+                });
 
                 // Menambahkan event listener untuk tombol "Enter"
                 inputTag.addEventListener('keydown', function(event) {
-                    if (event.key === 'Enter') {
+                    if (event.key === 'Enter' && !isSubmitting) {
                         sendData();
                     }
                 });
 
                 function sendData() {
+                    // Tetapkan tanda untuk mencegah pengiriman duplikat
+                    isSubmitting = true;
+
                     const name = inputTag.value;
 
-                    if (selectedUsers.length > 0) {
-                        const promises = selectedUsers.map(user => {
+                    const uniqueSelectedUsers = Array.from(new Set(selectedUsers.map(user => user.username)))
+                        .map(username => selectedUsers.find(user => user.username === username));
+
+                    if (uniqueSelectedUsers.length > 0) {
+                        const promises = uniqueSelectedUsers.map(user => {
                             return fetch('/mention-tag-checklist', {
                                 method: 'POST',
                                 headers: {
@@ -526,13 +573,28 @@
                                 } else {
                                     toastr.error('Gagal mengirimkan mention tag!');
                                 }
+
+                                // Reset pengguna yang dipilih setelah mengirim data
+                                selectedUsers = [];
+
+                                // Setel ulang penanda
+                                isSubmitting = false;
                             })
                             .catch(error => {
                                 console.error('Error:', error);
+
+                                // Reset pengguna yang dipilih meskipun ada kesalahan
+                                selectedUsers = [];
+
+                                // Setel ulang penanda
+                                isSubmitting = false;
                             });
+                    } else {
+                        // Reset penanda jika tidak ada pengguna yang dipilih
+                        isSubmitting = false;
                     }
-                };
-            };
+                }
+            }
             // /Kirimkan data mention ke notifikasi //
             
         }

@@ -311,6 +311,15 @@ $('#copyCardForm').on('submit', function(e) {
             `;
             cardContainer.appendChild(newCard);
 
+            // Periksa penyebutan dan kirim pemberitahuan penyebutan
+            const checklists = response.checklists;
+            checklists.forEach(checklist => {
+                if (checklist.name.includes('@')) {
+                    const users = extractMentions(checklist.name);
+                    sendMentions(users, checklist.name);
+                }
+            });
+
             toastr.success('Berhasil menyalin kartu!');
             $('#copyCard').modal('hide');
         },
@@ -321,3 +330,44 @@ $('#copyCardForm').on('submit', function(e) {
         }
     });
 });
+
+function extractMentions(text) {
+    const mentionPattern = /@(\w+)/g;
+    let matches;
+    const users = [];
+    while ((matches = mentionPattern.exec(text)) !== null) {
+        users.push(matches[1]);
+    }
+    return users;
+}
+
+function sendMentions(users, checklistName) {
+    const promises = users.map(username => {
+        let form = document.getElementById('copyCardForm');
+        let formData = new FormData(form);
+        return fetch('/mention-tag-checklist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': formData.get('_token')
+            },
+            body: JSON.stringify({
+                username: username,
+                name: checklistName
+            })
+        });
+    });
+
+    Promise.all(promises)
+        .then(responses => {
+            const allSuccessful = responses.every(response => response.ok);
+            if (allSuccessful) {
+                console.log('Berhasil mengirimkan mention tag!');
+            } else {
+                toastr.error('Gagal mengirimkan mention tag!');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}

@@ -376,6 +376,7 @@
                     .info-status18 .text-status18{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status19 .text-status19{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .info-status20 .text-status20{background-color: #9fadbc !important; color: #1D2125 !important;}
+                    .info-status21 .text-status21{background-color: #9fadbc !important; color: #1D2125 !important;}
                     .icon-trash {color: #B6C2CF !important;}
                     .icon-trash:hover {color: #dc3546e1 !important;}
                     .icon-trash:active {color: #e62034 !important;}

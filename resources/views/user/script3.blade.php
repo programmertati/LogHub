@@ -14,6 +14,12 @@
                     // Hapus Section Checklist
                     $('#section-checklist-' + id[1]).remove();
 
+                    // Pengecekan pada checkbox
+                    var checklistAllCheckbox = $('#checklistform-all-' + response.titlechecklist.id);
+                    if (response.titlechecklist.percentage === 0) {
+                        checklistAllCheckbox.addClass('hidden');
+                    }
+
                     // Perbarui visibilitas tautan Pulihkan Judul & Checklist
                     var cardId = response.cardId;
                     var softDeletedTitle = response.softDeletedTitle;

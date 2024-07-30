@@ -691,7 +691,7 @@
                 margin-bottom: 25px;
                 margin-top:-4px;
                 width:84.8%;
-                margin-left:5.5%
+                margin-left: 40px
             }
             .progress2 {
                 display:-ms-flexbox;

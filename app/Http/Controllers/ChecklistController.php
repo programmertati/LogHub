@@ -27,11 +27,15 @@ class ChecklistController extends Controller
         $user_id = Auth::user()->id;
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Judul Checklist");
+        
+        $getChecklistPercentage = TitleChecklists::where('id', $titlechecklist->id)->first()->percentage ?? 0;
+        $titleChecklistsPercentage = $getChecklistPercentage === 100 ? 'checked' : '';
 
         return response()->json([
             'message' => 'Data berhasil disimpan!',
             'card_id' => $request->card_id,
-            'titlechecklist' => $titlechecklist
+            'titlechecklist' => $titlechecklist,
+            'titleChecklistsPercentage' => $titleChecklistsPercentage
         ]);
     }
     // /Tambahkan Title Kartu Admin //
@@ -47,11 +51,15 @@ class ChecklistController extends Controller
         $user_id = Auth::user()->id;
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Judul Checklist");
+        
+        $getChecklistPercentage = TitleChecklists::where('id', $titlechecklist->id)->first()->percentage ?? 0;
+        $titleChecklistsPercentage = $getChecklistPercentage === 100 ? 'checked' : '';
 
         return response()->json([
             'message' => 'Data berhasil disimpan!',
             'card_id' => $request->card_id,
-            'titlechecklist' => $titlechecklist
+            'titlechecklist' => $titlechecklist,
+            'titleChecklistsPercentage' => $titleChecklistsPercentage
         ]);
     }
     // /Tambahkan Title Kartu User //
@@ -95,6 +103,42 @@ class ChecklistController extends Controller
     }
     // /Untuk membuat template judul checklist
 
+    // Untuk membuat centang semua checklist
+    public function perbaharuiSemuaChecklist(Request $request)
+    {
+        $titleChecklistsId = $request->title_checklists_id;
+        $isActive = $request->is_active;
+
+        // Perbarui semua checklist yang terkait dengan judul ini
+        Checklists::where('title_checklists_id', $titleChecklistsId)
+            ->update(['is_active' => $isActive]);
+
+        // Hitung persentase checklist yang sudah dicentang
+        $totalChecklists = Checklists::where('title_checklists_id', $titleChecklistsId)->count();
+        $completedChecklists = Checklists::where('title_checklists_id', $titleChecklistsId)
+            ->where('is_active', 1)
+            ->count();
+
+        $percentage = ($totalChecklists > 0) ? ($completedChecklists / $totalChecklists) * 100 : 0;
+
+        // Perbarui persentase di tabel title_checklists
+        TitleChecklists::where('id', $titleChecklistsId)
+            ->update(['percentage' => $percentage]);
+
+        // Mendapatkan data checklist
+        $checklists = Checklists::where('title_checklists_id', $titleChecklistsId)->get();
+
+        // Mendapatkan data progress bar
+        $titleChecklist = $this->progressBar($titleChecklistsId);
+    
+        return response()->json([
+            'message' => 'Berhasil centang semua checklist!',
+            'checklist' => $checklists,
+            'titlechecklist' => $titleChecklist,
+        ]);
+    }
+    // /Untuk membuat centang semua checklist
+
     // Perbaharui Title Kartu Admin //
     public function updateTitle(Request $request)
     {
@@ -102,11 +146,15 @@ class ChecklistController extends Controller
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Judul Checklist");
 
-        TitleChecklists::where('id', $request->title_id)->update([
+        $titlechecklist = TitleChecklists::where('id', $request->title_id)->update([
             'name' => $request->titleChecklistUpdate
         ]);
 
-        return response()->json(['message' => 'Data berhasil disimpan!', 'card_id' => $request->card_id]);
+        return response()->json([
+            'message' => 'Data berhasil disimpan!',
+            'card_id' => $request->card_id,
+            'titlechecklist' => $titlechecklist
+        ]);
     }
     // /Perbaharui Title Kartu Admin //
 
@@ -117,11 +165,15 @@ class ChecklistController extends Controller
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Judul Checklist");
         
-        TitleChecklists::where('id', $request->title_id)->update([
+        $titlechecklist = TitleChecklists::where('id', $request->title_id)->update([
             'name' => $request->titleChecklistUpdate
         ]);
 
-        return response()->json(['message' => 'Data berhasil disimpan!', 'card_id' => $request->card_id]);
+        return response()->json([
+            'message' => 'Data berhasil disimpan!',
+            'card_id' => $request->card_id,
+            'titlechecklist' => $titlechecklist
+        ]);
     }
     // /Perbaharui Title Kartu User //
 
@@ -452,6 +504,9 @@ class ChecklistController extends Controller
                 $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
             })->onlyTrashed()->count();
 
+            $getChecklistPercentage = TitleChecklists::where('id', $titleChecklist->id)->first()->percentage ?? 0;
+            $titleChecklistsPercentage = $getChecklistPercentage === 100 ? 'checked' : '';
+
             DB::commit();
             return response()->json([
                 'message' => 'Berhasil memulihkan judul checklist!',
@@ -459,7 +514,8 @@ class ChecklistController extends Controller
                 'softDeletedChecklist' => $softDeletedChecklist,
                 'cardId' => $cardId,
                 'titlechecklist' => $titleChecklist,
-                'checklists' => $checklistsData
+                'checklists' => $checklistsData,
+                'titleChecklistsPercentage' => $titleChecklistsPercentage
             ]);
         } catch (\Exception $e) {
             DB::rollback();
