@@ -20,7 +20,7 @@
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="{{ URL::to('assets/css/select2.min.css') }}">
     <!-- Main CSS -->
-    <link rel="stylesheet" href="{{ URL::to('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ URL::to('assets/css/style.css?v='.time()) }}">
     {{-- message toastr --}}
     <link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
     <script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
