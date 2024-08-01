@@ -215,7 +215,7 @@
                         <div class="icon-hapus-title" id="hapus-title{{ $titleChecklists->id }}">
                             <button type="submit" style="border: none; background: none; padding: 0;">
                                 <div class="info-status5">
-                                    <i class="fa-solid fa-trash fa-lg icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
+                                    <i class="fa fa-trash-o icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
                                     <span class="text-status5"><b>Delete Title's</b></span>
                                 </div>
                             </button>
@@ -307,7 +307,7 @@
                                     <div class="icon-hapus-checklist" id="hapus-checklist{{ $checklists->id }}">
                                         <button type="submit" class="deletes" id="deleteButtonChecklist-{{ $checklists->id }}" style="border: none; background: none; padding: 0;">
                                             <div class="info-status6">
-                                                <i class="fa-solid fa-trash fa-lg icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
+                                                <i class="fa fa-trash-o icon-trash" @foreach($result_tema as $sql_mode => $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') style="color: white;" @endif @endforeach></i>
                                                 <span class="text-status6"><b>Delete Checklist</b></span>
                                             </div>
                                         </button>

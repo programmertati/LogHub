@@ -120,7 +120,7 @@
                                                         <div class="text">N/A</div>
                                                     </li>
                                                 @endif<br>
-                                                <a href='#' class='btn btn-outline-danger' data-toggle='modal' data-target='#hapus_pengguna'><i class="fa-solid fa-trash fa-lg"></i> Delete Account</a>
+                                                <a href='#' class='btn btn-outline-danger' data-toggle='modal' data-target='#hapus_pengguna'><i class="fa fa-trash-o m-r-5"></i> Delete Account</a>
                                             </ul>
                                         </div>
                                     </div>

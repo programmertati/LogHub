@@ -74,7 +74,7 @@
                                             <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
                                             <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
                                         @endif
-                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg icon-trash"></i></a>
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa fa-trash-o icon-trash"></i></a>
                                             <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg icon-comment"></i></a>
                                     @endif
                                     @if ($notifikasiData->message == 'Mention Tag Description')
@@ -83,7 +83,7 @@
                                             <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
                                             <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
                                         @endif
-                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg icon-trash"></i></a>
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa fa-trash-o icon-trash"></i></a>
                                             <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg icon-comment"></i></a>
                                     @endif
                                     @if ($notifikasiData->message == 'Mention Tag Checklist')
@@ -92,7 +92,7 @@
                                             <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
                                             <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
                                         @endif
-                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg icon-trash"></i></a>
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa fa-trash-o icon-trash"></i></a>
                                             <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg icon-comment"></i></a>
                                     @endif
                                     @if ($notifikasiData->message == 'Mention Tag Comment')
@@ -101,7 +101,7 @@
                                             <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
                                             <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
                                         @endif
-                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg icon-trash"></i></a>
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa fa-trash-o icon-trash"></i></a>
                                             <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg icon-comment"></i></a>
                                     @endif
                                 </div>
@@ -156,7 +156,7 @@
                                             <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
                                             <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
                                         @endif
-                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg icon-trash"></i></a>
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa fa-trash-o icon-trash"></i></a>
                                             <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg icon-comment"></i></a>
                                     </div>
                                 </div>
@@ -211,7 +211,7 @@
                                             <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
                                             <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
                                         @endif
-                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg icon-trash"></i></a>
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa fa-trash-o icon-trash"></i></a>
                                             <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg icon-comment"></i></a>
                                     </div>
                                 </div>
@@ -266,7 +266,7 @@
                                             <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
                                             <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
                                         @endif
-                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg icon-trash"></i></a>
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa fa-trash-o icon-trash"></i></a>
                                             <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg icon-comment"></i></a>
                                     </div>
                                 </div>
@@ -321,7 +321,7 @@
                                             <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
                                             <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
                                         @endif
-                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-trash fa-lg icon-trash"></i></a>
+                                            <a class="simbol-hapus hapus_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#hapus_notifikasi_{{ $notifikasi->id }}"><i class="fa fa-trash-o icon-trash"></i></a>
                                             <a class="simbol-lihat lihat_notifikasi_{{ $notifikasi->id }}" href="#" data-toggle="modal" data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i class="fa-solid fa-eye fa-lg icon-comment"></i></a>
                                     </div>
                                 </div>

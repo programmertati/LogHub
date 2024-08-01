@@ -76,9 +76,9 @@
                 $('#pulihkan-kartu-' + cardId).remove();
 
                 // Perbarui visibilitas tautan Recover Card
-                var columnId = response.columnId;
-                var softDeletedCards = response.softDeletedCards;
-                var recoverCards = $('#recover-kartu-link-' + columnId);
+                const columnId = response.columnId;
+                const softDeletedCards = response.softDeletedCards;
+                const recoverCards = $('#recover-kartu-link-' + columnId);
 
                 if (softDeletedCards > 0) {
                     recoverCards.show();
@@ -87,92 +87,165 @@
                     $('#pulihkanKartuModal').modal('hide');
                 }
 
-                let cardContainer = document.getElementById('containerCard' + columnId);
-                let new_card = document.createElement('li');
-                new_card.classList.add('kartu-loghub');
-                new_card.setAttribute('data-id', response.card.id);
-                new_card.setAttribute('onmouseenter', 'aksiKartuShow(' + response.card.id + ')');
-                new_card.setAttribute('onmouseleave', 'aksiKartuHide(' + response.card.id + ')');
-                new_card.style.position = 'relative';
-
                 // Container Kartu ketika dipulihkan
-                new_card.innerHTML = `
-                    <!-- Tampilan Aksi Edit -->
-                    <div class="cover-card card-cover2-${response.card.pattern || ''} ${response.card.pattern == null ? 'hiddens' : ''}" id="cover-card-${response.card.id}"></div>
-                    <div class="dropdown dropdown-action aksi-card" id="aksi-card${response.card.id}" style="position: absolute !important;">
-                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="#" class="dropdown-item" onclick="updateCardModal(${response.card.id}, '${response.card.name}', '${response.card.updateUrl}');" id="edit-card-${response.card.id}">
-                                <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
-                            </a>
-                            <a href="#" class="dropdown-item" onclick="deleteCardModal2('${response.card.id}', '${response.card.name}', '${response.column.name}', '${response.card.deleteUrl}');">
-                                <i class='fa fa-trash-o m-r-5'></i> Delete
-                            </a>
-                            <a href="#" class="dropdown-item" onclick="copyCardModal('${response.card.id}', '${response.card.name}', '${response.card.copyCardUrl}');" id="copy-card-${response.card.id}">
-                                <i class="fa-regular fa-copy m-r-5"></i> Copy Card
-                            </a>
-                        </div>
-                    </div>
-                    <!-- /Tampilan Aksi Edit -->
+                pulihkanKartuContainer(response);
 
-                    <!-- Tampilan Kartu Pengguna -->
-                    <a href="#" data-toggle="modal" data-target="#isianKartu" onclick="$('#card_id').val(${response.card.id}); $('#form_kartu').submit();">
-                        <div class="card-nama" ${response.card.pattern ? 'style="border-top-right-radius: 0 !important; border-bottom-right-radius: 8px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 8px !important;"' : ''}>
-                            <span class="flex ms-3" id="span-nama-${response.card.id}" style="width: 150px; ${response.card.description ? 'margin-bottom: 10px;' : ''}">${response.card.name}</span>
-                            <div class="tampilan-info gap-2">
-                                <!-- Muncul apabila terdapat deskripsi pada kartu -->
-                                ${response.card.description ? `
-                                    <div class="info-status8" id="descriptionStatus${response.card.id}">
-                                        <i class="fa-solid fa-align-left icon-deskripsi-light
-                                            @foreach($result_tema as $sql_mode => $mode_tema)
-                                                @if($mode_tema->tema_aplikasi == 'Gelap')
-                                                    icon-deskripsi-dark
-                                                @endif
-                                            @endforeach">
-                                        </i>
-                                        <span class="text-status8"><b>This card has a description.</b></span>
-                                    </div>` : `
-                                    <div class="info-status8 hidden" id="descriptionStatus${response.card.id}">
-                                        <i class="fa-solid fa-align-left icon-deskripsi-light
-                                            @foreach($result_tema as $sql_mode => $mode_tema)
-                                                @if($mode_tema->tema_aplikasi == 'Gelap')
-                                                    icon-deskripsi-dark
-                                                @endif
-                                            @endforeach">
-                                        </i>
-                                        <span class="text-status8"><b>This card has a description.</b></span>
-                                    </div>`}
-                                <!-- /Muncul apabila terdapat deskripsi pada kartu -->
-                            </div>
-                        </div>
-                    </a>
-                    <!-- /Tampilan Kartu Pengguna -->
-                `;
+                // Menggunakan timeout untuk memastikan elemen sudah ada di DOM
+                setTimeout(() => {
+                    // Untuk Mengatur Icon Checklist
+                    const cardId = response.card.id;
+                    $('#iconChecklist-' + cardId).removeClass('hidden');
+                    $('#perhitunganChecklist-' + cardId).html(response.perChecklist + '/' + response.jumlahChecklist);
 
-                // Menyisipkan kartu pada posisi yang benar berdasarkan ID atau posisi asli
-                if (response.card.position > 0) {
+                    const tema_aplikasi = response.result_tema.tema_aplikasi;
 
-                // Sisipkan kartu di posisi semula jika position lebih besar dari 0
-                var position = response.card.position - 1;
-                var referenceNode = cardContainer.children[position];
-                cardContainer.insertBefore(new_card, referenceNode);
+                    if (response.perChecklist < response.jumlahChecklist) {
+                        const iconChecklist = $('#iconChecklist-' + cardId);
+                        const iconChecklistCheck = $('#icon-checklist-' + cardId);
 
-                } else {
-                    // Tambahkan kartu di akhir jika position adalah 0
-                    let cardsArray = Array.from(cardContainer.children);
-                    cardsArray.push(new_card);
-                    cardsArray.sort((a, b) => a.getAttribute('data-id') - b.getAttribute('data-id'));
-                    cardContainer.innerHTML = '';
-                    cardsArray.forEach(card => cardContainer.appendChild(card));
-                }
+                        if (tema_aplikasi == 'Terang') {
+                            iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
+                            iconChecklist.addClass('progress-checklist-light').removeClass('progress-checklist-dark');
+                            iconChecklistCheck.addClass('icon-check-not-full-light').removeClass('icon-check-not-full-dark');
+                            iconChecklistCheck.removeClass('icon-check-full-light').removeClass('icon-check-full-dark');
+                        } else if (tema_aplikasi == 'Gelap') {
+                            iconChecklist.removeClass('progress-checklist-100-dark').removeClass('progress-checklist-100-light');
+                            iconChecklist.addClass('progress-checklist-dark').removeClass('progress-checklist-light');
+                            iconChecklistCheck.addClass('icon-check-not-full-dark').removeClass('icon-check-not-full-light');
+                            iconChecklistCheck.removeClass('icon-check-full-dark').removeClass('icon-check-full-light');
+                        }
+                    } else if (response.perChecklist == response.jumlahChecklist) {
+                        const iconChecklist = $('#iconChecklist-' + cardId);
+                        const iconChecklistCheck = $('#icon-checklist-' + cardId);
+
+                        if (tema_aplikasi == 'Terang') {
+                            iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
+                            iconChecklist.addClass('progress-checklist-light').removeClass('progress-checklist-dark');
+                            iconChecklistCheck.removeClass('icon-check-not-full-light').removeClass('icon-check-not-full-dark');
+                            iconChecklistCheck.addClass('icon-check-full-light').removeClass('icon-check-full-dark');
+                        } else if (tema_aplikasi == 'Gelap') {
+                            iconChecklist.addClass('progress-checklist-100-dark').removeClass('progress-checklist-100-light');
+                            iconChecklist.addClass('progress-checklist-dark').removeClass('progress-checklist-light');
+                            iconChecklistCheck.removeClass('icon-check-not-full-dark').removeClass('icon-check-not-full-light');
+                            iconChecklistCheck.addClass('icon-check-full-dark').removeClass('icon-check-full-light');
+                        }
+                    }
+
+                    if (response.perChecklist == 0 && response.jumlahChecklist == 0) {
+                        const iconChecklist = $('#iconChecklist-' + cardId);
+
+                        if (tema_aplikasi == 'Terang') {
+                            iconChecklist.addClass('hidden');
+                        } else if (tema_aplikasi == 'Gelap') {
+                            iconChecklist.addClass('hidden');
+                        }
+                    }
+                    
+                // Timeout 100ms untuk memastikan elemen ada di DOM
+                }, 100); 
+
             } else {
                 toastr.error('Gagal memulihkan kartu!');
             }
         }).fail(function() {
             toastr.error('Gagal memulihkan kartu!');
         });
+    }
+
+    function pulihkanKartuContainer(response) {
+        const { columnId, card, column } = response;
+        
+        let cardContainer = document.getElementById('containerCard' + columnId);
+        let new_card = document.createElement('li');
+        new_card.classList.add('kartu-loghub');
+        new_card.setAttribute('data-id', card.id);
+        new_card.setAttribute('onmouseenter', 'aksiKartuShow(' + card.id + ')');
+        new_card.setAttribute('onmouseleave', 'aksiKartuHide(' + card.id + ')');
+        new_card.style.position = 'relative';
+
+        // Container Kartu ketika dipulihkan
+        new_card.innerHTML = `
+            <!-- Tampilan Aksi Edit -->
+            <div class="cover-card card-cover2-${card.pattern || ''} ${card.pattern == null ? 'hiddens' : ''}" id="cover-card-${card.id}"></div>
+            <div class="dropdown dropdown-action aksi-card" id="aksi-card${card.id}" style="position: absolute !important;">
+                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="#" class="dropdown-item" onclick="updateCardModal(${card.id}, '${card.name}', '${card.updateUrl}');" id="edit-card-${card.id}">
+                        <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
+                    </a>
+                    <a href="#" class="dropdown-item" onclick="deleteCardModal2('${card.id}', '${card.name}', '${column.name}', '${card.deleteUrl}');">
+                        <i class='fa fa-trash-o m-r-5'></i> Delete
+                    </a>
+                    <a href="#" class="dropdown-item" onclick="copyCardModal('${card.id}', '${card.name}', '${card.copyCardUrl}');" id="copy-card-${card.id}">
+                        <i class="fa-regular fa-copy m-r-5"></i> Copy Card
+                    </a>
+                </div>
+            </div>
+            <!-- /Tampilan Aksi Edit -->
+
+            <!-- Tampilan Kartu Pengguna -->
+            <a href="#" data-toggle="modal" data-target="#isianKartu" onclick="$('#card_id').val(${card.id}); $('#form_kartu').submit();">
+                <div class="card-nama" ${card.pattern ? 'style="border-top-right-radius: 0 !important; border-bottom-right-radius: 8px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 8px !important;"' : ''}>
+                    <span class="flex ms-3" id="span-nama-${card.id}" style="width: 150px; ${card.description ? 'margin-bottom: 10px;' : ''}">${card.name}</span>
+                    <div class="tampilan-info gap-2">
+                        <!-- Muncul apabila terdapat deskripsi pada kartu -->
+                        ${card.description ? `
+                            <div class="info-status8" id="descriptionStatus${card.id}">
+                                <i class="fa-solid fa-align-left icon-deskripsi-light
+                                    @foreach($result_tema as $sql_mode => $mode_tema)
+                                        @if($mode_tema->tema_aplikasi == 'Gelap')
+                                            icon-deskripsi-dark
+                                        @endif
+                                    @endforeach">
+                                </i>
+                                <span class="text-status8"><b>This card has a description.</b></span>
+                            </div>` : `
+                            <div class="info-status8 hidden" id="descriptionStatus${card.id}">
+                                <i class="fa-solid fa-align-left icon-deskripsi-light
+                                    @foreach($result_tema as $sql_mode => $mode_tema)
+                                        @if($mode_tema->tema_aplikasi == 'Gelap')
+                                            icon-deskripsi-dark
+                                        @endif
+                                    @endforeach">
+                                </i>
+                                <span class="text-status8"><b>This card has a description.</b></span>
+                            </div>`}
+                        <!-- /Muncul apabila terdapat deskripsi pada kartu -->
+
+                        <!-- Muncul apabila terdapat checklist pada kartu -->
+                        <div id="iconChecklist-${card.id}" class="progress-checklist-light hidden @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') progress-checklist-dark hidden @endif @endforeach">
+                            <div class="info-status9">
+                                <i id="icon-checklist-${card.id}" class="fa-regular fa-square-check icon-check-not-full-light @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') icon-check-not-full-dark @endif @endforeach"></i>
+                                ${card.description ? `<span class="text-status9"><b>Checklist items</b></span>` : `<span class="text-status9a"><b>Checklist items</b></span>`}
+                                <span id="perhitunganChecklist-${card.id}" class="total"></span>
+                            </div>
+                        </div>
+                        <!-- /Muncul apabila terdapat checklist pada kartu -->
+                        
+                    </div>
+                </div>
+            </a>
+            <!-- /Tampilan Kartu Pengguna -->
+        `;
+
+        // Menyisipkan kartu pada posisi yang benar berdasarkan ID atau posisi asli
+        if (card.position > 0) {
+
+            // Sisipkan kartu di posisi semula jika position lebih besar dari 0
+            var position = card.position - 1;
+            var referenceNode = cardContainer.children[position];
+            cardContainer.insertBefore(new_card, referenceNode);
+
+        } else {
+            // Tambahkan kartu di akhir jika position adalah 0
+            let cardsArray = Array.from(cardContainer.children);
+            cardsArray.push(new_card);
+            cardsArray.sort((a, b) => a.getAttribute('data-id') - b.getAttribute('data-id'));
+            cardContainer.innerHTML = '';
+            cardsArray.forEach(card => cardContainer.appendChild(card));
+        }
     }
 
     // Fungsi untuk menghapus kartu secara permanen

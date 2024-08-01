@@ -191,6 +191,16 @@
                                     </div>`}
                                 <!-- /Muncul apabila terdapat deskripsi pada kartu -->
 
+                                <!-- Muncul apabila terdapat checklist pada kartu -->
+                                <div id="iconChecklist-${data.card.id}" class="progress-checklist-light hidden @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') progress-checklist-dark hidden @endif @endforeach">
+                                    <div class="info-status9">
+                                        <i id="icon-checklist-${data.card.id}" class="fa-regular fa-square-check icon-check-not-full-light @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') icon-check-not-full-dark @endif @endforeach"></i>
+                                        ${data.card.description ? `<span class="text-status9"><b>Checklist items</b></span>` : `<span class="text-status9a"><b>Checklist items</b></span>`}
+                                        <span id="perhitunganChecklist-${data.card.id}" class="total"></span>
+                                    </div>
+                                </div>
+                                <!-- /Muncul apabila terdapat checklist pada kartu -->
+
                             </div>
                         </div>
                     </a>

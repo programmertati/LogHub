@@ -144,6 +144,18 @@ $(document).ready(function() {
             success: function(response) {
                 $('#deleteColumn').modal('hide');
                 $('#kolom-card-' + columnId).remove();
+
+                // // Perbarui visibilitas tautan Recover Column
+                // const softDeletedColumns = response.softDeletedColumns;
+                // var recoverColumns = $('#recover-kolom-link-' + columnId);
+
+                // if (softDeletedColumns > 0) {
+                //     recoverColumns.show();
+                // } else {
+                //     recoverColumns.hide();
+                //     $('#pulihkanKolomModal').modal('hide');
+                // }
+                
                 toastr.success('Berhasil menghapus kolom!');
             },
             error: function(error) {
@@ -304,6 +316,16 @@ $('#copyCardForm').on('submit', function(e) {
                                 </div>`}
                             <!-- /Muncul apabila terdapat deskripsi pada kartu -->
                             
+                            <!-- Muncul apabila terdapat checklist pada kartu -->
+                            <div id="iconChecklist-${response.card.id}" class="progress-checklist-light hidden @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') progress-checklist-dark hidden @endif @endforeach">
+                                <div class="info-status9">
+                                    <i id="icon-checklist-${response.card.id}" class="fa-regular fa-square-check icon-check-not-full-light @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') icon-check-not-full-dark @endif @endforeach"></i>
+                                    ${response.card.description ? `<span class="text-status9"><b>Checklist items</b></span>` : `<span class="text-status9a"><b>Checklist items</b></span>`}
+                                    <span id="perhitunganChecklist-${response.card.id}" class="total"></span>
+                                </div>
+                            </div>
+                            <!-- /Muncul apabila terdapat checklist pada kartu -->
+                            
                         </div>
                     </div>
                 </a>
@@ -319,6 +341,49 @@ $('#copyCardForm').on('submit', function(e) {
                     sendMentions(users, checklist.name);
                 }
             });
+
+            // Untuk Mengatur Icon Checklist //
+            $('#iconChecklist-' + response.card.id).removeClass('hidden');
+            $('#perhitunganChecklist-' + response.card.id).html(response.perChecklist + '/' + response.jumlahChecklist);
+
+            if (response.perChecklist < response.jumlahChecklist) {
+                var tema_aplikasi = response.result_tema.tema_aplikasi;
+                var cardId = response.card.id;
+                var iconChecklist = $('#iconChecklist-' + cardId);
+                var iconChecklistCheck = $('#icon-checklist-' + cardId);
+
+                if (tema_aplikasi == 'Terang') {
+                    iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
+                    iconChecklist.addClass('progress-checklist-light').removeClass('progress-checklist-dark');
+                    iconChecklistCheck.addClass('icon-check-not-full-light').removeClass('icon-check-not-full-dark');
+                    iconChecklistCheck.removeClass('icon-check-full-light').removeClass('icon-check-full-dark');
+
+                } else if (tema_aplikasi == 'Gelap') {
+                    iconChecklist.removeClass('progress-checklist-100-dark').removeClass('progress-checklist-100-light');
+                    iconChecklist.addClass('progress-checklist-dark').removeClass('progress-checklist-light');
+                    iconChecklistCheck.addClass('icon-check-not-full-dark').removeClass('icon-check-not-full-light');
+                    iconChecklistCheck.removeClass('icon-check-full-dark').removeClass('icon-check-full-light');
+                }
+            } else if (response.perChecklist == response.jumlahChecklist) {
+                var tema_aplikasi = response.result_tema.tema_aplikasi;
+                var cardId = response.card.id;
+                var iconChecklist = $('#iconChecklist-' + cardId);
+                var iconChecklistCheck = $('#icon-checklist-' + cardId);
+
+                if (tema_aplikasi == 'Terang') {
+                    iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
+                    iconChecklist.addClass('progress-checklist-light').removeClass('progress-checklist-dark');
+                    iconChecklistCheck.removeClass('icon-check-not-full-light').removeClass('icon-check-not-full-dark');
+                    iconChecklistCheck.addClass('icon-check-full-light').removeClass('icon-check-full-dark');
+
+                } else if (tema_aplikasi == 'Gelap') {
+                    iconChecklist.addClass('progress-checklist-100-dark').removeClass('progress-checklist-100-light');
+                    iconChecklist.addClass('progress-checklist-dark').removeClass('progress-checklist-light');
+                    iconChecklistCheck.removeClass('icon-check-not-full-dark').removeClass('icon-check-not-full-light');
+                    iconChecklistCheck.addClass('icon-check-full-dark').removeClass('icon-check-full-light');
+                }
+            }
+            // /Untuk Mengatur Icon Checklist //
 
             toastr.success('Berhasil menyalin kartu!');
             $('#copyCard').modal('hide');

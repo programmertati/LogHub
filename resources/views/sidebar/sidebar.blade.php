@@ -55,25 +55,25 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateTeam">
-                                            <i class="icon-view-team fa-solid fa-pencil"></i>
+                                            <i class="fa-solid fa-pencil m-r-5"></i>
                                             <span style="font-weight: 900">Edit</span>
                                         </a>
                                         @if ($statusTeams->contains('Member'))
                                             <a href="#" class="dropdown-item" data-toggle="modal" data-target="#manageMember">
-                                                <i class="icon-view-team fa-solid fa-user-gear"></i>
+                                                <i class="fa-solid fa-user-gear m-r-5"></i>
                                                 <span style="font-weight: 900">Members</span>
                                             </a>
                                         @endif
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#inviteMember">
-                                            <i class="icon-view-team fa-solid fa-user-plus"></i>
+                                            <i class="fa-solid fa-user-plus m-r-5"></i>
                                             <span style="font-weight: 900">Invite</span>
                                         </a>
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#createBoard">
-                                            <i class="icon-view-team fa-solid fa-table-columns"></i>
+                                            <i class="fa-solid fa-table-columns m-r-5"></i>
                                             <span style="font-weight: 900">Add Board</span>
                                         </a>
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteTeam">
-                                            <i class="icon-view-team fa-solid fa-trash"></i>
+                                            <i class="fa fa-trash-o m-r-5"></i>
                                             <span style="font-weight: 900">Delete</span>
                                         </a>
                                     </div>
@@ -84,7 +84,7 @@
                             @if ($iconLeave->status == 'Member')
                                 <li class="add-teams btn btn-outline-danger">
                                     <a href="#" data-toggle="modal" data-target="#leaveTeam" class="link-add-teams">
-                                        <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                        <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180 m-r-5"></i>
                                         <span style="font-weight: 900">Leave Team</span>
                                     </a>
                                 </li>
@@ -92,7 +92,7 @@
                         @endforeach
                         <li class="add-teams btn btn-outline-danger">
                             <a href="{{ route('showTeams') }}" class="link-add-teams">
-                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180 m-r-5"></i>
                                 <span style="font-weight: 900">Back to Team's</span>
                             </a>
                         </li>
@@ -106,13 +106,22 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateBoard">
-                                            <i class="icon-view-board fa-solid fa-pencil"></i>
+                                            <i class="fa-solid fa-pencil m-r-5"></i>
                                             <span style="font-weight: 900">Edit</span>
                                         </a>
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteBoard">
-                                            <i class="icon-view-board fa-solid fa-trash"></i>
+                                            <i class="fa fa-trash-o m-r-5"></i>
                                             <span style="font-weight: 900">Delete</span>
                                         </a>
+                                        {{-- @php
+                                            $dataRecoverKolom = App\Models\Column::onlyTrashed()->where('board_id', $board->id)->get();
+                                            $softDeletedColumns = $dataRecoverKolom->count();
+                                            $displayStyle = $softDeletedColumns > 0 ? 'display: block;' : 'display: none;';
+                                        @endphp
+                                        <a href="#" class="dropdown-item recover-kolom-link" id="recover-kolom-link-{{ $board->id }}" data-toggle="modal" data-target="#pulihkanKolomModal" data-board-id="{{ $board->id }}" style="{{ $displayStyle }}">
+                                            <i class="fa-solid fa-recycle fa-lg m-r-5"></i>
+                                            <span style="font-weight: 900">Recover Column</span>
+                                        </a> --}}
                                     </div>
                                 </div>
                             @endif
@@ -125,7 +134,7 @@
                         </a>
                         <li class="add-teams btn btn-outline-danger">
                             <a href="{{ route('viewTeam', ['team_id' => $team->id]) }}" class="link-add-teams">
-                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180 m-r-5"></i>
                                 <span style="font-weight: 900">Back to Board's</span>
                             </a>
                         </li>
@@ -164,25 +173,25 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateTeam">
-                                            <i class="icon-view-team fa-solid fa-pencil"></i>
+                                            <i class="fa-solid fa-pencil m-r-5"></i>
                                             <span style="font-weight: 900">Edit</span>
                                         </a>
                                         @if ($statusTeams->contains('Member'))
                                             <a href="#" class="dropdown-item" data-toggle="modal" data-target="#manageMember">
-                                                <i class="icon-view-team fa-solid fa-user-gear"></i>
+                                                <i class="fa-solid fa-user-gear m-r-5"></i>
                                                 <span style="font-weight: 900">Members</span>
                                             </a>
                                         @endif
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#inviteMember">
-                                            <i class="icon-view-team fa-solid fa-user-plus"></i>
+                                            <i class="fa-solid fa-user-plus m-r-5"></i>
                                             <span style="font-weight: 900">Invite</span>
                                         </a>
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#createBoard">
-                                            <i class="icon-view-team fa-solid fa-table-columns"></i>
+                                            <i class="fa-solid fa-table-columns m-r-5"></i>
                                             <span style="font-weight: 900">Add Board</span>
                                         </a>
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteTeam">
-                                            <i class="icon-view-team fa-solid fa-trash"></i>
+                                            <i class="fa fa-trash-o m-r-5"></i>
                                             <span style="font-weight: 900">Delete</span>
                                         </a>
                                     </div>
@@ -193,7 +202,7 @@
                             @if ($iconLeave->status == 'Member')
                                 <li class="add-teams btn btn-outline-danger">
                                     <a href="#" data-toggle="modal" data-target="#leaveTeam" class="link-add-teams">
-                                        <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                        <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180 m-r-5"></i>
                                         <span style="font-weight: 900">Leave Team</span>
                                     </a>
                                 </li>
@@ -201,7 +210,7 @@
                         @endforeach
                         <li class="add-teams btn btn-outline-danger">
                             <a href="{{ route('showTeams2') }}" class="link-add-teams">
-                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180 m-r-5"></i>
                                 <span style="font-weight: 900">Back to Team's</span>
                             </a>
                         </li>
@@ -215,13 +224,22 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" style="margin-top: 15px !important; margin-left: 30px !important">
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#updateBoard">
-                                            <i class="icon-view-board fa-solid fa-pencil"></i>
+                                            <i class="fa-solid fa-pencil m-r-5"></i>
                                             <span style="font-weight: 900">Edit</span>
                                         </a>
                                         <a href="#" class="dropdown-item" data-toggle="modal" data-target="#deleteBoard">
-                                            <i class="icon-view-board fa-solid fa-trash"></i>
+                                            <i class="fa fa-trash-o m-r-5"></i>
                                             <span style="font-weight: 900">Delete</span>
                                         </a>
+                                        {{-- @php
+                                            $dataRecoverKolom = App\Models\Column::onlyTrashed()->where('board_id', $board->id)->get();
+                                            $softDeletedColumns = $dataRecoverKolom->count();
+                                            $displayStyle = $softDeletedColumns > 0 ? 'display: block;' : 'display: none;';
+                                        @endphp
+                                        <a href="#" class="dropdown-item recover-kolom-link" id="recover-kolom-link-{{ $board->id }}" data-toggle="modal" data-target="#pulihkanKolomModal" data-board-id="{{ $board->id }}" style="{{ $displayStyle }}">
+                                            <i class="fa-solid fa-recycle fa-lg m-r-5"></i>
+                                            <span style="font-weight: 900">Recover Column</span>
+                                        </a> --}}
                                     </div>
                                 </div>
                             @endif
@@ -234,7 +252,7 @@
                         </a>
                         <li class="add-teams btn btn-outline-danger">
                             <a href="{{ route('viewTeam2', ['team_id' => $team->id]) }}" class="link-add-teams">
-                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180"></i>
+                                <i class="icon-view-team fa-solid fa-right-from-bracket fa-rotate-180 m-r-5"></i>
                                 <span style="font-weight: 900">Back to Board's</span>
                             </a>
                         </li>

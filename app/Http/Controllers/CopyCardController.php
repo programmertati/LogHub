@@ -7,6 +7,7 @@ use App\Models\Card;
 use App\Models\Column;
 use App\Models\TitleChecklists;
 use App\Models\Checklists;
+use App\Models\ModeAplikasi;
 use Carbon\Carbon;
 
 class CopyCardController extends Controller
@@ -60,6 +61,19 @@ class CopyCardController extends Controller
         // Mendapatkan Data Kolom
         $newColumn = Column::findOrFail($column_id);
 
+        // Untuk icon checklist
+        $titleChecklistID = TitleChecklists::where('cards_id', $card->id)->pluck('id');
+        $perChecklist = $request->input('keep_checklists') ? Checklists::whereIn('title_checklists_id', $titleChecklistID)->where('is_active', 1)->count() : 0;
+        $jumlahChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->count();
+
+        // Hitung persentase
+        $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
+
+        // Mendapatkan tema aplikasi
+        $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
+        $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
+        $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
+
         // Siapkan respons
         $responseData = [
             'message' => 'Berhasil menyalin kartu!',
@@ -81,6 +95,13 @@ class CopyCardController extends Controller
                 'deleteUrl' => route('hapusKartu', ['card_id' => $newCard->id]),
                 'copyCardUrl' => route('copyCard', ['column_id' => $newColumn->id, 'id' => $newCard->id])
             ],
+
+            'perChecklist' => $perChecklist,
+            'jumlahChecklist' => $jumlahChecklist,
+            'totalPercentage' => $totalPercentage,
+            'result_tema' => [
+                'tema_aplikasi' => $tema_aplikasi
+            ]
         ];
 
         return response()->json($responseData, 200);

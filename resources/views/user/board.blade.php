@@ -140,67 +140,140 @@
                                                     <!-- /Muncul apabila terdapat deskripsi pada kartu -->
 
                                                     <!-- Muncul apabila terdapat checklist pada kartu -->
-                                                    <div id="iconChecklist-{{ $dataKartu->id }}" class="progress-checklist-light
-                                                        @foreach($result_tema as $mode_tema)
-                                                            @if ($mode_tema->tema_aplikasi == 'Gelap')
-                                                                progress-checklist-dark
-                                                            @endif
-                                                        @endforeach
-                                                        @php
-                                                            $totalPercentage = 0;
-                                                            $totalCount = 0;
-                                                            foreach ($dataKartu->titleChecklists as $titleChecklists) {
-                                                                $totalCount++;
-                                                                $totalPercentage += $titleChecklists->percentage;
+                                                    @php
+                                                        $hasChecklists = false;
+                                                        foreach ($dataKartu->titleChecklists as $titleChecklists) {
+                                                            if ($titleChecklists->checklists->isNotEmpty()) {
+                                                                $hasChecklists = true;
                                                             }
-                                                        @endphp
-                                                        @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
-                                                            progress-checklist-100-light
+                                                        }
+                                                    @endphp
+
+                                                    @if ($hasChecklists)
+                                                        <div id="iconChecklist-{{ $dataKartu->id }}" class="progress-checklist-light
                                                             @foreach($result_tema as $mode_tema)
                                                                 @if ($mode_tema->tema_aplikasi == 'Gelap')
-                                                                    progress-checklist-100-dark
+                                                                    progress-checklist-dark
                                                                 @endif
                                                             @endforeach
-                                                        @endif">
+                                                            @php
+                                                                $totalPercentage = 0;
+                                                                $totalCount = 0;
+                                                                foreach ($dataKartu->titleChecklists as $titleChecklists) {
+                                                                    $totalCount++;
+                                                                    $totalPercentage += $titleChecklists->percentage;
+                                                                }
+                                                            @endphp
+                                                            @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
+                                                                progress-checklist-100-light
+                                                                @foreach($result_tema as $mode_tema)
+                                                                    @if ($mode_tema->tema_aplikasi == 'Gelap')
+                                                                        progress-checklist-100-dark
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif">
 
-                                                        @php
-                                                            $perChecklist = 0;
-                                                            $jumlahChecklist = 0;
-                                                            foreach ($dataKartu->titleChecklists as $titleChecklists) {
-                                                                foreach ($titleChecklists->checklists as $checklists) {
-                                                                    if(!empty($checklists->is_active)) {
-                                                                        $perChecklist++;
-                                                                    }
-                                                                    if(!empty($checklists->title_checklists_id)) {
-                                                                        $jumlahChecklist++;
+                                                            @php
+                                                                $perChecklist = 0;
+                                                                $jumlahChecklist = 0;
+                                                                foreach ($dataKartu->titleChecklists as $titleChecklists) {
+                                                                    foreach ($titleChecklists->checklists as $checklists) {
+                                                                        if(!empty($checklists->is_active)) {
+                                                                            $perChecklist++;
+                                                                        }
+                                                                        if(!empty($checklists->title_checklists_id)) {
+                                                                            $jumlahChecklist++;
+                                                                        }
                                                                     }
                                                                 }
-                                                            }
-                                                        @endphp
-                                                        @if($perChecklist > 0 || $jumlahChecklist > 0)
-                                                            <div class="info-status9">
-                                                                <i class="fa-regular fa-square-check icon-check-not-full-light
-                                                                    @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
-                                                                        icon-check-full-light
-                                                                    @endif
-                                                                    @foreach($result_tema as $mode_tema)
-                                                                        @if ($mode_tema->tema_aplikasi == 'Gelap')
-                                                                            icon-check-not-full-dark
-                                                                            @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
-                                                                                icon-check-full-dark
-                                                                            @endif
+                                                            @endphp
+                                                            @if($perChecklist > 0 || $jumlahChecklist > 0)
+                                                                <div class="info-status9">
+                                                                    <i id="icon-checklist-{{ $dataKartu->id }}" class="fa-regular fa-square-check icon-check-not-full-light
+                                                                        @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
+                                                                            icon-check-full-light
                                                                         @endif
-                                                                    @endforeach">
-                                                                </i>
-                                                                @if(!empty($dataKartu->description))
-                                                                    <span class="text-status9"><b>Checklist items</b></span>
-                                                                @else
-                                                                    <span class="text-status9a"><b>Checklist items</b></span>
+                                                                        @foreach($result_tema as $mode_tema)
+                                                                            @if ($mode_tema->tema_aplikasi == 'Gelap')
+                                                                                icon-check-not-full-dark
+                                                                                @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
+                                                                                    icon-check-full-dark
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach">
+                                                                    </i>
+                                                                    @if(!empty($dataKartu->description))
+                                                                        <span class="text-status9"><b>Checklist items</b></span>
+                                                                    @else
+                                                                        <span class="text-status9a"><b>Checklist items</b></span>
+                                                                    @endif
+                                                                    <span id="perhitunganChecklist-{{ $dataKartu->id }}" class="total">{{ $perChecklist }}/{{ $jumlahChecklist }}</span>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    @else
+                                                        <div id="iconChecklist-{{ $dataKartu->id }}" class="progress-checklist-light hidden
+                                                            @foreach($result_tema as $mode_tema)
+                                                                @if ($mode_tema->tema_aplikasi == 'Gelap')
+                                                                    progress-checklist-dark hidden
                                                                 @endif
-                                                                <span id="perhitunganChecklist-{{ $dataKartu->id }}" class="total">{{ $perChecklist }}/{{ $jumlahChecklist }}</span>
-                                                            </div>
-                                                        @endif
-                                                    </div>
+                                                            @endforeach
+                                                            @php
+                                                                $totalPercentage = 0;
+                                                                $totalCount = 0;
+                                                                foreach ($dataKartu->titleChecklists as $titleChecklists) {
+                                                                    $totalCount++;
+                                                                    $totalPercentage += $titleChecklists->percentage;
+                                                                }
+                                                            @endphp
+                                                            @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
+                                                                progress-checklist-100-light
+                                                                @foreach($result_tema as $mode_tema)
+                                                                    @if ($mode_tema->tema_aplikasi == 'Gelap')
+                                                                        progress-checklist-100-dark
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif">
+
+                                                            @php
+                                                                $perChecklist = 0;
+                                                                $jumlahChecklist = 0;
+                                                                foreach ($dataKartu->titleChecklists as $titleChecklists) {
+                                                                    foreach ($titleChecklists->checklists as $checklists) {
+                                                                        if(!empty($checklists->is_active)) {
+                                                                            $perChecklist++;
+                                                                        }
+                                                                        if(!empty($checklists->title_checklists_id)) {
+                                                                            $jumlahChecklist++;
+                                                                        }
+                                                                    }
+                                                                }
+                                                            @endphp
+                                                            @if($perChecklist > 0 || $jumlahChecklist > 0)
+                                                                <div class="info-status9">
+                                                                    <i id="icon-checklist-{{ $dataKartu->id }}" class="fa-regular fa-square-check icon-check-not-full-light
+                                                                        @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
+                                                                            icon-check-full-light
+                                                                        @endif
+                                                                        @foreach($result_tema as $mode_tema)
+                                                                            @if ($mode_tema->tema_aplikasi == 'Gelap')
+                                                                                icon-check-not-full-dark
+                                                                                @if ($totalCount > 0 && $totalPercentage / $totalCount == 100)
+                                                                                    icon-check-full-dark
+                                                                                @endif
+                                                                            @endif
+                                                                        @endforeach">
+                                                                    </i>
+                                                                    @if(!empty($dataKartu->description))
+                                                                        <span class="text-status9"><b>Checklist items</b></span>
+                                                                    @else
+                                                                        <span class="text-status9a"><b>Checklist items</b></span>
+                                                                    @endif
+                                                                    <span id="perhitunganChecklist-{{ $dataKartu->id }}" class="total">{{ $perChecklist }}/{{ $jumlahChecklist }}</span>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    @endif
                                                     <!-- /Muncul apabila terdapat checklist pada kartu -->
 
                                                 </div>
@@ -492,6 +565,29 @@
             </div>
         </div>
         <!-- /Salin Kartu Modal -->
+
+        {{-- <!-- Pulihkan Kolom Modal -->
+        <div id="pulihkanKolomModal" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content pulihkan-kartu-modal">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Recover Columns</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-pulihkan">Column</p>
+                        <ul class="pulihkan-container" id="listPulihkanKolom"></ul>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @include('allrole.memuat-modal-pulihkan-kolom')
+        <!-- /Pulihkan Kolom Modal --> --}}
 
         <!-- Pulihkan Kartu Modal -->
         <div id="pulihkanKartuModal" class="modal custom-modal fade" role="dialog">

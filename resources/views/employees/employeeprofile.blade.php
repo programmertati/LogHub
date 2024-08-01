@@ -101,7 +101,7 @@
                                                         @endif
                                                     </div>
                                                 </li><br>
-                                                <a href='#' class='btn btn-outline-danger' data-toggle='modal' data-target='#hapus_pengguna'><i class="fa-solid fa-trash fa-lg"></i> Hapus Akun</a>
+                                                <a href='#' class='btn btn-outline-danger' data-toggle='modal' data-target='#hapus_pengguna'><i class="fa fa-trash-o m-r-5"></i> Hapus Akun</a>
                                             </ul>
                                         </div>
                                     </div>
