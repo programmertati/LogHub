@@ -195,9 +195,8 @@
 
                 if (response.perChecklist < response.jumlahChecklist) {
                     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                    var cardId = response.titlechecklist.cards_id;
-                    var iconChecklist = $('#iconChecklist-' + cardId);
-                    var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                    var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                    var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                     if (tema_aplikasi == 'Terang') {
                         iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -213,9 +212,8 @@
                     }
                 } else if (response.perChecklist == response.jumlahChecklist) {
                     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                    var cardId = response.titlechecklist.cards_id;
-                    var iconChecklist = $('#iconChecklist-' + cardId);
-                    var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                    var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                    var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                     if (tema_aplikasi == 'Terang') {
                         iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -232,7 +230,8 @@
                 }
 
                 if (response.perChecklist == 0 && response.jumlahChecklist == 0) {
-                    var iconChecklist = $('#iconChecklist-' + cardId);
+                    var tema_aplikasi = response.result_tema.tema_aplikasi;
+                    var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
 
                     if (tema_aplikasi == 'Terang') {
                         iconChecklist.addClass('hidden');
@@ -467,8 +466,8 @@
                         if (response.perChecklist < response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
                             var cardId = response.cardId;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -485,8 +484,8 @@
                         } else if (response.perChecklist == response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
                             var cardId = response.cardId;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -503,7 +502,8 @@
                         }
 
                         if (response.perChecklist == 0 && response.jumlahChecklist == 0) {
-                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('hidden');
@@ -639,9 +639,8 @@
 
                         if (response.perChecklist < response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            var cardId = response.titlechecklist.cards_id;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -657,9 +656,8 @@
                             }
                         } else if (response.perChecklist == response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            var cardId = response.titlechecklist.cards_id;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -676,7 +674,8 @@
                         }
 
                         if (response.perChecklist == 0 && response.jumlahChecklist == 0) {
-                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('hidden');
@@ -795,9 +794,8 @@
 
                         if (response.perChecklist < response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            var cardId = response.titlechecklist.cards_id;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -813,9 +811,8 @@
                             }
                         } else if (response.perChecklist == response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            var cardId = response.titlechecklist.cards_id;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -832,7 +829,8 @@
                         }
 
                         if (response.perChecklist == 0 && response.jumlahChecklist == 0) {
-                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('hidden');
@@ -890,9 +888,8 @@
 
                         if (response.perChecklist < response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            var cardId = response.titlechecklist.cards_id;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -908,9 +905,8 @@
                             }
                         } else if (response.perChecklist == response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            var cardId = response.titlechecklist.cards_id;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -927,7 +923,8 @@
                         }
 
                         if (response.perChecklist == 0 && response.jumlahChecklist == 0) {
-                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('hidden');
@@ -981,9 +978,8 @@
 
                         if (response.perChecklist < response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            var cardId = response.titlechecklist.cards_id;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -999,9 +995,8 @@
                             }
                         } else if (response.perChecklist == response.jumlahChecklist) {
                             var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            var cardId = response.titlechecklist.cards_id;
-                            var iconChecklist = $('#iconChecklist-' + cardId);
-                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                            var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -1018,7 +1013,8 @@
                         }
 
                         if (response.perChecklist == 0 && response.jumlahChecklist == 0) {
-                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
 
                             if (tema_aplikasi == 'Terang') {
                                 iconChecklist.addClass('hidden');
@@ -1209,9 +1205,8 @@
 
                 if (response.perChecklist < response.jumlahChecklist) {
                     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                    var cardId = response.titlechecklist.cards_id;
-                    var iconChecklist = $('#iconChecklist-' + cardId);
-                    var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                    var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                    var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                     if (tema_aplikasi == 'Terang') {
                         iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -1227,9 +1222,8 @@
                     }
                 } else if (response.perChecklist == response.jumlahChecklist) {
                     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                    var cardId = response.titlechecklist.cards_id;
-                    var iconChecklist = $('#iconChecklist-' + cardId);
-                    var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                    var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                    var iconChecklistCheck = $('#icon-checklist-' + response.titlechecklist.cards_id);
 
                     if (tema_aplikasi == 'Terang') {
                         iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
@@ -1246,7 +1240,8 @@
                 }
 
                 if (response.perChecklist == 0 && response.jumlahChecklist == 0) {
-                    var iconChecklist = $('#iconChecklist-' + cardId);
+                    var tema_aplikasi = response.result_tema.tema_aplikasi;
+                    var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
 
                     if (tema_aplikasi == 'Terang') {
                         iconChecklist.addClass('hidden');
