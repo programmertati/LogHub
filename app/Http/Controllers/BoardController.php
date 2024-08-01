@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response as HttpResponse;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Models\Notification;
+use App\Models\ModeAplikasi;
 use DB;
 use Carbon\Carbon;
 
@@ -501,7 +502,14 @@ class BoardController extends Controller
         $col_id = intval($request->column_id);
         $this->boardLogic->deleteCol($col_id);
 
-        return response()->json(['message' => 'Berhasil menghapus kolom!']);
+        $columnId = $request->column_id;
+        $softDeletedColumns = Column::onlyTrashed()->count();
+
+        return response()->json([
+            'message' => 'Berhasil menghapus kolom!',
+            'columnId' => $columnId,
+            'softDeletedColumns' => $softDeletedColumns
+        ]);
     }
     // /Menghapus Kolom Admin //
 
@@ -510,9 +518,16 @@ class BoardController extends Controller
     {
         $request->validate(["column_id" => "required"]);
         $col_id = intval($request->column_id);
-        $this->boardLogic->deleteCol($col_id);
+        $this->boardLogic->deleteCol2($col_id);
 
-        return response()->json(['message' => 'Berhasil menghapus kolom!']);
+        $columnId = $request->column_id;
+        $softDeletedColumns = Column::onlyTrashed()->count();
+
+        return response()->json([
+            'message' => 'Berhasil menghapus kolom!',
+            'columnId' => $columnId,
+            'softDeletedColumns' => $softDeletedColumns
+        ]);
     }
     // /Menghapus Kolom User //
 
@@ -692,11 +707,30 @@ class BoardController extends Controller
 
             $softDeletedCards = Card::where('column_id', $columnId)->onlyTrashed()->count();
 
+            // Untuk icon checklist
+            $titleChecklistID = TitleChecklists::where('cards_id', $card_id)->pluck('id');
+            $perChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->where('is_active', 1)->count();
+            $jumlahChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->count();
+
+            // Hitung persentase
+            $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
+
+            // Mendapatkan tema aplikasi
+            $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
+            $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
+            $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
+
             DB::commit();
             return response()->json([
                 'message' => 'Berhasil menghapus kartu!',
                 'softDeletedCards' => $softDeletedCards,
-                'columnId' => $columnId
+                'columnId' => $columnId,
+                'perChecklist' => $perChecklist,
+                'jumlahChecklist' => $jumlahChecklist,
+                'totalPercentage' => $totalPercentage,
+                'result_tema' => [
+                    'tema_aplikasi' => $tema_aplikasi
+                ]
             ]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -731,11 +765,30 @@ class BoardController extends Controller
 
             $softDeletedCards = Card::where('column_id', $columnId)->onlyTrashed()->count();
 
+            // Untuk icon checklist
+            $titleChecklistID = TitleChecklists::where('cards_id', $card_id)->pluck('id');
+            $perChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->where('is_active', 1)->count();
+            $jumlahChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->count();
+
+            // Hitung persentase
+            $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
+
+            // Mendapatkan tema aplikasi
+            $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
+            $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
+            $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
+
             DB::commit();
             return response()->json([
                 'message' => 'Berhasil menghapus kartu!',
                 'softDeletedCards' => $softDeletedCards,
-                'columnId' => $columnId
+                'columnId' => $columnId,
+                'perChecklist' => $perChecklist,
+                'jumlahChecklist' => $jumlahChecklist,
+                'totalPercentage' => $totalPercentage,
+                'result_tema' => [
+                    'tema_aplikasi' => $tema_aplikasi
+                ]
             ]);
         } catch (\Exception $e) {
             DB::rollback();
@@ -772,6 +825,19 @@ class BoardController extends Controller
 
             $softDeletedCards = Card::where('column_id', $columnId)->onlyTrashed()->count();
 
+            // Untuk icon checklist
+            $titleChecklistID = TitleChecklists::where('cards_id', $card->id)->pluck('id');
+            $perChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->where('is_active', 1)->count();
+            $jumlahChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->count();
+
+            // Hitung persentase
+            $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
+
+            // Mendapatkan tema aplikasi
+            $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
+            $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
+            $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
+
             return response()->json([
                 'message' => 'Berhasil memulihkan kartu!',
                 'softDeletedCards' => $softDeletedCards,
@@ -793,6 +859,13 @@ class BoardController extends Controller
                     'deleteUrl' => route('hapusKartu', ['card_id' => $card->id]),
                     'copyCardUrl' => route('copyCard', ['column_id' => $columnId, 'id' => $card->id])
                 ],
+
+                'perChecklist' => $perChecklist,
+                'jumlahChecklist' => $jumlahChecklist,
+                'totalPercentage' => $totalPercentage,
+                'result_tema' => [
+                    'tema_aplikasi' => $tema_aplikasi
+                ]
             ]);
         }
     }
