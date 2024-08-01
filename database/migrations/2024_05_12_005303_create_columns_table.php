@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("previous_id")->nullable();
             $table->unsignedBigInteger("next_id")->nullable();
             $table->integer('position')->default(0);
+            $table->softDeletes();
 
             $table->foreign('previous_id')->references('id')->on('columns')->onDelete("set null");
             $table->foreign('next_id')->references('id')->on('columns')->onDelete("set null");
