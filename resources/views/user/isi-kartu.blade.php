@@ -338,7 +338,7 @@
                         <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist{{ $titleChecklists->id }}">Cancel</button>
                     </div>
                 </form>
-                <button type="button" class="btn btn-outline-info" id="AddChecklist{{ $titleChecklists->id }}">Add an item</button>
+                <button type="button" class="btn btn-outline-info" id="AddChecklist{{ $titleChecklists->id }}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
                 <!-- Tambah baru checklist -->
             </div>
         @endforeach

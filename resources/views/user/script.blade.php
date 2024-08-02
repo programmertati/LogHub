@@ -224,7 +224,7 @@
                                                 </div>
                                         </form>
 
-                                        <button type="button" class="btn btn-outline-info" id="AddChecklist${response.titlechecklist.id}">Add an item</button>
+                                        <button type="button" class="btn btn-outline-info" id="AddChecklist${response.titlechecklist.id}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
                                         <!-- Tambah baru checklist -->
 
                                     </div>`;
@@ -572,8 +572,23 @@
                                 $('#checklist-container-'+title_id).append(newForm);
 
                                 // Untuk Mengatur Icon Checklist //
-                                $('#iconChecklist-' + response.titlechecklist.cards_id).removeClass('hidden');
-                                $('#perhitunganChecklist-' + response.titlechecklist.cards_id).html(response.perChecklist + '/' + response.jumlahChecklist);
+                                var iconChecklist = $('#iconChecklist-' + response.titlechecklist.cards_id);
+                                var perhitunganChecklist = $('#perhitunganChecklist-' + response.titlechecklist.cards_id);
+
+                                iconChecklist.removeClass('hidden');
+                                if (perhitunganChecklist.length === 0) {
+                                    iconChecklist.append(`
+                                        <div class="info-status9">
+                                            <i id="icon-checklist-${response.titlechecklist.cards_id}" class="fa-regular fa-square-check icon-check-not-full-light
+                                                ${response.perChecklist === response.jumlahChecklist ? 'icon-check-full-light' : ''}">
+                                            </i>
+                                            <span class="text-status9a"><b>Checklist items</b></span>
+                                            <span id="perhitunganChecklist-${response.titlechecklist.cards_id}" class="total">${response.perChecklist}/${response.jumlahChecklist}</span>
+                                        </div>
+                                    `);
+                                } else {
+                                    perhitunganChecklist.html(response.perChecklist + '/' + response.jumlahChecklist);
+                                }
 
                                 if (response.perChecklist < response.jumlahChecklist) {
                                     var tema_aplikasi = response.result_tema.tema_aplikasi;

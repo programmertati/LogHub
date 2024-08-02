@@ -247,192 +247,222 @@ $(document).ready(function() {
     });
 });
 
-$('#copyCardForm').on('submit', function(e) {
-    e.preventDefault();
+$(document).ready(function() {
 
-    $.ajax({
-        url: $(this).attr('action'),
-        type: 'POST',
-        data: $(this).serialize(),
-        success: function(response) {
-            let cardContainer = document.getElementById('containerCard' + response.column.id);
-            let newCard = document.createElement('li');
-            newCard.classList.add('kartu-loghub');
-            newCard.setAttribute('data-id', response.new_card_id);
-            newCard.setAttribute('onmouseenter', 'aksiKartuShow(' + response.new_card_id + ')');
-            newCard.setAttribute('onmouseleave', 'aksiKartuHide(' + response.new_card_id + ')');
-            newCard.style.position = 'relative';
+    // Tandai untuk mencegah pengiriman berulang kali
+    let isSubmitting = false;
 
-            // Container Kartu ketika disalin
-            newCard.innerHTML = `
-                <!-- Tampilan Aksi Edit -->
-                <div class="cover-card card-cover2-${response.card.pattern || ''} ${response.card.pattern == null ? 'hiddens' : ''}" id="cover-card-${response.card.id}"></div>
-                <div class="dropdown dropdown-action aksi-card" id="aksi-card${response.card.id}" style="position: absolute !important;">
-                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
-                    </a>
+    $('#copyCardForm').on('submit', function(e) {
+        e.preventDefault();
 
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="updateCardModal(${response.card.id}, '${response.card.name}', '${response.card.updateUrl}');" id="edit-card-${response.card.id}">
-                            <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
+        // Mencegah pengiriman ganda
+        if (isSubmitting) return;
+
+        isSubmitting = true;
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                let cardContainer = document.getElementById('containerCard' + response.column.id);
+                let newCard = document.createElement('li');
+                newCard.classList.add('kartu-loghub');
+                newCard.setAttribute('data-id', response.new_card_id);
+                newCard.setAttribute('onmouseenter', 'aksiKartuShow(' + response.new_card_id + ')');
+                newCard.setAttribute('onmouseleave', 'aksiKartuHide(' + response.new_card_id + ')');
+                newCard.style.position = 'relative';
+
+                // Container Kartu ketika disalin
+                newCard.innerHTML = `
+                    <!-- Tampilan Aksi Edit -->
+                    <div class="cover-card card-cover2-${response.card.pattern || ''} ${response.card.pattern == null ? 'hiddens' : ''}" id="cover-card-${response.card.id}"></div>
+                    <div class="dropdown dropdown-action aksi-card" id="aksi-card${response.card.id}" style="position: absolute !important;">
+                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
                         </a>
-                        <a href="#" class="dropdown-item" onclick="deleteCardModal2('${response.card.id}', '${response.card.name}', '${response.column.name}', '${response.card.deleteUrl}');">
-                            <i class='fa fa-trash-o m-r-5'></i> Delete
-                        </a>
-                        <a href="#" class="dropdown-item" onclick="copyCardModal('${response.card.id}', '${response.card.name}', '${response.card.copyCardUrl}');" id="copy-card-${response.card.id}">
-                            <i class="fa-regular fa-copy m-r-5"></i> Copy Card
-                        </a>
-                    </div>
-                </div>
-                <!-- /Tampilan Aksi Edit -->
 
-                <!-- Tampilan Kartu Pengguna -->
-                <a href="#" data-toggle="modal" data-target="#isianKartu" onclick="$('#card_id').val(${response.card.id}); $('#form_kartu').submit();">
-                    <div class="card-nama" ${response.card.pattern ? 'style="border-top-right-radius: 0 !important; border-bottom-right-radius: 8px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 8px !important;"' : ''}>
-                        <span class="flex ms-3" id="span-nama-${response.card.id}" style="width: 150px; ${response.card.description ? 'margin-bottom: 10px;' : ''}">${response.card.name}</span>
-                        <div class="tampilan-info gap-2">
-
-                            <!-- Muncul apabila terdapat deskripsi pada kartu -->
-                            ${response.card.description ? `
-                                <div class="info-status8" id="descriptionStatus${response.card.id}">
-                                    <i class="fa-solid fa-align-left icon-deskripsi-light
-                                        @foreach($result_tema as $sql_mode => $mode_tema)
-                                            @if($mode_tema->tema_aplikasi == 'Gelap')
-                                                icon-deskripsi-dark
-                                            @endif
-                                        @endforeach">
-                                    </i>
-                                    <span class="text-status8"><b>This card has a description.</b></span>
-                                </div>` : `
-                                <div class="info-status8 hidden" id="descriptionStatus${response.card.id}">
-                                    <i class="fa-solid fa-align-left icon-deskripsi-light
-                                        @foreach($result_tema as $sql_mode => $mode_tema)
-                                            @if($mode_tema->tema_aplikasi == 'Gelap')
-                                                icon-deskripsi-dark
-                                            @endif
-                                        @endforeach">
-                                    </i>
-                                    <span class="text-status8"><b>This card has a description.</b></span>
-                                </div>`}
-                            <!-- /Muncul apabila terdapat deskripsi pada kartu -->
-                            
-                            <!-- Muncul apabila terdapat checklist pada kartu -->
-                            <div id="iconChecklist-${response.card.id}" class="progress-checklist-light hidden @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') progress-checklist-dark hidden @endif @endforeach">
-                                <div class="info-status9">
-                                    <i id="icon-checklist-${response.card.id}" class="fa-regular fa-square-check icon-check-not-full-light @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') icon-check-not-full-dark @endif @endforeach"></i>
-                                    ${response.card.description ? `<span class="text-status9"><b>Checklist items</b></span>` : `<span class="text-status9a"><b>Checklist items</b></span>`}
-                                    <span id="perhitunganChecklist-${response.card.id}" class="total"></span>
-                                </div>
-                            </div>
-                            <!-- /Muncul apabila terdapat checklist pada kartu -->
-                            
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="#" class="dropdown-item" onclick="updateCardModal(${response.card.id}, '${response.card.name}', '${response.card.updateUrl}');" id="edit-card-${response.card.id}">
+                                <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
+                            </a>
+                            <a href="#" class="dropdown-item" onclick="deleteCardModal2('${response.card.id}', '${response.card.name}', '${response.column.name}', '${response.card.deleteUrl}');">
+                                <i class='fa fa-trash-o m-r-5'></i> Delete
+                            </a>
+                            <a href="#" class="dropdown-item" onclick="copyCardModal('${response.card.id}', '${response.card.name}', '${response.card.copyCardUrl}');" id="copy-card-${response.card.id}">
+                                <i class="fa-regular fa-copy m-r-5"></i> Copy Card
+                            </a>
                         </div>
                     </div>
-                </a>
-                <!-- /Tampilan Kartu Pengguna -->
-            `;
-            cardContainer.appendChild(newCard);
+                    <!-- /Tampilan Aksi Edit -->
 
-            // Periksa penyebutan dan kirim pemberitahuan penyebutan
-            const checklists = response.checklists;
-            checklists.forEach(checklist => {
-                if (checklist.name.includes('@')) {
-                    const users = extractMentions(checklist.name);
-                    sendMentions(users, checklist.name);
+                    <!-- Tampilan Kartu Pengguna -->
+                    <a href="#" data-toggle="modal" data-target="#isianKartu" onclick="$('#card_id').val(${response.card.id}); $('#form_kartu').submit();">
+                        <div class="card-nama" ${response.card.pattern ? 'style="border-top-right-radius: 0 !important; border-bottom-right-radius: 8px !important; border-top-left-radius: 0 !important; border-bottom-left-radius: 8px !important;"' : ''}>
+                            <span class="flex ms-3" id="span-nama-${response.card.id}" style="width: 150px; ${response.card.description ? 'margin-bottom: 10px;' : ''}">${response.card.name}</span>
+                            <div class="tampilan-info gap-2">
+
+                                <!-- Muncul apabila terdapat deskripsi pada kartu -->
+                                ${response.card.description ? `
+                                    <div class="info-status8" id="descriptionStatus${response.card.id}">
+                                        <i class="fa-solid fa-align-left icon-deskripsi-light
+                                            @foreach($result_tema as $sql_mode => $mode_tema)
+                                                @if($mode_tema->tema_aplikasi == 'Gelap')
+                                                    icon-deskripsi-dark
+                                                @endif
+                                            @endforeach">
+                                        </i>
+                                        <span class="text-status8"><b>This card has a description.</b></span>
+                                    </div>` : `
+                                    <div class="info-status8 hidden" id="descriptionStatus${response.card.id}">
+                                        <i class="fa-solid fa-align-left icon-deskripsi-light
+                                            @foreach($result_tema as $sql_mode => $mode_tema)
+                                                @if($mode_tema->tema_aplikasi == 'Gelap')
+                                                    icon-deskripsi-dark
+                                                @endif
+                                            @endforeach">
+                                        </i>
+                                        <span class="text-status8"><b>This card has a description.</b></span>
+                                    </div>`}
+                                <!-- /Muncul apabila terdapat deskripsi pada kartu -->
+                                
+                                <!-- Muncul apabila terdapat checklist pada kartu -->
+                                <div id="iconChecklist-${response.card.id}" class="progress-checklist-light hidden @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') progress-checklist-dark hidden @endif @endforeach">
+                                    <div class="info-status9">
+                                        <i id="icon-checklist-${response.card.id}" class="fa-regular fa-square-check icon-check-not-full-light @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') icon-check-not-full-dark @endif @endforeach"></i>
+                                        ${response.card.description ? `<span class="text-status9"><b>Checklist items</b></span>` : `<span class="text-status9a"><b>Checklist items</b></span>`}
+                                        <span id="perhitunganChecklist-${response.card.id}" class="total"></span>
+                                    </div>
+                                </div>
+                                <!-- /Muncul apabila terdapat checklist pada kartu -->
+                                
+                            </div>
+                        </div>
+                    </a>
+                    <!-- /Tampilan Kartu Pengguna -->
+                `;
+
+                // Tambahkan kartu yang disalin ke dalam container kartu
+                cardContainer.appendChild(newCard);
+
+                // Periksa penyebutan dan kirim pemberitahuan penyebutan
+                const checklists = response.checklists;
+                checklists.forEach(checklist => {
+                    if (checklist.name.includes('@')) {
+                        const users = extractMentions(checklist.name);
+                        sendMentions(users, checklist.name);
+                    }
+                });
+
+                // Untuk Mengatur Icon Checklist //
+                $('#iconChecklist-' + response.card.id).removeClass('hidden');
+                $('#perhitunganChecklist-' + response.card.id).html(response.perChecklist + '/' + response.jumlahChecklist);
+
+                if (response.perChecklist < response.jumlahChecklist) {
+                    var tema_aplikasi = response.result_tema.tema_aplikasi;
+                    var cardId = response.card.id;
+                    var iconChecklist = $('#iconChecklist-' + cardId);
+                    var iconChecklistCheck = $('#icon-checklist-' + cardId);
+
+                    if (tema_aplikasi == 'Terang') {
+                        iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
+                        iconChecklist.addClass('progress-checklist-light').removeClass('progress-checklist-dark');
+                        iconChecklistCheck.addClass('icon-check-not-full-light').removeClass('icon-check-not-full-dark');
+                        iconChecklistCheck.removeClass('icon-check-full-light').removeClass('icon-check-full-dark');
+
+                    } else if (tema_aplikasi == 'Gelap') {
+                        iconChecklist.removeClass('progress-checklist-100-dark').removeClass('progress-checklist-100-light');
+                        iconChecklist.addClass('progress-checklist-dark').removeClass('progress-checklist-light');
+                        iconChecklistCheck.addClass('icon-check-not-full-dark').removeClass('icon-check-not-full-light');
+                        iconChecklistCheck.removeClass('icon-check-full-dark').removeClass('icon-check-full-light');
+                    }
+                } else if (response.perChecklist == response.jumlahChecklist) {
+                    var tema_aplikasi = response.result_tema.tema_aplikasi;
+                    var cardId = response.card.id;
+                    var iconChecklist = $('#iconChecklist-' + cardId);
+                    var iconChecklistCheck = $('#icon-checklist-' + cardId);
+
+                    if (tema_aplikasi == 'Terang') {
+                        iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
+                        iconChecklist.addClass('progress-checklist-light').removeClass('progress-checklist-dark');
+                        iconChecklistCheck.removeClass('icon-check-not-full-light').removeClass('icon-check-not-full-dark');
+                        iconChecklistCheck.addClass('icon-check-full-light').removeClass('icon-check-full-dark');
+
+                    } else if (tema_aplikasi == 'Gelap') {
+                        iconChecklist.addClass('progress-checklist-100-dark').removeClass('progress-checklist-100-light');
+                        iconChecklist.addClass('progress-checklist-dark').removeClass('progress-checklist-light');
+                        iconChecklistCheck.removeClass('icon-check-not-full-dark').removeClass('icon-check-not-full-light');
+                        iconChecklistCheck.addClass('icon-check-full-dark').removeClass('icon-check-full-light');
+                    }
                 }
-            });
 
-            // Untuk Mengatur Icon Checklist //
-            $('#iconChecklist-' + response.card.id).removeClass('hidden');
-            $('#perhitunganChecklist-' + response.card.id).html(response.perChecklist + '/' + response.jumlahChecklist);
+                if (response.perChecklist == 0 && response.jumlahChecklist == 0) {
+                    var tema_aplikasi = response.result_tema.tema_aplikasi;
+                    var iconChecklist = $('#iconChecklist-' + cardId);
 
-            if (response.perChecklist < response.jumlahChecklist) {
-                var tema_aplikasi = response.result_tema.tema_aplikasi;
-                var cardId = response.card.id;
-                var iconChecklist = $('#iconChecklist-' + cardId);
-                var iconChecklistCheck = $('#icon-checklist-' + cardId);
-
-                if (tema_aplikasi == 'Terang') {
-                    iconChecklist.removeClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
-                    iconChecklist.addClass('progress-checklist-light').removeClass('progress-checklist-dark');
-                    iconChecklistCheck.addClass('icon-check-not-full-light').removeClass('icon-check-not-full-dark');
-                    iconChecklistCheck.removeClass('icon-check-full-light').removeClass('icon-check-full-dark');
-
-                } else if (tema_aplikasi == 'Gelap') {
-                    iconChecklist.removeClass('progress-checklist-100-dark').removeClass('progress-checklist-100-light');
-                    iconChecklist.addClass('progress-checklist-dark').removeClass('progress-checklist-light');
-                    iconChecklistCheck.addClass('icon-check-not-full-dark').removeClass('icon-check-not-full-light');
-                    iconChecklistCheck.removeClass('icon-check-full-dark').removeClass('icon-check-full-light');
+                    if (tema_aplikasi == 'Terang') {
+                        iconChecklist.addClass('hidden');
+                    } else if (tema_aplikasi == 'Gelap') {
+                        iconChecklist.addClass('hidden');
+                    }
                 }
-            } else if (response.perChecklist == response.jumlahChecklist) {
-                var tema_aplikasi = response.result_tema.tema_aplikasi;
-                var cardId = response.card.id;
-                var iconChecklist = $('#iconChecklist-' + cardId);
-                var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                // /Untuk Mengatur Icon Checklist //
 
-                if (tema_aplikasi == 'Terang') {
-                    iconChecklist.addClass('progress-checklist-100-light').removeClass('progress-checklist-100-dark');
-                    iconChecklist.addClass('progress-checklist-light').removeClass('progress-checklist-dark');
-                    iconChecklistCheck.removeClass('icon-check-not-full-light').removeClass('icon-check-not-full-dark');
-                    iconChecklistCheck.addClass('icon-check-full-light').removeClass('icon-check-full-dark');
+                toastr.success('Berhasil menyalin kartu!');
+                $('#copyCard').modal('hide');
 
-                } else if (tema_aplikasi == 'Gelap') {
-                    iconChecklist.addClass('progress-checklist-100-dark').removeClass('progress-checklist-100-light');
-                    iconChecklist.addClass('progress-checklist-dark').removeClass('progress-checklist-light');
-                    iconChecklistCheck.removeClass('icon-check-not-full-dark').removeClass('icon-check-not-full-light');
-                    iconChecklistCheck.addClass('icon-check-full-dark').removeClass('icon-check-full-light');
-                }
-            }
-            // /Untuk Mengatur Icon Checklist //
-
-            toastr.success('Berhasil menyalin kartu!');
-            $('#copyCard').modal('hide');
-        },
-        error: function(xhr, status, error) {
-            toastr.error('Gagal menyalin kartu!');
-            $('#copy-card-name-error').text('Terjadi kesalahan saat menyalin kartu!');
-            $('#copy-card-name').addClass('is-invalid');
-        }
-    });
-});
-
-function extractMentions(text) {
-    const mentionPattern = /@(\w+)/g;
-    let matches;
-    const users = [];
-    while ((matches = mentionPattern.exec(text)) !== null) {
-        users.push(matches[1]);
-    }
-    return users;
-}
-
-function sendMentions(users, checklistName) {
-    const promises = users.map(username => {
-        let form = document.getElementById('copyCardForm');
-        let formData = new FormData(form);
-        return fetch('/mention-tag-checklist', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': formData.get('_token')
+                // Setel ulang tanda
+                isSubmitting = false;
             },
-            body: JSON.stringify({
-                username: username,
-                name: checklistName
-            })
+            error: function(xhr, status, error) {
+                toastr.error('Gagal menyalin kartu!');
+                $('#copy-card-name-error').text('Terjadi kesalahan saat menyalin kartu!');
+                $('#copy-card-name').addClass('is-invalid');
+
+                // Setel ulang tanda
+                isSubmitting = false;
+            }
         });
     });
 
-    Promise.all(promises)
-        .then(responses => {
-            const allSuccessful = responses.every(response => response.ok);
-            if (allSuccessful) {
-                console.log('Berhasil mengirimkan mention tag!');
-            } else {
-                toastr.error('Gagal mengirimkan mention tag!');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
+    function extractMentions(text) {
+        const mentionPattern = /@(\w+)/g;
+        let matches;
+        const users = [];
+        while ((matches = mentionPattern.exec(text)) !== null) {
+            users.push(matches[1]);
+        }
+        return users;
+    }
+
+    function sendMentions(users, checklistName) {
+        const promises = users.map(username => {
+            let form = document.getElementById('copyCardForm');
+            let formData = new FormData(form);
+            return fetch('/mention-tag-checklist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': formData.get('_token')
+                },
+                body: JSON.stringify({
+                    username: username,
+                    name: checklistName
+                })
+            });
         });
-}
+
+        Promise.all(promises)
+            .then(responses => {
+                const allSuccessful = responses.every(response => response.ok);
+                if (allSuccessful) {
+                    console.log('Berhasil mengirimkan mention tag!');
+                } else {
+                    toastr.error('Gagal mengirimkan mention tag!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+});
