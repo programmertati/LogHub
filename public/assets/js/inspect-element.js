@@ -17,12 +17,12 @@ setInterval(() => {
             devtools.isOpen = true;
             devtools.orientation = orientation;
             open = true;
-            window.location.href = "about:blank"; // Redirect to blank page
+
+            // Redirect ke halaman yang lain
+            window.location.href = "about:blank";
         }
     } else {
         devtools.isOpen = false;
         open = false;
     }
 }, 500);
-
-<script src="{{ asset('assets/js/inspect-element.js') }}"></script>

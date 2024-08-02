@@ -145,17 +145,6 @@ $(document).ready(function() {
                 $('#deleteColumn').modal('hide');
                 $('#kolom-card-' + columnId).remove();
 
-                // // Perbarui visibilitas tautan Recover Column
-                // const softDeletedColumns = response.softDeletedColumns;
-                // var recoverColumns = $('#recover-kolom-link-' + columnId);
-
-                // if (softDeletedColumns > 0) {
-                //     recoverColumns.show();
-                // } else {
-                //     recoverColumns.hide();
-                //     $('#pulihkanKolomModal').modal('hide');
-                // }
-                
                 toastr.success('Berhasil menghapus kolom!');
             },
             error: function(error) {
