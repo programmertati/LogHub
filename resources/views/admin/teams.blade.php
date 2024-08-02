@@ -256,5 +256,7 @@
         <script>
             document.getElementById('pageTitle').innerHTML = 'Teams - Admin | Loghub - PT TATI ';
         </script>
+
+        {{--  <script src="{{ asset('assets/js/inspect-element.js') }}"></script> --}}
     @endsection
 @endsection
