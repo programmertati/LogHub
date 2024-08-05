@@ -30,9 +30,9 @@ Route::get('/', function () {
     return view('auth.landing');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
+// Route::get('/login', function () {
+//     return view('auth.login');
+// });
 
 // ----------------------------- Autentikfikasi MultiLevel ----------------------------- //
 Route::group(['middleware' => 'auth'], function () {
