@@ -20,16 +20,27 @@ class CopyCardController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        // Salin Kartu dan Temukan kartu asli atau tiruan
+        // Temukan kartu asli atau tiruan
         $card = Card::findOrFail($id);
+
+        // Tentukan posisi baru
+        $newPosition = $card->position != 0 ? $card->position + 1 : 0;
+
+        // Perbarui posisi kartu lain di kolom yang sama
+        Card::where('column_id', $column_id)
+            ->where('position', '>=', $newPosition)
+            ->increment('position');
+
+        // Salin Kartu
         $newCard = $card->replicate();
         $newCard->name = $request->input('name');
-        $newCard->position = $card->position != 0 ? $card->position + 1 : 0;
+        $newCard->position = $newPosition;
         $newCard->created_at = Carbon::now();
         $newCard->save();
 
         // Salin Judul Ceklist
         $titleChecklists = TitleChecklists::where('cards_id', $id)->get();
+        $checklists = [];
         foreach ($titleChecklists as $titleChecklist) {
             $newTitleChecklist = $titleChecklist->replicate();
             $newTitleChecklist->cards_id = $newCard->id;
@@ -91,6 +102,7 @@ class CopyCardController extends Controller
                 'name' => $newCard->name,
                 'pattern' => $newCard->pattern,
                 'description' => $newCard->description,
+                'position' => $newCard->position,
                 'updateUrl' => route('perbaharuiKartu', ['card_id' => $newCard->id]),
                 'deleteUrl' => route('hapusKartu', ['card_id' => $newCard->id]),
                 'copyCardUrl' => route('copyCard', ['column_id' => $newColumn->id, 'id' => $newCard->id])

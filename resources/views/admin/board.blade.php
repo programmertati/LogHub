@@ -921,6 +921,7 @@
         <script src="{{ asset('assets/js/memuat-ulang.js?v='.time()) }}"></script>
         <script src="{{ asset('assets/js/memuat-modal.js?v='.time()) }}"></script>
         <script src="{{ asset('assets/js/memuat-shortcut.js?v='.time()) }}"></script>
+        {{--  <script src="{{ asset('assets/js/inspect-element.js') }}"></script> --}}
 
         <script>
             history.pushState({}, "", '/admin/tim/papan/{{ $team->id }}/{{ $board->id }}');

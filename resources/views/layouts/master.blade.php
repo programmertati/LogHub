@@ -410,6 +410,12 @@
                     .opsi-pulihkan-checklist:hover{background-color: #3a3c47; border-color:#3a3c47;}
                     .opsi-pulihkan-checklist2{background-color: #737788; border: 1px solid #737788;}
                     .opsi-pulihkan-checklist2:hover{background-color: #3a3c47; border-color:#3a3c47;}
+                    .isian-pulihkan-kolom{background-color: #464a5b; color: {{ $mode_tema->warna_sistem_tulisan }};}
+                    .waktu-pulihkan-kolom {color: {{ $mode_tema->warna_sistem_tulisan }};}
+                    .opsi-pulihkan-kolom{background-color: #737788; border: 1px solid #737788;}
+                    .opsi-pulihkan-kolom:hover{background-color: #3a3c47; border-color:#3a3c47;}
+                    .opsi-pulihkan-kolom2{background-color: #737788; border: 1px solid #737788;}
+                    .opsi-pulihkan-kolom2:hover{background-color: #3a3c47; border-color:#3a3c47;}
                     .text-pulihkan{color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
                     .text-from-judul{color: {{ $mode_tema->warna_sistem_tulisan }} !important;}
 
