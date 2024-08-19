@@ -298,7 +298,7 @@ $totalPercentage = 0;
                                 class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
                                 <form id="addCardForm{{ $dataKolom->id }}"
                                     action="{{ route('addCard', ['board_id' => $board->id, 'team_id' => $board->team_id, 'column_id' => $dataKolom->id]) }}"
-                                    method="POST">
+                                    method="POST" onsubmit="addCardScript(event, '{{ $dataKolom->id }}')">
                                     @csrf
                                     <input type="hidden" class="form-control" name="board_id"
                                         value="{{ $board->id }}">
@@ -330,7 +330,7 @@ $totalPercentage = 0;
         <!-- /Tampilan Background Kolom & Card -->
 
     </div>
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('form[id^="addCardForm"]').forEach(form => {
                 form.addEventListener('submit', function(event) {
@@ -338,7 +338,7 @@ $totalPercentage = 0;
                 });
             });
         });
-    </script>
+    </script> --}}
     <!-- /Page Wrapper -->
 
     {!! Toastr::message() !!}
