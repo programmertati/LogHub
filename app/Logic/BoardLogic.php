@@ -155,7 +155,7 @@ class BoardLogic
             "previous_id"   => $lastCard ? $lastCard->id : null
         ]);
 
-        if($lastCard){
+        if ($lastCard) {
             $lastCard->next_id = $newCard->id;
             $lastCard->save();
         }
@@ -177,7 +177,7 @@ class BoardLogic
             "previous_id"   => $lastCard ? $lastCard->id : null
         ]);
 
-        if($lastCard){
+        if ($lastCard) {
             $lastCard->next_id = $newCard->id;
             $lastCard->save();
         }
@@ -256,37 +256,37 @@ class BoardLogic
         $top_card = null;
         $bottom_card = null;
 
-        if($column == null) return null;
-        if($bottom_card_id != 0) $bottom_card = Card::find($bottom_card_id);
-        if($bottom_card != null) $top_card = Card::find($bottom_card->previous_id);
-        if($target_card->previous_id) $previous_top_card = Card::find($target_card->previous_id);
-        if($target_card->next_id) $previous_bottom_card = Card::find($target_card->next_id);
-        if($bottom_card == null && $top_card == null) $top_card = Card::find($top_card_id);
+        if ($column == null) return null;
+        if ($bottom_card_id != 0) $bottom_card = Card::find($bottom_card_id);
+        if ($bottom_card != null) $top_card = Card::find($bottom_card->previous_id);
+        if ($target_card->previous_id) $previous_top_card = Card::find($target_card->previous_id);
+        if ($target_card->next_id) $previous_bottom_card = Card::find($target_card->next_id);
+        if ($bottom_card == null && $top_card == null) $top_card = Card::find($top_card_id);
 
         //insert in middle
         $target_card->column_id = $column->id;
         $target_card->previous_id = null;
         $target_card->next_id = null;
-        if($previous_bottom_card){
+        if ($previous_bottom_card) {
             $previous_bottom_card->previous_id = $previous_top_card ? $previous_top_card->id : null;
         }
-        if($previous_top_card){
+        if ($previous_top_card) {
             $previous_top_card->next_id = $previous_bottom_card ? $previous_bottom_card->id : null;
         }
-        if($bottom_card){
+        if ($bottom_card) {
             $target_card->next_id = $bottom_card->id;
             $bottom_card->previous_id = $target_card->id;
         }
-        if($top_card){
+        if ($top_card) {
             $target_card->previous_id = $top_card->id;
             $top_card->next_id = $target_card->id;
         }
 
         $target_card->save();
-        if($bottom_card) $bottom_card->save();
-        if($top_card) $top_card->save();
-        if($previous_bottom_card) $previous_bottom_card->save();
-        if($previous_top_card) $previous_top_card->save();
+        if ($bottom_card) $bottom_card->save();
+        if ($top_card) $top_card->save();
+        if ($previous_bottom_card) $previous_bottom_card->save();
+        if ($previous_top_card) $previous_top_card->save();
         return $target_card;
     }
     // /Memindahkan Kartu //
@@ -300,53 +300,54 @@ class BoardLogic
         $top_column = null;
         $bottom_column = null;
 
-        if($right_column_id != 0) $bottom_column = Column::find($right_column_id);
-        if($bottom_column != null) $top_column = Column::find($bottom_column->previous_id);
-        if($target_column->previous_id) $previous_top_column = Column::find($target_column->previous_id);
-        if($target_column->next_id) $previous_bottom_column = Column::find($target_column->next_id);
-        if($bottom_column == null && $top_column == null) $top_column = Column::find($left_column_id);
+        if ($right_column_id != 0) $bottom_column = Column::find($right_column_id);
+        if ($bottom_column != null) $top_column = Column::find($bottom_column->previous_id);
+        if ($target_column->previous_id) $previous_top_column = Column::find($target_column->previous_id);
+        if ($target_column->next_id) $previous_bottom_column = Column::find($target_column->next_id);
+        if ($bottom_column == null && $top_column == null) $top_column = Column::find($left_column_id);
 
         //insert in middle
         $target_column->previous_id = null;
         $target_column->next_id = null;
-        if($previous_bottom_column){
+        if ($previous_bottom_column) {
             $previous_bottom_column->previous_id = $previous_top_column ? $previous_top_column->id : null;
         }
-        if($previous_top_column){
+        if ($previous_top_column) {
             $previous_top_column->next_id = $previous_bottom_column ? $previous_bottom_column->id : null;
         }
-        if($bottom_column){
+        if ($bottom_column) {
             $target_column->next_id = $bottom_column->id;
             $bottom_column->previous_id = $target_column->id;
         }
-        if($top_column){
+        if ($top_column) {
             $target_column->previous_id = $top_column->id;
             $top_column->next_id = $target_column->id;
         }
 
         $target_column->save();
-        if($bottom_column) $bottom_column->save();
-        if($top_column) $top_column->save();
-        if($previous_bottom_column) $previous_bottom_column->save();
-        if($previous_top_column) $previous_top_column->save();
+        if ($bottom_column) $bottom_column->save();
+        if ($top_column) $top_column->save();
+        if ($previous_bottom_column) $previous_bottom_column->save();
+        if ($previous_top_column) $previous_top_column->save();
         return $target_column;
     }
     // /Memindahkan Kolom //
 
     // Menghapus Kolom //
-    function deleteCol(int $target_column_id) {
+    function deleteCol(int $target_column_id)
+    {
         $target_column = Column::find($target_column_id);
         $top_column = null;
         $bottom_column = null;
-        if(!$target_column) return;
-        if($target_column->previous_id) $top_column = Column::find($target_column->previous_id);
-        if($target_column->next_id) $bottom_column = Column::find($target_column->next_id);
+        if (!$target_column) return;
+        if ($target_column->previous_id) $top_column = Column::find($target_column->previous_id);
+        if ($target_column->next_id) $bottom_column = Column::find($target_column->next_id);
 
-        if($top_column){
+        if ($top_column) {
             $top_column->next_id = $bottom_column ? $bottom_column->id : null;
             $top_column->save();
         }
-        if($bottom_column){
+        if ($bottom_column) {
             $bottom_column->previous_id = $top_column ? $top_column->id : null;
             $bottom_column->save();
         }
@@ -356,19 +357,20 @@ class BoardLogic
     // //Menghapus Kolom //
 
     // Menghapus Kolom //
-    function deleteCol2(int $target_column_id) {
+    function deleteCol2(int $target_column_id)
+    {
         $target_column = Column::find($target_column_id);
         $top_column = null;
         $bottom_column = null;
-        if(!$target_column) return;
-        if($target_column->previous_id) $top_column = Column::find($target_column->previous_id);
-        if($target_column->next_id) $bottom_column = Column::find($target_column->next_id);
+        if (!$target_column) return;
+        if ($target_column->previous_id) $top_column = Column::find($target_column->previous_id);
+        if ($target_column->next_id) $bottom_column = Column::find($target_column->next_id);
 
-        if($top_column){
+        if ($top_column) {
             $top_column->next_id = $bottom_column ? $bottom_column->id : null;
             $top_column->save();
         }
-        if($bottom_column){
+        if ($bottom_column) {
             $bottom_column->previous_id = $top_column ? $top_column->id : null;
             $bottom_column->save();
         }

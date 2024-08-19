@@ -23,8 +23,7 @@ class TeamController extends Controller
         protected TeamLogic $teamLogic,
         protected FileLogic $fileLogic,
         protected UserLogic $userLogic,
-    ) {
-    }
+    ) {}
 
     // Membuat Tim Khusus Admin //
     public function createTeam(Request $request)
@@ -72,7 +71,7 @@ class TeamController extends Controller
         $user = User::find(Auth::user()->id);
         $teams = $this->teamLogic->getUserTeams($user->id, ["Member", "Owner"]);
         $invites = $this->teamLogic->getUserTeams($user->id, ["Pending"]);
-        $UserTeams = UserTeam::with(['user','team'])->get();
+        $UserTeams = UserTeam::with(['user', 'team'])->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -87,7 +86,7 @@ class TeamController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -135,7 +134,7 @@ class TeamController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("admin.teams", compact('UserTeams','result_tema','unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("admin.teams", compact('UserTeams', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
             ->with("teams", $teams)
             ->with("patterns", TeamLogic::PATTERN)
             ->with("invites", $invites);
@@ -148,7 +147,7 @@ class TeamController extends Controller
         $user = User::find(Auth::user()->id);
         $teams = $this->teamLogic->getUserTeams($user->id, ["Member", "Owner"]);
         $invites = $this->teamLogic->getUserTeams($user->id, ["Pending"]);
-        $UserTeams = UserTeam::with(['user','team'])->get();
+        $UserTeams = UserTeam::with(['user', 'team'])->get();
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -163,7 +162,7 @@ class TeamController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -211,7 +210,7 @@ class TeamController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("user.teams", compact('UserTeams','result_tema','unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("user.teams", compact('UserTeams', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
             ->with("teams", $teams)
             ->with("patterns", TeamLogic::PATTERN)
             ->with("invites", $invites);
@@ -230,8 +229,24 @@ class TeamController extends Controller
         $user = User::find(Auth::user()->id);
         $teams = $this->teamLogic->getUserTeams($user->id, ["Member", "Owner"], $request->team_name);
         $invites = $this->teamLogic->getUserTeams($user->id, ["Pending"], $request->team_name);
-        $patterns = ['zig-zag', 'isometric', 'wavy', 'triangle', 'paper', 'moon', 'rect', 'triangle-2', 'polka', 'polka-2',
-                    'line-bold-horizontal', 'line-bold-vertical', 'line-thin-diagonal', 'box', 'zig-zag-flat', 'circle'];
+        $patterns = [
+            'zig-zag',
+            'isometric',
+            'wavy',
+            'triangle',
+            'paper',
+            'moon',
+            'rect',
+            'triangle-2',
+            'polka',
+            'polka-2',
+            'line-bold-horizontal',
+            'line-bold-vertical',
+            'line-thin-diagonal',
+            'box',
+            'zig-zag-flat',
+            'circle'
+        ];
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -246,7 +261,7 @@ class TeamController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -294,7 +309,7 @@ class TeamController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("admin.teams", compact('patterns','result_tema','unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("admin.teams", compact('patterns', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
             ->with("teams", $teams)
             ->with("invites", $invites);
     }
@@ -312,8 +327,24 @@ class TeamController extends Controller
         $user = User::find(Auth::user()->id);
         $teams = $this->teamLogic->getUserTeams($user->id, ["Member", "Owner"], $request->team_name);
         $invites = $this->teamLogic->getUserTeams($user->id, ["Pending"], $request->team_name);
-        $patterns = ['zig-zag', 'isometric', 'wavy', 'triangle', 'paper', 'moon', 'rect', 'triangle-2', 'polka', 'polka-2',
-                    'line-bold-horizontal', 'line-bold-vertical', 'line-thin-diagonal', 'box', 'zig-zag-flat', 'circle'];
+        $patterns = [
+            'zig-zag',
+            'isometric',
+            'wavy',
+            'triangle',
+            'paper',
+            'moon',
+            'rect',
+            'triangle-2',
+            'polka',
+            'polka-2',
+            'line-bold-horizontal',
+            'line-bold-vertical',
+            'line-thin-diagonal',
+            'box',
+            'zig-zag-flat',
+            'circle'
+        ];
 
         $result_tema = DB::table('mode_aplikasi')
             ->select(
@@ -328,7 +359,7 @@ class TeamController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -376,7 +407,7 @@ class TeamController extends Controller
             ->whereNotNull('read_at')
             ->get();
 
-        return view("user.teams", compact('patterns','result_tema','unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
+        return view("user.teams", compact('patterns', 'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'))
             ->with("teams", $teams)
             ->with("invites", $invites);
     }
@@ -409,7 +440,7 @@ class TeamController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -504,7 +535,7 @@ class TeamController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -702,7 +733,7 @@ class TeamController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -806,7 +837,7 @@ class TeamController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 

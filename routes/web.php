@@ -17,7 +17,8 @@ use App\Http\Controllers\CopyCardController;
 use App\Http\Controllers\SSOController;
 
 // ----------------------------- Menu Sidebar Aktif ----------------------------- //
-function set_active($route) {
+function set_active($route)
+{
     if (is_array($route)) {
         return in_array(Request::path(), $route) ? 'active' : '';
     }
@@ -26,7 +27,7 @@ function set_active($route) {
 
 // ----------------------------- Autentikfikasi Login ----------------------------- //
 Route::get('/', function () {
-    // return view('auth.login');
+    return view('auth.login');
     return view('auth.landing');
 });
 
@@ -39,7 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('home', function () {
         return view('home');
     });
-    Route::get('home',function() {
+    Route::get('home', function () {
         return view('home');
     });
 });
@@ -62,8 +63,8 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'authenticate');
     Route::get('/logout', 'logout')->name('logout');
-    Route::get('/authorization/{username}', 'autorize')->name('autorize'); 
-    Route::get('/landing', 'landing')->name('landing'); 
+    Route::get('/authorization/{username}', 'autorize')->name('autorize');
+    Route::get('/landing', 'landing')->name('landing');
 });
 
 // ----------------------------- Kunci Layar ----------------------------- //
@@ -81,7 +82,7 @@ Route::controller(RegisterController::class)->group(function () {
 // ----------------------------- Lupa Kata Sandi ----------------------------- //
 Route::controller(ForgotPasswordController::class)->group(function () {
     Route::get('lupa-kata-sandi', 'getEmail')->name('lupa-kata-sandi');
-    Route::post('lupa-kata-sandi', 'postEmail')->name('lupa-kata-sandi');    
+    Route::post('lupa-kata-sandi', 'postEmail')->name('lupa-kata-sandi');
 });
 
 // ----------------------------- Atur Ulang Kata Sandi ----------------------------- //
@@ -129,15 +130,15 @@ Route::controller(TeamController::class)->group(function () {
     Route::get("admin/tim", "showTeams")->middleware(["auth", "auth.session"])->name("showTeams");
     Route::get("admin/tim/cari", "search")->middleware(["auth", "auth.session"])->name("searchTeam");
     Route::get("admin/tim/lihat-papan/{team_id}", "showTeam")->middleware(["auth", "auth.session", "userInTeam"])->name("viewTeam");
-    Route::get("admin/tim/undangan/diterima/{team_id}/{user_id}", "acceptInvite")->middleware(["auth", "auth.session", ])->name("acceptTeamInvite");
-    Route::get("admin/tim/undangan/ditolak/{team_id}/{user_id}", "rejectInvite")->middleware(["auth", "auth.session", ])->name("rejectTeamInvite");
+    Route::get("admin/tim/undangan/diterima/{team_id}/{user_id}", "acceptInvite")->middleware(["auth", "auth.session",])->name("acceptTeamInvite");
+    Route::get("admin/tim/undangan/ditolak/{team_id}/{user_id}", "rejectInvite")->middleware(["auth", "auth.session",])->name("rejectTeamInvite");
     Route::get("admin/tim/lihat-papan/cari/papan/{team_id}", "searchBoard")->middleware(["auth", "auth.session", "userInTeam"])->name("searchBoard");
     Route::post("admin/tim/perbaharui/tim/{team_id}", "updateData")->middleware(["auth", "auth.session", "userInTeam"])->name("doTeamDataUpdate");
     Route::post("admin/tim/hapus/tim/{team_id}", "deleteTeam")->middleware(["auth", "auth.session", "userInTeam"])->name("doDeleteTeam");
     Route::post("admin/tim/hapus/pengguna/{team_id}", "deleteMembers")->middleware(["auth", "auth.session", "userInTeam"])->name("deleteTeamMember");
     Route::post("admin/tim/undangan/{team_id}", "inviteMembers")->middleware(["auth", "auth.session", "userInTeam"])->name("doInviteMembers");
     Route::post("admin/tim/perbaharui/foto/{team_id}", "updateImage")->middleware(["auth", "auth.session", "userInTeam"])->name("doChangeTeamImage");
-    Route::get("admin/tim/undangan/{team_id}/{user_id}", "getInvite")->middleware(["auth", "auth.session", ])->name("getInvite");
+    Route::get("admin/tim/undangan/{team_id}/{user_id}", "getInvite")->middleware(["auth", "auth.session",])->name("getInvite");
     Route::post("admin/tim/tinggalkan/{team_id}", "leaveTeam")->middleware(["auth", "auth.session", "userInTeam"])->name("doLeaveTeam");
 
     // ----------------------------- User ----------------------------- //
@@ -145,8 +146,8 @@ Route::controller(TeamController::class)->group(function () {
     Route::get("user/tim", "showTeams2")->middleware(["auth", "auth.session"])->name("showTeams2");
     Route::get("user/tim/cari", "search2")->middleware(["auth", "auth.session"])->name("searchTeam2");
     Route::get("user/tim/lihat-papan/{team_id}", "showTeam2")->middleware(["auth", "auth.session", "userInTeam"])->name("viewTeam2");
-    Route::get("user/tim/undangan/diterima/{team_id}/{user_id}", "acceptInvite2")->middleware(["auth", "auth.session", ])->name("acceptTeamInvite2");
-    Route::get("user/tim/undangan/ditolak/{team_id}/{user_id}", "rejectInvite2")->middleware(["auth", "auth.session", ])->name("rejectTeamInvite2");
+    Route::get("user/tim/undangan/diterima/{team_id}/{user_id}", "acceptInvite2")->middleware(["auth", "auth.session",])->name("acceptTeamInvite2");
+    Route::get("user/tim/undangan/ditolak/{team_id}/{user_id}", "rejectInvite2")->middleware(["auth", "auth.session",])->name("rejectTeamInvite2");
     Route::get("user/tim/lihat-papan/cari/papan/{team_id}", "searchBoard2")->middleware(["auth", "auth.session", "userInTeam"])->name("searchBoard2");
     Route::post("user/tim/perbaharui/tim/{team_id}", "updateData2")->middleware(["auth", "auth.session", "userInTeam"])->name("doTeamDataUpdate2");
     Route::post("user/tim/hapus/tim/{team_id}", "deleteTeam2")->middleware(["auth", "auth.session", "userInTeam"])->name("doDeleteTeam2");
@@ -173,7 +174,7 @@ Route::controller(BoardController::class)->group(function () {
     Route::post("admin/tim/papan/kolom/kartu/cover/perbaharui", "perbaharuiCover")->name("perbaharuiCover");
     Route::post("admin/tim/papan/kolom/kartu/cover/hapus", "hapusCover")->name("hapusCover");
     Route::post('/get/data/kartu', 'getDataKartu')->name('getDataKartu');
-    
+
     // ----------------------------- All Role ----------------------------- //
     Route::post('/perbaharui/posisi/kolom', 'perbaharuiPosisiKolom')->name('perbaharuiPosisiKolom');
     Route::post('/perbaharui/posisi/kartu', 'perbaharuiPosisiKartu')->name('perbaharuiPosisiKartu');

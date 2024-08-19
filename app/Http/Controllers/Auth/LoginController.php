@@ -41,7 +41,7 @@ class LoginController extends Controller
     // Tampilan Masuk Aplikasi //
     public function login(Request $request)
     {
-        // return view('auth.login');
+        return view('auth.login');
         return view('auth.landing');
     }
     // /Tampilan Masuk Aplikasi //
@@ -58,13 +58,13 @@ class LoginController extends Controller
             Toastr::error('Gagal, Username / ID Employee / Email tidak valid. Silahkan masukkan kembali Username / ID Employee / Email valid.', 'Error');
             return redirect('login');
         }
-        
+
         try {
             $username   = $request->username_employee_id_atau_email;
             $password   = $request->password;
             $dt         = Carbon::now();
             $todayDate  = $dt->toDayDateTimeString();
-        
+
             $authUsername   = Auth::attempt(['username'     => $username, 'password' => $password, 'status' => 'Active']);
             $authEmployee   = Auth::attempt(['employee_id'  => $username, 'password' => $password, 'status' => 'Active']);
             $authEmail      = Auth::attempt(['email'        => $username, 'password' => $password, 'status' => 'Active']);
@@ -80,7 +80,7 @@ class LoginController extends Controller
                 Session::put('status', $user->status);
                 Session::put('role_name', $user->role_name);
                 Session::put('avatar', $user->avatar);
-                
+
                 $activityLog = ['name' => Session::get('name'), 'username' => $user->username, 'employee_id' => $user->employee_id, 'email' => $user->email, 'description' => 'Berhasil Masuk Aplikasi', 'date_time' => $todayDate];
                 DB::table('activity_logs')->insert($activityLog);
 
@@ -92,11 +92,9 @@ class LoginController extends Controller
 
                 Toastr::success('Anda berhasil masuk aplikasi', 'Success');
                 return redirect()->intended('home');
-
             } elseif (User::where('employee_id', $username)->orWhere('email', $username)->exists()) {
                 Toastr::error('Gagal, kata sandi anda tidak sama. Silahkan masukkan kembali kata sandi valid', 'Error');
                 return redirect('login');
-                
             } else {
                 Toastr::error('Gagal, Username / ID Employee / Email anda tidak terdaftar pada aplikasi ini', 'Error');
                 return redirect('login');
@@ -118,7 +116,7 @@ class LoginController extends Controller
         $todayDate = $dt->toDayDateTimeString();
 
         $user = User::where('username', $username)->where('status', 'Active')->first();
-
+        // dd($user);
         if (!$user) {
             $message = 'Akun Anda Tidak Terdaftar, Silahkan Hubungi Admin!';
             return view('auth.landing', compact('message'));
@@ -176,12 +174,12 @@ class LoginController extends Controller
         ];
         DB::table('users')->where('user_id', $result_user_id)->update($updateStatus);
 
-        $activityLog = ['name' => Session::get('name'), 'username'=> Session::get('username'), 'employee_id'=> Session::get('employee_id'), 'email'=> Session::get('email'), 'description' => 'Berhasil Keluar Aplikasi', 'date_time' => $todayDate];
+        $activityLog = ['name' => Session::get('name'), 'username' => Session::get('username'), 'employee_id' => Session::get('employee_id'), 'email' => Session::get('email'), 'description' => 'Berhasil Keluar Aplikasi', 'date_time' => $todayDate];
         DB::table('activity_logs')->insert($activityLog);
 
         $message = 'Terima kasih, Anda telah keluar aplikasi!';
         $message2 = 'Anda berhasil keluar aplikasi!';
-        
+
         $request->session()->forget('name');
         $request->session()->forget('email');
         $request->session()->forget('username');
@@ -192,10 +190,10 @@ class LoginController extends Controller
         $request->session()->forget('role_name');
         $request->session()->forget('avatar');
         $request->session()->flush();
-        
+
         Auth::logout();
         // return redirect('login'); //
-        return view('auth.landing', compact('message', 'message2')); 
+        return view('auth.landing', compact('message', 'message2'));
     }
     // Untuk Keluar Aplikasi //
 }

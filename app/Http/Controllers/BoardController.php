@@ -26,8 +26,7 @@ class BoardController extends Controller
         protected TeamLogic $teamLogic,
         protected BoardLogic $boardLogic,
         protected CardLogic $cardLogic
-    ) {
-    }
+    ) {}
 
     // Membuat Papan Khusus Admin //
     public function createBoard(Request $request, $team_id)
@@ -47,7 +46,7 @@ class BoardController extends Controller
 
         if ($createdBoard == null)
             Toastr::error('Gagal membuat papan, silahkan coba lagi!', 'Error');
-            return redirect()->back();
+        return redirect()->back();
 
         Toastr::success('Papan berhasil dibuat!', 'Success');
         return redirect()->back();
@@ -72,7 +71,7 @@ class BoardController extends Controller
 
         if ($createdBoard == null)
             Toastr::error('Gagal membuat papan, silahkan coba lagi!', 'Error');
-            return redirect()->back();
+        return redirect()->back();
 
         Toastr::success('Papan berhasil dibuat!', 'Success');
         return redirect()->back();
@@ -88,7 +87,7 @@ class BoardController extends Controller
         $team = Team::find($board->team_id);
         $teamOwner = $this->teamLogic->getTeamOwner($board->team_id);
         $dataColumnCard = Column::with('cards')
-            ->where('board_id', '=', $board_id )
+            ->where('board_id', '=', $board_id)
             ->get();
         $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
         $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
@@ -106,7 +105,7 @@ class BoardController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -194,7 +193,7 @@ class BoardController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -217,7 +216,7 @@ class BoardController extends Controller
         $team = Team::find($board->team_id);
         $teamOwner = $this->teamLogic->getTeamOwner($board->team_id);
         $dataColumnCard = Column::with('cards')
-            ->where('board_id', '=', $board_id )
+            ->where('board_id', '=', $board_id)
             ->get();
         $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
         $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
@@ -235,7 +234,7 @@ class BoardController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -323,7 +322,7 @@ class BoardController extends Controller
                 'mode_aplikasi.ikon_plugin',
                 'mode_aplikasi.bayangan_kotak_header',
                 'mode_aplikasi.warna_mode_2',
-                )
+            )
             ->where('user_id', auth()->user()->user_id)
             ->get();
 
@@ -878,10 +877,10 @@ class BoardController extends Controller
 
             // Hapus Judul Checklist
             TitleChecklists::withTrashed()->where('cards_id', $card->id)->get()->each(function ($titleChecklist) {
-                
+
                 // Hapus Checklist
                 Checklists::withTrashed()->where('title_checklists_id', $titleChecklist->id)->forceDelete();
-                
+
                 // Hapus Judul Checklist
                 $titleChecklist->forceDelete();
             });
@@ -1008,8 +1007,10 @@ class BoardController extends Controller
         DB::beginTransaction();
         try {
             $request->validate(
-                ["content" => "required|max:255"
-            ]);
+                [
+                    "content" => "required|max:255"
+                ]
+            );
 
             $user_id = $request->user_id;
             $card_id = $request->card_id;
@@ -1044,8 +1045,10 @@ class BoardController extends Controller
         DB::beginTransaction();
         try {
             $request->validate(
-                ["content" => "required|max:255"
-            ]);
+                [
+                    "content" => "required|max:255"
+                ]
+            );
 
             $user_id = $request->user_id;
             $card_id = $request->card_id;
@@ -1158,7 +1161,7 @@ class BoardController extends Controller
     {
         $totData = Checklists::where('title_checklists_id', $title_checklists_id)->count();
         $countActive = Checklists::where('title_checklists_id', $title_checklists_id)->where('is_active', 1)->count();
-        $percentage = !empty($countActive) ? round(($countActive / $totData) * 100) : 0; 
+        $percentage = !empty($countActive) ? round(($countActive / $totData) * 100) : 0;
         TitleChecklists::where('id', $title_checklists_id)->update([
             'percentage' => $percentage
         ]);
