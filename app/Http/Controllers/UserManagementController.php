@@ -21,86 +21,14 @@ class UserManagementController extends Controller
     // Tampilan Daftar Pengguna //
     public function index()
     {
-        if (Session::get('role_name') == 'Admin') {
-            $result      = DB::table('users')->get();
-            $role_name   = DB::table('role_type_users')->get();
-            $status_user = DB::table('user_types')->get();
-
-            $result_tema = DB::table('mode_aplikasi')
-                ->select(
-                    'mode_aplikasi.id',
-                    'mode_aplikasi.tema_aplikasi',
-                    'mode_aplikasi.warna_sistem',
-                    'mode_aplikasi.warna_sistem_tulisan',
-                    'mode_aplikasi.warna_mode',
-                    'mode_aplikasi.tabel_warna',
-                    'mode_aplikasi.tabel_tulisan_tersembunyi',
-                    'mode_aplikasi.warna_dropdown_menu',
-                    'mode_aplikasi.ikon_plugin',
-                    'mode_aplikasi.bayangan_kotak_header',
-                    'mode_aplikasi.warna_mode_2',
-                )
-                ->where('user_id', auth()->user()->user_id)
-                ->get();
-
-            $user = auth()->user();
-            $role = $user->role_name;
-            $unreadNotifications = Notification::where('notifiable_id', $user->id)
-                ->where('notifiable_type', get_class($user))
-                ->whereNull('read_at')
-                ->get();
-
-            $readNotifications = Notification::where('notifiable_id', $user->id)
-                ->where('notifiable_type', get_class($user))
-                ->whereNotNull('read_at')
-                ->get();
-
-            $semua_notifikasi = DB::table('notifications')
-                ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-                ->select(
-                    'notifications.*',
-                    'notifications.id',
-                    'users.name',
-                    'users.avatar'
-                )
-                ->get();
-
-            $belum_dibaca = DB::table('notifications')
-                ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-                ->select(
-                    'notifications.*',
-                    'notifications.id',
-                    'users.name',
-                    'users.avatar'
-                )
-                ->whereNull('read_at')
-                ->get();
-
-            $dibaca = DB::table('notifications')
-                ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-                ->select(
-                    'notifications.*',
-                    'notifications.id',
-                    'users.name',
-                    'users.avatar'
-                )
-                ->whereNotNull('read_at')
-                ->get();
-
-            return view('usermanagement.user_control', compact(
-                'result',
-                'role_name',
-                'status_user',
-                'result_tema',
-                'unreadNotifications',
-                'readNotifications',
-                'semua_notifikasi',
-                'belum_dibaca',
-                'dibaca'
-            ));
-        } else {
-            return redirect()->route('home');
-        }
+        $result      = DB::table('users')->get();
+        $role_name   = DB::table('role_type_users')->get();
+        $status_user = DB::table('user_types')->get();
+        return view('admin.user_control', compact(
+            'result',
+            'role_name',
+            'status_user'
+        ));
     }
     // /Tampilan Daftar Pengguna //
 
@@ -124,26 +52,15 @@ class UserManagementController extends Controller
         $type_role   = $request->type_role;
         $type_status = $request->type_status;
 
-        // Pencarian berdasarkan nama //
-        if (!empty($user_name)) {
-            $users->when($user_name, function ($query) use ($user_name) {
-                $query->where('name', 'LIKE', '%' . $user_name . '%');
-            });
-        }
-
-        // Pencarian berdasarkan tipe role //
-        if (!empty($type_role)) {
-            $users->when($type_role, function ($query) use ($type_role) {
+        $users->when($user_name, function ($query) use ($user_name) {
+            $query->where('name', 'LIKE', "%{$user_name}%");
+        })
+            ->when($type_role, function ($query) use ($type_role) {
                 $query->where('role_name', $type_role);
-            });
-        }
-
-        // Pencarian berdasarkan status //
-        if (!empty($type_status)) {
-            $users->when($type_status, function ($query) use ($type_status) {
+            })
+            ->when($type_status, function ($query) use ($type_status) {
                 $query->where('status', $type_status);
             });
-        }
 
         $totalRecordsWithFilter = $users->where(function ($query) use ($searchValue) {
             $query->where('name', 'like', '%' . $searchValue . '%');
@@ -155,10 +72,6 @@ class UserManagementController extends Controller
             $query->orWhere('role_name', 'like', '%' . $searchValue . '%');
             $query->orWhere('status', 'like', '%' . $searchValue . '%');
         })->count();
-
-        if ($columnName == 'user_id') {
-            $columnName = 'user_id';
-        }
 
         $records = $users->orderBy($columnName, $columnSortOrder)
             ->where(function ($query) use ($searchValue) {
@@ -178,9 +91,9 @@ class UserManagementController extends Controller
         $data_arr = [];
         foreach ($records as $key => $record) {
             if ($record->status_online === "Online") {
-                $record->name = '<h2 class="table-avatar"><a href="' . url('user/profile/' . $record->user_id) . '" class="name">' . '<img class="avatar" data-avatar=' . $record->avatar . ' src="' . url('/assets/images/' . $record->avatar) . '" loading="lazy"><span class="status_online"></span>' . $record->name . '</a></h2>';
+                $record->name = '<h2 class="table-avatar"><a href="' . route('showProfile', ['user_id' => $record->user_id]) . '" class="name">' . '<img class="avatar" data-avatar=' . $record->avatar . ' src="' . url('/assets/images/' . $record->avatar) . '" loading="lazy"><span class="status_online"></span>' . $record->name . '</a></h2>';
             } else {
-                $record->name = '<h2 class="table-avatar"><a href="' . url('user/profile/' . $record->user_id) . '" class="name">' . '<img class="avatar" data-avatar=' . $record->avatar . ' src="' . url('/assets/images/' . $record->avatar) . '" loading="lazy"><span class="status_offline"></span>' . $record->name . '</a></h2>';
+                $record->name = '<h2 class="table-avatar"><a href="' . route('showProfile', ['user_id' => $record->user_id]) . '" class="name">' . '<img class="avatar" data-avatar=' . $record->avatar . ' src="' . url('/assets/images/' . $record->avatar) . '" loading="lazy"><span class="status_offline"></span>' . $record->name . '</a></h2>';
             }
             if ($record->role_name == 'Admin') {
                 $role_name = '<span class="badge bg-inverse-danger role_name">' . $record->role_name . '</span>';
@@ -275,76 +188,8 @@ class UserManagementController extends Controller
     public function tampilanUserLogAktivitas()
     {
         $activityLog = DB::table('user_activity_logs')->get();
-
-        $result_tema = DB::table('mode_aplikasi')
-            ->select(
-                'mode_aplikasi.id',
-                'mode_aplikasi.tema_aplikasi',
-                'mode_aplikasi.warna_sistem',
-                'mode_aplikasi.warna_sistem_tulisan',
-                'mode_aplikasi.warna_mode',
-                'mode_aplikasi.tabel_warna',
-                'mode_aplikasi.tabel_tulisan_tersembunyi',
-                'mode_aplikasi.warna_dropdown_menu',
-                'mode_aplikasi.ikon_plugin',
-                'mode_aplikasi.bayangan_kotak_header',
-                'mode_aplikasi.warna_mode_2'
-            )
-            ->where('user_id', auth()->user()->user_id)
-            ->get();
-
-        $user = auth()->user();
-        $role = $user->role_name;
-        $unreadNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNull('read_at')
-            ->get();
-
-        $readNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNotNull('read_at')
-            ->get();
-
-        $semua_notifikasi = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->get();
-
-        $belum_dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNull('read_at')
-            ->get();
-
-        $dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNotNull('read_at')
-            ->get();
-
-        return view('usermanagement.user_activity_log', compact(
-            'activityLog',
-            'result_tema',
-            'unreadNotifications',
-            'readNotifications',
-            'semua_notifikasi',
-            'belum_dibaca',
-            'dibaca'
+        return view('admin.user_activity_log', compact(
+            'activityLog'
         ));
     }
     // /Tampilan Pengguna Log Aktivitas //
@@ -353,301 +198,27 @@ class UserManagementController extends Controller
     public function tampilanLogAktivitas()
     {
         $activityLog = DB::table('activity_logs')->get();
-
-        $result_tema = DB::table('mode_aplikasi')
-            ->select(
-                'mode_aplikasi.id',
-                'mode_aplikasi.tema_aplikasi',
-                'mode_aplikasi.warna_sistem',
-                'mode_aplikasi.warna_sistem_tulisan',
-                'mode_aplikasi.warna_mode',
-                'mode_aplikasi.tabel_warna',
-                'mode_aplikasi.tabel_tulisan_tersembunyi',
-                'mode_aplikasi.warna_dropdown_menu',
-                'mode_aplikasi.ikon_plugin',
-                'mode_aplikasi.bayangan_kotak_header',
-                'mode_aplikasi.warna_mode_2'
-            )
-            ->where('user_id', auth()->user()->user_id)
-            ->get();
-
-        $user = auth()->user();
-        $role = $user->role_name;
-        $unreadNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNull('read_at')
-            ->get();
-
-        $readNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNotNull('read_at')
-            ->get();
-
-        $semua_notifikasi = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->get();
-
-        $belum_dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNull('read_at')
-            ->get();
-
-        $dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNotNull('read_at')
-            ->get();
-
-        return view('usermanagement.activity_log', compact(
+        return view('admin.activity_log', compact(
             'activityLog',
-            'result_tema',
-            'unreadNotifications',
-            'readNotifications',
-            'semua_notifikasi',
-            'belum_dibaca',
-            'dibaca'
         ));
     }
     // /Tampilan Log Aktivitas //
 
-    // Tampilan Profile Admin //
-    public function profileAdmin()
+    // Tampilan Profile User / Admin //
+    public function profileUser($user_id = null)
     {
-        $profile = Session::get('user_id');
-        $user = DB::table('users')->get();
-        $employees = DB::table('users')->where('user_id', $profile)->first();
-
-        $result_tema = DB::table('mode_aplikasi')
-            ->select(
-                'mode_aplikasi.id',
-                'mode_aplikasi.tema_aplikasi',
-                'mode_aplikasi.warna_sistem',
-                'mode_aplikasi.warna_sistem_tulisan',
-                'mode_aplikasi.warna_mode',
-                'mode_aplikasi.tabel_warna',
-                'mode_aplikasi.tabel_tulisan_tersembunyi',
-                'mode_aplikasi.warna_dropdown_menu',
-                'mode_aplikasi.ikon_plugin',
-                'mode_aplikasi.bayangan_kotak_header',
-                'mode_aplikasi.warna_mode_2'
-            )
-            ->where('user_id', auth()->user()->user_id)
-            ->get();
-
-        $user = auth()->user();
-        $role = $user->role_name;
-        $unreadNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNull('read_at')
-            ->get();
-
-        $readNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNotNull('read_at')
-            ->get();
-
-        $semua_notifikasi = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->get();
-
-        $belum_dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNull('read_at')
-            ->get();
-
-        $dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNotNull('read_at')
-            ->get();
-
-        if (empty($employees)) {
-            $information = DB::table('users')->where('user_id', $profile)->first();
-            return view('usermanagement.profile_user', compact(
-                'information',
-                'user',
-                'result_tema',
-                'unreadNotifications',
-                'readNotifications',
-                'semua_notifikasi',
-                'belum_dibaca',
-                'dibaca'
-            ));
+        if ($user_id == null) {
+            $users = User::where('user_id', Session::get('user_id'))->firstOrFail();
         } else {
-            $user_id = $employees->user_id;
-            if ($user_id == $profile) {
-                $information = DB::table('users')->where('user_id', $profile)->first();
-                return view('usermanagement.profile_user', compact(
-                    'information',
-                    'user',
-                    'result_tema',
-                    'unreadNotifications',
-                    'readNotifications',
-                    'semua_notifikasi',
-                    'belum_dibaca',
-                    'dibaca'
-                ));
-            } else {
-                $information = User::all();
-                return view('usermanagement.profile_user', compact(
-                    'information',
-                    'user',
-                    'result_tema',
-                    'unreadNotifications',
-                    'readNotifications',
-                    'semua_notifikasi',
-                    'belum_dibaca',
-                    'dibaca'
-                ));
-            }
+            $users = User::where('user_id', $user_id)->firstOrFail();
         }
-    }
-    // /Tampilan Profile Admin //
-
-    // Tampilan Profile User //
-    public function profileUser()
-    {
-        $profile = Session::get('user_id');
-        $user = DB::table('users')->get();
-        $employees = DB::table('users')->where('user_id', $profile)->first();
-
-        $result_tema = DB::table('mode_aplikasi')
-            ->select(
-                'mode_aplikasi.id',
-                'mode_aplikasi.tema_aplikasi',
-                'mode_aplikasi.warna_sistem',
-                'mode_aplikasi.warna_sistem_tulisan',
-                'mode_aplikasi.warna_mode',
-                'mode_aplikasi.tabel_warna',
-                'mode_aplikasi.tabel_tulisan_tersembunyi',
-                'mode_aplikasi.warna_dropdown_menu',
-                'mode_aplikasi.ikon_plugin',
-                'mode_aplikasi.bayangan_kotak_header',
-                'mode_aplikasi.warna_mode_2'
-            )
-            ->where('user_id', auth()->user()->user_id)
-            ->get();
-
         $user = auth()->user();
-        $role = $user->role_name;
-        $unreadNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNull('read_at')
-            ->get();
-
-        $readNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNotNull('read_at')
-            ->get();
-
-        $semua_notifikasi = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->get();
-
-        $belum_dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNull('read_at')
-            ->get();
-
-        $dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNotNull('read_at')
-            ->get();
-
-        if (empty($employees)) {
-            $information = DB::table('users')->where('user_id', $profile)->first();
-            return view('usermanagement.profile-user', compact(
-                'information',
-                'user',
-                'result_tema',
-                'unreadNotifications',
-                'readNotifications',
-                'semua_notifikasi',
-                'belum_dibaca',
-                'dibaca'
-            ));
-        } else {
-            $user_id = $employees->user_id;
-            if ($user_id == $profile) {
-                $information = DB::table('users')->where('user_id', $profile)->first();
-                return view('usermanagement.profile-user', compact(
-                    'information',
-                    'user',
-                    'result_tema',
-                    'unreadNotifications',
-                    'readNotifications',
-                    'semua_notifikasi',
-                    'belum_dibaca',
-                    'dibaca'
-                ));
-            } else {
-                $information = User::all();
-                return view('usermanagement.profile-user', compact(
-                    'information',
-                    'user',
-                    'result_tema',
-                    'unreadNotifications',
-                    'readNotifications',
-                    'semua_notifikasi',
-                    'belum_dibaca',
-                    'dibaca'
-                ));
-            }
-        }
+        return view('dashboard.profile_user', compact(
+            'users',
+            'user',
+        ));
     }
-    // /Tampilan Profile User //
+    // /Tampilan Profile User / Admin //
 
     // Perbaharui Data Pengguna Admin //
     public function perbaharuiDataPengguna(Request $request)
@@ -684,67 +255,28 @@ class UserManagementController extends Controller
     }
     // /Perbaharui Data Pengguna Admin //
 
-    // Perbaharui Data Pengguna User //
-    public function perbaharuiDataPengguna2(Request $request)
-    {
-        try {
-            $updateDaftarPegawai = [
-                'name'          => $request->name,
-                'email'         => $request->email,
-                'username'      => $request->username,
-                'employee_id'   => $request->employee_id,
-                'tgl_lahir'     => $request->birthDate,
-                'avatar'        => $request->avatar,
-            ];
-            DB::table('daftar_pegawai')->where('user_id', $request->user_id)->update($updateDaftarPegawai);
-
-            $information = User::updateOrCreate(['user_id' => $request->user_id]);
-            $information->user_id       = $request->user_id;
-            $information->name          = $request->name;
-            $information->email         = $request->email;
-            $information->username      = $request->username;
-            $information->employee_id   = $request->employee_id;
-            $information->tgl_lahir     = $request->birthDate;
-            $information->avatar        = $request->avatar;
-            $information->save();
-
-            DB::commit();
-            Toastr::success('Data pengguna berhasil diperbaharui', 'Success');
-            return redirect()->back();
-        } catch (\Exception $e) {
-            DB::rollback();
-            Toastr::error('Data pengguna gagal diperbaharui', 'Error');
-            return redirect()->back();
-        }
-    }
-    // /Perbaharui Data Pengguna User //
 
     // Perbaharui Foto Profil //
     public function perbaharuiFotoProfile(Request $request)
     {
         try {
-            if (!empty($request->images)) {
-
+            if ($request->has('images')) {
+                $image = $request->file('images');
                 $image_name = $request->hidden_image;
-                $image      = $request->file('images');
+                if ($image_name === 'photo_defaults.jpg' || $image_name !== Auth::user()->avatar) {
+                    if ($image) {
+                        $image_name = rand() . '.' . $image->getClientOriginalExtension();
+                        $image->move(public_path('/assets/images/'), $image_name);
 
-                if ($image_name == 'photo_defaults.jpg') {
-                    if ($image != '') {
-                        $image_name = rand() . '.' . $image->getClientOriginalExtension();
-                        $image->move(public_path('/assets/images/'), $image_name);
-                    }
-                } else {
-                    if ($image != '') {
-                        $image_name = rand() . '.' . $image->getClientOriginalExtension();
-                        $image->move(public_path('/assets/images/'), $image_name);
-                        unlink('assets/images/' . Auth::user()->avatar);
+                        if (Auth::user()->avatar !== 'photo_defaults.jpg') {
+                            unlink('assets/images/' . Auth::user()->avatar);
+                        }
                     }
                 }
-
                 $update = [
-                    'user_id'   => $request->user_id,
-                    'name'      => $request->name,
-                    'avatar'    => $image_name,
+                    'user_id' => $request->user_id,
+                    'name' => $request->name,
+                    'avatar' => $image_name,
                 ];
                 User::where('user_id', $request->user_id)->update($update);
             }
@@ -909,16 +441,12 @@ class UserManagementController extends Controller
             ];
 
             DB::table('user_activity_logs')->insert($activityLog);
-
             User::find($request->id)->delete();
-
             Auth::logout();
-
             DB::commit();
             Toastr::success('Akun pengguna berhasil dihapus', 'Success');
             return redirect()->route("login");
         } catch (\Exception $e) {
-            dd($e);
             DB::rollback();
             Toastr::error('Akun pengguna gagal dihapus', 'Error');
             return redirect()->back();
@@ -929,75 +457,7 @@ class UserManagementController extends Controller
     // Tampilan Perbaharui Kata Sandi //
     public function tampilanPerbaharuiKataSandi()
     {
-        $result_tema = DB::table('mode_aplikasi')
-            ->select(
-                'mode_aplikasi.id',
-                'mode_aplikasi.tema_aplikasi',
-                'mode_aplikasi.warna_sistem',
-                'mode_aplikasi.warna_sistem_tulisan',
-                'mode_aplikasi.warna_mode',
-                'mode_aplikasi.tabel_warna',
-                'mode_aplikasi.tabel_tulisan_tersembunyi',
-                'mode_aplikasi.warna_dropdown_menu',
-                'mode_aplikasi.ikon_plugin',
-                'mode_aplikasi.bayangan_kotak_header',
-                'mode_aplikasi.warna_mode_2',
-            )
-            ->where('user_id', auth()->user()->user_id)
-            ->get();
-
-        $user = auth()->user();
-        $role = $user->role_name;
-        $unreadNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNull('read_at')
-            ->get();
-
-        $readNotifications = Notification::where('notifiable_id', $user->id)
-            ->where('notifiable_type', get_class($user))
-            ->whereNotNull('read_at')
-            ->get();
-
-        $semua_notifikasi = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->get();
-
-        $belum_dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNull('read_at')
-            ->get();
-
-        $dibaca = DB::table('notifications')
-            ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-            ->select(
-                'notifications.*',
-                'notifications.id',
-                'users.name',
-                'users.avatar'
-            )
-            ->whereNotNull('read_at')
-            ->get();
-
-        return view('settings.changepassword', compact(
-            'result_tema',
-            'unreadNotifications',
-            'readNotifications',
-            'semua_notifikasi',
-            'belum_dibaca',
-            'dibaca'
-        ));
+        return view('dashboard.changepassword');
     }
     // /Tampilan Perbaharui Kata Sandi //
 
@@ -1042,43 +502,29 @@ class UserManagementController extends Controller
             ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
             ->select('card_histories.*', 'users.name as result_name');
         $totalData = $historyActivity->count();
-
-        $totalFiltered = $totalData;
-
         $limit = $request->length;
         $start = $request->start;
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
         $search = $request->input('search.value');
 
-        if (empty($search)) {
-            $historyActivity = DB::table('card_histories')
-                ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
-                ->select('card_histories.*', 'users.name as result_name')
-                ->offset($start)
-                ->limit($limit)
-                ->orderBy($order, $dir)
-                ->get();
-        } else {
-            $historyActivity = DB::table('card_histories')
-                ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
-                ->select('card_histories.*', 'users.name as result_name')
-                ->where(function ($query) use ($search) {
-                    $query->where('users.name', 'like', "%{$search}%");
-                })
-                ->offset($start)
-                ->limit($limit)
-                ->orderBy($order, $dir)
-                ->get();
+        $query = DB::table('card_histories')
+            ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
+            ->select('card_histories.*', 'users.name as result_name')
+            ->offset($start)
+            ->limit($limit)
+            ->orderBy($order, $dir);
 
-            $totalFiltered = DB::table('card_histories')
-                ->leftjoin('users', 'card_histories.user_id', '=', 'users.id')
-                ->select('card_histories.*', 'users.name as result_name')
-                ->where(function ($query) use ($search) {
-                    $query->where('users.name', 'like', "%{$search}%");
-                })
-                ->count();
+        if (!empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->where('users.name', 'like', "%{$search}%");
+            });
+            $totalData = $query->count();
+        } else {
+            $totalData = $query->count();
         }
+
+        $historyActivity = $query->get();
 
         $data_arr = [];
         if (!empty($historyActivity)) {
@@ -1098,7 +544,7 @@ class UserManagementController extends Controller
         $response = array(
             "draw"            => intval($request->input('draw')),
             "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
+            "recordsFiltered" => intval($totalData),
             "data"            => $data_arr
         );
 
@@ -1120,8 +566,6 @@ class UserManagementController extends Controller
         );
 
         $totalData = activityLog::count();
-        $totalFiltered = $totalData;
-
         $limit = $request->length;
         $start = $request->start;
         $order = $columns[$request->input('order.0.column')];
@@ -1129,21 +573,18 @@ class UserManagementController extends Controller
         $search = $request->input('search.value');
         $counter = $start + 1;
 
-        if (empty($search)) {
-            $activityLog = activityLog::offset($start)
-                ->limit($limit)
-                ->orderBy($order, $dir)
-                ->get();
-        } else {
-            $activityLog =  activityLog::where('name', 'like', "%{$search}%")
-                ->offset($start)
-                ->limit($limit)
-                ->orderBy($order, $dir)
-                ->get();
+        $query = activityLog::offset($start)
+            ->limit($limit)
+            ->orderBy($order, $dir);
 
-            $totalFiltered = activityLog::where('name', 'like', "%{$search}%")
-                ->count();
+        if (!empty($search)) {
+            $query->where('name', 'like', "%{$search}%");
+            $totalFiltered = $query->count();
+        } else {
+            $totalFiltered = activityLog::count();
         }
+        $activityLog = $query->get();
+
 
         $data = array();
         if (!empty($activityLog)) {

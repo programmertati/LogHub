@@ -14,8 +14,7 @@ class ChecklistController extends Controller
 {
     public function __construct(
         protected CardLogic $cardLogic
-    ) {
-    }
+    ) {}
 
     // Tambahkan Title Kartu Admin //
     public function addTitle(Request $request)
@@ -24,11 +23,10 @@ class ChecklistController extends Controller
             'cards_id' => $request->card_id,
             'name' => $request->titleChecklist
         ]);
-
         $user_id = Auth::user()->id;
         $card_id = $request->card_id;
         $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Judul Checklist");
-        
+
         $getChecklistPercentage = TitleChecklists::where('id', $titlechecklist->id)->first()->percentage ?? 0;
         $titleChecklistsPercentage = $getChecklistPercentage === 100 ? 'checked' : '';
 
@@ -40,11 +38,6 @@ class ChecklistController extends Controller
         // Hitung persentase
         $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
 
-        // Mendapatkan tema aplikasi
-        $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
-        $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
-        $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
-
         return response()->json([
             'message' => 'Data berhasil disimpan!',
             'card_id' => $request->card_id,
@@ -52,56 +45,10 @@ class ChecklistController extends Controller
             'titleChecklistsPercentage' => $titleChecklistsPercentage,
             'jumlahChecklist' => $jumlahChecklist,
             'perChecklist' => $perChecklist,
-            'totalPercentage' => $totalPercentage,
-            'result_tema' => [
-                'tema_aplikasi' => $tema_aplikasi
-            ]
+            'percentage' =>  $getChecklistPercentage,
         ]);
     }
     // /Tambahkan Title Kartu Admin //
-
-    // Tambahkan Title Kartu User //
-    public function addTitle2(Request $request)
-    {
-        $titlechecklist = TitleChecklists::create([
-            'cards_id' => $request->card_id,
-            'name' => $request->titleChecklist
-        ]);
-
-        $user_id = Auth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Judul Checklist");
-        
-        $getChecklistPercentage = TitleChecklists::where('id', $titlechecklist->id)->first()->percentage ?? 0;
-        $titleChecklistsPercentage = $getChecklistPercentage === 100 ? 'checked' : '';
-
-        // Untuk icon checklist
-        $titleChecklistID = TitleChecklists::where('cards_id', $card_id)->pluck('id');
-        $perChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->where('is_active', 1)->count();
-        $jumlahChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->count();
-
-        // Hitung persentase
-        $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
-
-        // Mendapatkan tema aplikasi
-        $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
-        $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
-        $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
-
-        return response()->json([
-            'message' => 'Data berhasil disimpan!',
-            'card_id' => $request->card_id,
-            'titlechecklist' => $titlechecklist,
-            'titleChecklistsPercentage' => $titleChecklistsPercentage,
-            'jumlahChecklist' => $jumlahChecklist,
-            'perChecklist' => $perChecklist,
-            'totalPercentage' => $totalPercentage,
-            'result_tema' => [
-                'tema_aplikasi' => $tema_aplikasi
-            ]
-        ]);
-    }
-    // /Tambahkan Title Kartu User //
 
     // Untuk membuat template judul checklist
     public function templateTitle(Request $request)
@@ -124,7 +71,7 @@ class ChecklistController extends Controller
             $titleChecklist->percentage = 0;
             $titleChecklist->position = 0;
             $titleChecklist->save();
-            
+
             // Simpan setiap judul checklist yang dibuat ke dalam array
             $titleChecklists[] = $titleChecklist;
         }
@@ -142,21 +89,13 @@ class ChecklistController extends Controller
         // Hitung persentase
         $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
 
-        // Mendapatkan tema aplikasi
-        $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
-        $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
-        $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
-
         return response()->json([
             'message' => 'Template judul checklist berhasil dibuat!',
             'card_id' => $request->cards_id,
             'titlechecklists' => $titleChecklists,
             'jumlahChecklist' => $jumlahChecklist,
             'perChecklist' => $perChecklist,
-            'totalPercentage' => $totalPercentage,
-            'result_tema' => [
-                'tema_aplikasi' => $tema_aplikasi
-            ]
+            'percentage' => $totalPercentage,
         ]);
     }
     // /Untuk membuat template judul checklist
@@ -202,7 +141,7 @@ class ChecklistController extends Controller
         $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
         $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
         $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
-    
+
         return response()->json([
             'message' => 'Berhasil centang semua checklist!',
             'checklist' => $checklists,
@@ -236,25 +175,6 @@ class ChecklistController extends Controller
     }
     // /Perbaharui Title Kartu Admin //
 
-    // Perbaharui Title Kartu User //
-    public function updateTitle2(Request $request)
-    {
-        $user_id = AUth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Judul Checklist");
-        
-        $titlechecklist = TitleChecklists::where('id', $request->title_id)->update([
-            'name' => $request->titleChecklistUpdate
-        ]);
-
-        return response()->json([
-            'message' => 'Data berhasil disimpan!',
-            'card_id' => $request->card_id,
-            'titlechecklist' => $titlechecklist
-        ]);
-    }
-    // /Perbaharui Title Kartu User //
-
     // Hapus Judul Kartu Admin //
     public function hapusTitle(Request $request)
     {
@@ -276,9 +196,9 @@ class ChecklistController extends Controller
 
             // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
             $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
-            
+
             // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
-            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function ($query) use ($cardId) {
                 $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
             })->onlyTrashed()->count();
 
@@ -317,68 +237,6 @@ class ChecklistController extends Controller
     }
     // /Hapus Judul Kartu Admin //
 
-    // Hapus Judul Kartu User //
-    public function hapusTitle2(Request $request)
-    {
-        DB::beginTransaction();
-        try {
-            $titleChecklist = TitleChecklists::findOrFail($request->id);
-
-            // Asumsi title checklist memiliki bidang cards->id
-            $cardId = $titleChecklist->cards_id;
-
-            // Hapus checklist yang terkait terlebih dahulu
-            $Checklist = Checklists::where('title_checklists_id', $titleChecklist->id)->delete();
-
-            // Hapus title checklist
-            $titleChecklist->delete();
-
-            $user_id = Auth::user()->id;
-            $this->cardLogic->cardAddEvent($cardId, $user_id, "Menghapus Judul Checklist");
-
-            // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
-            $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
-            
-            // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
-            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
-                $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
-            })->onlyTrashed()->count();
-
-            // Untuk icon checklist
-            $titleChecklistID = TitleChecklists::where('cards_id', $cardId)->pluck('id');
-            $perChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->where('is_active', 1)->count();
-            $jumlahChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->count();
-
-            // Hitung persentase
-            $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
-
-            // Mendapatkan tema aplikasi
-            $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
-            $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
-            $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
-
-            DB::commit();
-            return response()->json([
-                'message' => 'Berhasil menghapus judul checklist!',
-                'softDeletedTitle' => $softDeletedTitle,
-                'softDeletedChecklist' => $softDeletedChecklist,
-                'cardId' => $cardId,
-                'titlechecklist' => $titleChecklist,
-                'checklist' => $Checklist,
-                'jumlahChecklist' => $jumlahChecklist,
-                'perChecklist' => $perChecklist,
-                'totalPercentage' => $totalPercentage,
-                'result_tema' => [
-                    'tema_aplikasi' => $tema_aplikasi
-                ]
-            ]);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['message' => 'Gagal menghapus judul checklist!']);
-        }
-    }
-    // /Hapus Judul Kartu User //
-
     // Tambahkan Checklist Admin //
     public function addChecklist(Request $request)
     {
@@ -389,7 +247,7 @@ class ChecklistController extends Controller
 
         //Get Checklists
         $checklist = Checklists::where('title_checklists_id', $request->title_id)->where('id', $data->id)->first();
-        
+
         //Get Progress Bar
         $titleChecklist = $this->progressBar($checklist->title_checklists_id);
 
@@ -424,51 +282,6 @@ class ChecklistController extends Controller
     }
     // /Tambahkan Checklist Admin //
 
-    // Tambahkan Checklist User //
-    public function addChecklist2(Request $request)
-    {
-        $data = Checklists::create([
-            'title_checklists_id' => $request->title_id,
-            'name' => $request->checklist
-        ]);
-
-        //Get Checklists
-        $checklist = Checklists::where('title_checklists_id', $request->title_id)->where('id', $data->id)->first();
-        
-        //Get Progress Bar
-        $titleChecklist = $this->progressBar($checklist->title_checklists_id);
-
-        $user_id = Auth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Membuat Checklist");
-
-        // Untuk icon checklist
-        $titleChecklistID = TitleChecklists::where('cards_id', $card_id)->pluck('id');
-        $perChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->where('is_active', 1)->count();
-        $jumlahChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->count();
-
-        // Hitung persentase
-        $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
-
-        // Mendapatkan tema aplikasi
-        $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
-        $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
-        $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
-
-        return response()->json([
-            'message' => 'Data berhasil ditambahkan!',
-            'checklist' => $checklist,
-            'titlechecklist' => $titleChecklist,
-            'perChecklist' => $perChecklist,
-            'jumlahChecklist' => $jumlahChecklist,
-            'totalPercentage' => $totalPercentage,
-            'result_tema' => [
-                'tema_aplikasi' => $tema_aplikasi
-            ]
-        ]);
-    }
-    // /Tambahkan Checklist User //
-
     // Perbaharui Checklist Admin //
     public function updateChecklist(Request $request)
     {
@@ -476,55 +289,7 @@ class ChecklistController extends Controller
 
         //Update Checklists
         Checklists::where('id', $request->checklist_id)->update([
-            'name' => $request->{'checkbox-'.$request->checklist_id},
-            'is_active' => $is_active,
-        ]);
-
-        //Get Checklists
-        $checklist = Checklists::find($request->checklist_id);
-
-        //Get Progress Bar
-        $titleChecklist = $this->progressBar($checklist->title_checklists_id);
-
-        $user_id = Auth::user()->id;
-        $card_id = $request->card_id;
-        $this->cardLogic->cardAddEvent($card_id, $user_id, "Memperbaharui Checklist");
-
-        // Untuk icon checklist
-        $titleChecklistID = TitleChecklists::where('cards_id', $card_id)->pluck('id');
-        $perChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->where('is_active', 1)->count();
-        $jumlahChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->count();
-
-        // Hitung persentase
-        $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
-
-        // Mendapatkan tema aplikasi
-        $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
-        $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
-        $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
-
-        return response()->json([
-            'message' => 'Data berhasil diperbaharui!',
-            'checklist' => $checklist,
-            'titlechecklist' => $titleChecklist,
-            'perChecklist' => $perChecklist,
-            'jumlahChecklist' => $jumlahChecklist,
-            'totalPercentage' => $totalPercentage,
-            'result_tema' => [
-                'tema_aplikasi' => $tema_aplikasi
-            ]
-        ]);
-    }
-    // /Perbaharui Checklist Admin //
-
-    // Perbaharui Checklist Admin //
-    public function updateChecklist2(Request $request)
-    {
-        $is_active = $request->{$request->checklist_id} == 'on' ? 1 : 0;
-
-        //Update Checklists
-        Checklists::where('id', $request->checklist_id)->update([
-            'name' => $request->{'checkbox-'.$request->checklist_id},
+            'name' => $request->{'checkbox-' . $request->checklist_id},
             'is_active' => $is_active,
         ]);
 
@@ -571,7 +336,7 @@ class ChecklistController extends Controller
         DB::beginTransaction();
         try {
             $checklist = Checklists::findOrFail($request->id);
-            
+
             // Asumsi checklist memiliki bidang title_checklists_id
             $titleChecklistId = $checklist->title_checklists_id;
 
@@ -591,77 +356,9 @@ class ChecklistController extends Controller
 
             // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
             $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
-            
+
             // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
-            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
-                $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
-            })->onlyTrashed()->count();
-
-            // Untuk icon checklist
-            $titleChecklistID = TitleChecklists::where('cards_id', $card_id)->pluck('id');
-            $perChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->where('is_active', 1)->count();
-            $jumlahChecklist = Checklists::whereIn('title_checklists_id', $titleChecklistID)->count();
-
-            // Hitung persentase
-            $totalPercentage = !empty($perChecklist) ? round(($perChecklist / $jumlahChecklist) * 100) : 0;
-
-            // Mendapatkan tema aplikasi
-            $dataTema = ModeAplikasi::where('user_id', auth()->user()->user_id)->pluck('tema_aplikasi');
-            $result_tema = ModeAplikasi::whereIn('tema_aplikasi', $dataTema)->where('user_id', auth()->user()->user_id)->get();
-            $tema_aplikasi = $result_tema->pluck('tema_aplikasi');
-
-            DB::commit();
-            return response()->json([
-                'message' => 'Berhasil menghapus checklist!',
-                'softDeletedTitle' => $softDeletedTitle,
-                'softDeletedChecklist' => $softDeletedChecklist,
-                'cardId' => $cardId,
-                'titleChecklistId' => $titleChecklistId,
-                'titlechecklist' => $titleChecklist,
-                'checklist' => $checklist,
-                'perChecklist' => $perChecklist,
-                'jumlahChecklist' => $jumlahChecklist,
-                'totalPercentage' => $totalPercentage,
-                'result_tema' => [
-                    'tema_aplikasi' => $tema_aplikasi
-                ]
-            ]);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['message' => 'Gagal menghapus checklist!']);
-        }
-    }
-    // /Hapus Checklist Kartu Admin //
-
-    // Hapus Checklist Kartu Admin //
-    public function hapusChecklist2(Request $request)
-    {
-        DB::beginTransaction();
-        try {
-            $checklist = Checklists::findOrFail($request->id);
-            
-            // Asumsi checklist memiliki bidang title_checklists_id
-            $titleChecklistId = $checklist->title_checklists_id;
-
-            // Hapus checklist
-            $checklist->delete();
-
-            // Perbarui persentase untuk checklist
-            $titleChecklist = $this->progressBar($request->title_checklists_id);
-
-            // Ambil card_id dari titleChecklists terkait
-            $dataCardID = TitleChecklists::findOrFail($titleChecklistId);
-            $cardId = $dataCardID->cards_id;
-
-            $user_id = Auth::user()->id;
-            $card_id = $request->card_id;
-            $this->cardLogic->cardAddEvent($card_id, $user_id, "Menghapus Checklist");
-
-            // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
-            $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
-            
-            // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
-            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function ($query) use ($cardId) {
                 $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
             })->onlyTrashed()->count();
 
@@ -728,9 +425,9 @@ class ChecklistController extends Controller
 
             // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
             $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
-            
+
             // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
-            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function ($query) use ($cardId) {
                 $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
             })->onlyTrashed()->count();
 
@@ -791,9 +488,9 @@ class ChecklistController extends Controller
 
             // Hitung berapa banyak judul checklist yang masih dihapus untuk kartu ini
             $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
-            
+
             // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
-            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function ($query) use ($cardId) {
                 $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
             })->onlyTrashed()->count();
 
@@ -842,7 +539,7 @@ class ChecklistController extends Controller
             $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
 
             // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
-            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+            $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function ($query) use ($cardId) {
                 $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
             })->onlyTrashed()->count();
 
@@ -905,7 +602,7 @@ class ChecklistController extends Controller
                 $softDeletedTitle = TitleChecklists::where('cards_id', $cardId)->onlyTrashed()->count();
 
                 // Hitung berapa banyak checklist yang masih dihapus untuk semua title checklists di kartu ini
-                $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function($query) use ($cardId) {
+                $softDeletedChecklist = Checklists::whereIn('title_checklists_id', function ($query) use ($cardId) {
                     $query->select('id')->from('title_checklists')->where('cards_id', $cardId);
                 })->onlyTrashed()->count();
 
@@ -940,15 +637,15 @@ class ChecklistController extends Controller
         $dataTitleRecover = TitleChecklists::onlyTrashed()->where('cards_id', $cardId)->get();
 
         // Mendapatkan data checklist
-        $dataChecklistRecover = Checklists::onlyTrashed()->whereHas('titleChecklist', function($query) use ($cardId) {
+        $dataChecklistRecover = Checklists::onlyTrashed()->whereHas('titleChecklist', function ($query) use ($cardId) {
             $query->where('cards_id', $cardId);
         })->with('titleChecklist')->get();
 
         // Menyertakan data name dari TitleChecklists
-        $dataChecklistRecover->each(function($checklist) {
+        $dataChecklistRecover->each(function ($checklist) {
             $checklist->title_checklist_name = $checklist->titleChecklist->name;
         });
-    
+
         return response()->json([
             'dataTitleRecover' => $dataTitleRecover,
             'dataChecklistRecover' => $dataChecklistRecover,
@@ -963,7 +660,7 @@ class ChecklistController extends Controller
     {
         $totData = Checklists::where('title_checklists_id', $title_checklists_id)->count();
         $countActive = Checklists::where('title_checklists_id', $title_checklists_id)->where('is_active', 1)->count();
-        $percentage = !empty($countActive) ? round(($countActive / $totData) * 100) : 0; 
+        $percentage = !empty($countActive) ? round(($countActive / $totData) * 100) : 0;
         TitleChecklists::where('id', $title_checklists_id)->update([
             'percentage' => $percentage
         ]);

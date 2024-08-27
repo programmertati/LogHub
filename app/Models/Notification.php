@@ -13,14 +13,17 @@ class Notification extends Model
         'type',
         'notifiable_type',
         'notifiable_id',
-        'data', 
-        'read_at', 
+        'data',
+        'read_at',
         'created_at',
         'updated_at'
+    ];
+    protected $casts = [
+        'id' => 'string',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'notifiable_id');
     }
 }

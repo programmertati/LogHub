@@ -11,7 +11,7 @@
                     {!! Toastr::message() !!}
                     <h1 class="auth-title">Lock Screen.</h1>
                     <p class="auth-subtitle mb-5">Lock screen system managenent</p>
-                    @if(session()->has('error'))
+                    @if (session()->has('error'))
                         <div class="text-danger text-center text-bold">
                             {{ session()->get('error') }}
                         </div>
@@ -20,7 +20,9 @@
                     <form method="POST" action="{{ route('unlock') }}" class="md-float-material">
                         @csrf
                         <div class="form-group position-relative has-icon-left mb-4">
-                            <input type="password" class="form-control form-control-lg @error('password') is-invalid @enderror" name="password" placeholder="Enter Password">
+                            <input type="password"
+                                class="form-control form-control-lg @error('password') is-invalid @enderror" name="password"
+                                placeholder="Enter Password">
                             <div class="form-control-icon">
                                 <i class="bi bi-shield-lock"></i>
                             </div>

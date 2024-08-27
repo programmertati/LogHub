@@ -17,9 +17,9 @@ class BoardAccsessMiddleWare
     public function handle(Request $request, Closure $next): Response
     {
         $user_id = Auth::user()->id;
-        $team_id = intval($request->route('team_id'));
-        $board_id = intval($request->route('board_id'));
-        if(!$this->teamLogic->userHasAccsess($user_id, $team_id)){
+        $team_id = decrypt($request->route('team_id'));
+        $board_id = decrypt($request->route('board_id'));
+        if (!$this->teamLogic->userHasAccsess($user_id, $team_id)) {
 
             Toastr::error('Tim tidak ditemukan atau Anda dikeluarkan, silakan hubungi pemiliknya.', 'Error');
             if (Auth::user()->role_name == 'Admin') {
