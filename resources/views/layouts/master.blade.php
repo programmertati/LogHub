@@ -2022,7 +2022,6 @@
         $(document).ready(function() {
             $(document).on('click', '.pop-up', function(e) {
                 e.preventDefault();
-                alert('test');
                 var id = $(this).data('id');
                 $("#popup-notifikasi_" + id).fadeIn();
                 $('#close-popup_' + id).click(function(e) {

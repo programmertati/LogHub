@@ -155,7 +155,7 @@ class BoardController extends Controller
             'name' => $createdColumn->name,
             'updateUrl' => route('updateCol', ['board_id' => $board_id, 'team_id' => $team_id]),
             'deleteUrl' => route('deleteCol', ['board_id' => $board_id, 'team_id' => $team_id]),
-            'addCardUrl' => route('addCard', ['board_id' => $board_id, 'team_id' => $team_id, 'column_id' => $createdColumn->id]),
+            'addCardUrl' => route('addCard', ['board_id' => encrypt($board_id), 'team_id' => encrypt($team_id), 'column_id' => $createdColumn->id]),
             'board_id' => $board_id,
             'team_id' => $team_id,
             'softDeletedCards' => $softDeletedCards,

@@ -4,7 +4,6 @@
             e.preventDefault();
             e.stopImmediatePropagation();
             const id = $(this).data('id');
-            alert(id);
             $('#titleChecklist' + id).removeClass('hidden');
             $('#saveButtonTitle' + id).removeClass('hidden');
             $('#makeTemplate' + id).removeClass('hidden');
@@ -135,7 +134,7 @@
                                                 </div>
                                         </form>
 
-                                        aaa<button type="button" class="btn btn-outline-info add-checklist" id="AddChecklist" data-id="${response.titlechecklist.id}" data-persen="${response.percentage}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
+                                        <button type="button" class="btn btn-outline-info add-checklist" id="AddChecklist" data-id="${response.titlechecklist.id}" data-persen="${response.percentage}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
                                         <!-- Tambah baru checklist -->
 
                                     </div>`;
