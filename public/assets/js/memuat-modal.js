@@ -62,6 +62,12 @@ function copyCardModal(cardId, cardName, formAction) {
         }
     });
 }
+function addSlashes(str) {
+    return str.replace(/\\/g, '\\\\')
+              .replace(/'/g, "\\'")
+              .replace(/"/g, '\\"')
+              .replace(/\0/g, '\\0');
+}
 
 $(document).ready(function() {
     $('#updateColumnForm').on('submit', function(e) {
@@ -113,7 +119,7 @@ $(document).ready(function() {
                 $('#updateCard').modal('hide');
                 $('#span-nama-' + cardId).text(response.name);
                 $('[data-kartu-id="' + cardId + '"]').text(response.name);
-                $('#edit-card-' + cardId).attr('onclick', `updateCardModal(${cardId}, '${response.name}', '${url}')`);
+                $('#edit-card-' + cardId).attr('onclick', `updateCardModal(${cardId}, '${addSlashes(response.name)}', '${url}')`);
                 toastr.success('Berhasil memperbaharui kartu!');
             },
             error: function(response) {
@@ -128,6 +134,7 @@ $(document).ready(function() {
                 }
             }
         });
+        return false;
     });
 });
 
@@ -272,13 +279,13 @@ $(document).ready(function() {
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="#" class="dropdown-item" onclick="updateCardModal(${response.card.id}, '${response.card.name}', '${response.card.updateUrl}');" id="edit-card-${response.card.id}">
+                            <a href="#" class="dropdown-item" onclick="updateCardModal(${response.card.id}, '${addSlashes(response.card.name)}', '${response.card.updateUrl}');" id="edit-card-${response.card.id}">
                                 <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
                             </a>
-                            <a href="#" class="dropdown-item" onclick="deleteCardModal2('${response.card.id}', '${response.card.name}', '${response.column.name}', '${response.card.deleteUrl}');">
+                            <a href="#" class="dropdown-item" onclick="deleteCardModal2('${response.card.id}', '${addSlashes(response.card.name)}', '${response.column.name}', '${response.card.deleteUrl}');">
                                 <i class='fa fa-trash-o m-r-5'></i> Delete
                             </a>
-                            <a href="#" class="dropdown-item" onclick="copyCardModal('${response.card.id}', '${response.card.name}', '${response.card.copyCardUrl}');" id="copy-card-${response.card.id}">
+                            <a href="#" class="dropdown-item" onclick="copyCardModal('${response.card.id}', '${addSlashes(response.card.name)}', '${response.card.copyCardUrl}');" id="copy-card-${response.card.id}">
                                 <i class="fa-regular fa-copy m-r-5"></i> Copy Card
                             </a>
                         </div>
@@ -314,7 +321,7 @@ $(document).ready(function() {
                                         <span class="text-status8"><b>This card has a description.</b></span>
                                     </div>`}
                                 <!-- /Muncul apabila terdapat deskripsi pada kartu -->
-                                
+
                                 <!-- Muncul apabila terdapat checklist pada kartu -->
                                 <div id="iconChecklist-${response.card.id}" class="progress-checklist-light hidden @foreach($result_tema as $mode_tema) @if ($mode_tema->tema_aplikasi == 'Gelap') progress-checklist-dark hidden @endif @endforeach">
                                     <div class="info-status9">
@@ -324,7 +331,7 @@ $(document).ready(function() {
                                     </div>
                                 </div>
                                 <!-- /Muncul apabila terdapat checklist pada kartu -->
-                                
+
                             </div>
                         </div>
                     </a>

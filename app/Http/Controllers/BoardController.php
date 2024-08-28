@@ -153,8 +153,8 @@ class BoardController extends Controller
         return response()->json([
             'id' => $createdColumn->id,
             'name' => $createdColumn->name,
-            'updateUrl' => route('updateCol', ['board_id' => $board_id, 'team_id' => $team_id]),
-            'deleteUrl' => route('deleteCol', ['board_id' => $board_id, 'team_id' => $team_id]),
+            'updateUrl' => route('updateCol', ['board_id' => encrypt($board_id), 'team_id' => encrypt($team_id)]),
+            'deleteUrl' => route('deleteCol', ['board_id' => encrypt($board_id), 'team_id' => encrypt($team_id)]),
             'addCardUrl' => route('addCard', ['board_id' => encrypt($board_id), 'team_id' => encrypt($team_id), 'column_id' => $createdColumn->id]),
             'board_id' => $board_id,
             'team_id' => $team_id,
@@ -166,6 +166,8 @@ class BoardController extends Controller
     // Perbaharui Kolom Admin //
     public function updateCol(Request $request, $team_id, $board_id)
     {
+        $team_id = decrypt($team_id);
+        $board_id = decrypt($board_id);
         $request->validate([
             "column_name" => "required|max:200",
             "column_id" => "required",
@@ -256,6 +258,7 @@ class BoardController extends Controller
             ]);
 
             $user_id = Auth::user()->id;
+
             $card_id = intval($card_id);
             $card = Card::find($card_id);
 
@@ -281,7 +284,7 @@ class BoardController extends Controller
     {
         DB::beginTransaction();
         try {
-            $card_id = decrypt($card_id);
+            $card_id = intval($card_id);
             $card = Card::findOrFail($card_id);
 
             // Asumsi kartu memiliki bidang column->id

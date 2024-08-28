@@ -125,7 +125,7 @@
                                         <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist${titlechecklist.id}">Cancel</button>
                                     </div>
                                 </form>
-                                   aaa<button type="button" class="btn btn-outline-info add-checklist" id="AddChecklist" data-id="${titlechecklist.id}" data-persen="${titlechecklist.percentage}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
+                                <button type="button" class="btn btn-outline-info add-checklist" id="AddChecklist" data-id="${titlechecklist.id}" data-persen="${titlechecklist.percentage}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
                                         <!-- Tambah baru checklist -->
 
                             </div>`;

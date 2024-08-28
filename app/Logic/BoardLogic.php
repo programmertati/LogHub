@@ -76,49 +76,9 @@ class BoardLogic
         return $createdBoard;
     }
 
-    public function createBoard2(int $team_id, string $board_name, string $board_pattern)
-    {
-        $team = Team::find($team_id);
-        $teamExist = ($team != null);
-        if (!$teamExist) return null;
-
-        $createdBoard = Board::create([
-            "team_id"   => $team->id,
-            "name"      => $board_name,
-            "pattern"   => $board_pattern
-        ]);
-
-        return $createdBoard;
-    }
-    // /Membuat Papan //
 
     // Menambahkan Kolom //
     public function addColumn(int $board_id, string $column_name)
-    {
-        $board = Board::find($board_id);
-
-        if ($board == null) return null;
-
-        $lastColumn = Column::where("board_id", $board->id)
-            ->whereNull("next_id")
-            ->first();
-
-        $column = Column::create([
-            "name"          => $column_name,
-            "board_id"      => $board->id,
-            "previous_id"   => $lastColumn ? $lastColumn->id : null,
-        ]);
-
-        if ($lastColumn) {
-            $lastColumn->next_id = $column->id;
-            $lastColumn->save();
-        }
-        return $column;
-    }
-    // /Menambahkan Kolom //
-
-    // Menambahkan Kolom //
-    public function addColumn2(int $board_id, string $column_name)
     {
         $board = Board::find($board_id);
 
@@ -164,34 +124,11 @@ class BoardLogic
     }
     // /Menambahkan Kartu //
 
-    // Menambahkan Kartu //
-    public function addCard2(int $column_id, string $card_name)
-    {
-        $lastCard = Card::where("column_id", $column_id)
-            ->whereNull("next_id")
-            ->first();
-
-        $newCard = Card::create([
-            "name"          => $card_name,
-            "column_id"     => $column_id,
-            "previous_id"   => $lastCard ? $lastCard->id : null
-        ]);
-
-        if ($lastCard) {
-            $lastCard->next_id = $newCard->id;
-            $lastCard->save();
-        }
-
-        return $newCard;
-    }
-    // /Menambahkan Kartu //
-
     // Mendapatkan Data //
     public function getData(int $board_id)
     {
         $columns = collect();
         $board = Board::find($board_id);
-
         $column = Column::where("board_id", $board->id)
             ->whereNull('previous_id')
             ->first();
@@ -216,35 +153,6 @@ class BoardLogic
         return $board;
     }
 
-    public function getData2(int $board_id)
-    {
-        $columns = collect();
-        $board = Board::find($board_id);
-
-        $column = Column::where("board_id", $board->id)
-            ->whereNull('previous_id')
-            ->first();
-
-        while ($column) {
-            $cards = collect();
-            $card = Card::where("column_id", $column->id)
-                ->whereNull('previous_id')
-                ->first();
-            while ($card) {
-                $card->setHidden(['nextCard', "created_at", "updated_at", "column_id", "previous_id", "next_id"]);
-                $cards->push($card);
-                $card = $card->nextCard;
-            }
-            $column->setHidden(['nextColumn', 'updated_at', 'created_at', 'previous_id', "next_id", "board_id"]);
-            $column->cards = $cards->values();
-            $columns->push($column);
-            $column = $column->nextColumn;
-        }
-        $board->columns = $columns->values();
-        $board->setHidden(["team_id", "image_path", "created_at", "updated_at"]);
-        return $board;
-    }
-    // /Mendapatkan Data //
 
     // Memindahkan Kartu //
     public function moveCard(int $target_card_id, int $column_id, int $bottom_card_id, int $top_card_id)

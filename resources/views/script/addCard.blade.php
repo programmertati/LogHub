@@ -105,6 +105,13 @@
     }
     let isSubmitting = false;
 
+    function addSlashes(str) {
+        return str.replace(/\\/g, '\\\\')
+            .replace(/'/g, "\\'")
+            .replace(/"/g, '\\"')
+            .replace(/\0/g, '\\0');
+    }
+
     function addCardScript(event, columnId) {
         event.preventDefault();
         if (isSubmitting) return; // Prevent duplicate submissions
@@ -142,10 +149,10 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="#" class="dropdown-item" onclick="updateCardModal(${data.card.id}, '${data.card.name}', '${data.card.updateUrl}');" id="edit-card-${data.card.id}">
+                            <a href="#" class="dropdown-item" onclick="updateCardModal(${data.card.id}, '${addSlashes(data.card.name)}', '${data.card.updateUrl}');" id="edit-card-${data.card.id}">
                                 <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
                             </a>
-                            <a href="#" class="dropdown-item" onclick="deleteCardModal2('${data.card.id}', '${data.card.name}', '${data.column.name}', '${data.card.deleteUrl}');">
+                            <a href="#" class="dropdown-item" onclick="deleteCardModal2('${data.card.id}', '${addSlashes(data.card.name)}', '${data.column.name}', '${data.card.deleteUrl}');">
                                 <i class='fa fa-trash-o m-r-5'></i> Delete
                             </a>
                             <a href="#" class="dropdown-item" onclick="copyCardModal('${data.card.id}', '${data.card.name}', '${data.card.copyCardUrl}');" id="copy-card-${data.card.id}">
