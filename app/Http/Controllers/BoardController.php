@@ -378,7 +378,7 @@ class BoardController extends Controller
 
                 'column' => [
                     'id' => $columnId,
-                    'name' => $card->name,
+                    'name' => $card->column->name,
                 ],
 
                 'card' => [

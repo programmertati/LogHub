@@ -181,6 +181,13 @@
         });
     }
 
+    function addSlashes(str) {
+        return str.replace(/\\/g, '\\\\')
+            .replace(/'/g, "\\'")
+            .replace(/"/g, '\\"')
+            .replace(/\0/g, '\\0');
+    }
+
     function pulihkanKartuContainer(response) {
         const {
             columnId,
@@ -205,13 +212,13 @@
                     <i class="fa-solid fa-pencil fa-sm aksi-card-icon"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="#" class="dropdown-item" onclick="updateCardModal(${card.id}, '${card.name}', '${card.updateUrl}');" id="edit-card-${card.id}">
+                    <a href="#" class="dropdown-item" onclick="updateCardModal(${card.id}, '${addSlashes(card.name)}', '${card.updateUrl}');" id="edit-card-${card.id}">
                         <i class="fa-regular fa-pen-to-square m-r-5"></i> Edit
                     </a>
-                    <a href="#" class="dropdown-item" onclick="deleteCardModal2('${card.id}', '${card.name}', '${column.name}', '${card.deleteUrl}');">
+                    <a href="#" class="dropdown-item" onclick="deleteCardModal2(${card.id}, '${addSlashes(card.name)}', '${column.name}', '${card.deleteUrl}');">
                         <i class='fa fa-trash-o m-r-5'></i> Delete
                     </a>
-                    <a href="#" class="dropdown-item" onclick="copyCardModal('${card.id}', '${card.name}', '${card.copyCardUrl}');" id="copy-card-${card.id}">
+                    <a href="#" class="dropdown-item" onclick="copyCardModal(${card.id}, '${addSlashes(card.name)}', '${card.copyCardUrl}');" id="copy-card-${card.id}">
                         <i class="fa-regular fa-copy m-r-5"></i> Copy Card
                     </a>
                 </div>
@@ -224,21 +231,12 @@
                     <span class="flex ms-3" id="span-nama-${card.id}" style="width: 150px; ${card.description ? 'margin-bottom: 10px;' : ''}">${card.name}</span>
                     <div class="tampilan-info gap-2">
                         <!-- Muncul apabila terdapat deskripsi pada kartu -->
-                        ${card.description ? `
-                            <div class="info-status8" id="descriptionStatus${card.id}">
-                                <i class="fa-solid fa-align-left icon-deskripsi-light
-
-                                        @if ($result_tema->tema_aplikasi == 'Gelap') icon-deskripsi-dark @endif">
-                                </i>
-                                <span class="text-status8"><b>This card has a description.</b></span>
-                            </div>` : `
-                            <div class="info-status8 hidden" id="descriptionStatus${card.id}">
-                                <i class="fa-solid fa-align-left icon-deskripsi-light
-
-                                        @if ($result_tema->tema_aplikasi == 'Gelap') icon-deskripsi-dark @endif">
-                                </i>
-                                <span class="text-status8"><b>This card has a description.</b></span>
-                            </div>`}
+                            <div class="info-status8 ${card.description ? `''` : `'hidden'`}" id="descriptionStatus${card.id}">
+      <i
+                                                        class="fa-solid fa-align-left {{ $result_tema->tema_aplikasi == 'Gelap' ? 'icon-deskripsi-dark' : 'icon-deskripsi-light' }}">
+                                                    </i>
+      <span class="text-status8"><b>${card.description ? `'This card has a description.'` : ``}</b></span>
+    </div>
                         <!-- /Muncul apabila terdapat deskripsi pada kartu -->
 
                         <!-- Muncul apabila terdapat checklist pada kartu -->

@@ -136,6 +136,7 @@ Route::prefix('team/board')->controller(BoardController::class)->middleware(['au
     Route::post('/kartu/pulihkan', 'pulihkanKartu')->name('pulihkanKartu');
     Route::post('/hapus-kartu-permanen', 'hapusKartuPermanen')->name('hapusKartuPermanen');
     Route::get('/pulihkan-kartu', 'dataPulihkanKartu')->name('pulihkan-kartu');
+    Route::post('/perbaharui/Posisi/kolom', 'perbaharuiPosisiKolom')->name('perbaharuiPosisiKolom');
 });
 
 // ----------------------------- Board ----------------------------- //
@@ -155,7 +156,7 @@ Route::prefix('team/board')->controller(BoardController::class)->middleware(['au
     Route::post("/kolom/kartu/cover/perbaharui", "perbaharuiCover")->name("perbaharuiCover");
     Route::post("/kolom/kartu/cover/hapus", "hapusCover")->name("hapusCover");
     Route::post('/get/data/kartu', 'getDataKartu')->name('getDataKartu');
-    Route::post('/perbaharui/Posisi/kolom', 'perbaharuiPosisiKolom')->name('perbaharuiPosisiKolom');
+    // Route::post('/perbaharui/Posisi/kolom', 'perbaharuiPosisiKolom')->name('perbaharuiPosisiKolom');
     Route::post('/perbaharui/Posisi/kartu', 'perbaharuiPosisiKartu')->name('perbaharuiPosisiKartu');
     Route::post('/perbaharui/Posisi/judul', 'perbaharuiPosisiJudul')->name('perbaharuiPosisiJudul');
     Route::post('/perbaharui/Posisi/ceklist', 'perbaharuiPosisiCeklist')->name('perbaharuiPosisiCeklist');

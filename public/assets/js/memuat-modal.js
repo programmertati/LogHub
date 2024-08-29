@@ -8,6 +8,7 @@ function updateColumnModal(columnId, columnName, formAction) {
 }
 
 function updateCardModal(cardId, cardName, formAction) {
+    alert('test');
     $('#update-card-id').val(cardId);
     $('#update-card-name').val(cardName);
     $('#updateCardForm').attr('action', formAction);
@@ -34,6 +35,7 @@ function deleteCardModal(cardId, cardName, columnName, formAction) {
 }
 
 function deleteCardModal2(cardId, cardName, columnName, formAction) {
+    alert('test');
     $('#columnName3').text(columnName);
     $('#cardName3').text(cardName);
     $('#card-id').val(cardId);

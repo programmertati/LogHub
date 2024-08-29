@@ -265,8 +265,10 @@
                                 @csrf
                                 <input type="hidden" name="title_checklists_id" value="{{ $titleChecklists->id }}">
                                 <div class="info-status21">
-                                    <input type="checkbox" class="checklistform-all" name="checklistform-all"
-                                        id="checklistform-all-{{ $titleChecklists->id }}"
+                                    <input type="checkbox"
+                                        class="checklistform-all @if (!$hasChecklists) hidden @endif
+                                    "
+                                        name="checklistform-all" id="checklistform-all-{{ $titleChecklists->id }}"
                                         data-id="{{ $titleChecklists->id }}"
                                         @if ($titleChecklistsPercentage == 100) checked @endif>
                                     <span class="text-status21">
@@ -590,75 +592,75 @@
                             response.perChecklist + '/' + response
                             .jumlahChecklist);
 
-                        // if (response.perChecklist < response.jumlahChecklist) {
-                        //     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                        //     var cardId = response.titlechecklist.cards_id;
-                        //     var iconChecklist = $('#iconChecklist-' + cardId);
-                        //     var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                        if (response.perChecklist < response.jumlahChecklist) {
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var cardId = response.titlechecklist.cards_id;
+                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
 
-                        //     if (tema_aplikasi == 'Terang') {
-                        //         iconChecklist.removeClass(
-                        //                 'progress-checklist-100-light')
-                        //             .removeClass('progress-checklist-100-dark');
-                        //         iconChecklist.addClass('progress-checklist-light')
-                        //             .removeClass(
-                        //                 'progress-checklist-dark');
-                        //         iconChecklistCheck.addClass(
-                        //                 'icon-check-not-full-light')
-                        //             .removeClass('icon-check-not-full-dark');
-                        //         iconChecklistCheck.removeClass(
-                        //                 'icon-check-full-light')
-                        //             .removeClass('icon-check-full-dark');
+                            if (tema_aplikasi == 'Terang') {
+                                iconChecklist.removeClass(
+                                        'progress-checklist-100-light')
+                                    .removeClass('progress-checklist-100-dark');
+                                iconChecklist.addClass('progress-checklist-light')
+                                    .removeClass(
+                                        'progress-checklist-dark');
+                                iconChecklistCheck.addClass(
+                                        'icon-check-not-full-light')
+                                    .removeClass('icon-check-not-full-dark');
+                                iconChecklistCheck.removeClass(
+                                        'icon-check-full-light')
+                                    .removeClass('icon-check-full-dark');
 
-                        //     } else if (tema_aplikasi == 'Gelap') {
-                        //         iconChecklist.removeClass(
-                        //                 'progress-checklist-100-dark')
-                        //             .removeClass('progress-checklist-100-light');
-                        //         iconChecklist.addClass('progress-checklist-dark')
-                        //             .removeClass(
-                        //                 'progress-checklist-light');
-                        //         iconChecklistCheck.addClass(
-                        //                 'icon-check-not-full-dark')
-                        //             .removeClass('icon-check-not-full-light');
-                        //         iconChecklistCheck.removeClass(
-                        //                 'icon-check-full-dark')
-                        //             .removeClass('icon-check-full-light');
-                        //     }
-                        // } else if (response.perChecklist == response
-                        //     .jumlahChecklist) {
-                        //     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                        //     var cardId = response.titlechecklist.cards_id;
-                        //     var iconChecklist = $('#iconChecklist-' + cardId);
-                        //     var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            } else if (tema_aplikasi == 'Gelap') {
+                                iconChecklist.removeClass(
+                                        'progress-checklist-100-dark')
+                                    .removeClass('progress-checklist-100-light');
+                                iconChecklist.addClass('progress-checklist-dark')
+                                    .removeClass(
+                                        'progress-checklist-light');
+                                iconChecklistCheck.addClass(
+                                        'icon-check-not-full-dark')
+                                    .removeClass('icon-check-not-full-light');
+                                iconChecklistCheck.removeClass(
+                                        'icon-check-full-dark')
+                                    .removeClass('icon-check-full-light');
+                            }
+                        } else if (response.perChecklist == response
+                            .jumlahChecklist) {
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var cardId = response.titlechecklist.cards_id;
+                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
 
-                        //     if (tema_aplikasi == 'Terang') {
-                        //         iconChecklist.addClass(
-                        //                 'progress-checklist-100-light')
-                        //             .removeClass('progress-checklist-100-dark');
-                        //         iconChecklist.addClass('progress-checklist-light')
-                        //             .removeClass(
-                        //                 'progress-checklist-dark');
-                        //         iconChecklistCheck.removeClass(
-                        //                 'icon-check-not-full-light')
-                        //             .removeClass('icon-check-not-full-dark');
-                        //         iconChecklistCheck.addClass('icon-check-full-light')
-                        //             .removeClass('icon-check-full-dark');
+                            if (tema_aplikasi == 'Terang') {
+                                iconChecklist.addClass(
+                                        'progress-checklist-100-light')
+                                    .removeClass('progress-checklist-100-dark');
+                                iconChecklist.addClass('progress-checklist-light')
+                                    .removeClass(
+                                        'progress-checklist-dark');
+                                iconChecklistCheck.removeClass(
+                                        'icon-check-not-full-light')
+                                    .removeClass('icon-check-not-full-dark');
+                                iconChecklistCheck.addClass('icon-check-full-light')
+                                    .removeClass('icon-check-full-dark');
 
-                        //     } else if (tema_aplikasi == 'Gelap') {
-                        //         iconChecklist.addClass(
-                        //                 'progress-checklist-100-dark')
-                        //             .removeClass('progress-checklist-100-light');
-                        //         iconChecklist.addClass('progress-checklist-dark')
-                        //             .removeClass(
-                        //                 'progress-checklist-light');
-                        //         iconChecklistCheck.removeClass(
-                        //                 'icon-check-not-full-dark')
-                        //             .removeClass('icon-check-not-full-light');
-                        //         iconChecklistCheck.addClass('icon-check-full-dark')
-                        //             .removeClass(
-                        //                 'icon-check-full-light');
-                        //     }
-                        // }
+                            } else if (tema_aplikasi == 'Gelap') {
+                                iconChecklist.addClass(
+                                        'progress-checklist-100-dark')
+                                    .removeClass('progress-checklist-100-light');
+                                iconChecklist.addClass('progress-checklist-dark')
+                                    .removeClass(
+                                        'progress-checklist-light');
+                                iconChecklistCheck.removeClass(
+                                        'icon-check-not-full-dark')
+                                    .removeClass('icon-check-not-full-light');
+                                iconChecklistCheck.addClass('icon-check-full-dark')
+                                    .removeClass(
+                                        'icon-check-full-light');
+                            }
+                        }
                         // /Untuk Mengatur Icon Checklist //
 
                         // Setel ulang tanda
@@ -726,6 +728,7 @@
                             toastr.error('Gagal memperbaharui judul!');
                         }
                     });
+                    return false;
                 });
                 // End Section Update Title
             });
@@ -998,75 +1001,75 @@
                                     .jumlahChecklist);
                             }
 
-                            // if (response.perChecklist < response.jumlahChecklist) {
-                            //     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            //     var cardId = response.titlechecklist.cards_id;
-                            //     var iconChecklist = $('#iconChecklist-' + cardId);
-                            //     var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            if (response.perChecklist < response.jumlahChecklist) {
+                                var tema_aplikasi = response.result_tema.tema_aplikasi;
+                                var cardId = response.titlechecklist.cards_id;
+                                var iconChecklist = $('#iconChecklist-' + cardId);
+                                var iconChecklistCheck = $('#icon-checklist-' + cardId);
 
-                            //     if (tema_aplikasi == 'Terang') {
-                            //         iconChecklist.removeClass(
-                            //                 'progress-checklist-100-light')
-                            //             .removeClass('progress-checklist-100-dark');
-                            //         iconChecklist.addClass('progress-checklist-light')
-                            //             .removeClass(
-                            //                 'progress-checklist-dark');
-                            //         iconChecklistCheck.addClass(
-                            //                 'icon-check-not-full-light')
-                            //             .removeClass('icon-check-not-full-dark');
-                            //         iconChecklistCheck.removeClass(
-                            //                 'icon-check-full-light')
-                            //             .removeClass('icon-check-full-dark');
+                                if (tema_aplikasi == 'Terang') {
+                                    iconChecklist.removeClass(
+                                            'progress-checklist-100-light')
+                                        .removeClass('progress-checklist-100-dark');
+                                    iconChecklist.addClass('progress-checklist-light')
+                                        .removeClass(
+                                            'progress-checklist-dark');
+                                    iconChecklistCheck.addClass(
+                                            'icon-check-not-full-light')
+                                        .removeClass('icon-check-not-full-dark');
+                                    iconChecklistCheck.removeClass(
+                                            'icon-check-full-light')
+                                        .removeClass('icon-check-full-dark');
 
-                            //     } else if (tema_aplikasi == 'Gelap') {
-                            //         iconChecklist.removeClass(
-                            //                 'progress-checklist-100-dark')
-                            //             .removeClass('progress-checklist-100-light');
-                            //         iconChecklist.addClass('progress-checklist-dark')
-                            //             .removeClass(
-                            //                 'progress-checklist-light');
-                            //         iconChecklistCheck.addClass(
-                            //                 'icon-check-not-full-dark')
-                            //             .removeClass('icon-check-not-full-light');
-                            //         iconChecklistCheck.removeClass(
-                            //                 'icon-check-full-dark')
-                            //             .removeClass('icon-check-full-light');
-                            //     }
-                            // } else if (response.perChecklist == response
-                            //     .jumlahChecklist) {
-                            //     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                            //     var cardId = response.titlechecklist.cards_id;
-                            //     var iconChecklist = $('#iconChecklist-' + cardId);
-                            //     var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                                } else if (tema_aplikasi == 'Gelap') {
+                                    iconChecklist.removeClass(
+                                            'progress-checklist-100-dark')
+                                        .removeClass('progress-checklist-100-light');
+                                    iconChecklist.addClass('progress-checklist-dark')
+                                        .removeClass(
+                                            'progress-checklist-light');
+                                    iconChecklistCheck.addClass(
+                                            'icon-check-not-full-dark')
+                                        .removeClass('icon-check-not-full-light');
+                                    iconChecklistCheck.removeClass(
+                                            'icon-check-full-dark')
+                                        .removeClass('icon-check-full-light');
+                                }
+                            } else if (response.perChecklist == response
+                                .jumlahChecklist) {
+                                var tema_aplikasi = response.result_tema.tema_aplikasi;
+                                var cardId = response.titlechecklist.cards_id;
+                                var iconChecklist = $('#iconChecklist-' + cardId);
+                                var iconChecklistCheck = $('#icon-checklist-' + cardId);
 
-                            //     if (tema_aplikasi == 'Terang') {
-                            //         iconChecklist.addClass(
-                            //                 'progress-checklist-100-light')
-                            //             .removeClass('progress-checklist-100-dark');
-                            //         iconChecklist.addClass('progress-checklist-light')
-                            //             .removeClass(
-                            //                 'progress-checklist-dark');
-                            //         iconChecklistCheck.removeClass(
-                            //                 'icon-check-not-full-light')
-                            //             .removeClass('icon-check-not-full-dark');
-                            //         iconChecklistCheck.addClass('icon-check-full-light')
-                            //             .removeClass('icon-check-full-dark');
+                                if (tema_aplikasi == 'Terang') {
+                                    iconChecklist.addClass(
+                                            'progress-checklist-100-light')
+                                        .removeClass('progress-checklist-100-dark');
+                                    iconChecklist.addClass('progress-checklist-light')
+                                        .removeClass(
+                                            'progress-checklist-dark');
+                                    iconChecklistCheck.removeClass(
+                                            'icon-check-not-full-light')
+                                        .removeClass('icon-check-not-full-dark');
+                                    iconChecklistCheck.addClass('icon-check-full-light')
+                                        .removeClass('icon-check-full-dark');
 
-                            //     } else if (tema_aplikasi == 'Gelap') {
-                            //         iconChecklist.addClass(
-                            //                 'progress-checklist-100-dark')
-                            //             .removeClass('progress-checklist-100-light');
-                            //         iconChecklist.addClass('progress-checklist-dark')
-                            //             .removeClass(
-                            //                 'progress-checklist-light');
-                            //         iconChecklistCheck.removeClass(
-                            //                 'icon-check-not-full-dark')
-                            //             .removeClass('icon-check-not-full-light');
-                            //         iconChecklistCheck.addClass('icon-check-full-dark')
-                            //             .removeClass(
-                            //                 'icon-check-full-light');
-                            //     }
-                            // }
+                                } else if (tema_aplikasi == 'Gelap') {
+                                    iconChecklist.addClass(
+                                            'progress-checklist-100-dark')
+                                        .removeClass('progress-checklist-100-light');
+                                    iconChecklist.addClass('progress-checklist-dark')
+                                        .removeClass(
+                                            'progress-checklist-light');
+                                    iconChecklistCheck.removeClass(
+                                            'icon-check-not-full-dark')
+                                        .removeClass('icon-check-not-full-light');
+                                    iconChecklistCheck.addClass('icon-check-full-dark')
+                                        .removeClass(
+                                            'icon-check-full-light');
+                                }
+                            }
                             // /Untuk Mengatur Icon Checklist //
 
                             // Setel ulang tanda
@@ -1285,59 +1288,60 @@
                         $('#perhitunganChecklist-' + response.titlechecklist.cards_id).html(response
                             .perChecklist + '/' + response.jumlahChecklist);
 
-                        // if (response.perChecklist < response.jumlahChecklist) {
-                        //     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                        //     var cardId = response.titlechecklist.cards_id;
-                        //     var iconChecklist = $('#iconChecklist-' + cardId);
-                        //     var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                        if (response.perChecklist < response.jumlahChecklist) {
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var cardId = response.titlechecklist.cards_id;
+                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
 
-                        //     if (tema_aplikasi == 'Terang') {
-                        //         iconChecklist.removeClass('progress-checklist-100-light').removeClass(
-                        //             'progress-checklist-100-dark');
-                        //         iconChecklist.addClass('progress-checklist-light').removeClass(
-                        //             'progress-checklist-dark');
-                        //         iconChecklistCheck.addClass('icon-check-not-full-light').removeClass(
-                        //             'icon-check-not-full-dark');
-                        //         iconChecklistCheck.removeClass('icon-check-full-light').removeClass(
-                        //             'icon-check-full-dark');
+                            if (tema_aplikasi == 'Terang') {
+                                iconChecklist.removeClass('progress-checklist-100-light').removeClass(
+                                    'progress-checklist-100-dark');
+                                iconChecklist.addClass('progress-checklist-light').removeClass(
+                                    'progress-checklist-dark');
+                                iconChecklistCheck.addClass('icon-check-not-full-light').removeClass(
+                                    'icon-check-not-full-dark');
+                                iconChecklistCheck.removeClass('icon-check-full-light').removeClass(
+                                    'icon-check-full-dark');
 
-                        //     } else if (tema_aplikasi == 'Gelap') {
-                        //         iconChecklist.removeClass('progress-checklist-100-dark').removeClass(
-                        //             'progress-checklist-100-light');
-                        //         iconChecklist.addClass('progress-checklist-dark').removeClass(
-                        //             'progress-checklist-light');
-                        //         iconChecklistCheck.addClass('icon-check-not-full-dark').removeClass(
-                        //             'icon-check-not-full-light');
-                        //         iconChecklistCheck.removeClass('icon-check-full-dark').removeClass(
-                        //             'icon-check-full-light');
-                        //     }
-                        // } else if (response.perChecklist == response.jumlahChecklist) {
-                        //     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                        //     var cardId = response.titlechecklist.cards_id;
-                        //     var iconChecklist = $('#iconChecklist-' + cardId);
-                        //     var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            } else if (tema_aplikasi == 'Gelap') {
+                                iconChecklist.removeClass('progress-checklist-100-dark').removeClass(
+                                    'progress-checklist-100-light');
+                                iconChecklist.addClass('progress-checklist-dark').removeClass(
+                                    'progress-checklist-light');
+                                iconChecklistCheck.addClass('icon-check-not-full-dark').removeClass(
+                                    'icon-check-not-full-light');
+                                iconChecklistCheck.removeClass('icon-check-full-dark').removeClass(
+                                    'icon-check-full-light');
+                            }
+                        } else if (response.perChecklist == response.jumlahChecklist) {
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var cardId = response.titlechecklist.cards_id;
+                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
 
-                        //     if (tema_aplikasi == 'Terang') {
-                        //         iconChecklist.addClass('progress-checklist-100-light').removeClass(
-                        //             'progress-checklist-100-dark');
-                        //         iconChecklist.addClass('progress-checklist-light').removeClass(
-                        //             'progress-checklist-dark');
-                        //         iconChecklistCheck.removeClass('icon-check-not-full-light').removeClass(
-                        //             'icon-check-not-full-dark');
-                        //         iconChecklistCheck.addClass('icon-check-full-light').removeClass(
-                        //             'icon-check-full-dark');
+                            if (tema_aplikasi == 'Terang') {
+                                iconChecklist.addClass('progress-checklist-100-light').removeClass(
+                                    'progress-checklist-100-dark');
+                                iconChecklist.addClass('progress-checklist-light').removeClass(
+                                    'progress-checklist-dark');
+                                iconChecklistCheck.removeClass('icon-check-not-full-light').removeClass(
+                                    'icon-check-not-full-dark');
+                                iconChecklistCheck.addClass('icon-check-full-light').removeClass(
+                                    'icon-check-full-dark');
 
-                        //     } else if (tema_aplikasi == 'Gelap') {
-                        //         iconChecklist.addClass('progress-checklist-100-dark').removeClass(
-                        //             'progress-checklist-100-light');
-                        //         iconChecklist.addClass('progress-checklist-dark').removeClass(
-                        //             'progress-checklist-light');
-                        //         iconChecklistCheck.removeClass('icon-check-not-full-dark').removeClass(
-                        //             'icon-check-not-full-light');
-                        //         iconChecklistCheck.addClass('icon-check-full-dark').removeClass(
-                        //             'icon-check-full-light');
-                        //     }
-                        // }
+                            } else if (tema_aplikasi == 'Gelap') {
+                                iconChecklist.addClass('progress-checklist-100-dark').removeClass(
+                                    'progress-checklist-100-light');
+                                iconChecklist.addClass('progress-checklist-dark').removeClass(
+                                    'progress-checklist-light');
+                                iconChecklistCheck.removeClass('icon-check-not-full-dark').removeClass(
+                                    'icon-check-not-full-light');
+                                iconChecklistCheck.addClass('icon-check-full-dark').removeClass(
+                                    'icon-check-full-light');
+                            }
+                        }
+
                         // /Untuk Mengatur Icon Checklist //
 
                         progressBar(response.titlechecklist.id, response.titlechecklist.percentage);
@@ -1403,59 +1407,60 @@
                         $('#perhitunganChecklist-' + response.cardId).html(response
                             .perChecklist + '/' + response.jumlahChecklist);
 
-                        // if (response.perChecklist < response.jumlahChecklist) {
-                        //     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                        //     var cardId = response.cardId;
-                        //     var iconChecklist = $('#iconChecklist-' + cardId);
-                        //     var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                        if (response.perChecklist < response.jumlahChecklist) {
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var cardId = response.cardId;
+                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
 
-                        //     if (tema_aplikasi == 'Terang') {
-                        //         iconChecklist.removeClass('progress-checklist-100-light')
-                        //             .removeClass('progress-checklist-100-dark');
-                        //         iconChecklist.addClass('progress-checklist-light').removeClass(
-                        //             'progress-checklist-dark');
-                        //         iconChecklistCheck.addClass('icon-check-not-full-light')
-                        //             .removeClass('icon-check-not-full-dark');
-                        //         iconChecklistCheck.removeClass('icon-check-full-light')
-                        //             .removeClass('icon-check-full-dark');
+                            if (tema_aplikasi == 'Terang') {
+                                iconChecklist.removeClass('progress-checklist-100-light')
+                                    .removeClass('progress-checklist-100-dark');
+                                iconChecklist.addClass('progress-checklist-light').removeClass(
+                                    'progress-checklist-dark');
+                                iconChecklistCheck.addClass('icon-check-not-full-light')
+                                    .removeClass('icon-check-not-full-dark');
+                                iconChecklistCheck.removeClass('icon-check-full-light')
+                                    .removeClass('icon-check-full-dark');
 
-                        //     } else if (tema_aplikasi == 'Gelap') {
-                        //         iconChecklist.removeClass('progress-checklist-100-dark')
-                        //             .removeClass('progress-checklist-100-light');
-                        //         iconChecklist.addClass('progress-checklist-dark').removeClass(
-                        //             'progress-checklist-light');
-                        //         iconChecklistCheck.addClass('icon-check-not-full-dark')
-                        //             .removeClass('icon-check-not-full-light');
-                        //         iconChecklistCheck.removeClass('icon-check-full-dark')
-                        //             .removeClass('icon-check-full-light');
-                        //     }
-                        // } else if (response.perChecklist == response.jumlahChecklist) {
-                        //     var tema_aplikasi = response.result_tema.tema_aplikasi;
-                        //     var cardId = response.cardId;
-                        //     var iconChecklist = $('#iconChecklist-' + cardId);
-                        //     var iconChecklistCheck = $('#icon-checklist-' + cardId);
+                            } else if (tema_aplikasi == 'Gelap') {
+                                iconChecklist.removeClass('progress-checklist-100-dark')
+                                    .removeClass('progress-checklist-100-light');
+                                iconChecklist.addClass('progress-checklist-dark').removeClass(
+                                    'progress-checklist-light');
+                                iconChecklistCheck.addClass('icon-check-not-full-dark')
+                                    .removeClass('icon-check-not-full-light');
+                                iconChecklistCheck.removeClass('icon-check-full-dark')
+                                    .removeClass('icon-check-full-light');
+                            }
+                        } else if (response.perChecklist == response.jumlahChecklist) {
+                            var tema_aplikasi = response.result_tema.tema_aplikasi;
+                            var cardId = response.cardId;
+                            var iconChecklist = $('#iconChecklist-' + cardId);
+                            var iconChecklistCheck = $('#icon-checklist-' + cardId);
 
-                        //     if (tema_aplikasi == 'Terang') {
-                        //         iconChecklist.addClass('progress-checklist-100-light')
-                        //             .removeClass('progress-checklist-100-dark');
-                        //         iconChecklist.addClass('progress-checklist-light').removeClass(
-                        //             'progress-checklist-dark');
-                        //         iconChecklistCheck.removeClass('icon-check-not-full-light')
-                        //             .removeClass('icon-check-not-full-dark');
-                        //         iconChecklistCheck.addClass('icon-check-full-light')
-                        //             .removeClass('icon-check-full-dark');
+                            if (tema_aplikasi == 'Terang') {
+                                iconChecklist.addClass('progress-checklist-100-light')
+                                    .removeClass('progress-checklist-100-dark');
+                                iconChecklist.addClass('progress-checklist-light').removeClass(
+                                    'progress-checklist-dark');
+                                iconChecklistCheck.removeClass('icon-check-not-full-light')
+                                    .removeClass('icon-check-not-full-dark');
+                                iconChecklistCheck.addClass('icon-check-full-light')
+                                    .removeClass('icon-check-full-dark');
 
-                        //     } else if (tema_aplikasi == 'Gelap') {
-                        //         iconChecklist.addClass('progress-checklist-100-dark')
-                        //             .removeClass('progress-checklist-100-light');
-                        //         iconChecklist.addClass('progress-checklist-dark').removeClass(
-                        //             'progress-checklist-light');
-                        //         iconChecklistCheck.removeClass('icon-check-not-full-dark')
-                        //             .removeClass('icon-check-not-full-light');
-                        //         iconChecklistCheck.addClass('icon-check-full-dark').removeClass(
-                        //             'icon-check-full-light');
-                        //     }
-                        // }
+                            } else if (tema_aplikasi == 'Gelap') {
+                                iconChecklist.addClass('progress-checklist-100-dark')
+                                    .removeClass('progress-checklist-100-light');
+                                iconChecklist.addClass('progress-checklist-dark').removeClass(
+                                    'progress-checklist-light');
+                                iconChecklistCheck.removeClass('icon-check-not-full-dark')
+                                    .removeClass('icon-check-not-full-light');
+                                iconChecklistCheck.addClass('icon-check-full-dark').removeClass(
+                                    'icon-check-full-light');
+                            }
+                        }
+
                         // /Untuk Mengatur Icon Checklist //
 
                         progressBar(response.titlechecklist.id, response.titlechecklist
