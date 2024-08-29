@@ -143,11 +143,11 @@ Route::prefix('team/board')->controller(BoardController::class)->middleware(['au
 Route::prefix('team/board')->controller(BoardController::class)->middleware(['auth', 'auth.session'])->group(function () {
     Route::post("/{team_ids}", "createBoard")->middleware('userInTeam')->name("createBoard");
     Route::get("/{team_id}/{board_id}", "showBoard")->middleware('boardAccess')->name("board");
-    Route::post("/{team_id}/{board_id}", "updateBoard")->middleware('boardAccess')->name("updateBoard");
-    Route::post("/{team_id}/{board_id}/hapus", "deleteBoard")->middleware('boardAccess')->name("deleteBoard");
+    Route::post("/{team_id}/{board_id}", "updateBoard")->middleware(['boardAccess', 'isAdmin'])->name("updateBoard");
+    Route::post("/{team_id}/{board_id}/hapus", "deleteBoard")->middleware(['boardAccess', 'isAdmin'])->name("deleteBoard");
     Route::post("/{team_id}/{board_id}/kolom", "addColumn")->middleware('boardAccess')->name("addCol");
     Route::post("/{team_id}/{board_id}/updatekolom", "updateCol")->middleware('boardAccess')->name("updateCol");
-    Route::post("/{team_id}/{board_id}/hapuskolom", "deleteCol")->middleware('boardAccess')->name("deleteCol");
+    Route::post("/{team_id}/{board_id}/hapuskolom", "deleteCol")->middleware(['boardAccess', 'isAdmin'])->name("deleteCol");
     Route::post("/{team_id}/{board_id}/kolom/{column_id}/kartu", "addCard")->middleware('boardAccess')->name("addCard");
     Route::post("/kolom/kartu/perbaharui/{card_id}", "perbaharuiKartu")->name("perbaharuiKartu");
     Route::post("/kolom/kartu/hapus/{card_id}", "hapusKartu")->name("hapusKartu");
@@ -156,7 +156,6 @@ Route::prefix('team/board')->controller(BoardController::class)->middleware(['au
     Route::post("/kolom/kartu/cover/perbaharui", "perbaharuiCover")->name("perbaharuiCover");
     Route::post("/kolom/kartu/cover/hapus", "hapusCover")->name("hapusCover");
     Route::post('/get/data/kartu', 'getDataKartu')->name('getDataKartu');
-    // Route::post('/perbaharui/Posisi/kolom', 'perbaharuiPosisiKolom')->name('perbaharuiPosisiKolom');
     Route::post('/perbaharui/Posisi/kartu', 'perbaharuiPosisiKartu')->name('perbaharuiPosisiKartu');
     Route::post('/perbaharui/Posisi/judul', 'perbaharuiPosisiJudul')->name('perbaharuiPosisiJudul');
     Route::post('/perbaharui/Posisi/ceklist', 'perbaharuiPosisiCeklist')->name('perbaharuiPosisiCeklist');
@@ -164,9 +163,6 @@ Route::prefix('team/board')->controller(BoardController::class)->middleware(['au
     // Route::post('/kolom/pulihkan', 'pulihkanKolom')->name('pulihkanKolom');
     // Route::post('/hapus-kolom-permanen', 'hapusKolomPermanen')->name('hapusKolomPermanen');
     // Route::get('/pulihkan-kolom', 'dataPulihkanKolom')->name('dataPulihkanKolom');
-    // Route::post('/kartu/recover', 'pulihkanKartu')->name('pulihkanKartu');
-    // Route::post('/hapus-kartu-permanen', 'hapusKartuPermanen')->name('hapusKartuPermanen');
-    // Route::get('/pulihkan-kartu', 'dataPulihkanKartu')->name('pulihkan-kartu');
 });
 
 // ----------------------------- Checklist ----------------------------- //

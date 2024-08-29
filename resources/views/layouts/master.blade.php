@@ -2033,6 +2033,15 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $('#toggle_btn').click(function(e) {
+                e.preventDefault();
+                $('#sidebar').toggleClass('hidden');
+            });
+
+        });
+    </script>
 
 
     <script src="{{ asset('assets/js/atur-tanggal-waktu-indo-realtime.js') }}"></script>

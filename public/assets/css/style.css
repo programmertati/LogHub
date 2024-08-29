@@ -336,11 +336,11 @@ table.dataTable {
     color: #212529;
 	border-radius:10px;
 }
-table.dataTable thead > tr > th.sorting_asc, 
-table.dataTable thead > tr > th.sorting_desc, 
-table.dataTable thead > tr > th.sorting, 
-table.dataTable thead > tr > td.sorting_asc, 
-table.dataTable thead > tr > td.sorting_desc, 
+table.dataTable thead > tr > th.sorting_asc,
+table.dataTable thead > tr > th.sorting_desc,
+table.dataTable thead > tr > th.sorting,
+table.dataTable thead > tr > td.sorting_asc,
+table.dataTable thead > tr > td.sorting_desc,
 table.dataTable thead > tr > td.sorting {
 	padding-right: 30px !important;
 }
@@ -570,8 +570,8 @@ table.dataTable thead > tr > td.sorting {
 	border-color: #4ACCCD;
 	color: #fff;
 }
-.btn-primary.active:focus:not(:disabled):not(.disabled), 
-.btn-primary:active:focus:not(:disabled):not(.disabled), 
+.btn-primary.active:focus:not(:disabled):not(.disabled),
+.btn-primary:active:focus:not(:disabled):not(.disabled),
 .show > .btn-primary.dropdown-toggle:focus {
 	box-shadow: unset;
 }
@@ -605,8 +605,8 @@ table.dataTable thead > tr > td.sorting {
 	background: #FCC468;
 	border: 1px solid #FCC468
 }
-.btn-success.active:focus:not(:disabled):not(.disabled), 
-.btn-success:active:focus:not(:disabled):not(.disabled), 
+.btn-success.active:focus:not(:disabled):not(.disabled),
+.btn-success:active:focus:not(:disabled):not(.disabled),
 .show > .btn-success.dropdown-toggle:focus {
 	box-shadow: unset;
 }
@@ -639,8 +639,8 @@ table.dataTable thead > tr > td.sorting {
 	background-color: #028ee1;
 	border: 1px solid #028ee1
 }
-.btn-info.active:focus:not(:disabled):not(.disabled), 
-.btn-info:active:focus:not(:disabled):not(.disabled), 
+.btn-info.active:focus:not(:disabled):not(.disabled),
+.btn-info:active:focus:not(:disabled):not(.disabled),
 .show > .btn-info.dropdown-toggle:focus {
 	box-shadow: unset;
 }
@@ -673,8 +673,8 @@ table.dataTable thead > tr > td.sorting {
 	background: #e9ab2e;
 	border: 1px solid #e9ab2e
 }
-.btn-warning.active:focus:not(:disabled):not(.disabled), 
-.btn-warning:active:focus:not(:disabled):not(.disabled), 
+.btn-warning.active:focus:not(:disabled):not(.disabled),
+.btn-warning:active:focus:not(:disabled):not(.disabled),
 .show > .btn-warning.dropdown-toggle:focus {
 	box-shadow: unset;
 }
@@ -707,8 +707,8 @@ table.dataTable thead > tr > td.sorting {
 	background: #e9ab2e;
 	border: 1px solid #e9ab2e
 }
-.btn-danger.active:focus:not(:disabled):not(.disabled), 
-.btn-danger:active:focus:not(:disabled):not(.disabled), 
+.btn-danger.active:focus:not(:disabled):not(.disabled),
+.btn-danger:active:focus:not(:disabled):not(.disabled),
 .show > .btn-danger.dropdown-toggle:focus {
 	box-shadow: unset;
 }
@@ -735,16 +735,16 @@ table.dataTable thead > tr > td.sorting {
 	background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
 	color: #fff;
 }
-.pagination > .active > a, 
+.pagination > .active > a,
 .pagination > .active > a:focus,
-.pagination > .active > a:hover, 
+.pagination > .active > a:hover,
 .pagination > .active > span,
 .pagination > .active > span:focus,
 .pagination > .active > span:hover {
 	background-color: #f43b48;
 	border-color: #f43b48;
 }
-.pagination > li > a, 
+.pagination > li > a,
 .pagination > li > span {
 	color: #f43b48;
 }
@@ -1013,8 +1013,8 @@ table.dataTable thead > tr > td.sorting {
     display: none;
 }
 .onoffswitch-label {
-    display: block; 
-	overflow: hidden; 
+    display: block;
+	overflow: hidden;
 	cursor: pointer;
 	border-radius: 20px;
 	margin-bottom: 0;
@@ -1066,7 +1066,7 @@ table.dataTable thead > tr > td.sorting {
     margin-left: 0;
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
+    right: 0px;
 }
 .switch {
     cursor: pointer;
@@ -1865,8 +1865,8 @@ table.dataTable thead > tr > td.sorting {
 	border: 1px solid #028ee1
 }
 
-.cetak-btn.active:focus:not(:disabled):not(.disabled), 
-.cetak-btn:active:focus:not(:disabled):not(.disabled), 
+.cetak-btn.active:focus:not(:disabled):not(.disabled),
+.cetak-btn:active:focus:not(:disabled):not(.disabled),
 .show > .cetak-btn.dropdown-toggle:focus {
 	box-shadow: unset;
 }
@@ -3199,7 +3199,7 @@ table.dataTable thead > tr > td.sorting {
 	font-size: 12px;
 	z-index: 1;
 }
-.form-focus .form-control:focus ~ .focus-label, 
+.form-focus .form-control:focus ~ .focus-label,
 .form-focus .form-control:-webkit-autofill ~ .focus-label {
 	opacity: 1;
 	font-weight: 300;
@@ -6147,16 +6147,16 @@ table.table-inbox tbody tr.checked {
 }
 .loader-ellips__dot:nth-child(1),
 .loader-ellips__dot:nth-child(2) {
-	left: 0;  
+	left: 0;
 }
-.loader-ellips__dot:nth-child(3) { 
-	left: 1.5em;   
+.loader-ellips__dot:nth-child(3) {
+	left: 1.5em;
 }
-.loader-ellips__dot:nth-child(4) { 
-	left: 3em;   
+.loader-ellips__dot:nth-child(4) {
+	left: 3em;
 }
 .loader-ellips__dot:nth-child(1) {
-	animation-name: reveal;  
+	animation-name: reveal;
 }
 .loader-ellips__dot:nth-child(2),
 .loader-ellips__dot:nth-child(3) {
@@ -6167,32 +6167,32 @@ table.table-inbox tbody tr.checked {
 	animation-direction: reverse;
 }
 @keyframes reveal {
-	from { 
-		transform: scale(0.001); 
+	from {
+		transform: scale(0.001);
 	}
-	to { 
-		transform: scale(1); 
+	to {
+		transform: scale(1);
 	}
 }
 @keyframes slide {
-	to { 
-		transform: translateX(1.5em) 
+	to {
+		transform: translateX(1.5em)
 	}
 }
-.loader-ellips__dot:nth-child(1) { 
+.loader-ellips__dot:nth-child(1) {
 	background: #f43b48;
 	/* background: #404040; */
 }
-.loader-ellips__dot:nth-child(2) { 
+.loader-ellips__dot:nth-child(2) {
 	background: #ecec53;
 	/* background: #f43b48; */
 }
-.loader-ellips__dot:nth-child(3) { 
+.loader-ellips__dot:nth-child(3) {
 	background: #53ec53;
 	/* background: #404040; */
 }
-.loader-ellips__dot:nth-child(4) { 
-	background: #5353ec;  
+.loader-ellips__dot:nth-child(4) {
+	background: #5353ec;
 	/* background: #404040; */
 }
 
@@ -7814,14 +7814,14 @@ ul.comment-list li ul.children {
 .file-wrap .file-cont-wrap .file-cont-inner .file-cont-header .file-options {
 	display: flex;
 }
-.file-wrap .file-cont-wrap .file-cont-inner .file-cont-header .file-options > a, 
+.file-wrap .file-cont-wrap .file-cont-inner .file-cont-header .file-options > a,
 .file-wrap .file-cont-wrap .file-cont-inner .file-cont-header .file-options > span {
 	color: #333;
 	display: inline-block;
 	font-size: 20px;
 	margin-left: 25px;
 }
-.file-wrap .file-cont-wrap .file-cont-inner .file-cont-header .file-options > a:first-child, 
+.file-wrap .file-cont-wrap .file-cont-inner .file-cont-header .file-options > a:first-child,
 .file-wrap .file-cont-wrap .file-cont-inner .file-cont-header .file-options > span:first-child {
 	margin-left: 0;
 }
@@ -8098,17 +8098,17 @@ ul.comment-list li ul.children {
 	.nav-tabs.nav-tabs-bottom > li {
 		margin-bottom: -1px;
 	}
-	.nav-tabs.nav-tabs-bottom > li > a.active, 
-	.nav-tabs.nav-tabs-bottom > li > a.active:hover, 
+	.nav-tabs.nav-tabs-bottom > li > a.active,
+	.nav-tabs.nav-tabs-bottom > li > a.active:hover,
 	.nav-tabs.nav-tabs-bottom > li > a.active:focus {
 		border-bottom-width: 3px;
 		border-color: transparent;
 		border-bottom-color: #f43b48;
 		background-color: transparent;
-		transition: none 0s ease 0s; 
-		-moz-transition: none 0s ease 0s; 
-		-o-transition: none 0s ease 0s; 
-		-ms-transition: none 0s ease 0s; 
+		transition: none 0s ease 0s;
+		-moz-transition: none 0s ease 0s;
+		-o-transition: none 0s ease 0s;
+		-ms-transition: none 0s ease 0s;
 		-webkit-transition: none 0s ease 0s;
 	}
 	.nav-tabs.nav-tabs-solid {
@@ -8754,7 +8754,7 @@ ul.comment-list li ul.children {
 	.isian-mention-tag {
 		margin: 0 15px 0 7px !important;
 	}
-	
+
 	.fitur-tema2 {
 		display: inline-block !important;
 		list-style-type: none;
@@ -8782,7 +8782,7 @@ ul.comment-list li ul.children {
 	.info-status2 .text-status2 {
 		left: 61% !important;
 	}
-	
+
 	.info-status3 .text-status3 {
 		left: 61% !important;
 	}
@@ -8957,7 +8957,7 @@ ul.comment-list li ul.children {
 	.info-status8 .text-status8 {
 		left: 67% !important;
 	}
-	
+
 	.info-status9 .text-status9 {
 		left: 67% !important;
 	}
@@ -8997,7 +8997,7 @@ ul.comment-list li ul.children {
 	.info-status17 .text-status17 {
 		left: 67% !important;
 	}
-	
+
 	.info-status18 .text-status18 {
 		left: 67% !important;
 	}
@@ -9009,7 +9009,7 @@ ul.comment-list li ul.children {
 	.info-status20 .text-status20 {
 		left: 67% !important;
 	}
-	
+
 	.info-status21 .text-status21 {
 		left: 67% !important;
 	}
@@ -9169,7 +9169,7 @@ ul.comment-list li ul.children {
 		margin-left: 25px !important;
 		margin-top: 30px !important;
 	}
-	
+
 	.logo-rsud img{
 		width: 30% !important;
 		left: 70% !important;
@@ -9542,7 +9542,7 @@ ul.comment-list li ul.children {
 
 .nomorhpperusahaan {
 	font-family: 'Nunito';
-	font-size: 16px; 
+	font-size: 16px;
 	font-weight: 550
 }
 
@@ -13184,7 +13184,7 @@ ul.nav-tabs > li > a {
 
 .action-button--horizontal-scroll {
     border-radius: 50%;
-    cursor: pointer; 
+    cursor: pointer;
     border: none;
     outline: none;
     width: 2rem;
@@ -13204,7 +13204,7 @@ ul.nav-tabs > li > a {
     }
 }
 
-.action-button--horizontal-scroll:hover { 
+.action-button--horizontal-scroll:hover {
     background: #80e142;
 }
 
@@ -13258,7 +13258,7 @@ ul.nav-tabs > li > a {
     padding: 1rem 0;
     width: 100%;
     flex-direction: row;
-    overflow-x: auto; 
+    overflow-x: auto;
     scroll-behavior: smooth;
     transition: scroll-left 0.5s ease-in;
 
@@ -13269,12 +13269,12 @@ ul.nav-tabs > li > a {
     background: #ECEFEB;
     border-radius: 9.99rem;
 }
-    
+
 ::-webkit-scrollbar-thumb {
     background: #C6CDC1;
     border-radius: 9.99rem;
 }
-    
+
 .slide-card-atass {
     appearance: none;
     text-decoration: none;
@@ -13409,7 +13409,7 @@ ul.nav-tabs > li > a {
 
 .action-button2--horizontal-scroll {
     border-radius: 50%;
-    cursor: pointer; 
+    cursor: pointer;
     border: none;
     outline: none;
     width: 2rem;
@@ -13429,7 +13429,7 @@ ul.nav-tabs > li > a {
     }
 }
 
-.action-button2--horizontal-scroll:hover { 
+.action-button2--horizontal-scroll:hover {
     background: #80e142;
 }
 
@@ -13483,7 +13483,7 @@ ul.nav-tabs > li > a {
     padding: 1rem 0;
     width: 100%;
     flex-direction: row;
-    overflow-x: auto; 
+    overflow-x: auto;
     scroll-behavior: smooth;
     transition: scroll-left 0.5s ease-in;
 
@@ -13494,12 +13494,12 @@ ul.nav-tabs > li > a {
     background: #ECEFEB;
     border-radius: 9.99rem;
 }
-    
+
 ::-webkit-scrollbar-thumb {
     background: #C6CDC1;
     border-radius: 9.99rem;
 }
-    
+
 .slide-card-bawahs {
     appearance: none;
     text-decoration: none;
@@ -15262,7 +15262,7 @@ ul.nav-tabs > li > a {
 	position: relative;
 	border: none;
 	background: none;
-	padding: 0; 
+	padding: 0;
 }
 .deleteCard {
 	position: relative;
