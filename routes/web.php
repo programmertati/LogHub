@@ -97,6 +97,7 @@ Route::controller(UserManagementController::class)->middleware(['auth', 'auth.se
     Route::post('change/password/db', 'perbaharuiKataSandi')->name('change/password/db');
     Route::get('get-history-activity', 'getHistoryActivity')->name('get-history-activity');
     Route::delete('delete/history', 'deleteHistoryActivity')->name('delete-all-history');
+    Route::delete('delete/history-oten', 'deleteHistoryOtentifikasi')->name('delete-all-otentifikasi');
     Route::get('get-aktivitas-pengguna', 'getAktivitasPengguna')->name('get-aktivitas-pengguna');
 });
 

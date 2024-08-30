@@ -1,5 +1,10 @@
 @extends('layouts.master')
 @section('content')
+    @if (session()->has('success'))
+        <script>
+            toastr.success("{{ session('success') }}", 'Success');
+        </script>
+    @endif
     <!-- Page Wrapper -->
     <div class="page-wrapper">
         <!-- Page Content -->
@@ -17,9 +22,10 @@
                 </div>
             </div>
             <!-- /Page Header -->
-
+            <a id="delete-all" class='btn btn-outline-danger'><i class="fa fa-trash m-r-5"></i>Delete
+                All History</a>
             <!-- /Search Filter -->
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="table-responsive">
                         <table class="table table-striped custom-table" id="tableAktivitasPengguna" style="width: 100%">
@@ -111,6 +117,28 @@
                         .search($('#keyword').val())
                         .draw();
                 })
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#delete-all').click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('delete-all-otentifikasi') }}",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            "_method": "DELETE"
+                        },
+                        success: function(response) {
+                            if (response.redirect) {
+                                // Redirect ke halaman baru
+                                window.location.href = response.redirect;
+                            }
+                        },
+                        error: function(xhr, status, error) {}
+                    });
+                });
             });
         </script>
     @endpush

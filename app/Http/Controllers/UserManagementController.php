@@ -619,4 +619,13 @@ class UserManagementController extends Controller
             'redirect' =>  route('riwayat-aktivitas'),
         ]);
     }
+
+    public function deleteHistoryOtentifikasi(Request $request)
+    {
+        activityLog::truncate();
+        session()->flash('success', 'Histori Dihapus');
+        return response()->json([
+            'redirect' =>  route('riwayat-aktivitas-otentikasi'),
+        ]);
+    }
 }

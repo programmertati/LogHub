@@ -210,6 +210,10 @@
         .bg-grad-system.no-after::after {
             display: none;
         }
+
+        .form-focus .form-control {
+            height: 40px !important;
+        }
     </style>
     @if ($result_tema->tema_aplikasi == 'Gelap')
         <style>

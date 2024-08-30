@@ -2018,7 +2018,7 @@
                                 @csrf
                                 <div class="row filter-row mt-2">
                                     <div class="col-sm-6 col-md-9 col-lg-11">
-                                        <div class="form-group form-focus">
+                                        <div class="form-group form-focus d-flex align-items-center">
                                             <input type="text" class="form-control floating" name="card"
                                                 id="card"
                                                 style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 15px"

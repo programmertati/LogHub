@@ -30,7 +30,7 @@
                             <span style="font-weight: 900">History Activity</span>
                         </a>
                     </li>
-                    <li class="{{ set_active(['riwayat/aktivitas/otentikasi']) }} active-riwayat-aktivitas">
+                    <li class="{{ set_active(['riwayat/otentikasi']) }} active-riwayat-aktivitas">
                         <a href="{{ route('riwayat-aktivitas-otentikasi') }}">
                             <i class="fa-solid fa-clock-rotate-left"></i>
                             <span style="font-weight: 900">History Otentikasi</span>
