@@ -428,7 +428,7 @@
         <!-- Tampilan Background Kolom & Card -->
         <div class="overflow-x-scroll overflow-y-auto bg-grad-{{ $board->pattern }}" id="bgGrad" style="height: 94vh;">
             <!-- Tampilan Kolom & Kartu -->
-            <div class="tampilan-kolom gap-4 p-4" id="cardContainer">
+            <div class="tampilan-kolom gap-4 p-4 mt-2" id="cardContainer">
 
                 <div class="info-status12">
                     <a href="#" data-toggle="modal" data-target="#addCol"
@@ -462,13 +462,13 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a href="#" class="dropdown-item"
-                                    onclick="updateColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('updateCol', ['board_id' => encrypt($board->id), 'team_id' => encrypt($board->team_id)]) }}');"
+                                    onclick="updateColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('updateCol', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id)]) }}');"
                                     id="edit-column-{{ $dataKolom->id }}">
                                     <i class="fa fa-pencil m-r-5"></i> Edit
                                 </a>
                                 @can('admin')
                                     <a href="#" class="dropdown-item"
-                                        onclick="deleteColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('deleteCol', ['board_id' => encrypt($board->id), 'team_id' => encrypt($board->team_id)]) }}');">
+                                        onclick="deleteColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('deleteCol', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id)]) }}');">
                                         <i class='fa fa-trash-o m-r-5'></i> Delete
                                     </a>
                                 @endcan
@@ -584,14 +584,13 @@
                                                 {{-- @dd($jumlahChecklist) --}}
                                                 <div id="iconChecklist-{{ $dataKartu->id }}"
                                                     class="progress-checklist-{{ $result_tema->tema_aplikasi == 'Gelap' ? 'dark' : 'light' }} {{ $hasChecklists ? '' : 'hidden' }}
-                                                    @if ($totalCount > 0 && $perChecklist / $jumlahChecklist == 1) progress-checklist-100-{{ $result_tema->tema_aplikasi == 'Gelap' ? 'dark' : 'light' }} @endif ">
+                                                    @if ($jumlahChecklist != 0 && $perChecklist / $jumlahChecklist == 1) progress-checklist-100-{{ $result_tema->tema_aplikasi == 'Gelap' ? 'dark' : 'light' }} @endif ">
 
-                                                    @if ($perChecklist > 0 || $jumlahChecklist > 0)
+                                                    @if ($jumlahChecklist != 0)
                                                         <div class="info-status9">
                                                             <i id="icon-checklist-{{ $dataKartu->id }}"
                                                                 class="fa-regular fa-square-check {{ $totalCount > 0 && $perChecklist / $jumlahChecklist == 1 ? 'icon-check-full' : 'icon-check-not-full' }}-{{ $result_tema->tema_aplikasi == 'Gelap' ? 'dark' : 'light' }}">
                                                             </i>
-
                                                             <span
                                                                 class="text-status9{{ !empty($dataKartu->description) ? '' : 'a' }}"><b>Checklist
                                                                     items</b></span>
@@ -614,7 +613,7 @@
                             <div
                                 class="flex items-center p-3 text-base font-bold rounded-lg bg-gray-50 hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
                                 <form id="addCardForm{{ $dataKolom->id }}"
-                                    action="{{ route('addCard', ['board_id' => encrypt($board->id), 'team_id' => encrypt($board->team_id), 'column_id' => $dataKolom->id]) }}"
+                                    action="{{ route('addCard', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id), 'column_id' => $dataKolom->id]) }}"
                                     method="POST" onsubmit="addCardScript(event, '{{ $dataKolom->id }}')">
                                     @csrf
                                     <input type="hidden" class="form-control" name="board_id"
@@ -663,7 +662,7 @@
                 </div>
                 <div class="modal-body">
                     <form
-                        action="{{ route('updateBoard', ['board_id' => encrypt($board->id), 'team_id' => encrypt($board->team_id)]) }}"
+                        action="{{ route('updateBoard', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id)]) }}"
                         method="POST">
                         @csrf
                         <input type="hidden" name="board_id" value="{{ $board->id }}">
@@ -721,7 +720,7 @@
                         </div>
                         <div class="modal-btn delete-action">
                             <form
-                                action="{{ route('deleteBoard', ['board_id' => encrypt($board->id), 'team_id' => encrypt($board->team_id)]) }}"
+                                action="{{ route('deleteBoard', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id)]) }}"
                                 method="POST">
                                 @csrf
                                 <input type="hidden" name="board_id" value="{{ $board->id }}">
@@ -754,7 +753,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="addColForm"
-                            action="{{ route('addCol', ['board_id' => encrypt($board->id), 'team_id' => encrypt($board->team_id)]) }}"
+                            action="{{ route('addCol', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id)]) }}"
                             method="POST" onsubmit="addColumnScript(event)">
                             @csrf
                             <input type="hidden" class="form-control" name="board_id" value="{{ $board->id }}">
@@ -1028,6 +1027,22 @@
             <script src="{{ asset('assets/js/memuat-modal.js?v=' . time()) }}"></script>
             <script></script>
             <script>
+                function progressBar(id, percentage) {
+                    var progressBar = $('.progress-bar-' + id);
+                    progressBar.css('width', percentage + '%');
+                    progressBar.attr('aria-valuenow', percentage);
+                    progressBar.text(Math.round(percentage) + '%');
+                    progressBar.removeClass('bg-danger bg-warning bg-info bg-success');
+                    if (percentage <= 25) {
+                        progressBar.addClass('bg-danger');
+                    } else if (percentage > 25 && percentage < 50) {
+                        progressBar.addClass('bg-warning');
+                    } else if (percentage >= 50 && percentage <= 75) {
+                        progressBar.addClass('bg-info');
+                    } else if (percentage > 75) {
+                        progressBar.addClass('bg-success');
+                    }
+                }
                 $(document).ready(function() {
                     $('#pageTitle').html('Team Card | Log Hub - PT TATI');
                     document.addEventListener('keydown', function(event) {
@@ -1068,3 +1083,45 @@
             </script>
         @endpush
     @endsection
+    @push('js')
+        <script>
+            $('#search-card').submit(function(e) {
+                e.preventDefault();
+                $('.kolom-card').removeClass('highlight');
+                var formData = new FormData($('#search-card')[0]);
+                // alert('tes');
+                $.ajax({
+                    type: 'post',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#card').val('');
+                        $('.kolom-card').each(function() {
+                            var text = $(this).find('.kolom-nama').text();
+                            if (text === response.name) {
+                                // alert('nemu bang');
+                                $(this).addClass('highlight');
+                                $('#bgGrad').animate({
+                                    scrollLeft: $(this).position().left + $('#bgGrad')
+                                        .scrollLeft()
+                                }, 1000);
+                                return false;
+                            }
+                        });
+                        $('#search-card')[0].reset();
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            icon: (xhr.responseJSON.type),
+                            title: (xhr.responseJSON.title),
+                            text: (xhr.responseJSON.msg),
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+                return false;
+            });
+        </script>
+    @endpush

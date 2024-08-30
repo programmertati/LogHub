@@ -1,25 +1,85 @@
 <script>
     $(document).ready(function() {
+
+        let isInputFocused = false;
         const titleContainer = document.getElementById('titleContainer');
-        const sortable = new Sortable(titleContainer, {
-            animation: 150,
-            onEnd: function(evt) {
-                updateTitlePositions();
-            },
+        const sortableInstances = [];
+        let initialTitlePositions = getTitlePositions(); // Simpan posisi awal titles
+
+
+        $(document).on('click', '.isian-title', function() {
+            // e.preventDefault();
+            // e.stopImmediatePropagation();
+            isInputFocused = true;
+            titleSortable.option("disabled", true);
+        });
+        $('.isian-title').blur(function(e) {
+            e.preventDefault();
+            isInputFocused = false;
+            titleSortable.option("disabled", false);
         });
 
+        // titleContainer.forEach(e => {
+        const titleSortable = new Sortable(titleContainer, {
+            animation: 150,
+            onEnd: function(evt) {
+                // if (!isInputFocused) {
+                const newTitlePositions = getTitlePositions();
+                if (JSON.stringify(initialTitlePositions) !== JSON.stringify(
+                        newTitlePositions)) {
+                    updateTitlePositions(newTitlePositions);
+                    initialTitlePositions =
+                        newTitlePositions; // Update posisi awal dengan posisi baru
+                }
+                // }
+            },
+        });
+        // sortableInstances.push(sortableInstance);
+        // });
+
+
         const checklistsContainers = [...document.getElementsByClassName('checklist-container')];
+        // const sortableInstances = [];
+        let initialChecklistPositions = getChecklistPositions(); // Simpan posisi awal checklists
+
+        $(document).on('click', 'label[for]', function() {
+            isInputFocused = true;
+            sortableInstances.forEach(sortableInstance => {
+                sortableInstance.option("disabled", true);
+            });
+            titleSortable.option("disabled", true);
+        });
+
+        $('.dynamicCheckboxValue').blur(function(e) {
+            e.preventDefault();
+            isInputFocused = false;
+            sortableInstances.forEach(sortableInstance => {
+                sortableInstance.option("disabled", false);
+            });
+            titleSortable.option("disabled", false);
+        });
+
         checklistsContainers.forEach(e => {
-            new Sortable(e, {
+            const sortableInstance = new Sortable(e, {
                 animation: 150,
                 group: 'checklists',
                 onEnd: function(evt) {
-                    updateChecklistPositions();
+                    if (!isInputFocused) {
+                        const newChecklistPositions = getChecklistPositions();
+
+                        if (JSON.stringify(initialChecklistPositions) !== JSON.stringify(
+                                newChecklistPositions)) {
+                            updateChecklistPositions(newChecklistPositions);
+                            initialChecklistPositions =
+                                newChecklistPositions; // Update posisi awal dengan posisi baru
+                        }
+                    }
                 },
             });
+            sortableInstances.push(sortableInstance);
         });
 
-        function updateTitlePositions() {
+        function getTitlePositions() {
             const positions = {};
             const titleIds = titleContainer.children;
             for (let i = 0; i < titleIds.length; i++) {
@@ -29,7 +89,10 @@
                     positions[id] = i + 1;
                 }
             }
+            return positions;
+        }
 
+        function updateTitlePositions(positions) {
             fetch('{{ route('perbaharuiPosisiJudul') }}', {
                     method: 'POST',
                     headers: {
@@ -40,9 +103,7 @@
                         positions
                     })
                 })
-
                 .then(response => response.json())
-
                 .then(data => {
                     if (data.success) {
                         toastr.success('Berhasil perbaharui posisi judul!');
@@ -50,14 +111,12 @@
                         toastr.error('Gagal perbaharui posisi judul!');
                     }
                 })
-
                 .catch(error => {
                     console.error('Terjadi kesalahan saat perbaharui posisi judul:', error);
                 });
-
         }
 
-        function updateChecklistPositions() {
+        function getChecklistPositions() {
             const positions = {};
             checklistsContainers.forEach(container => {
                 const titleId = container.closest('.menu-checklist').dataset.id;
@@ -73,7 +132,10 @@
                     }
                 }
             });
+            return positions;
+        }
 
+        function updateChecklistPositions(positions) {
             fetch('{{ route('perbaharuiPosisiCeklist') }}', {
                     method: 'POST',
                     headers: {
@@ -84,9 +146,7 @@
                         positions
                     })
                 })
-
                 .then(response => response.json())
-
                 .then(data => {
                     if (data.success) {
                         toastr.success('Berhasil perbaharui posisi checklist!');
@@ -94,18 +154,15 @@
                         toastr.error('Gagal perbaharui posisi checklist!');
                     }
 
-                    // Perbaharui Progress Bar pada UI
                     if (data.titlechecklist) {
                         data.titlechecklist.forEach(tc => {
                             progressBar(tc.id, tc.percentage);
                         });
                     }
                 })
-
                 .catch(error => {
                     console.error('Terjadi kesalahan saat perbaharui posisi checklist:', error);
                 });
-
         }
     });
 </script>

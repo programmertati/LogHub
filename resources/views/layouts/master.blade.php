@@ -12,6 +12,9 @@
     <title id="pageTitle">Home | Loghub - PT TATI </title>
     <script src="{{ asset('assets/js/title-move.js') }}"></script>
 
+
+    {{-- Swal Fire --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ URL::to('assets/img/favicon.png') }}">
     <!-- Bootstrap CSS -->
@@ -56,6 +59,28 @@
         .error {
             color: red;
         }
+
+        .highlight {
+            background-color: yellow;
+            border: 2px solid red;
+            margin-left: 10px;
+        }
+
+        #cardsearch {
+            min-width: 50px;
+        }
+
+        @media only screen and (max-width: 991px) {
+            .search-list {
+                margin-left: 70px;
+            }
+        }
+
+        /* @media only screen and (min-width: 1000px) {
+            .search-list {
+                margin-right: 1000px;
+            }
+        } */
     </style>
     <style>
         body {
@@ -1614,7 +1639,6 @@
 
         <!-- Header -->
         <div class="header">
-
             <!-- Untuk Mengatur Tema Aplikasi -->
             <div class="fitur-tema2">
                 <li class="nav-item dropdown">
@@ -1679,8 +1703,11 @@
                 </span>
             </a>
             <!-- /Header Title -->
-            <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
 
+
+
+
+            <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
             <!-- Header Menu -->
             <ul class="nav user-menu">
 
@@ -1981,6 +2008,36 @@
                 </div>
             </div>
             <!-- /Mobile Menu -->
+            @if (request()->is('team/board*'))
+                <div class="search-list">
+                    <div class="row">
+                        <div class="col-md-11">
+                            <form id="search-card" class="mt-2"
+                                action="{{ route('searchCol', ['team_id' => encrypt($team->id), 'board_id' => $board_id]) }}"
+                                method="post">
+                                @csrf
+                                <div class="row filter-row mt-2">
+                                    <div class="col-sm-6 col-md-9 col-lg-11">
+                                        <div class="form-group form-focus">
+                                            <input type="text" class="form-control floating" name="card"
+                                                id="card"
+                                                style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 15px"
+                                                autocomplete="off" />
+                                            <label class="focus-label"><i class="fa-solid fa-cube"></i> List's
+                                                Name</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-3 col-lg-1">
+                                        <button type="submit" id="cardsearch"
+                                            class="btn btn-success btn-block btn_search"><i
+                                                class="fa-solid fa-magnifying-glass"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
         </div>
         <!-- /Header -->
@@ -2017,6 +2074,9 @@
     <script src="{{ URL::to('assets/js/jquery.validate.js') }}"></script>
     <!-- Custom JS -->
     <script src="{{ URL::to('assets/js/app.js') }}"></script>
+
+    {{-- swalfire --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function() {

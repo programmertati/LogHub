@@ -693,6 +693,7 @@
     {{-- NEW EDIT TITLE BIAR GA DI FOREACH 1 1 --}}
     <script>
         $(document).ready(function() {
+            let isInputFocused = false;
             $(document).on('click', '.isian-title', function(e) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -721,10 +722,14 @@
                         success: function(response) {
                             $('#saveButtonTitleUpdate' + title_id).addClass('hidden');
                             $('#cancelButtonTitleUpdate' + title_id).addClass('hidden');
+                            $('.isian-title').blur();
+                            $('#myFormTitleUpdate' + title_id)[0].reset();
                             toastr.success('Berhasil memperbaharui judul!');
-                            localStorage.clear();
+                            let isSubmitting = false;
+                            // localStorage.clear();
                         },
                         error: function(error) {
+                            let isSubmitting = false;
                             toastr.error('Gagal memperbaharui judul!');
                         }
                     });
@@ -1088,6 +1093,7 @@
             // Checkbox form checklist
             $(document).off('change', '.dynamicCheckbox');
             $(document).on('change', '.dynamicCheckbox', function() {
+
                 var checkbox = $(this);
                 var isChecked = checkbox.is(':checked');
                 var label = $('label[for="labelCheckbox-' + checkbox.attr('id') + '"]');
@@ -1112,8 +1118,11 @@
             $(document).on('click', 'label[for]', function() {
                 var label = $(this).attr('for');
                 var checkboxId = label.split('-');
+                // alert(checkboxId[1]);
+                $('#checkbox-' + checkboxId[1]).focus();
                 $('label[for="labelCheckbox-' + checkboxId[1] + '"]').addClass('hidden');
                 $('#checkbox-' + checkboxId[1]).removeClass('hidden');
+                $('#checkbox-' + checkboxId[1]).focus();
                 $('#saveButtonChecklistUpdate-' + checkboxId[1]).removeClass('hidden');
                 $('#cancelButtonChecklistUpdate-' + checkboxId[1]).removeClass('hidden');
             });

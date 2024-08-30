@@ -62,12 +62,6 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/landing', 'landing')->name('landing');
 });
 
-// ----------------------------- Kunci Layar ----------------------------- //
-Route::controller(LockScreen::class)->group(function () {
-    Route::get('lock_screen', 'lockScreen')->middleware('auth')->name('lock_screen');
-    Route::post('unlock', 'unlock')->name('unlock');
-});
-
 // ----------------------------- Daftar Akun ----------------------------- //
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/daftar', 'tampilanDaftar')->name('daftar');
@@ -102,6 +96,7 @@ Route::controller(UserManagementController::class)->middleware(['auth', 'auth.se
     Route::get('ubah-kata-sandi', 'tampilanPerbaharuiKataSandi')->name('rubah-kata-sandi');
     Route::post('change/password/db', 'perbaharuiKataSandi')->name('change/password/db');
     Route::get('get-history-activity', 'getHistoryActivity')->name('get-history-activity');
+    Route::delete('delete/history', 'deleteHistoryActivity')->name('delete-all-history');
     Route::get('get-aktivitas-pengguna', 'getAktivitasPengguna')->name('get-aktivitas-pengguna');
 });
 
@@ -123,13 +118,13 @@ Route::prefix('team')->controller(TeamController::class)->middleware(['auth', 'a
     Route::get("/undangan/diterima/{team_id}/{user_id}", "acceptInvite")->name("acceptTeamInvite");
     Route::get("/undangan/ditolak/{team_id}/{user_id}", "rejectInvite")->name("rejectTeamInvite");
     Route::get("/showboard/cari/papan/{team_ids}", "searchBoard")->middleware('userInTeam')->name("searchBoard");
-    Route::post("/perbaharui/tim/{team_id}", "updateData")->middleware('userInTeam')->name("doTeamDataUpdate");
-    Route::post("/hapus/tim/{team_id}", "deleteTeam")->middleware('userInTeam')->name("doDeleteTeam");
-    Route::post("/hapus/pengguna/{team_id}", "deleteMembers")->middleware('userInTeam')->name("deleteTeamMember");
-    Route::post("/undangan/{team_id}", "inviteMembers")->middleware('userInTeam')->name("doInviteMembers");
+    Route::post("/perbaharui/tim/{team_ids}", "updateData")->middleware('userInTeam')->name("doTeamDataUpdate");
+    Route::post("/hapus/tim/{team_ids}", "deleteTeam")->middleware('userInTeam')->name("doDeleteTeam");
+    Route::post("/hapus/pengguna/{team_id}", "deleteMembers")->name("deleteTeamMember");
+    Route::post("/undangan/{team_ids}", "inviteMembers")->middleware('userInTeam')->name("doInviteMembers");
     Route::post("/perbaharui/foto/{team_id}", "updateImage")->middleware('userInTeam')->name("doChangeTeamImage");
     Route::get("/undangan/{team_id}/{user_id}", "getInvite")->name("getInvite");
-    Route::post("/tinggalkan/{team_id}", "leaveTeam")->middleware('userInTeam')->name("doLeaveTeam");
+    Route::post("/tinggalkan/{team_ids}", "leaveTeam")->middleware('userInTeam')->name("doLeaveTeam");
 });
 
 Route::prefix('team/board')->controller(BoardController::class)->middleware(['auth', 'auth.session'])->group(function () {
@@ -137,14 +132,15 @@ Route::prefix('team/board')->controller(BoardController::class)->middleware(['au
     Route::post('/hapus-kartu-permanen', 'hapusKartuPermanen')->name('hapusKartuPermanen');
     Route::get('/pulihkan-kartu', 'dataPulihkanKartu')->name('pulihkan-kartu');
     Route::post('/perbaharui/Posisi/kolom', 'perbaharuiPosisiKolom')->name('perbaharuiPosisiKolom');
+    Route::post("/{team_id}/{board_id}/cari", "searchCol")->name("searchCol");
 });
 
 // ----------------------------- Board ----------------------------- //
 Route::prefix('team/board')->controller(BoardController::class)->middleware(['auth', 'auth.session'])->group(function () {
     Route::post("/{team_ids}", "createBoard")->middleware('userInTeam')->name("createBoard");
     Route::get("/{team_id}/{board_id}", "showBoard")->middleware('boardAccess')->name("board");
-    Route::post("/{team_id}/{board_id}", "updateBoard")->middleware(['boardAccess', 'isAdmin'])->name("updateBoard");
-    Route::post("/{team_id}/{board_id}/hapus", "deleteBoard")->middleware(['boardAccess', 'isAdmin'])->name("deleteBoard");
+    Route::post("/{team_id}/{board_id}", "updateBoard")->middleware(['boardAccess'])->name("updateBoard");
+    Route::post("/{team_id}/{board_id}/hapus", "deleteBoard")->middleware(['boardAccess'])->name("deleteBoard");
     Route::post("/{team_id}/{board_id}/kolom", "addColumn")->middleware('boardAccess')->name("addCol");
     Route::post("/{team_id}/{board_id}/updatekolom", "updateCol")->middleware('boardAccess')->name("updateCol");
     Route::post("/{team_id}/{board_id}/hapuskolom", "deleteCol")->middleware(['boardAccess', 'isAdmin'])->name("deleteCol");

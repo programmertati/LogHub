@@ -18,28 +18,17 @@ class BoardAccsessMiddleWare
     {
         $user_id = Auth::user()->id;
         $team_id = decrypt($request->route('team_id'));
-        $board_id = decrypt($request->route('board_id'));
+        $board_id = $request->route('board_id');
         if (!$this->teamLogic->userHasAccsess($user_id, $team_id)) {
 
             Toastr::error('Tim tidak ditemukan atau Anda dikeluarkan, silakan hubungi pemiliknya.', 'Error');
-            if (Auth::user()->role_name == 'Admin') {
-                return redirect()->route("showTeams");
-            }
-            if (Auth::user()->role_name == 'User') {
-                return redirect()->route("showTeams2");
-            }
+            return redirect()->back();
         }
 
         $board = Board::find($board_id);
         if ($board == null) {
-
             Toastr::error('Papan tidak ditemukan atau dihapus, harap hubungi pemilik.', 'Error');
-            if (Auth::user()->role_name == 'Admin') {
-                return redirect()->route("viewTeam", ["team_id" => $team_id]);
-            }
-            if (Auth::user()->role_name == 'User') {
-                return redirect()->route("viewTeam2", ["team_id" => $team_id]);
-            }
+            return redirect()->back();
         }
         return $next($request);
     }

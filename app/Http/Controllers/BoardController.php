@@ -18,8 +18,10 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\TitleChecklists;
 use Brian2694\Toastr\Facades\Toastr;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response as HttpResponse;
+use PhpParser\Node\Stmt\TryCatch;
 
 class BoardController extends Controller
 {
@@ -29,6 +31,24 @@ class BoardController extends Controller
         protected CardLogic $cardLogic
     ) {}
 
+    public function searchCol(Request $request, $team_id, $board_id)
+    {
+        try {
+            $search = $request->card;
+            $columns = Column::where('board_id', $board_id)
+                ->where('name', 'like', '%' . $search . '%')
+                ->first();
+            return response()->json([
+                'name' => $columns->name,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'type' => 'info',
+                'title' => 'List Tidak Ditemukan!',
+                'msg' => 'Tidak ada hasil pencarian yang cocok.'
+            ], 404);
+        }
+    }
     // Membuat Papan Khusus Admin //
     public function createBoard(Request $request, $team_id)
     {
@@ -58,7 +78,7 @@ class BoardController extends Controller
     public function showBoard($team_id, $board_id)
     {
         $team_id = decrypt($team_id);
-        $board_id = decrypt($board_id);
+        // $board_id = decrypt($board_id);
         $userID = Auth::id();
         $board = $this->boardLogic->getData($board_id);
         $team = Team::find($board->team_id);
@@ -76,6 +96,8 @@ class BoardController extends Controller
             ->with("team", $team)
             ->with("owner", $teamOwner)
             ->with("board", $board)
+            ->with("team_id", $team_id)
+            ->with("board_id", $board_id)
             ->with("patterns", BoardLogic::PATTERN)
             ->with("covers", BoardLogic::COVER);
     }
@@ -122,7 +144,7 @@ class BoardController extends Controller
     public function deleteBoard($team_id, $board_id)
     {
         $team_id = decrypt($team_id);
-        $board_id = decrypt($board_id);
+        // $board_id = decrypt($board_id);
         Board::where("id", intval($board_id))->delete();
         Toastr::success('Papan berhasil dihapus!', 'Success');
         return redirect()->route("viewTeam", ["team_ids" => encrypt($team_id)]);
@@ -133,7 +155,7 @@ class BoardController extends Controller
     public function addColumn(Request $request, $team_id, $board_id)
     {
         $team_id = decrypt($team_id);
-        $board_id = decrypt($board_id);
+        // $board_id = decrypt($board_id);
         $request->validate([
             "board_id" => "required",
             "column_name" => "required",
@@ -153,9 +175,9 @@ class BoardController extends Controller
         return response()->json([
             'id' => $createdColumn->id,
             'name' => $createdColumn->name,
-            'updateUrl' => route('updateCol', ['board_id' => encrypt($board_id), 'team_id' => encrypt($team_id)]),
-            'deleteUrl' => route('deleteCol', ['board_id' => encrypt($board_id), 'team_id' => encrypt($team_id)]),
-            'addCardUrl' => route('addCard', ['board_id' => encrypt($board_id), 'team_id' => encrypt($team_id), 'column_id' => $createdColumn->id]),
+            'updateUrl' => route('updateCol', ['board_id' => $board_id, 'team_id' => encrypt($team_id)]),
+            'deleteUrl' => route('deleteCol', ['board_id' => $board_id, 'team_id' => encrypt($team_id)]),
+            'addCardUrl' => route('addCard', ['board_id' => $board_id, 'team_id' => encrypt($team_id), 'column_id' => $createdColumn->id]),
             'board_id' => $board_id,
             'team_id' => $team_id,
             'softDeletedCards' => $softDeletedCards,
@@ -167,7 +189,7 @@ class BoardController extends Controller
     public function updateCol(Request $request, $team_id, $board_id)
     {
         $team_id = decrypt($team_id);
-        $board_id = decrypt($board_id);
+        // $board_id = decrypt($board_id);
         $request->validate([
             "column_name" => "required|max:200",
             "column_id" => "required",
@@ -207,7 +229,7 @@ class BoardController extends Controller
     {
         // Mendapatkan data board->id dan column->id
         $team_id = decrypt($team_id);
-        $board_id = decrypt($board_id);
+        // $board_id = decrypt($board_id);
         $column_id = intval($column_id);
 
         // Dapatkan nama kartu dari permintaan
@@ -654,4 +676,17 @@ class BoardController extends Controller
         return response()->json($updatedCol);
     }
     // /Memindahkan Kolom Admin //
+
+    public static function progressBar($title_checklists_id)
+    {
+        $totData = Checklists::where('title_checklists_id', $title_checklists_id)->count();
+        $countActive = Checklists::where('title_checklists_id', $title_checklists_id)->where('is_active', 1)->count();
+        $percentage = !empty($countActive) ? round(($countActive / $totData) * 100) : 0;
+        TitleChecklists::where('id', $title_checklists_id)->update([
+            'percentage' => $percentage
+        ]);
+        $titleChecklist = TitleChecklists::find($title_checklists_id);
+
+        return $titleChecklist;
+    }
 }

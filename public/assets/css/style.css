@@ -8580,6 +8580,10 @@ ul.comment-list li ul.children {
 	.contact-cat {
 		padding-right: 70px;
 	}
+    .search-list
+    {
+        display: none;
+    }
 	.user-menu {
 		display: none;
 	}

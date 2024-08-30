@@ -610,4 +610,13 @@ class UserManagementController extends Controller
         return response()->json($json_data);
     }
     // /Proses Data Aktivitas Pengguna //
+
+    public function deleteHistoryActivity(Request $request)
+    {
+        CardHistory::truncate();
+        session()->flash('success', 'Histori Dihapus');
+        return response()->json([
+            'redirect' =>  route('riwayat-aktivitas'),
+        ]);
+    }
 }

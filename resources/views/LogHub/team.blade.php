@@ -89,7 +89,7 @@
                     <div class="tampilan-papan">
                         @isset($boards)
                             @foreach ($boards as $board)
-                                <a href="{{ route('board', ['board_id' => encrypt($board->id), 'team_id' => encrypt($board->team_id)]) }}"
+                                <a href="{{ route('board', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id)]) }}"
                                     class="flex cursor-pointer select-none flex-col transition duration-300 border border-gray-200 shadow-xl rounded-xl w-72 hover:shadow-2xl bg-grad-{{ $board->pattern }}"
                                     id="bgGrad" style="margin-bottom: 15px;">
                                     <div class="flex-grow w-full p-4" style="padding: 3rem !important;"></div>
@@ -164,7 +164,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('doTeamDataUpdate', ['team_id' => $team->id]) }}" method="POST">
+                            <form action="{{ route('doTeamDataUpdate', ['team_ids' => encrypt($team->id)]) }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="team_id" value="{{ $team->id }}">
                                 <div class="form-group">
@@ -252,8 +252,8 @@
                                     </div>
                                 </div>
                                 <div class="submit-section">
-                                    <button type="button" class="btn btn-outline-danger submit-btn"
-                                        id="save-btn">Delete</button>
+                                    <button type="button" class="btn btn-outline-danger submit-btn" id="save-btn"
+                                        data-url="{{ route('deleteTeamMember', ['team_id' => encrypt($team->id)]) }}">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -296,7 +296,7 @@
                                     </div>
                                 </div>
                                 <form method="POST" id="invite-members-form"
-                                    action="{{ route('doInviteMembers', ['team_id' => $team->id]) }}">
+                                    action="{{ route('doInviteMembers', ['team_ids' => encrypt($team->id)]) }}">
                                     @csrf
                                     <input type="hidden" name="team_id" value="{{ $team->id }}">
                                     <div class="border border-2 border-dark p-2 rounded"
@@ -378,7 +378,8 @@
                                         <p>Are you sure you want to delete this team?</p>
                                     </div>
                                     <div class="modal-btn delete-action">
-                                        <form action="{{ route('doDeleteTeam', ['team_id' => $team->id]) }}" method="POST">
+                                        <form action="{{ route('doDeleteTeam', ['team_ids' => encrypt($team->id)]) }}"
+                                            method="POST">
                                             @csrf
                                             <input type="hidden" name="team_id" value="{{ $team->id }}">
                                             <div class="row">
@@ -409,7 +410,7 @@
                                         <p>Are you sure you want to leave this team?</p>
                                     </div>
                                     <div class="modal-btn delete-action">
-                                        <form action="{{ route('doLeaveTeam', ['team_id' => $team->id]) }}" method="POST">
+                                        <form action="{{ route('doLeaveTeam', ['team_ids' => encrypt($team->id)]) }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="team_id" value="{{ $team->id }}">
                                             <div class="row">
@@ -497,10 +498,10 @@
                                 $('[data-role="member-card"].selected').each(function() {
                                     selectedMembers.push($(this).data('email'));
                                 });
-
+                                const url = $(this).data('url');
                                 if (selectedMembers.length > 0) {
                                     $.ajax({
-                                        url: '{{ route('deleteTeamMember', ['team_id' => $team->id]) }}',
+                                        url: url,
                                         method: 'POST',
                                         data: {
                                             emails: selectedMembers,

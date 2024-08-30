@@ -41,7 +41,7 @@ class TeamController extends Controller
             $request->team_pattern,
         );
 
-        return redirect()->route('viewTeam', ['team_id' => $createdTeam->id]);
+        return redirect()->route('viewTeam', ['team_ids' => encrypt($createdTeam->id)]);
     }
     // /Membuat Tim Khusus Admin //
 
@@ -62,11 +62,11 @@ class TeamController extends Controller
     // Fitur Pencarian Admin //
     public function search(Request $request)
     {
+
         $validator = Validator::make($request->all(), ["team_name" => "required"]);
         if ($validator->fails()) {
             return redirect()->route("showTeams");
         }
-
         $request->session()->flash("__old_team_name", $request->team_name);
         $user = User::find(Auth::user()->id);
         $teams = $this->teamLogic->getUserTeams($user->id, ["Member", "Owner"], $request->team_name);
@@ -89,6 +89,9 @@ class TeamController extends Controller
             'zig-zag-flat',
             'circle'
         ];
+        // return response()->json([
+        //     'search' => $teams,
+        // ]);
         return view("LogHub.teams", compact('patterns'))
             ->with("teams", $teams)
             ->with("invites", $invites);
@@ -208,14 +211,14 @@ class TeamController extends Controller
     // /Fitur Pencarian Papan Admin //
 
     // Fitur Keluar dari Tim Khusus Admin //
-    public function leaveTeam(Request $request, $team_id)
+    public function leaveTeam(Request $request, $team_ids)
     {
         $request->validate([
             "team_id" => "required",
         ]);
 
         $user_email  = Auth::user()->email;
-        $team_id = intval($request->team_id);
+        $team_id = decrypt($request->team_ids);
         $this->teamLogic->deleteMembers($team_id, [$user_email]);
 
         Toastr::success('Berhasil keluar dari tim!', 'Success');
@@ -224,13 +227,13 @@ class TeamController extends Controller
     // /Fitur Keluar dari Tim Khusus Admin //
 
     // Fitur Menghapus Tim Khusus Admin //
-    public function deleteTeam(Request $request, $team_id)
+    public function deleteTeam(Request $request, $team_ids)
     {
         $request->validate([
             "team_id" => "required"
         ]);
 
-        $team_id = intval($request->team_id);
+        $team_id = decrypt($request->team_ids);
         $this->teamLogic->deleteTeam($team_id);
 
         Toastr::success('Tim berhasil dihapus!', 'Success');
@@ -248,7 +251,7 @@ class TeamController extends Controller
             "team_pattern"      => 'required',
         ]);
 
-        $team_id = intval($request->team_id);
+        $team_id = decrypt($request->team_ids);
         $selectedTeam = Team::find($team_id);
 
         if ($selectedTeam == null) {
@@ -269,7 +272,8 @@ class TeamController extends Controller
     // Fitur Menghapus Anggota Khusus Admin //
     public function deleteMembers(Request $request)
     {
-        $team_id = intval($request->team_id);
+
+        $team_id = decrypt($request->team_id);
         $this->teamLogic->deleteMembers($team_id, $request->emails);
         return response()->json(["message" => "Anggota berhasil dihapus"]);
     }
