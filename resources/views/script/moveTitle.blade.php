@@ -3,8 +3,11 @@
 
         let isInputFocused = false;
         const titleContainer = document.getElementById('titleContainer');
+        const checklistsContainers = [...document.getElementsByClassName('checklist-container')];
         const sortableInstances = [];
         let initialTitlePositions = getTitlePositions(); // Simpan posisi awal titles
+        // let initialChecklistPositions = getChecklistPositions();
+        let initialChecklistPositions = getChecklistPositions();
 
         // Cek status awal fokus
         $(document).ready(function() {
@@ -38,7 +41,7 @@
         });
 
         // Initialize sortable untuk checklists
-        const checklistsContainers = [...document.getElementsByClassName('checklist-container')];
+        // const checklistsContainers = [...document.getElementsByClassName('checklist-container')];
         checklistsContainers.forEach(e => {
             const sortableInstance = new Sortable(e, {
                 animation: 150,
