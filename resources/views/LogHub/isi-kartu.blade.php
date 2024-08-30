@@ -1119,7 +1119,7 @@
                 var label = $(this).attr('for');
                 var checkboxId = label.split('-');
                 // alert(checkboxId[1]);
-                $('#checkbox-' + checkboxId[1]).focus();
+                // $('#checkbox-' + checkboxId[1]).focus();
                 $('label[for="labelCheckbox-' + checkboxId[1] + '"]').addClass('hidden');
                 $('#checkbox-' + checkboxId[1]).removeClass('hidden');
                 $('#checkbox-' + checkboxId[1]).focus();
@@ -1286,7 +1286,7 @@
                         // Pengecekan pada checkbox
                         var checklistAllCheckbox = $('#checklistform-all-' + response.titlechecklist
                             .id);
-                        if (response.titlechecklist.percentage === 100) {
+                        if (response.titlechecklist.percentage == 100) {
                             checklistAllCheckbox.prop('checked', true);
                         } else {
                             checklistAllCheckbox.prop('checked', false);

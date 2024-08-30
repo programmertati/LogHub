@@ -6,59 +6,39 @@
         const sortableInstances = [];
         let initialTitlePositions = getTitlePositions(); // Simpan posisi awal titles
 
-
-        $(document).on('click', '.isian-title', function() {
-            // e.preventDefault();
-            // e.stopImmediatePropagation();
-            isInputFocused = true;
-            titleSortable.option("disabled", true);
+        // Cek status awal fokus
+        $(document).ready(function() {
+            console.log(isInputFocused);
         });
-        $('.isian-title').blur(function(e) {
+
+        // Ketika input atau title difokuskan
+        $(document).on('focus', '.isian-title, .dynamicCheckboxValue', function() {
+            isInputFocused = true;
+            disableDragAndDrop();
+        });
+
+        // Ketika input atau title kehilangan fokus
+        $(document).on('blur', '.isian-title, .dynamicCheckboxValue', function(e) {
             e.preventDefault();
             isInputFocused = false;
-            titleSortable.option("disabled", false);
+            enableDragAndDrop();
         });
 
-        // titleContainer.forEach(e => {
+        // Initialize sortable untuk title
         const titleSortable = new Sortable(titleContainer, {
             animation: 150,
             onEnd: function(evt) {
-                // if (!isInputFocused) {
                 const newTitlePositions = getTitlePositions();
-                if (JSON.stringify(initialTitlePositions) !== JSON.stringify(
-                        newTitlePositions)) {
+                if (JSON.stringify(initialTitlePositions) !== JSON.stringify(newTitlePositions)) {
                     updateTitlePositions(newTitlePositions);
                     initialTitlePositions =
                         newTitlePositions; // Update posisi awal dengan posisi baru
                 }
-                // }
             },
         });
-        // sortableInstances.push(sortableInstance);
-        // });
 
-
+        // Initialize sortable untuk checklists
         const checklistsContainers = [...document.getElementsByClassName('checklist-container')];
-        // const sortableInstances = [];
-        let initialChecklistPositions = getChecklistPositions(); // Simpan posisi awal checklists
-
-        $(document).on('click', 'label[for]', function() {
-            isInputFocused = true;
-            sortableInstances.forEach(sortableInstance => {
-                sortableInstance.option("disabled", true);
-            });
-            titleSortable.option("disabled", true);
-        });
-
-        $('.dynamicCheckboxValue').blur(function(e) {
-            e.preventDefault();
-            isInputFocused = false;
-            sortableInstances.forEach(sortableInstance => {
-                sortableInstance.option("disabled", false);
-            });
-            titleSortable.option("disabled", false);
-        });
-
         checklistsContainers.forEach(e => {
             const sortableInstance = new Sortable(e, {
                 animation: 150,
@@ -79,6 +59,23 @@
             sortableInstances.push(sortableInstance);
         });
 
+        // Disable drag-and-drop
+        function disableDragAndDrop() {
+            titleSortable.option("disabled", true);
+            sortableInstances.forEach(sortableInstance => {
+                sortableInstance.option("disabled", true);
+            });
+        }
+
+        // Enable drag-and-drop
+        function enableDragAndDrop() {
+            titleSortable.option("disabled", false);
+            sortableInstances.forEach(sortableInstance => {
+                sortableInstance.option("disabled", false);
+            });
+        }
+
+        // Get positions for titles
         function getTitlePositions() {
             const positions = {};
             const titleIds = titleContainer.children;
@@ -92,6 +89,7 @@
             return positions;
         }
 
+        // Update positions for titles
         function updateTitlePositions(positions) {
             fetch('{{ route('perbaharuiPosisiJudul') }}', {
                     method: 'POST',
@@ -116,6 +114,7 @@
                 });
         }
 
+        // Get positions for checklists
         function getChecklistPositions() {
             const positions = {};
             checklistsContainers.forEach(container => {
@@ -135,6 +134,7 @@
             return positions;
         }
 
+        // Update positions for checklists
         function updateChecklistPositions(positions) {
             fetch('{{ route('perbaharuiPosisiCeklist') }}', {
                     method: 'POST',
