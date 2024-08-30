@@ -49,16 +49,14 @@
                         <span style="font-weight: 900">Team</span>
                     </a>
                 </li>
-                @can('admin')
-                    @if (Route::is('showTeams') || Route::is('searchTeam'))
-                        <li class="add-teams btn btn-outline-danger">
-                            <a href="#" class="link-add-teams" data-toggle="modal" data-target="#createTeam">
-                                <i class="icon-add-teams fa-solid fa-cubes"></i>
-                                <span style="font-weight: 900">Add Teams</span>
-                            </a>
-                        </li>
-                    @endif
-                @endcan
+                @if (Route::is('showTeams') || Route::is('searchTeam'))
+                    <li class="add-teams btn btn-outline-danger">
+                        <a href="#" class="link-add-teams" data-toggle="modal" data-target="#createTeam">
+                            <i class="icon-add-teams fa-solid fa-cubes"></i>
+                            <span style="font-weight: 900">Add Teams</span>
+                        </a>
+                    </li>
+                @endif
                 @if (Route::is('viewTeam') || Route::is('searchBoard'))
                     @foreach ($actionTeams as $iconAction)
                         @if ($iconAction->status == 'Owner')

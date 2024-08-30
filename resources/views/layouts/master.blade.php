@@ -2023,7 +2023,7 @@
                                                 id="card"
                                                 style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 15px"
                                                 autocomplete="off" />
-                                            <label class="focus-label"><i class="fa-solid fa-cube"></i> List's
+                                            <label class="focus-label"><i class="fa-solid fa-cube"></i> Search
                                                 Name</label>
                                         </div>
                                     </div>

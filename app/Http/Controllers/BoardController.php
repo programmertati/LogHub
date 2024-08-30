@@ -36,7 +36,7 @@ class BoardController extends Controller
         try {
             $search = $request->card;
             $columns = Column::where('board_id', $board_id)
-                ->where('name', 'like', '%' . $search . '%')
+                ->where('name', 'ilike', '%' . $search . '%')
                 ->first();
             return response()->json([
                 'name' => $columns->name,
@@ -88,7 +88,7 @@ class BoardController extends Controller
             ->get();
         $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
         $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
-
+        // dd($teamOwner);
         return view("LogHub.board")
             ->with("UserTeams", $UserTeams)
             ->with("actionTeams", $actionTeams)

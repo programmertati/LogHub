@@ -470,12 +470,12 @@
                                     id="edit-column-{{ $dataKolom->id }}">
                                     <i class="fa fa-pencil m-r-5"></i> Edit
                                 </a>
-                                @can('admin')
+                                @if (Auth::user()->id == $owner->id)
                                     <a href="#" class="dropdown-item"
                                         onclick="deleteColumnModal({{ $dataKolom->id }}, '{{ $dataKolom->name }}', '{{ route('deleteCol', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id)]) }}');">
                                         <i class='fa fa-trash-o m-r-5'></i> Delete
                                     </a>
-                                @endcan
+                                @endif
                                 @php
                                     $softDeletedCards = $dataKolom->cards()->onlyTrashed()->count();
                                     $displayStyle = $softDeletedCards > 0 ? '' : 'display: none;';
