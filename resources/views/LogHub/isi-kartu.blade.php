@@ -938,7 +938,7 @@
                             // Pengecekan pada checkbox
                             var checklistAllCheckbox = $('#checklistform-all-' +
                                 title_id);
-                            if (response.titlechecklist.percentage === 100) {
+                            if (response.titlechecklist.percentage == 100) {
                                 checklistAllCheckbox.prop('checked', true);
                             } else {
                                 checklistAllCheckbox.prop('checked', false);
@@ -1182,7 +1182,7 @@
                         // Pengecekan pada checkbox
                         var checklistAllCheckbox = $('#checklistform-all-' + response
                             .titlechecklist.id);
-                        if (response.titlechecklist.percentage === 100) {
+                        if (response.titlechecklist.percentage == 100) {
                             checklistAllCheckbox.prop('checked', true);
                         } else {
                             checklistAllCheckbox.prop('checked', false);
@@ -1403,7 +1403,7 @@
                         // Pengecekan pada checkbox
                         var checklistAllCheckbox = $('#checklistform-all-' + response
                             .titlechecklist.id);
-                        if (response.titlechecklist.percentage === 100) {
+                        if (response.titlechecklist.percentage == 100) {
                             checklistAllCheckbox.prop('checked', true);
                         } else {
                             checklistAllCheckbox.prop('checked', false);

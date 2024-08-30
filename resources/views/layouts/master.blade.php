@@ -2017,7 +2017,7 @@
                                 method="post">
                                 @csrf
                                 <div class="row filter-row mt-2">
-                                    <div class="col-sm-6 col-md-9 col-lg-11">
+                                    <div class="col-sm-9 col-md-10 col-lg-10">
                                         <div class="form-group form-focus d-flex align-items-center">
                                             <input type="text" class="form-control floating" name="card"
                                                 id="card"
@@ -2027,7 +2027,7 @@
                                                 Name</label>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 col-lg-1">
+                                    <div class="col-sm-3 col-md-2 col-lg-1">
                                         <button type="submit" id="cardsearch"
                                             class="btn btn-success btn-block btn_search"><i
                                                 class="fa-solid fa-magnifying-glass"></i></button>
