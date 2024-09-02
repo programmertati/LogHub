@@ -530,8 +530,8 @@
                                                 onclick="deleteCardModal2('{{ $dataKartu->id }}', '{{ addslashes($dataKartu->name) }}', '{{ $dataKolom->name }}', '{{ route('hapusKartu', ['card_id' => $dataKartu->id]) }}');">
                                                 <i class='fa fa-trash-o m-r-5'></i> Delete
                                             </a>
-                                            <a href="#" class="dropdown-item"
-                                                onclick="copyCardModal('{{ $dataKartu->id }}', '{{ $dataKartu->name }}', '{{ route('copyCard', ['column_id' => $dataKolom->id, 'id' => $dataKartu->id]) }}');"
+                                            <a href="#" class="dropdown-item copy-card"
+                                                onclick="copyCardModal('{{ $dataKartu->id }}', '{{ route('copyCard', ['column_id' => $dataKolom->id, 'id' => $dataKartu->id]) }}');"
                                                 id="copy-card-{{ $dataKartu->id }}">
                                                 <i class="fa-regular fa-copy m-r-5"></i> Copy Card
                                             </a>

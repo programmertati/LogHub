@@ -42,8 +42,18 @@ function deleteCardModal2(cardId, cardName, columnName, formAction) {
     $('#deleteCardForm2').attr('action', formAction);
     $('#deleteCard2').modal('show');
 }
-
-function copyCardModal(cardId, cardName, formAction) {
+// #span-nama
+    // $(document).ready(function () {
+    //     $(document).on('click', '.copy-card', function(e) {
+    //         e.preventDefault();
+    //         var id = $(this).data('id');
+    //         var kartuName = $(this).data('kartuname');
+    //         var test = $('#span-nama-' +id).html();
+    //         alert(test);
+    //     });
+    // });
+function copyCardModal(cardId, formAction) {
+    var cardName = $('#span-nama-' +cardId).html();
     $('#copy-card-id').val(cardId);
     $('#copy-card-name').val(cardName).attr('placeholder', cardName);
     $('#copyCardForm').attr('action', formAction);
