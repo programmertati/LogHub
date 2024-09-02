@@ -84,7 +84,6 @@ class SSOController extends Controller
         DB::table('users')->where('id', $user->id)->update($updateStatus);
 
         Toastr::success('Anda berhasil masuk aplikasi!', 'Success');
-        $route = $user->role_name == 'Admin' ? 'showTeams' : 'showTeams2';
-        return redirect()->route($route);
+        return redirect()->route('showTeams');
     }
 }
