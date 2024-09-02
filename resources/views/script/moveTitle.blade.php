@@ -9,20 +9,15 @@
         // let initialChecklistPositions = getChecklistPositions();
         let initialChecklistPositions = getChecklistPositions();
 
-        // Cek status awal fokus
-        $(document).ready(function() {
-            console.log(isInputFocused);
-        });
-
         // Ketika input atau title difokuskan
-        $(document).on('focus', '.isian-title, .dynamicCheckboxValue', function() {
+        $(document).on('focus', '.isian-title, .dynamicCheckboxValue', function(e) {
+            e.preventDefault();
             isInputFocused = true;
             disableDragAndDrop();
         });
 
         // Ketika input atau title kehilangan fokus
-        $(document).on('blur', '.isian-title, .dynamicCheckboxValue', function(e) {
-            e.preventDefault();
+        $(document).on('blur', '.isian-title, .dynamicCheckboxValue', function() {
             isInputFocused = false;
             enableDragAndDrop();
         });

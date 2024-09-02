@@ -5,6 +5,7 @@
             e.stopImmediatePropagation();
             const id = $(this).data('id');
             $('#titleChecklist' + id).removeClass('hidden');
+            $('#titleChecklist' + id).focus();
             $('#saveButtonTitle' + id).removeClass('hidden');
             $('#makeTemplate' + id).removeClass('hidden');
             $('#cancelButtonTitle' + id).removeClass('hidden');
