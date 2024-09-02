@@ -21,10 +21,6 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Tampilkan dasbor aplikasi.
@@ -35,193 +31,48 @@ class HomeController extends Controller
     // Halaman Utama //
     public function index(Request $request)
     {
-        // Mendapatkan peran pengguna saat ini //
-        $user = auth()->user();
+        $dataPengguna = User::where('role_name', 'User')->count();
+        $dataOnline = User::where('status_online', 'Online')->count();
+        $dataOffline = User::where('status_online', 'Offline')->count();
 
-        // Memeriksa peran pengguna dan mengarahkannya ke halaman yang sesuai //
-        if ($user->role_name === 'Admin')
-        {
-            $dataPengguna = User::where('role_name', 'User')->count();
-            $dataOnline = User::where('status_online', 'Online')->count();
-            $dataOffline = User::where('status_online', 'Offline')->count();
+        $currentHour = date('G');
+        $greetings = [
+            'morning' => 'Good Morning,',
+            'afternoon' => 'Good Afternoon,',
+            'evening' => 'Good Evening,',
+            'night' => 'Good Night,',
+        ];
 
-            $result_tema = DB::table('mode_aplikasi')
-                ->select(
-                    'mode_aplikasi.id',
-                    'mode_aplikasi.tema_aplikasi',
-                    'mode_aplikasi.warna_sistem',
-                    'mode_aplikasi.warna_sistem_tulisan',
-                    'mode_aplikasi.warna_mode',
-                    'mode_aplikasi.tabel_warna',
-                    'mode_aplikasi.tabel_tulisan_tersembunyi',
-                    'mode_aplikasi.warna_dropdown_menu',
-                    'mode_aplikasi.ikon_plugin',
-                    'mode_aplikasi.bayangan_kotak_header',
-                    'mode_aplikasi.warna_mode_2',
-                    )
-                ->where('user_id', auth()->user()->user_id)
-                ->get();
-
-            $user = auth()->user();
-            $role = $user->role_name;
-            $unreadNotifications = Notification::where('notifiable_id', $user->id)
-                ->where('notifiable_type', get_class($user))
-                ->whereNull('read_at')
-                ->get();
-
-            $readNotifications = Notification::where('notifiable_id', $user->id)
-                ->where('notifiable_type', get_class($user))
-                ->whereNotNull('read_at')
-                ->get();
-
-            $semua_notifikasi = DB::table('notifications')
-                ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-                ->select(
-                    'notifications.*',
-                    'notifications.id',
-                    'users.name',
-                    'users.avatar'
-                )
-                ->get();
-
-            $belum_dibaca = DB::table('notifications')
-                ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-                ->select(
-                    'notifications.*',
-                    'notifications.id',
-                    'users.name',
-                    'users.avatar'
-                )
-                ->whereNull('read_at')
-                ->get();
-
-            $dibaca = DB::table('notifications')
-                ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-                ->select(
-                    'notifications.*',
-                    'notifications.id',
-                    'users.name',
-                    'users.avatar'
-                )
-                ->whereNotNull('read_at')
-                ->get();
-           
-            return view('dashboard.Halaman-admin', compact('dataPengguna', 'dataOnline', 'dataOffline',
-                'result_tema', 'unreadNotifications', 'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'));
+        if ($currentHour < 12) {
+            $greeting = $greetings['morning'];
+        } elseif ($currentHour < 16) {
+            $greeting = $greetings['afternoon'];
+        } elseif ($currentHour < 18) {
+            $greeting = $greetings['evening'];
+        } else {
+            $greeting = $greetings['night'];
         }
 
-        elseif ($user->role_name === 'User')
-        {
-            // $tampilanPerusahaan = CompanySettings::where('id',1)->first();
-
-            $result_tema = DB::table('mode_aplikasi')
-                ->select(
-                    'mode_aplikasi.id',
-                    'mode_aplikasi.tema_aplikasi',
-                    'mode_aplikasi.warna_sistem',
-                    'mode_aplikasi.warna_sistem_tulisan',
-                    'mode_aplikasi.warna_mode',
-                    'mode_aplikasi.tabel_warna',
-                    'mode_aplikasi.tabel_tulisan_tersembunyi',
-                    'mode_aplikasi.warna_dropdown_menu',
-                    'mode_aplikasi.ikon_plugin',
-                    'mode_aplikasi.bayangan_kotak_header',
-                    'mode_aplikasi.warna_mode_2',
-                    )
-                ->where('user_id', auth()->user()->user_id)
-                ->get();
-
-            $user = auth()->user();
-            $role = $user->role_name;
-            $unreadNotifications = Notification::where('notifiable_id', $user->id)
-                ->where('notifiable_type', get_class($user))
-                ->whereNull('read_at')
-                ->get();
-
-            $readNotifications = Notification::where('notifiable_id', $user->id)
-                ->where('notifiable_type', get_class($user))
-                ->whereNotNull('read_at')
-                ->get();
-
-            $semua_notifikasi = DB::table('notifications')
-                ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-                ->select(
-                    'notifications.*',
-                    'notifications.id',
-                    'users.name',
-                    'users.avatar'
-                )
-                ->get();
-
-            $belum_dibaca = DB::table('notifications')
-                ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-                ->select(
-                    'notifications.*',
-                    'notifications.id',
-                    'users.name',
-                    'users.avatar'
-                )
-                ->whereNull('read_at')
-                ->get();
-
-            $dibaca = DB::table('notifications')
-                ->leftjoin('users', 'notifications.notifiable_id', 'users.id')
-                ->select(
-                    'notifications.*',
-                    'notifications.id',
-                    'users.name',
-                    'users.avatar'
-                )
-                ->whereNotNull('read_at')
-                ->get();
-            
-            return view('dashboard.Halaman-user', compact('result_tema', 'unreadNotifications',
-                'readNotifications', 'semua_notifikasi', 'belum_dibaca', 'dibaca'));
-        }
+        return view('dashboard.Halaman-home', compact(
+            'greeting',
+            'dataPengguna',
+            'dataOnline',
+            'dataOffline',
+        ));
     }
-
-    // Baca Notifikasi Per ID //
-    public function bacaNotifikasi($id)
-    {
-        if($id)
-        {
-            $notification = auth()->user()->notifications->where('id', $id)->first();
-            if ($notification) {
-                $notification->markAsRead();
-                return response()->json(['message' => 'Berhasil membaca notifikasi!'], 200);
-            }
-        }
-        return response()->json(['message' => 'Gagal membaca notifikasi'], 500);
-    }
-    // /Baca Notifikasi Per ID //
-
-    // Baca Semua Notifikasi //
-    public function bacasemuaNotifikasi(Request $request)
-    {
-        $user = auth()->user();
-        $user->notifications->markAsRead();
-
-        if ($request->ajax()) {
-            return response()->json(['success' => 'Berhasil membaca semua notifikasi!']);
-        }
-
-        return response()->json(['message' => 'Gagal membaca semua notifikasi!'], 500);
-    }
-    // /Baca Semua Notifikasi //
-
     // Manual Function Notifikasi Ultah //
     public function ulangtahun()
     {
-        if (auth()->user())
-        {
+        if (auth()->user()) {
             $user = User::first();
+            dd($user);
             $notification = auth()->user()->notifications->where('data.user_id', $user->id)->first();
-        
-                if (!$notification) {
-                    $notification = new UlangTahunNotification($user);
-                    $notification->data['user_id'] = $user->id;
-                    auth()->user()->notify($notification);
-                }
+
+            if (!$notification) {
+                $notification = new UlangTahunNotification($user);
+                $notification->data['user_id'] = $user->id;
+                auth()->user()->notify($notification);
+            }
         }
         return back();
     }
@@ -277,7 +128,7 @@ class HomeController extends Controller
             return response()->json(['error' => 'Pengguna mention tidak ditemukan.'], 404);
         }
     }
-    
+
     public function mentionCommentNotification(Request $request)
     {
         $request->validate([
@@ -309,49 +160,46 @@ class HomeController extends Controller
     {
         DB::beginTransaction();
         try {
-        $user = ModeAplikasi::findOrFail($id);
+            $user = ModeAplikasi::findOrFail($id);
+            $tema_aplikasi = $request->input('tema_aplikasi');
+            if ($tema_aplikasi == 'Terang') {
+                $user->tema_aplikasi = 'Terang';
+                $user->warna_sistem = null;
+                $user->warna_sistem_tulisan = null;
+                $user->warna_mode = null;
+                $user->tabel_warna = null;
+                $user->tabel_tulisan_tersembunyi = null;
+                $user->warna_dropdown_menu = null;
+                $user->ikon_plugin = null;
+                $user->bayangan_kotak_header = null;
+                $user->warna_mode_2 = null;
+            } elseif ($tema_aplikasi == 'Gelap') {
+                $user->tema_aplikasi = 'Gelap';
+                $user->warna_sistem = '#171527';
+                $user->warna_sistem_tulisan = 'white';
+                $user->warna_mode = '#292D3E';
+                $user->tabel_warna = 'rgba(0,0,0,.05)';
+                $user->tabel_tulisan_tersembunyi = '#a3a3a3';
+                $user->warna_dropdown_menu = 'rgb(31 28 54 / 1)';
+                $user->ikon_plugin = 'rgba(244, 59, 72, 0.6)';
+                $user->bayangan_kotak_header = '0 0.4px 5px rgb(255 255 255)';
+                $user->warna_mode_2 = '#2b2e3c';
+            }
+            $user->save();
 
-        $tema_aplikasi = $request->input('tema_aplikasi');
-        if ($tema_aplikasi == 'Terang') {
-            $user->tema_aplikasi = 'Terang';
-            $user->warna_sistem = null;
-            $user->warna_sistem_tulisan = null;
-            $user->warna_mode = null;
-            $user->tabel_warna = null;
-            $user->tabel_tulisan_tersembunyi = null;
-            $user->warna_dropdown_menu = null;
-            $user->ikon_plugin = null;
-            $user->bayangan_kotak_header = null;
-            $user->warna_mode_2 = null;
+            $user2 = User::findOrFail($id);
 
-        } elseif ($tema_aplikasi == 'Gelap') {
-            $user->tema_aplikasi = 'Gelap';
-            $user->warna_sistem = '#171527';
-            $user->warna_sistem_tulisan = 'white';
-            $user->warna_mode = '#292D3E';
-            $user->tabel_warna = 'rgba(0,0,0,.05)';
-            $user->tabel_tulisan_tersembunyi = '#a3a3a3';
-            $user->warna_dropdown_menu = 'rgb(31 28 54 / 1)';
-            $user->ikon_plugin = 'rgba(244, 59, 72, 0.6)';
-            $user->bayangan_kotak_header = '0 0.4px 5px rgb(255 255 255)';
-            $user->warna_mode_2 = '#2b2e3c';
-        }
-        $user->save();
+            $tema_aplikasi = $request->input('tema_aplikasi');
+            if ($tema_aplikasi == 'Terang') {
+                $user2->tema_aplikasi = 'Terang';
+            } elseif ($tema_aplikasi == 'Gelap') {
+                $user2->tema_aplikasi = 'Gelap';
+            }
+            $user2->save();
 
-        $user2 = User::findOrFail($id);
-
-        $tema_aplikasi = $request->input('tema_aplikasi');
-        if ($tema_aplikasi == 'Terang') {
-            $user2->tema_aplikasi = 'Terang';
-
-        } elseif ($tema_aplikasi == 'Gelap') {
-            $user2->tema_aplikasi = 'Gelap';
-        }
-        $user2->save();
-
-        DB::commit();
-        Toastr::success('Tema aplikasi berhasil diperbarui', 'Success');
-        return redirect()->back();
+            DB::commit();
+            Toastr::success('Tema aplikasi berhasil diperbarui', 'Success');
+            return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
             Toastr::error('Tema aplikasi gagal diperbarui', 'Error');

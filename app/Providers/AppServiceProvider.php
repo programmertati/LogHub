@@ -2,10 +2,17 @@
 
 namespace App\Providers;
 
-use App\Logic\BoardLogic;
+use DB;
+use App\Models\User;
 use App\Logic\FileLogic;
 use App\Logic\TeamLogic;
 use App\Logic\UserLogic;
+use App\Logic\BoardLogic;
+use App\Models\ModeAplikasi;
+use App\Models\Notification;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,13 +32,39 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // Agar variable notif dibawa ke semua view,
+        View::composer('*', function ($view) {
+            if (Auth::check()) { // cek apakah sudah login atau belum
+                $user = auth()->user();
+                $result_tema = ModeAplikasi::where('user_id', auth()->user()->user_id)->first();
+                // dd($result_tema->tema_aplikasi);
+
+                $unreadNotifications = Notification::where('notifiable_id', $user->id)->whereNull('read_at')->get();
+                $readNotifications = Notification::where('notifiable_id', $user->id)->whereNotNull('read_at')->get();
+                $semua_notifikasi = Notification::latest()->with('user')->get();
+                $belum_dibaca = Notification::with('user')->whereNull('read_at')->get();
+                $dibaca = Notification::with('user')->whereNotNull('read_at')->get();
+
+                $view->with('unreadNotifications', $unreadNotifications)
+                    ->with('readNotifications', $readNotifications)
+                    ->with('belum_dibaca', $belum_dibaca)
+                    ->with('semua_notifikasi', $semua_notifikasi)
+                    ->with('result_tema', $result_tema)
+                    ->with('dibaca', $dibaca);
+            }
+        });
+
         date_default_timezone_set('Asia/Jakarta');
         config(['app.locale' => 'id']);
         \Carbon\Carbon::setLocale('id');
         if (env('APP_ENV') != 'local') {
-            $this->app['request']->server->set('HTTPS', true); 
+            $this->app['request']->server->set('HTTPS', true);
         } else {
-            $this->app['request']->server->set('HTTPS', false);  
-        } 
+            $this->app['request']->server->set('HTTPS', false);
+        }
+
+        Gate::define('admin', function (User $user) {
+            return $user->role_name == 'Admin';
+        });
     }
 }

@@ -40,25 +40,8 @@ class TeamLogic
      * @return Team created team
      */
 
-     // Membuat Tim //
+    // Membuat Tim //
     function createTeam(int $user_id, string $team_name, string $team_description, string $team_pattern)
-    {
-        $newTeam = Team::create([
-            "name" => $team_name,
-            "description" => $team_description,
-            "pattern" => $team_pattern
-        ]);
-
-        UserTeam::create([
-            "user_id" => $user_id,
-            "team_id" => $newTeam->id,
-            "status" => "Owner"
-        ]);
-
-        return $newTeam;
-    }
-
-    function createTeam2(int $user_id, string $team_name, string $team_description, string $team_pattern)
     {
         $newTeam = Team::create([
             "name" => $team_name,
@@ -148,19 +131,10 @@ class TeamLogic
     public function inviteAccept(int $user_id, int $team_id)
     {
         $teamStatus = UserTeam::where([
-            "user_id", $user_id,
-            "team_id", $team_id,
-        ])->first();
-
-        $teamStatus->status = "Member";
-        return;
-    }
-
-    public function inviteAccept2(int $user_id, int $team_id)
-    {
-        $teamStatus = UserTeam::where([
-            "user_id", $user_id,
-            "team_id", $team_id,
+            "user_id",
+            $user_id,
+            "team_id",
+            $team_id,
         ])->first();
 
         $teamStatus->status = "Member";
@@ -182,7 +156,7 @@ class TeamLogic
     {
         $boards = Team::find($team_id)
             ->boards()
-            ->where("name", "LIKE", "%".$search."%")
+            ->where("name", "LIKE", "%" . $search . "%")
             ->get();
 
         return $boards;
@@ -235,19 +209,6 @@ class TeamLogic
         return;
     }
 
-    public function deleteMembers2(int $team_id, array $emails)
-    {
-        $deletedUser = User::whereIn("email", $emails)->get();
-
-        foreach ($deletedUser as $user) {
-            UserTeam::where("team_id", $team_id)
-                ->where("user_id", $user->id)
-                ->where("status", "Member")
-                ->delete();
-        }
-
-        return;
-    }
     // /Menghapus Anggota //
 
     /**
@@ -266,12 +227,5 @@ class TeamLogic
         return;
     }
 
-    public function deleteTeam2(int $team_id)
-    {
-        Board::where("team_id", $team_id)->delete();
-        UserTeam::where("team_id", $team_id)->delete();
-        Team::where("id", $team_id)->delete();
-        return;
-    }
     // /Menghapus Tim //
 }

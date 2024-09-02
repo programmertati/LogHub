@@ -15,16 +15,11 @@ class TeamMemeberMiddlerware
     public function handle(Request $request, Closure $next): Response
     {
         $user_id = Auth::user()->id;
-        $team_id = intval($request->route('team_id'));
-        if(!$this->teamLogic->userHasAccsess($user_id, $team_id)){
+        $team_id = decrypt($request->route('team_ids'));
+        if (!$this->teamLogic->userHasAccsess($user_id, $team_id)) {
 
             Toastr::error('Tim tidak ditemukan atau Anda dikeluarkan, silakan hubungi pemiliknya.', 'Error');
-            if (Auth::user()->role_name == 'Admin') {
-                return redirect()->route("showTeams");
-            }
-            if (Auth::user()->role_name == 'User') {
-                return redirect()->route("showTeams2");
-            }
+            return redirect()->route("showTeams");
         }
         return $next($request);
     }
