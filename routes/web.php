@@ -104,6 +104,7 @@ Route::controller(UserManagementController::class)->middleware(['auth', 'auth.se
 // ----------------------------- Notifikasi ----------------------------- //
 Route::prefix('tampilan/semua/notifikasi')->controller(NotificationController::class)->middleware(['auth', 'auth.session'])->group(function () {
     Route::get('/', 'tampilanNotifikasi')->name('tampilan-semua-notifikasi');
+    Route::get('/detail-notif/{notif_id}', 'getDataNotif')->name('get-detail-notif');
     Route::get('/hapus-data/{id}', 'hapusNotifikasi')->name('tampilan-semua-notifikasi-hapus-data');
     Route::post('/notifikasi/dibaca/{id}', 'bacaNotifikasi')->name('bacaNotifikasi');
     Route::post('/notifikasi/dibaca-semua', 'bacasemuaNotifikasi')->name('bacasemuaNotifikasi');

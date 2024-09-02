@@ -38,36 +38,41 @@ class CopyCardController extends Controller
         $newCard->created_at = Carbon::now();
         $newCard->save();
 
-        // Salin Judul Ceklist
-        $titleChecklists = TitleChecklists::where('cards_id', $id)->get();
         $checklists = [];
-        foreach ($titleChecklists as $titleChecklist) {
-            $newTitleChecklist = $titleChecklist->replicate();
-            $newTitleChecklist->cards_id = $newCard->id;
-            $newTitleChecklist->created_at = Carbon::now();
+        // dd($request->keep_checklists);
+        if ($request->input('keep_checklists')) {
+            $titleChecklists = TitleChecklists::where('cards_id', $id)->get();
+            $checklists = [];
+            foreach ($titleChecklists as $titleChecklist) {
+                $newTitleChecklist = $titleChecklist->replicate();
+                $newTitleChecklist->cards_id = $newCard->id;
+                $newTitleChecklist->created_at = Carbon::now();
 
-            // Jika checkbox tidak tercentang, set nilai percentage
-            if (!$request->input('keep_checklists')) {
-                $newTitleChecklist->percentage = NULL;
-            }
-
-            $newTitleChecklist->save();
-
-            // Salin Ceklist
-            $checklists = Checklists::where('title_checklists_id', $titleChecklist->id)->get();
-            foreach ($checklists as $checklist) {
-                $newChecklist = $checklist->replicate();
-                $newChecklist->title_checklists_id = $newTitleChecklist->id;
-                $newChecklist->created_at = Carbon::now();
-
-                // Jika checkbox tidak tercentang, set nilai is_active
+                // Jika checkbox tidak tercentang, set nilai percentage
                 if (!$request->input('keep_checklists')) {
-                    $newChecklist->is_active = 0;
+                    $newTitleChecklist->percentage = NULL;
                 }
-                
-                $newChecklist->save();
+
+                $newTitleChecklist->save();
+
+                // Salin Ceklist
+                $checklists = Checklists::where('title_checklists_id', $titleChecklist->id)->get();
+                foreach ($checklists as $checklist) {
+                    $newChecklist = $checklist->replicate();
+                    $newChecklist->title_checklists_id = $newTitleChecklist->id;
+                    $newChecklist->created_at = Carbon::now();
+
+                    // Jika checkbox tidak tercentang, set nilai is_active
+                    // if (!$request->input('keep_checklists')) {
+                    //     $newChecklist->is_active = 0;
+                    // }
+
+                    $newChecklist->save();
+                }
             }
         }
+        // Salin Judul Ceklist
+
 
         // Mendapatkan Data Kolom
         $newColumn = Column::findOrFail($column_id);

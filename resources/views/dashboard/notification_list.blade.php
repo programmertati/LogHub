@@ -104,33 +104,6 @@
             color: #e62034;
         }
     </style>
-    @if ($result_tema->tema_aplikasi == 'Gelap')
-        <style>
-            .card-body {
-                background-color: {{ $result_tema->warna_dropdown_menu }} !important;
-            }
-
-            .notification-time {
-                color: {{ $result_tema->warna_sistem_tulisan }} !important;
-            }
-
-            .fa-clock {
-                color: {{ $result_tema->warna_sistem_tulisan }} !important;
-            }
-
-            .fa-check-double {
-                color: {{ $result_tema->warna_sistem_tulisan }} !important;
-            }
-
-            .noti-details4 {
-                color: {{ $result_tema->warna_sistem_tulisan }} !important;
-            }
-
-            .noti-time2 {
-                color: {{ $result_tema->warna_sistem_tulisan }} !important;
-            }
-        </style>
-    @endif
 @endpush
 @section('content')
     @if (session()->has('success'))
@@ -181,7 +154,6 @@
                 All Notification</a>
             <!-- Content Notifikasi -->
             <div class="tab-content">
-
                 <!-- Semua Notifikasi -->
                 <div id="semua_notif" class="pro-overview tab-pane fade show active">
                     <ul class="notification-list @if (auth()->user()->unreadNotifications->isEmpty() && auth()->user()->readNotifications->isEmpty()) empty @endif" id="allNotificationList"
@@ -199,7 +171,7 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @foreach ($semua_notifikasi as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -213,7 +185,7 @@
                                         <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
                                     </div>
                                     <div class="card-body" style="display:none">
-                                        @if ($notifikasiData->message == 'Happy Birthday')
+                                        {{-- @if ($notifikasiData->message == 'Happy Birthday')
                                             <p><b>{{ $notifikasiData->message3 }}</b>, provide notifications
                                                 {{ strtolower($notifikasiData->message) }} to You. You can view and delete
                                                 these notifications.</p>
@@ -280,7 +252,33 @@
                                                 data-toggle="modal"
                                                 data-target="#lihat_notifikasi_{{ $notifikasi->id }}"><i
                                                     class="fa-solid fa-eye fa-lg icon-comment"></i></a>
+                                        @endif --}}
+
+                                        @if ($notifikasiData->message == 'Happy Birthday')
+                                            @php $message = $notifikasiData->message3; @endphp
+                                        @else
+                                            @php $message = $notifikasiData->message2; @endphp
                                         @endif
+                                        <p><b>{{ $message }}</b>, provide notifications
+                                            {{ strtolower($notifikasiData->message) }} to You. You can view and delete
+                                            these notifications.</p>
+                                        @if ($notifikasi->read_at)
+                                            <i class="fa-solid fa-check-double" style="color: #4999de;"></i>
+                                            <span class="notification-time">{{ $read_at->diffForHumans() }}</span>
+                                        @endif
+                                        <a class="simbol-hapus delete-notifikasi hapus_notifikasi_{{ $notifikasi->id }}"
+                                            href="#" {{-- data-toggle="modal" --}}
+                                            data-target="#hapus_notifikasi_{{ $notifikasi->id }}"
+                                            data-id="{{ $notifikasi->id }}"
+                                            data-url="{{ route('tampilan-semua-notifikasi-hapus-data', $notifikasi->id) }}">
+                                            <i class="fa fa-trash-o icon-trash"></i>
+                                        </a>
+                                        <a class="simbol-lihat show-notifikasi lihat_notifikasi_{{ $notifikasi->id }}"
+                                            href="#" {{-- data-toggle="modal"  --}} data-id="{{ $notifikasi->id }}"
+                                            data-url="{{ route('get-detail-notif', $notifikasi->id) }}"
+                                            data-target="#lihat_notifikasi_{{ $notifikasi->id }}">
+                                            <i class="fa-solid fa-eye fa-lg icon-comment"></i>
+                                        </a>
                                     </div>
                                 </div>
                             @endforeach
@@ -584,7 +582,7 @@
         <!-- /Page Content -->
 
         <!-- Preview Notifikasi Modal -->
-        @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+        {{-- @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
             @php
                 $notifikasiData = json_decode($notifikasi->data);
                 $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -716,50 +714,16 @@
                                                 </div>
                                             @endif
                                         </p><br>
-                                        @if ($notifikasiData->message == 'Happy Birthday')
-                                            <p class="logo-rsud">
-                                                @if ($result_tema->tema_aplikasi == 'Terang')
-                                                    <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}"
-                                                        alt="Logo PT TATI" loading="lazy">
-                                                @elseif ($result_tema->tema_aplikasi == 'Gelap')
-                                                    <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}"
-                                                        alt="Logo PT TATI" loading="lazy">
-                                                @endif
-                                            </p>
-                                        @endif
-                                        @if ($notifikasiData->message == 'Mention Tag Description')
-                                            <p class="logo-tati">
-                                                @if ($result_tema->tema_aplikasi == 'Terang')
-                                                    <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}"
-                                                        alt="Logo PT TATI" loading="lazy">
-                                                @elseif ($result_tema->tema_aplikasi == 'Gelap')
-                                                    <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}"
-                                                        alt="Logo PT TATI" loading="lazy">
-                                                @endif
-                                            </p>
-                                        @endif
-                                        @if ($notifikasiData->message == 'Mention Tag Checklist')
-                                            <p class="logo-tati">
-                                                @if ($result_tema->tema_aplikasi == 'Terang')
-                                                    <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}"
-                                                        alt="Logo PT TATI" loading="lazy">
-                                                @elseif ($result_tema->tema_aplikasi == 'Gelap')
-                                                    <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}"
-                                                        alt="Logo PT TATI" loading="lazy">
-                                                @endif
-                                            </p>
-                                        @endif
-                                        @if ($notifikasiData->message == 'Mention Tag Comment')
-                                            <p class="logo-tati">
-                                                @if ($result_tema->tema_aplikasi == 'Terang')
-                                                    <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}"
-                                                        alt="Logo PT TATI" loading="lazy">
-                                                @elseif ($result_tema->tema_aplikasi == 'Gelap')
-                                                    <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}"
-                                                        alt="Logo PT TATI" loading="lazy">
-                                                @endif
-                                            </p>
-                                        @endif
+                                        <p
+                                            class="{{ $notifikasiData->message == 'Happy Birthday' ? 'logo-rsud' : 'logo-tati' }}">
+                                            @if ($result_tema->tema_aplikasi == 'Terang')
+                                                <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}"
+                                                    alt="Logo PT TATI" loading="lazy">
+                                            @elseif ($result_tema->tema_aplikasi == 'Gelap')
+                                                <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}"
+                                                    alt="Logo PT TATI" loading="lazy">
+                                            @endif
+                                        </p>
                                         <p class="noti-time2">
                                             <i class="fa-solid fa-clock" style="color: #808080;" aria-hidden="true"></i>
                                             <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
@@ -771,11 +735,11 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @endforeach --}}
         <!-- /Preview Notifikasi Modal -->
 
         <!-- Delete Notifikasi Modal -->
-        @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+        {{-- @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
             @php
                 $notifikasiData = json_decode($notifikasi->data);
                 $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -808,15 +772,161 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @endforeach --}}
         <!-- Delete Notifikasi Modal -->
+
+        {{-- NON FOREACH MODAL PREVIEW --}}
+        <div class="modal custom-modal fade" id="lihat_notifikasi" role="dialog" data-backdrop="static"
+            data-keyboard="false" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="text-align: center ">Notifikasi
+                            <br>
+                            <div id="notifikasi-message">
+                            </div>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="notification-message noti-read">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p class="noti-details3">
+                                        <a><b id="notifikasi-name"></b></a><br>
+                                        <a style="font-size: 15px">Surabaya / <span
+                                                id="tanggal-semua-notifikasi_{{ $notifikasi->id }}"></span> | <span
+                                                id="waktu-semua-notifikasi_{{ $notifikasi->id }}"></span></a><br>
+                                        <a style="color: #808080; font-weight: 500; font-size: 12px">Notification ID:
+                                            {{ substr($notifikasi->id, 0, 8) }}</a>
+                                    </p><br>
+                                    <p class="noti-details4">
+                                        {{-- @if ($notifikasiData->message == 'Happy Birthday')
+                                            {{ $notifikasiData->message2 }} <b>{{ $notifikasiData->message3 }}</b>
+                                            {{ $notifikasiData->message4 }}
+                                            {{ $notifikasiData->message5 }}<b>{{ $notifikasiData->message6 }}th</b>
+                                            year to <b>{{ $notifikasiData->name }}</b>
+                                            {{ $notifikasiData->message7 }}
+                                        @endif --}}
+                                    <div class="mention-tag-container" style="width: 398px; margin: 0px 0px 0px 20px;">
+                                        <div class="header-mention-tag">
+                                            <a id="profil" href="" data-fancybox="mention-foto">
+                                                <img class="avatar-notif" src="" loading="lazy">
+                                            </a>
+                                            <p class="mention-nama"></p>
+                                            <p class="mention-waktu">
+                                            </p>
+                                        </div>
+                                        <div class="isian-mention-tag">
+                                        </div>
+                                    </div>
+                                    </p><br>
+                                    <p id="img">
+                                        @if ($result_tema->tema_aplikasi == 'Terang')
+                                            <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}"
+                                                alt="Logo PT TATI" loading="lazy">
+                                        @elseif ($result_tema->tema_aplikasi == 'Gelap')
+                                            <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}"
+                                                alt="Logo PT TATI" loading="lazy">
+                                        @endif
+                                    </p>
+                                    <p class="noti-time2">
+                                        <i class="fa-solid fa-clock" style="color: #808080;" aria-hidden="true"></i>
+                                        <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        {{-- NON FOREACH MODAL DELETE --}}
+        <div class="modal custom-modal fade" id="hapus_notifikasi" role="dialog" data-backdrop="static"
+            data-keyboard="false" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Notification</h3>
+                            <p>Are you sure you want to delete this notification?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a id="hapus_notifikasi_{{ $notifikasi->id }}" href="">
+                                        <button type="button"
+                                            class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="javascript:void(0);" data-dismiss="modal"
+                                        class="btn btn-primary cancel-btn">Back</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     @push('js')
         <script src="{{ asset('assets/js/memuat-shortcut.js?v=' . time()) }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/dayjs.min.js"></script>
         <script>
             document.getElementById('pageTitle').innerHTML = 'All Notifications | Loghub - PT TATI ';
         </script>
         <script>
+            $(document).ready(function() {
+                $('.show-notifikasi').click(function(e) {
+                    e.preventDefault();
+                    // alert('test');
+                    var id = $(this).data('id');
+                    var title = $(this).data('title');
+                    var url = $(this).data('url');
+                    // alert(url);
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        success: function(response) {
+                            // alert('tes');
+                            let formattedTime = dayjs(response.data.message5).format(
+                                'D MMMM [at] h:mm');
+                            $("#lihat_notifikasi").modal('show');
+                            $('#notifikasi-message').html(response.data.message);
+                            $('#notifikasi-name').html(response.data.name);
+                            if (response.data.message == 'Happy Birthday') {
+                                $('#img').addClass('logo-rsud');
+                            } else {
+                                $('#img').addClass('logo-tati');
+                            }
+                            $('.isian-mention-tag').html(response.data.message3);
+                            $('.mention-nama').html(response.data.message4);
+                            $('.mention-waktu').html(formattedTime);
+                            $('#profil').attr('href', response.userAvatar);
+                            $('.avatar-notif').attr('src', response.userAvatar);
+
+                        },
+                        error: function(xhr, status, error) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                });
+            });
+            $(document).ready(function() {
+                $('.delete-notifikasi').on('click', function() {
+                    alert('test');
+                    var id = $(this).data('id');
+                    var url = $(this).data('url');
+                    $("#hapus_notifikasi").modal('show');
+                    $("#hapus_notifikasi_" + id).attr('href', url);
+                });
+            });
             $(document).ready(function() {
                 $('#delete-all').click(function(e) {
                     e.preventDefault();

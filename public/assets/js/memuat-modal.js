@@ -8,7 +8,7 @@ function updateColumnModal(columnId, columnName, formAction) {
 }
 
 function updateCardModal(cardId, cardName, formAction) {
-    alert('test');
+    // alert('test');
     $('#update-card-id').val(cardId);
     $('#update-card-name').val(cardName);
     $('#updateCardForm').attr('action', formAction);
@@ -35,7 +35,7 @@ function deleteCardModal(cardId, cardName, columnName, formAction) {
 }
 
 function deleteCardModal2(cardId, cardName, columnName, formAction) {
-    alert('test');
+    // alert('test');
     $('#columnName3').text(columnName);
     $('#cardName3').text(cardName);
     $('#card-id').val(cardId);
@@ -353,9 +353,11 @@ $(document).ready(function() {
                 });
 
                 // Untuk Mengatur Icon Checklist //
-                $('#iconChecklist-' + response.card.id).removeClass('hidden');
-                $('#perhitunganChecklist-' + response.card.id).html(response.perChecklist + '/' + response.jumlahChecklist);
-
+                if(response.checklists != '')
+                {
+                    $('#iconChecklist-' + response.card.id).removeClass('hidden');
+                    $('#perhitunganChecklist-' + response.card.id).html(response.perChecklist + '/' + response.jumlahChecklist);
+                }
                 if (response.perChecklist < response.jumlahChecklist) {
                     var tema_aplikasi = response.result_tema.tema_aplikasi;
                     var cardId = response.card.id;

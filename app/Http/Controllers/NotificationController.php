@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,9 +14,27 @@ class NotificationController extends Controller
     // Tampilan Notifikasi //
     public function tampilanNotifikasi(Request $request)
     {
-        return view('dashboard.notification_list');
+        $semua_notifikasi = Notification::where('notifiable_id', auth()->id())->get();
+        // $notifikasiData = json_decode($semua_notifikasi->data);
+        // dd($semua_notifikasi);
+        return view('dashboard.notification_list', compact('semua_notifikasi'));
     }
     // /Tampilan Notifikasi //
+
+    public function getDataNotif($notif_id)
+    {
+        $data_notif = Notification::find($notif_id);
+        $data = json_decode($data_notif->data);
+        $userAvatar = '';
+        if (!empty($data->message6)) {
+            $user = \App\Models\User::find($data->message6);
+            $userAvatar = URL::to('/assets/images/' . $user->avatar);
+        }
+        return response()->json([
+            'data' => $data,
+            'userAvatar' => $userAvatar,
+        ], 200);
+    }
 
     // Hapus Notifikasi Per ID //
     public function hapusNotifikasi($id)
