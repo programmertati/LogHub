@@ -171,7 +171,8 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($semua_notifikasi as $notifikasi)
+                            {{-- @dd($usernotifikasi) --}}
+                            @foreach ($usernotifikasi as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -320,7 +321,7 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -392,7 +393,7 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -464,7 +465,7 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -536,7 +537,7 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -582,7 +583,7 @@
         <!-- /Page Content -->
 
         <!-- Preview Notifikasi Modal -->
-        {{-- @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+        {{-- @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
             @php
                 $notifikasiData = json_decode($notifikasi->data);
                 $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -739,7 +740,7 @@
         <!-- /Preview Notifikasi Modal -->
 
         <!-- Delete Notifikasi Modal -->
-        {{-- @foreach ($semua_notifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+        {{-- @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
             @php
                 $notifikasiData = json_decode($notifikasi->data);
                 $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -797,31 +798,34 @@
                                     <p class="noti-details3">
                                         <a><b id="notifikasi-name"></b></a><br>
                                         <a style="font-size: 15px">Surabaya / <span
-                                                id="tanggal-semua-notifikasi_{{ $notifikasi->id }}"></span> | <span
-                                                id="waktu-semua-notifikasi_{{ $notifikasi->id }}"></span></a><br>
-                                        <a style="color: #808080; font-weight: 500; font-size: 12px">Notification ID:
-                                            {{ substr($notifikasi->id, 0, 8) }}</a>
-                                    </p><br>
-                                    <p class="noti-details4">
-                                        {{-- @if ($notifikasiData->message == 'Happy Birthday')
+                                                @isset($notifikasi->id)
+                                            id="tanggal-semua-notifikasi_{{ $notifikasi->id }}"></span> | <span
+                                            id="waktu-semua-notifikasi_{{ $notifikasi->id }}"></span></a><br>
+                                    <a style="color: #808080; font-weight: 500; font-size: 12px">Notification ID:
+                                        {{ substr($notifikasi->id, 0, 8) }}</a>
+                                            @endisset
+                                                </p><br>
+                                                <p class="noti-details4">
+                                                    {{-- @if ($notifikasiData->message == 'Happy Birthday')
                                             {{ $notifikasiData->message2 }} <b>{{ $notifikasiData->message3 }}</b>
                                             {{ $notifikasiData->message4 }}
                                             {{ $notifikasiData->message5 }}<b>{{ $notifikasiData->message6 }}th</b>
                                             year to <b>{{ $notifikasiData->name }}</b>
                                             {{ $notifikasiData->message7 }}
                                         @endif --}}
-                                    <div class="mention-tag-container" style="width: 398px; margin: 0px 0px 0px 20px;">
-                                        <div class="header-mention-tag">
-                                            <a id="profil" href="" data-fancybox="mention-foto">
-                                                <img class="avatar-notif" src="" loading="lazy">
-                                            </a>
-                                            <p class="mention-nama"></p>
-                                            <p class="mention-waktu">
-                                            </p>
-                                        </div>
-                                        <div class="isian-mention-tag">
-                                        </div>
-                                    </div>
+                                                <div class="mention-tag-container"
+                                                    style="width: 398px; margin: 0px 0px 0px 20px;">
+                                                    <div class="header-mention-tag">
+                                                        <a id="profil" href="" data-fancybox="mention-foto">
+                                                            <img class="avatar-notif" src="" loading="lazy">
+                                                        </a>
+                                                        <p class="mention-nama"></p>
+                                                        <p class="mention-waktu">
+                                                        </p>
+                                                    </div>
+                                                    <div class="isian-mention-tag">
+                                                    </div>
+                                                </div>
                                     </p><br>
                                     <p id="img">
                                         @if ($result_tema->tema_aplikasi == 'Terang')
@@ -832,10 +836,13 @@
                                                 alt="Logo PT TATI" loading="lazy">
                                         @endif
                                     </p>
-                                    <p class="noti-time2">
-                                        <i class="fa-solid fa-clock" style="color: #808080;" aria-hidden="true"></i>
-                                        <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
-                                    </p>
+                                    @isset($created_at)
+                                        <p class="noti-time2">
+                                            <i class="fa-solid fa-clock" style="color: #808080;" aria-hidden="true"></i>
+                                            <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
+                                        </p>
+                                    @endisset
+
                                 </div>
                             </div>
                         </div>
@@ -859,10 +866,12 @@
                         <div class="modal-btn delete-action">
                             <div class="row">
                                 <div class="col-6">
-                                    <a id="hapus_notifikasi_{{ $notifikasi->id }}" href="">
-                                        <button type="button"
-                                            class="btn btn-primary continue-btn submit-btn">Delete</button>
-                                    </a>
+                                    @isset($notifikasi->id)
+                                        <a id="hapus_notifikasi_{{ $notifikasi->id }}" href="">
+                                            <button type="button"
+                                                class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                        </a>
+                                    @endisset
                                 </div>
                                 <div class="col-6">
                                     <a href="javascript:void(0);" data-dismiss="modal"

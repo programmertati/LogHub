@@ -140,6 +140,25 @@
 
                                     </div>`;
                         $('#titleContainer').append(newForm);
+                        const checklistContainer = document.getElementById(
+                            `checklist-container-${title_id}`);
+                        new Sortable(checklistContainer, {
+                            animation: 150,
+                            group: 'checklists',
+                            onEnd: function(evt) {
+                                const newChecklistPositions =
+                                    getChecklistPositions();
+                                if (JSON.stringify(
+                                        initialChecklistPositions) !==
+                                    JSON.stringify(
+                                        newChecklistPositions)) {
+                                    updateChecklistPositions(
+                                        newChecklistPositions);
+                                    initialChecklistPositions =
+                                        newChecklistPositions;
+                                }
+                            },
+                        });
                     },
                     error: function(error) {
                         toastr.error('Gagal menambahkan judul!');
