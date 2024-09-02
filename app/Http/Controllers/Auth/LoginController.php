@@ -41,7 +41,7 @@ class LoginController extends Controller
     // Tampilan Masuk Aplikasi //
     public function login(Request $request)
     {
-        return view('auth.login');
+        // return view('auth.login');
         return view('auth.landing');
     }
     // /Tampilan Masuk Aplikasi //
@@ -151,7 +151,7 @@ class LoginController extends Controller
         Toastr::success('Anda berhasil masuk aplikasi!', 'Success');
         // $route = $user->role_name == 'Admin' ? 'showTeams' : 'showTeams2';
         // return redirect()->intended('home');
-        return redirect()->route('showTeams2');
+        return redirect()->route('showTeams');
     }
     // /Untuk Cek Authentifikasi dari Mantai //
 
