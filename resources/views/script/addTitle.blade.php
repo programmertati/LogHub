@@ -140,9 +140,37 @@
 
                                     </div>`;
                         $('#titleContainer').append(newForm);
-                        const checklistContainer = document.getElementById(
+                        let isInputFocused = false;
+                        const checklistsContainers = document.getElementById(
                             `checklist-container-${title_id}`);
-                        new Sortable(checklistContainer, {
+                        let initialChecklistPositions = getChecklistPositions();
+
+
+                        $(document).on('focus',
+                            '.dynamicCheckboxValue',
+                            function(e) {
+                                e.preventDefault();
+                                isInputFocused = true;
+                                disableDragAndDrop();
+                            });
+                        $(document).on('blur',
+                            '.dynamicCheckboxValue ',
+                            function(e) {
+                                e.preventDefault();
+                                isInputFocused = false;
+                                enableDragAndDrop();
+                            });
+
+                        function disableDragAndDrop() {
+                            check.option("disabled", true);
+                        }
+
+                        function enableDragAndDrop() {
+                            check.option("disabled", false);
+                        }
+
+
+                        const check = new Sortable(checklistsContainers, {
                             animation: 150,
                             group: 'checklists',
                             onEnd: function(evt) {
@@ -159,6 +187,62 @@
                                 }
                             },
                         });
+
+                        function getChecklistPositions() {
+                            const positions = {};
+                            const titleIds = checklistsContainers.closest(
+                                '.menu-checklist').dataset.id;
+                            const checklists = checklistsContainers.children;
+                            for (let i = 0; i < checklists.length; i++) {
+                                const checklist = checklists[i];
+                                const id = checklist.dataset.id;
+                                if (id !== undefined) {
+                                    positions[id] = {
+                                        position: i + 1,
+                                        title_id: titleIds
+                                    };
+                                }
+                            }
+                            return positions;
+                        }
+
+                        function updateChecklistPositions(positions) {
+                            fetch('{{ route('perbaharuiPosisiCeklist') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify({
+                                        positions
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        toastr.success(
+                                            'Berhasil perbaharui posisi checklist!'
+                                        );
+                                    } else {
+                                        toastr.error(
+                                            'Gagal perbaharui posisi checklist!'
+                                        );
+                                    }
+
+                                    if (data.titlechecklist) {
+                                        data.titlechecklist.forEach(tc => {
+                                            progressBar(tc.id, tc
+                                                .percentage);
+                                        });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error(
+                                        'Terjadi kesalahan saat perbaharui posisi checklist:',
+                                        error);
+                                });
+                        }
+
                     },
                     error: function(error) {
                         toastr.error('Gagal menambahkan judul!');
