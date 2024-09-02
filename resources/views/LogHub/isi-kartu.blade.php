@@ -289,7 +289,7 @@
                     <!-- Perbaharui & Hapus Checklist -->
                     <div class="checklist-container" id="checklist-container-{{ $titleChecklists->id }}"
                         data-id="{{ $titleChecklists->id }}">
-                        @include('script.progressBarCheckList')
+                        @include('script.progressBarChecklist')
                         @php
                             $sortedDataChecklist =
                                 $titleChecklists->checklists->count() > 0
