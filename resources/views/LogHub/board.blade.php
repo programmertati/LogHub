@@ -193,7 +193,6 @@
         }
 
         .bg-grad-system::after {
-            content: "System";
             position: absolute;
             font-size: 16px;
             top: 60%;
