@@ -126,16 +126,16 @@
                                                 <input type="hidden" id="card_id" name="card_id" value="${response.titlechecklist.cards_id}">
                                                 <div class="header-tambah-checklist flex gap-4">
                                                     <i class="fa-xl"></i>
-                                                    <input onclick="mentionTags('checklist${response.titlechecklist.id}')" type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist${response.titlechecklist.id}" name="checklist" placeholder="Enter a checklist" required>
+                                                    <input  type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist${response.titlechecklist.id}" name="checklist" placeholder="Enter a checklist" required>
                                                     <div class="mention-tag" id="mention-tag-checklist${response.titlechecklist.id}"></div>
                                                 </div>
                                                 <div class="aksi-update-checklist gap-2">
-                                                    <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist${response.titlechecklist.id}">Save</button>
+                                                    <button  type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist${response.titlechecklist.id}">Save</button>
                                                     <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist${response.titlechecklist.id}">Cancel</button>
                                                 </div>
                                         </form>
 
-                                        <button type="button" class="btn btn-outline-info add-checklist" id="AddChecklist" data-id="${response.titlechecklist.id}" data-persen="${response.percentage}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
+                                        <button type="button" onclick="mentionTags('checklist${response.titlechecklist.id}')" class="btn btn-outline-info add-checklist" id="AddChecklist" data-id="${response.titlechecklist.id}" data-persen="${response.percentage}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
                                         <!-- Tambah baru checklist -->
 
                                     </div>`;

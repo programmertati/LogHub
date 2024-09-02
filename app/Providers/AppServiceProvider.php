@@ -37,15 +37,14 @@ class AppServiceProvider extends ServiceProvider
             if (Auth::check()) { // cek apakah sudah login atau belum
                 $user = auth()->user();
                 $result_tema = ModeAplikasi::where('user_id', auth()->user()->user_id)->first();
-                // dd($result_tema->tema_aplikasi);
-
                 $unreadNotifications = Notification::where('notifiable_id', $user->id)->whereNull('read_at')->get();
                 $readNotifications = Notification::where('notifiable_id', $user->id)->whereNotNull('read_at')->get();
                 $semua_notifikasi = Notification::latest()->with('user')->get();
                 $belum_dibaca = Notification::with('user')->whereNull('read_at')->get();
                 $dibaca = Notification::with('user')->whereNotNull('read_at')->get();
 
-                $view->with('unreadNotifications', $unreadNotifications)
+                $view
+                    ->with('unreadNotifications', $unreadNotifications)
                     ->with('readNotifications', $readNotifications)
                     ->with('belum_dibaca', $belum_dibaca)
                     ->with('semua_notifikasi', $semua_notifikasi)
