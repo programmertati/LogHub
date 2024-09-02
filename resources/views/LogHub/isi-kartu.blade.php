@@ -705,7 +705,7 @@
                 $('#cancelButtonTitleUpdate' + title_id).on('click', function() {
                     $('#saveButtonTitleUpdate' + title_id).addClass('hidden');
                     $('#cancelButtonTitleUpdate' + title_id).addClass('hidden');
-                    $('#myFormTitleUpdate' + title_id)[0].reset();
+                    // $('#myFormTitleUpdate' + title_id)[0].reset();
                 });
                 let isSubmitting = false;
                 // Form update title
@@ -714,6 +714,7 @@
                     // Mencegah pengiriman ganda
                     if (isSubmitting) return;
                     isSubmitting = true;
+                    // $('#myFormTitleUpdate' + title_id)[0].reset();
                     var formData = $(this).serialize();
                     $.ajax({
                         type: 'POST',
@@ -723,7 +724,7 @@
                             $('#saveButtonTitleUpdate' + title_id).addClass('hidden');
                             $('#cancelButtonTitleUpdate' + title_id).addClass('hidden');
                             $('.isian-title').blur();
-                            $('#myFormTitleUpdate' + title_id)[0].reset();
+                            // $('#myFormTitleUpdate' + title_id)[0].reset();
                             toastr.success('Berhasil memperbaharui judul!');
                             let isSubmitting = false;
                             // localStorage.clear();
@@ -883,6 +884,7 @@
                 const percentage = $(this).data('persen');
                 $(this).addClass('hidden');
                 $('#checklist' + title_id).removeClass('hidden');
+                $('#checklist' + title_id).focus();
                 $('#saveButtonChecklist' + title_id).removeClass('hidden');
                 $('#cancelButtonChecklist' + title_id).removeClass('hidden');
 
