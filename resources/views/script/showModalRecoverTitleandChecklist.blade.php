@@ -362,10 +362,10 @@
                             <form id="myFormChecklistUpdate${checklist.id}" method="POST" class="form-checklist">
                                 @csrf
                                 <input class="dynamicCheckbox" type="checkbox" id="${checklist.id}" name="${checklist.id}" ${checklist.is_active ? 'checked' : ''}>
-                                <label class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl ${checklist.is_active ? 'strike-through' : ''}" id="labelCheckbox-${checklist.id}" for="labelCheckbox-${checklist.id}">${checklist.name}</label>
+                                <label  onclick="mentionTags4('checkbox-${checklist.id}')" class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl ${checklist.is_active ? 'strike-through' : ''}" id="labelCheckbox-${checklist.id}" for="labelCheckbox-${checklist.id}">${checklist.name}</label>
                                 <input type="hidden" id="checklist_id" name="checklist_id" value="${checklist.id}">
                                 <input type="hidden" id="card_id" name="card_id" value="${response.cardId}">
-                                <input onclick="mentionTags4('checkbox-${checklist.id}')" type="text" class="dynamicCheckboxValue border border-1 border-darks w-402 p-2 rounded-xl hidden" id="checkbox-${checklist.id}" name="checkbox-${checklist.id}" value="${checklist.name}" placeholder="Enter a checklist">
+                                <input type="text" class="dynamicCheckboxValue border border-1 border-darks w-402 p-2 rounded-xl hidden" id="checkbox-${checklist.id}" name="checkbox-${checklist.id}" value="${checklist.name}" placeholder="Enter a checklist">
                                 <div class="mention-tag" id="mention-tag-checkbox${checklist.id}"></div>
 
                                 <div onclick="checklistUpdate(${checklist.id})" class="aksi-update-checklist2 gap-2 margin-bottom-0" id="checklist-${checklist.id}">
@@ -402,7 +402,7 @@
                         <input type="hidden" id="card_id" name="card_id" value="${response.cardId}">
                         <div class="header-tambah-checklist flex gap-4">
                             <i class="fa-xl"></i>
-                            <input onclick="mentionTags('checklist${response.titlechecklist.id}')" type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist${response.titlechecklist.id}" name="checklist" placeholder="Enter a checklist" required>
+                            <input  type="text" class="tambah-baru-checklist border border-1 border-dark w-407s p-2 rounded-xl hidden" id="checklist${response.titlechecklist.id}" name="checklist" placeholder="Enter a checklist" required>
                             <div class="mention-tag" id="mention-tag-checklist${response.titlechecklist.id}"></div>
                         </div>
                         <div class="aksi-update-checklist gap-2">
@@ -413,7 +413,7 @@
 
 
 
-             <button type="button" class="btn btn-outline-info add-checklist" id="AddChecklist" data-id="${response.titlechecklist.id}" data-persen="${response.percentage}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
+             <button type="button" onclick="mentionTags('checklist${response.titlechecklist.id}')" class="btn btn-outline-info add-checklist" id="AddChecklist" data-id="${response.titlechecklist.id}" data-persen="${response.percentage}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Add an Item...</button>
                                         <!-- Tambah baru checklist -->
 
                 </div>`;
@@ -627,10 +627,10 @@
                     <form id="myFormChecklistUpdate${checklist.id}" method="POST" class="form-checklist">
                         @csrf
                         <input class="dynamicCheckbox" type="checkbox" id="${checklist.id}" name="${checklist.id}" ${checklist.is_active ? 'checked' : ''}>
-                        <label class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl ${checklist.is_active ? 'strike-through' : ''}" id="labelCheckbox-${checklist.id}" for="labelCheckbox-${checklist.id}">${checklist.name}</label>
+                        <label onclick="mentionTags4('checkbox-${checklist.id}')" class="dynamicCheckboxLabel border border-1 border-darks w-402 p-2 rounded-xl ${checklist.is_active ? 'strike-through' : ''}" id="labelCheckbox-${checklist.id}" for="labelCheckbox-${checklist.id}">${checklist.name}</label>
                         <input type="hidden" id="checklist_id" name="checklist_id" value="${checklist.id}">
                         <input type="hidden" id="card_id" name="card_id" value="${titlechecklist.cards_id}">
-                        <input onclick="mentionTags4('checkbox-${checklist.id}')" type="text" class="dynamicCheckboxValue border border-1 border-darks w-402 p-2 rounded-xl hidden" id="checkbox-${checklist.id}" name="checkbox-${checklist.id}" value="${checklist.name}" placeholder="Enter a checklist">
+                        <input  type="text" class="dynamicCheckboxValue border border-1 border-darks w-402 p-2 rounded-xl hidden" id="checkbox-${checklist.id}" name="checkbox-${checklist.id}" value="${checklist.name}" placeholder="Enter a checklist">
                         <div class="mention-tag" id="mention-tag-checkbox${checklist.id}"></div>
 
                         <div onclick="checklistUpdate(${checklist.id})" class="aksi-update-checklist2 gap-2 margin-bottom-0" id="checklist-${checklist.id}">

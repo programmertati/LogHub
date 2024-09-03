@@ -974,8 +974,8 @@
         </script>
 
         <script>
-            var unreadNotifications = {!! json_encode($unreadNotifications) !!};
-            var readNotifications = {!! json_encode($readNotifications) !!};
+            var unreadNotifications = {!! json_encode($belum_dibaca) !!};
+
             var allNotificationList = document.getElementById('allNotificationList');
             if (unreadNotifications.length > 0 || readNotifications.length > 0) {
                 allNotificationList.classList.add('hiddens');

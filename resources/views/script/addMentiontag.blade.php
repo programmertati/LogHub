@@ -14,12 +14,12 @@
         // Mention Tag untuk checklist
         window.mentionTags = function(inputId) {
             const inputTag = document.getElementById(inputId);
-            const mentionTag = document.getElementById(`mention-tag-${inputId}`);
+            const mentionTag = document.getElementById(
+                `mention-tag-checklist${inputId.replace('checklist', '')}`);
             let selectedUsers = [];
             let isSubmitting = false;
             let mentionIndex = -1;
-
-
+            // alert(inputId);
             inputTag.addEventListener('input', function(e) {
                 const value = e.target.value;
                 const atMatches = value.match(/@\w+/g);
@@ -34,7 +34,7 @@
                     if (isAtEnd) {
                         const filteredUsers = users.filter(user => user.username.toLowerCase()
                             .startsWith(query));
-                        showMention4(filteredUsers, value, inputTag, mentionTag);
+                        showMention(filteredUsers, value, inputTag, mentionTag);
                     } else {
                         mentionTag.style.display = 'none';
                     }
@@ -46,48 +46,7 @@
                 mentionIndex = -1;
             });
 
-            // inputTag.addEventListener('keydown', function(event) {
-            //     const mentionItems = mentionTag.querySelectorAll('.mention-tag-item');
-
-            //     if (event.key === 'Tab' && mentionItems.length > 0) {
-            //         event.preventDefault();
-
-            //         // Navigasi antar item
-            //         mentionIndex = (mentionIndex + 1) % mentionItems.length;
-
-            //         // Tambahkan gaya yang menyorot item yang dipilih
-            //         mentionItems.forEach((item, index) => {
-            //             if (index === mentionIndex) {
-            //                 item.classList.add('highlighted');
-            //                 item.scrollIntoView({
-            //                     behavior: 'smooth',
-            //                     block: 'nearest',
-            //                     inline: 'nearest'
-            //                 });
-            //             } else {
-            //                 item.classList.remove('highlighted');
-            //             }
-            //         });
-            //     }
-
-            //     if ((event.key === 'Enter' || event.key === ' ') && mentionItems.length > 0 &&
-            //         mentionIndex >= 0) {
-            //         event.preventDefault();
-            //         // Pilih item yang disorot
-            //         mentionItems[mentionIndex].click();
-            //     }
-            // });
-
-            //         // Tambahkan gaya CSS untuk menyorot item yang dipilih
-            //         const style = document.createElement('style');
-            //         style.innerHTML = `
-            //     .mention-tag-item.highlighted {
-            //         background-color: #ddd;
-            //     }
-            // `;
-            // document.head.appendChild(style);
-
-            function showMention4(users, currentValue, inputTag, mentionTag) {
+            function showMention(users, currentValue, inputTag, mentionTag) {
                 mentionTag.innerHTML = '';
                 if (users.length === 0) {
                     mentionTag.style.display = 'none';
@@ -137,14 +96,12 @@
                 });
             }
 
-
             // Kalau tidak ada @ maka akan hidden container //
             document.addEventListener('click', function(event) {
                 if (!mentionTag.contains(event.target) && event.target !== inputTag) {
                     mentionTag.style.display = 'none';
                 }
             });
-            // /Kalau tidak ada @ maka akan hidden container //
 
             // Kirimkan data mention ke notifikasi //
             const saveButtonId = `saveButtonChecklist${inputId.replace('checklist', '')}`;
@@ -211,7 +168,6 @@
                 }
             }
             // /Kirimkan data mention ke notifikasi //
-
         }
         // Mention Tag untuk desc
         window.mentionTags2 = function(inputId) {
