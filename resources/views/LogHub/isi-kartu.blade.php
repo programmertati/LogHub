@@ -902,13 +902,10 @@
                 // Form Add Checklist
                 $('#myFormChecklist' + title_id).on('submit', function(event) {
                     event.preventDefault();
-
                     // Mencegah pengiriman ganda
                     if (isSubmitting) return;
-
                     isSubmitting = true;
                     var formData = $(this).serialize();
-
                     // Periksa masukan yang kosong
                     var isEmpty = false;
                     $('#myFormChecklist' + title_id).find('input').each(function() {
@@ -923,7 +920,6 @@
                         isSubmitting = false;
                         return;
                     }
-
                     $.ajax({
                         type: 'POST',
                         url: "{{ route('addChecklist') }}",
@@ -1082,12 +1078,14 @@
 
                             // Setel ulang tanda
                             isSubmitting = false;
+                            return false;
                         },
                         error: function(error) {
                             toastr.error('Gagal membuat checklist!');
 
                             // Setel ulang tanda
                             isSubmitting = false;
+                            return false;
                         }
                     });
                 });

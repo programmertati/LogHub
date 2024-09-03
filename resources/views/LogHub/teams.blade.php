@@ -91,11 +91,11 @@
                     <a href="{{ route('viewTeam', ['team_ids' => encrypt($team->id)]) }}"
                         class="flex cursor-pointer select-none flex-col transition duration-300 border border-gray-200 shadow-xl rounded-xl h-52 w-72 hover:shadow-2xl bg-pattern-{{ $team->pattern }} overflow-hidden">
                         <div class="flex-grow w-full p-4">
-                            @php $user = $team->users->first(); @endphp
+                            {{-- @php $user = $team->users->first(); @endphp
                             @if ($user)
                                 <img src="{{ asset('assets/images/' . $user->avatar) }}" alt="{{ $user->name }}"
                                     name="{{ $user->name }}" loading="lazy" class="avatar-tim">
-                            @endif
+                            @endif --}}
                         </div>
                         <article class="flex flex-col w-full h-20 gap-1 px-4 py-2 bg-white border-t border-t-gray-200">
                             <h4 class="overflow-hidden font-semibold truncate text-bold">{{ $team->name }}</h4>

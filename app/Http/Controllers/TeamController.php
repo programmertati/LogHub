@@ -48,14 +48,21 @@ class TeamController extends Controller
     // Menampilkan Tim Admin //
     public function showTeams()
     {
+        // dd('hai');
         $user = User::find(Auth::user()->id);
         $teams = $this->teamLogic->getUserTeams($user->id, ["Member", "Owner"]);
         $invites = $this->teamLogic->getUserTeams($user->id, ["Pending"]);
         $UserTeams = UserTeam::with(['user', 'team'])->get();
+
+        // dd($this->teamLogic->getUserTeams($user->id, ["Member", "Owner"])->users->first());
+        // $team_owner = $this->teamLogic->getTeamOwner($selected_team->id);
+        // $user = $teams->users->first();
+        // dd($teams);
         return view('LogHub.teams', compact('UserTeams'))
             ->with("teams", $teams)
             ->with("patterns", TeamLogic::PATTERN)
             ->with("invites", $invites);
+        // ->with('user', $user);
     }
     // /Menampilkan Tim Admin //
 

@@ -1787,7 +1787,7 @@
                         </div>
                         <div class="noti-content">
                             <ul class="notification-list" style="display: block">
-                                @if (auth()->user()->unreadNotifications()->count() > 0)
+                                @if ($unreadNotifications->count() > 0)
                                     <li class="notification-message noti-unread hidden" id="noNewNotifications">
                                         <p class="noti-details" style="margin-top: 30px; text-align: center;">
                                             <img src="{{ URL::to('/assets/images/notification-icon.svg') }}"
@@ -1809,7 +1809,7 @@
                                     </li>
                                 @endif
 
-                                @foreach ($belum_dibaca->where('notifiable_id', auth()->id()) as $notifikasi_belum_dibaca)
+                                @foreach ($unreadNotifications as $notifikasi_belum_dibaca)
                                     @php
                                         $notifikasiDataBelumDibaca = json_decode($notifikasi_belum_dibaca->data);
                                         $created_at = \Carbon\Carbon::parse($notifikasi_belum_dibaca->created_at);
@@ -1818,6 +1818,7 @@
                                     <li class="notification-message noti-unread">
                                         <a href="#" class="pop-up"
                                             data-id="{{ $notifikasi_belum_dibaca->id }}"
+                                            data-url="{{ route('get-detail-notif', $notifikasi_belum_dibaca->id) }}"
                                             id="open-popup_{{ $notifikasi_belum_dibaca->id }}">
                                             <div class="media">
                                                 <span class="avatar">
@@ -1865,104 +1866,92 @@
                 <!-- /Notifications -->
 
                 <!-- Notifikasi Belum Dibaca Modal -->
-                @foreach ($belum_dibaca as $notifikasi_belum_dibaca)
+                {{-- @foreach ($unreadNotifications as $notifikasi_belum_dibaca)
                     @php
                         $notifikasiDataBelumDibaca = json_decode($notifikasi_belum_dibaca->data);
                         $created_at = \Carbon\Carbon::parse($notifikasi_belum_dibaca->created_at);
                         $read_at = \Carbon\Carbon::parse($notifikasi_belum_dibaca->read_at);
                     @endphp
-                    <div class="popup-notifikasi" id="popup-notifikasi_{{ $notifikasi_belum_dibaca->id }}"
-                        style="width: 575px;">
-                        <li class="notification-message noti-unread">
-                            <div class="media">
-                                <div class="media-body">
-                                    <p class="noti-details3"><br>
-                                        <a><b>{{ $notifikasiDataBelumDibaca->name }}</b></a><br>
-                                        <a>Surabaya / <span
-                                                id="tanggal-master_{{ $notifikasi_belum_dibaca->id }}"></span> |
-                                            <span
-                                                id="waktu-master_{{ $notifikasi_belum_dibaca->id }}"></span></a><br>
-                                        <a style="color: #808080; font-weight: 500; font-size: 12px">Notification ID:
-                                            {{ substr($notifikasi_belum_dibaca->id, 0, 8) }}</a>
-                                    </p><br>
-                                    <p class="noti-details2">
-                                        @if ($notifikasiDataBelumDibaca->message == 'Happy Birthday')
-                                            {{ $notifikasiDataBelumDibaca->message2 }}
-                                            <b>{{ $notifikasiDataBelumDibaca->message3 }}</b>
-                                            @if (!empty($notifikasiDataBelumDibaca->message4))
-                                                {{ $notifikasiDataBelumDibaca->message4 }}
+                @endforeach --}}
+                <div class="popup-notifikasi" id="popup-notifikasi" style="width: 575px;">
+                    <li class="notification-message noti-unread">
+                        <div class="media">
+                            <div class="media-body">
+                                <p class="noti-details3"><br>
+                                    <a><b class="notifikasi-name"></b></a><br>
+                                    <a>Surabaya / <span
+                                            @isset($notifikasi_belum_dibaca->id)
+                                        id="tanggal-master_{{ $notifikasi_belum_dibaca->id }}"></span> |
+                                        <span id="waktu-master_{{ $notifikasi_belum_dibaca->id }}"></span></a><br>
+                                    <a style="color: #808080; font-weight: 500; font-size: 12px">Notification ID:
+                                        {{ substr($notifikasi_belum_dibaca->id, 0, 8) }}</a>
+                                        @endisset
+                                            </p><br>
+                                            <p class="noti-details2">
+                                                {{-- @if ($notifikasiDataBelumDibaca->message == 'Happy Birthday')
+                                        {{ $notifikasiDataBelumDibaca->message2 }}
+                                        <b>{{ $notifikasiDataBelumDibaca->message3 }}</b>
+                                        @if (!empty($notifikasiDataBelumDibaca->message4))
+                                            {{ $notifikasiDataBelumDibaca->message4 }}
+                                        @endif
+                                        <br>
+                                        @if (!empty($notifikasiDataBelumDibaca->message5))
+                                            {{ $notifikasiDataBelumDibaca->message5 }}
+                                        @endif
+                                        <b>
+                                            @if (!empty($notifikasiDataBelumDibaca->message6))
+                                                {{ $notifikasiDataBelumDibaca->message6 }}th
                                             @endif
-                                            <br>
-                                            @if (!empty($notifikasiDataBelumDibaca->message5))
-                                                {{ $notifikasiDataBelumDibaca->message5 }}
-                                            @endif
-                                            <b>
-                                                @if (!empty($notifikasiDataBelumDibaca->message6))
-                                                    {{ $notifikasiDataBelumDibaca->message6 }}th
-                                                @endif
-                                            </b>year
-                                            to <b>{{ $notifikasiDataBelumDibaca->name }}</b>
-                                            @if (!empty($notifikasiDataBelumDibaca->message7))
-                                                {{ $notifikasiDataBelumDibaca->message7 }}
-                                            @endif
-                                        @else
+                                        </b>year
+                                        to <b>{{ $notifikasiDataBelumDibaca->name }}</b>
+                                        @if (!empty($notifikasiDataBelumDibaca->message7))
+                                            {{ $notifikasiDataBelumDibaca->message7 }}
+                                        @endif
+                                    @else --}}
                                             <div class="mention-tag-container">
                                                 <div class="header-mention-tag">
-                                                    @php
-                                                        $userAvatar = '';
-                                                        if (!empty($notifikasiDataBelumDibaca->message6)) {
-                                                            $user = \App\Models\User::find(
-                                                                $notifikasiDataBelumDibaca->message6,
-                                                            );
-                                                            if ($user) {
-                                                                $userAvatar = URL::to(
-                                                                    '/assets/images/' . $user->avatar,
-                                                                );
-                                                            }
-                                                        }
-                                                    @endphp
-                                                    <a href="{{ $userAvatar }}" data-fancybox="mention-foto">
-                                                        <img class="avatar-notif" src="{{ $userAvatar }}"
-                                                            loading="lazy">
+                                                    <a id="profil" href="" data-fancybox="mention-foto">
+                                                        <img class="avatar-notif" src="" loading="lazy">
                                                     </a>
                                                     <p class="mention-nama">
-                                                        {{ $notifikasiDataBelumDibaca->message4 }}</p>
+
                                                     <p class="mention-waktu">
-                                                        {{ \Carbon\Carbon::parse($notifikasiDataBelumDibaca->message5)->isoFormat('D MMMM [at] h:mm') }}
+
                                                     </p>
                                                 </div>
                                                 <div class="isian-mention-tag">
-                                                    {{ $notifikasiDataBelumDibaca->message3 }}
                                                 </div>
                                             </div>
-                                        @endif
-                                        <br><br>
-                                    </p>
-                                    <p class="logo-pttati2">
-                                        @if ($result_tema->tema_aplikasi == 'Terang')
-                                            <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}"
-                                                alt="Logo PT TATI" loading="lazy">
-                                        @elseif ($result_tema->tema_aplikasi == 'Gelap')
-                                            <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}"
-                                                alt="Logo PT TATI" loading="lazy">
-                                        @endif
-                                    </p><br>
+                                            {{-- @endif --}}
+                                            <br><br>
+                                </p>
+                                <p class="logo-pttati2">
+                                    @if ($result_tema->tema_aplikasi == 'Terang')
+                                        <img src="{{ asset('assets/images/Logo_Perusahaan_Merah.png') }}"
+                                            alt="Logo PT TATI" loading="lazy">
+                                    @elseif ($result_tema->tema_aplikasi == 'Gelap')
+                                        <img src="{{ asset('assets/images/Logo_Perusahaan_Putih.png') }}"
+                                            alt="Logo PT TATI" loading="lazy">
+                                    @endif
+                                </p><br>
+                                @isset($created_at)
                                     <p class="noti-time3">
                                         <i class="fa-solid fa-clock" style="color: #808080;" aria-hidden="true"></i>
                                         <span class="notification-time">{{ $created_at->diffForHumans() }}</span>
                                     </p>
-                                </div>
+                                @endisset
                             </div>
-                        </li>
+                        </div>
+                    </li>
+                    @isset($notifikasi_belum_dibaca)
                         <div class="close-notifikasi">
-                            <a href="#" class="close-notification"
-                                data-id="{{ $notifikasi_belum_dibaca->id }}">
-                                <button class="close-popup"
-                                    id="close-popup_{{ $notifikasi_belum_dibaca->id }}">Close</button>
+                            <a href="#" class="close-notification" data-id="{{ $notifikasi_belum_dibaca->id }}">
+                                <button class="close-popup" id="close-popup">Close</button>
                             </a>
                         </div>
-                    </div>
-                @endforeach
+                    @endisset
+
+                </div>
                 <!-- /Notifikasi Belum Dibaca Modal -->
 
                 <!-- Notifikasi Dibaca Modal -->
@@ -2076,19 +2065,50 @@
     <script src="{{ URL::to('assets/js/app.js') }}"></script>
 
     {{-- swalfire --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>\
+
+    {{-- DayJs --}}
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/dayjs.min.js"></script>
 
     <script>
         $(document).ready(function() {
             $(document).on('click', '.pop-up', function(e) {
                 e.preventDefault();
                 var id = $(this).data('id');
-                $("#popup-notifikasi_" + id).fadeIn();
-                $('#close-popup_' + id).click(function(e) {
+                var url = $(this).data('url');
+
+                $('#close-popup').click(function(e) {
                     e.preventDefault();
-                    document.querySelector('#popup-notifikasi_' + id)
+                    document.querySelector('#popup-notifikasi')
                         .style
                         .display = 'none';
+                });
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function(response) {
+                        // alert('tes');
+                        $("#popup-notifikasi").fadeIn();
+                        let formattedTime = dayjs(response.data.message5).format(
+                            'D MMMM [at] h:mm');
+                        // $("#lihat_notifikasi").modal('show');
+                        $('#notifikasi-message').html(response.data.message);
+                        $('#notifikasi-name').html(response.data.name);
+                        if (response.data.message == 'Happy Birthday') {
+                            $('#img').addClass('logo-rsud');
+                        } else {
+                            $('#img').addClass('logo-tati');
+                        }
+                        $('.isian-mention-tag').html(response.data.message3);
+                        $('.mention-nama').html(response.data.message4);
+                        $('.mention-waktu').html(formattedTime);
+                        $('#profil').attr('href', response.userAvatar);
+                        $('.avatar-notif').attr('src', response.userAvatar);
+
+                    },
+                    error: function(xhr, status, error) {
+                        alert(xhr.responseText);
+                    }
                 });
             });
         });

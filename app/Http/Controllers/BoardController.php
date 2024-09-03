@@ -77,18 +77,18 @@ class BoardController extends Controller
     // Tampilan Papan Admin //
     public function showBoard($team_id, $board_id)
     {
+        // dd('ahi');
         $team_id = decrypt($team_id);
         // $board_id = decrypt($board_id);
         $userID = Auth::id();
         $board = $this->boardLogic->getData($board_id);
         $team = Team::find($board->team_id);
         $teamOwner = $this->teamLogic->getTeamOwner($board->team_id);
-        $dataColumnCard = Column::with('cards')
-            ->where('board_id', '=', $board_id)
+        $dataColumnCard = Column::with(['cards.titleChecklists.checklists'])
+            ->where('board_id', $board_id)
             ->get();
         $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
         $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
-        // dd($teamOwner);
         return view("LogHub.board")
             ->with("UserTeams", $UserTeams)
             ->with("actionTeams", $actionTeams)

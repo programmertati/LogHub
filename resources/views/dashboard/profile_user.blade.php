@@ -265,7 +265,7 @@
     </div>
     <!-- /Page Wrapper -->
     @push('js')
-        <script src="{{ asset('assets/js/memuat-ulang.js') }}"></script>
+        {{-- <script src="{{ asset('assets/js/memuat-ulang.js') }}"></script> --}}
         <script>
             function previewImage(event) {
                 const input = event.target;
