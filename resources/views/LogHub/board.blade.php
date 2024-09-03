@@ -475,14 +475,16 @@
                                         <i class='fa fa-trash-o m-r-5'></i> Delete
                                     </a>
                                 @endif
-                                @php
+                                {{-- @php
                                     $softDeletedCards = $dataKolom->cards()->onlyTrashed()->count();
                                     $displayStyle = $softDeletedCards > 0 ? '' : 'display: none;';
-                                @endphp
+                                @endphp --}}
                                 <a href="#" class="dropdown-item recover-kartu-link"
                                     id="recover-kartu-link-{{ $dataKolom->id }}" data-toggle="modal"
                                     data-target="#pulihkanKartuModal" data-column-id="{{ $dataKolom->id }}"
-                                    style="{{ $displayStyle }}">
+                                    style="
+
+                                    ">
                                     <i class="fa-solid fa-recycle m-r-5"></i> Recover Card
                                 </a>
                             </div>
@@ -557,7 +559,6 @@
                                                 </div>
 
                                                 <!-- /Muncul apabila terdapat deskripsi pada kartu -->
-
                                                 <!-- Muncul apabila terdapat checklist pada kartu -->
                                                 @php
                                                     $hasChecklists = false;
@@ -565,7 +566,6 @@
                                                     $totalPercentage = 0;
                                                     $perChecklist = 0;
                                                     $jumlahChecklist = 0;
-
                                                     foreach ($dataKartu->titleChecklists as $titleChecklists) {
                                                         if ($titleChecklists->checklists->isNotEmpty()) {
                                                             $hasChecklists = true;
@@ -582,9 +582,8 @@
                                                             }
                                                         }
                                                     }
+
                                                 @endphp
-                                                {{-- @dd($totalPercentage) --}}
-                                                {{-- @dd($jumlahChecklist) --}}
                                                 <div id="iconChecklist-{{ $dataKartu->id }}"
                                                     class="progress-checklist-{{ $result_tema->tema_aplikasi == 'Gelap' ? 'dark' : 'light' }} {{ $hasChecklists ? '' : 'hidden' }}
                                                     @if ($jumlahChecklist != 0 && $perChecklist / $jumlahChecklist == 1) progress-checklist-100-{{ $result_tema->tema_aplikasi == 'Gelap' ? 'dark' : 'light' }} @endif ">
@@ -851,6 +850,7 @@
                         <input type="hidden" name="card_id" id="card_id">
                     </form>
                     <div id="div_hasil">
+                        {{-- ISI KARTU BLADE --}}
                     </div>
                 </div>
             </div>

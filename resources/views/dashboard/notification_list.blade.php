@@ -321,7 +321,7 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @foreach ($usernotifikasi as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -393,7 +393,7 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @foreach ($usernotifikasi as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -465,7 +465,7 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @foreach ($usernotifikasi as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -537,7 +537,7 @@
                     </ul>
                     <div class="row">
                         <div class="col-md-12">
-                            @foreach ($usernotifikasi->where('notifiable_id', auth()->id()) as $notifikasi)
+                            @foreach ($usernotifikasi as $notifikasi)
                                 @php
                                     $notifikasiData = json_decode($notifikasi->data);
                                     $created_at = \Carbon\Carbon::parse($notifikasi->created_at);
@@ -866,12 +866,12 @@
                         <div class="modal-btn delete-action">
                             <div class="row">
                                 <div class="col-6">
-                                    @isset($notifikasi->id)
-                                        <a id="hapus_notifikasi_{{ $notifikasi->id }}" href="">
-                                            <button type="button"
-                                                class="btn btn-primary continue-btn submit-btn">Delete</button>
-                                        </a>
-                                    @endisset
+                                    {{-- @isset($notifikasi->id) --}}
+                                    <a id="hapus_notifikasi_action" href="">
+                                        <button type="button"
+                                            class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                    </a>
+                                    {{-- @endisset --}}
                                 </div>
                                 <div class="col-6">
                                     <a href="javascript:void(0);" data-dismiss="modal"
@@ -885,8 +885,7 @@
         </div>
     </div>
     @push('js')
-        <script src="{{ asset('assets/js/memuat-shortcut.js?v=' . time()) }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/dayjs.min.js"></script>
+        {{-- <script src="{{ asset('assets/js/memuat-shortcut.js?v=' . time()) }}"></script> --}}
         <script>
             document.getElementById('pageTitle').innerHTML = 'All Notifications | Loghub - PT TATI ';
         </script>
@@ -929,11 +928,12 @@
             });
             $(document).ready(function() {
                 $('.delete-notifikasi').on('click', function() {
-                    alert('test');
+                    // alert('test');
                     var id = $(this).data('id');
                     var url = $(this).data('url');
+                    // alert(id);
                     $("#hapus_notifikasi").modal('show');
-                    $("#hapus_notifikasi_" + id).attr('href', url);
+                    $("#hapus_notifikasi_action").attr('href', url);
                 });
             });
             $(document).ready(function() {
@@ -974,7 +974,7 @@
         </script>
 
         <script>
-            var unreadNotifications = {!! json_encode($belum_dibaca) !!};
+            var unreadNotifications = {!! json_encode($unreadNotifications) !!};
 
             var allNotificationList = document.getElementById('allNotificationList');
             if (unreadNotifications.length > 0 || readNotifications.length > 0) {

@@ -109,7 +109,7 @@ class TeamLogic
      */
 
     // Mendapatkan Pengguna pada Tim //
-    function getUserTeams(int $user_id, $status = ["Member", "Owner", "Pending"], $team_name = "%")
+    function getUserTeams(int $user_id, $status = ["Owner", "Member", "Pending"], $team_name = "%")
     {
         $teams = User::find($user_id)->teams()
             ->wherePivotIn("status", $status)

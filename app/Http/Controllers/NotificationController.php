@@ -41,7 +41,6 @@ class NotificationController extends Controller
     {
         try {
             Notification::where('id', $id)->delete();
-
             Toastr::success('Notifikasi Berhasil Dihapus', 'Success');
             return redirect()->back();
         } catch (\Exception $e) {
