@@ -163,7 +163,11 @@
                 </div>
                 <div class="aksi-tambah-checklist gap-2">
                     <button type="submit" class="btn btn-outline-info icon-keterangan hidden"
-                        id="saveButtonTitle{{ $isianKartu->id }}">Save</button>
+                        id="saveButtonTitle{{ $isianKartu->id }}">
+                        <span class="spinner-border spinner-border-sm mr-2 mb-1 d-none" role="status"
+                            aria-hidden="true">
+                        </span>
+                        Save</button>
                     <button type="button" class="btn btn-outline-danger icon-keterangan hidden"
                         id="cancelButtonTitle{{ $isianKartu->id }}">Cancel</button><br>
                 </div>
@@ -228,7 +232,11 @@
                                 placeholder="Enter a title" value="{{ $titleChecklists->name }}">
                             <div class="aksi-update-title gap-2">
                                 <button type="submit" class="btn btn-outline-info icon-keterangan hidden"
-                                    id="saveButtonTitleUpdate{{ $titleChecklists->id }}">Save</button>
+                                    id="saveButtonTitleUpdate{{ $titleChecklists->id }}">
+                                    <span class="spinner-border spinner-border-sm mr-2 mb-1 d-none" role="status"
+                                        aria-hidden="true">
+                                    </span>
+                                    Save</button>
                                 <button type="button" class="btn btn-outline-danger icon-keterangan hidden"
                                     id="cancelButtonTitleUpdate{{ $titleChecklists->id }}">Cancel</button>
                             </div>
@@ -327,7 +335,11 @@
                                         class="aksi-update-checklist2 gap-2 margin-bottom-0"
                                         id="checklist-{{ $checklists->id }}">
                                         <button type="submit" class="saves btn btn-outline-info hidden"
-                                            id="saveButtonChecklistUpdate-{{ $checklists->id }}">Save</button>
+                                            id="saveButtonChecklistUpdate-{{ $checklists->id }}">
+                                            <span class="spinner-border spinner-border-sm mr-2 mb-1 d-none" role="status"
+                                                aria-hidden="true">
+                                            </span>
+                                            Save</button>
                                         <button type="button" class="cancels btn btn-outline-danger hidden"
                                             id="cancelButtonChecklistUpdate-{{ $checklists->id }}">Cancel</button>
                                     </div>
@@ -376,7 +388,11 @@
                         </div>
                         <div class="aksi-update-checklist gap-2">
                             <button type="submit" class="btn btn-outline-info icon-keterangan hidden"
-                                id="saveButtonChecklist{{ $titleChecklists->id }}">Save</button>
+                                id="saveButtonChecklist{{ $titleChecklists->id }}">
+                                <span class="spinner-border spinner-border-sm d-none mr-2 mb-1" role="status"
+                                    aria-hidden="true"></span>
+
+                                Save</button>
                             <button type="button" class="btn btn-outline-danger icon-keterangan hidden"
                                 id="cancelButtonChecklist{{ $titleChecklists->id }}">Cancel</button>
                         </div>
@@ -699,19 +715,32 @@
                 e.preventDefault();
                 e.stopImmediatePropagation();
                 const title_id = $(this).data('id');
+                const inputElement = $('#myFormTitleUpdate' + title_id).find('input[name="title"]');
+                const val = $('#titleChecklistUpdate' + title_id).val();
+
                 $('#saveButtonTitleUpdate' + title_id).removeClass('hidden');
                 $('#cancelButtonTitleUpdate' + title_id).removeClass('hidden');
+                $('#saveButtonTitleUpdate' + title_id).prop('disabled', false);
+                $('#cancelButtonTitleUpdate' + title_id).prop('disabled', false);
+
+
+
                 // Section Update Title
-                // Button cancel form update title
                 $('#cancelButtonTitleUpdate' + title_id).on('click', function() {
                     $('#saveButtonTitleUpdate' + title_id).addClass('hidden');
                     $('#cancelButtonTitleUpdate' + title_id).addClass('hidden');
-                    // $('#myFormTitleUpdate' + title_id)[0].reset();
+                    $('#titleChecklistUpdate' + title_id).val(val);
                 });
+
+
                 let isSubmitting = false;
                 // Form update title
+                $('#myFormTitleUpdate' + title_id).off('submit');
                 $('#myFormTitleUpdate' + title_id).on('submit', function(e) {
                     e.preventDefault();
+                    $('.spinner-border').removeClass('d-none');
+                    $('#saveButtonTitleUpdate' + title_id).prop('disabled', true);
+                    $('#cancelButtonTitleUpdate' + title_id).prop('disabled', true);
                     // Mencegah pengiriman ganda
                     if (isSubmitting) return;
                     isSubmitting = true;
@@ -722,20 +751,21 @@
                         url: "{{ route('updateTitle') }}",
                         data: formData,
                         success: function(response) {
+                            $('.spinner-border').addClass('d-none');
                             $('#saveButtonTitleUpdate' + title_id).addClass('hidden');
                             $('#cancelButtonTitleUpdate' + title_id).addClass('hidden');
+                            inputElement.val(response.name);
                             $('.isian-title').blur();
-                            // $('#myFormTitleUpdate' + title_id)[0].reset();
                             toastr.success('Berhasil memperbaharui judul!');
                             let isSubmitting = false;
-                            // localStorage.clear();
+                            localStorage.clear();
                         },
                         error: function(error) {
-                            let isSubmitting = false;
                             toastr.error('Gagal memperbaharui judul!');
+                            let isSubmitting = false;
                         }
                     });
-                    return false;
+                    // return false;
                 });
                 // End Section Update Title
             });
@@ -888,6 +918,8 @@
                 $('#checklist' + title_id).focus();
                 $('#saveButtonChecklist' + title_id).removeClass('hidden');
                 $('#cancelButtonChecklist' + title_id).removeClass('hidden');
+                $('#saveButtonChecklist' + title_id).prop('disabled', false);
+                $('#cancelButtonChecklist' + title_id).prop('disabled', false);
 
                 // Button cancel form checklist
                 $('#cancelButtonChecklist' + title_id).on('click', function() {
@@ -902,6 +934,9 @@
                 // Form Add Checklist
                 $('#myFormChecklist' + title_id).on('submit', function(event) {
                     event.preventDefault();
+                    $('.spinner-border').removeClass('d-none');
+                    $('#saveButtonChecklist' + title_id).prop('disabled', true);
+                    $('#cancelButtonChecklist' + title_id).prop('disabled', true);
                     // Mencegah pengiriman ganda
                     if (isSubmitting) return;
                     isSubmitting = true;
@@ -925,6 +960,7 @@
                         url: "{{ route('addChecklist') }}",
                         data: formData,
                         success: function(response) {
+                            $('.spinner-border').addClass('d-none');
                             $('.add-checklist').removeClass('hidden');
                             $('#checklist' + title_id).addClass('hidden');
                             $('#checklist' + title_id).val('');
@@ -959,7 +995,11 @@
                                 <div class="mention-tag" id="mention-tag-checkbox${response.checklist.id}"></div>
 
                                 <div onclick="checklistUpdate(${response.checklist.id})" class="aksi-update-checklist2 gap-2 margin-bottom-0" id="checklist-${response.checklist.id}">
-                                    <button type="button" class="saves btn btn-outline-info hidden" id="saveButtonChecklistUpdate-${response.checklist.id}">Save</button>
+                                    <button type="button" class="saves btn btn-outline-info hidden" id="saveButtonChecklistUpdate-${response.checklist.id}">
+
+                                         <span class="spinner-border spinner-border-sm d-none mr-2 mb-1" role="status"
+                                    aria-hidden="true"></span>
+                                        Save</button>
                                     <button type="button" class="cancels btn btn-outline-danger hidden" id="cancelButtonChecklistUpdate-${response.checklist.id}">Cancel</button>
                                 </div>
                             </form>
@@ -1094,7 +1134,6 @@
             // Checkbox form checklist
             $(document).off('change', '.dynamicCheckbox');
             $(document).on('change', '.dynamicCheckbox', function() {
-
                 var checkbox = $(this);
                 var isChecked = checkbox.is(':checked');
                 var label = $('label[for="labelCheckbox-' + checkbox.attr('id') + '"]');
@@ -1116,16 +1155,21 @@
             });
             // Label form checklist
             $(document).off('click', 'label[for]');
-            $(document).on('click', 'label[for]', function() {
+
+            $(document).on('click', 'label[for]', function(e) {
+                e.preventDefault();
                 var label = $(this).attr('for');
                 var checkboxId = label.split('-');
                 // alert(checkboxId[1]);
                 // $('#checkbox-' + checkboxId[1]).focus();
                 $('label[for="labelCheckbox-' + checkboxId[1] + '"]').addClass('hidden');
-                $('#checkbox-' + checkboxId[1]).removeClass('hidden');
-                $('#checkbox-' + checkboxId[1]).focus();
                 $('#saveButtonChecklistUpdate-' + checkboxId[1]).removeClass('hidden');
                 $('#cancelButtonChecklistUpdate-' + checkboxId[1]).removeClass('hidden');
+                $('#saveButtonChecklistUpdate-' + checkboxId[1]).prop('disabled', false);
+                $('#cancelButtonChecklistUpdate-' + checkboxId[1]).prop('disabled', false);
+                $('#checklist-' + checkboxId[1]).css('margin-top', '5px');
+                $('#checkbox-' + checkboxId[1]).removeClass('hidden');
+                $('#checkbox-' + checkboxId[1]).focus();
             });
             // Button cancels form checklist
             $(document).off('click', '.cancels');
@@ -1135,6 +1179,7 @@
                 $('#saveButtonChecklistUpdate-' + id[1]).addClass('hidden');
                 $('#cancelButtonChecklistUpdate-' + id[1]).addClass('hidden');
                 $('label[for="labelCheckbox-' + id[1] + '"]').removeClass('hidden');
+                $('#checklist-' + id[1]).css('margin-top', '0px');
             });
 
             // Button saves form checklist
@@ -1142,7 +1187,11 @@
             $(document).on('click', '.saves', function(event) {
                 var id = $(this).attr('id').split('-');
                 event.preventDefault();
+                $('.spinner-border').removeClass('d-none');
+                $(this).prop('disabled', true);
 
+                $('#cancelButtonChecklistUpdate-' + id[1]).prop('disabled', true);
+                $('#checklist-' + id[1]).css('margin-top', '0px');
                 // Mencegah pengiriman ganda
                 if (isSubmitting) return;
 
@@ -1169,6 +1218,7 @@
                     url: "{{ route('updateChecklist') }}",
                     data: formData,
                     success: function(response) {
+                        $('.spinner-border').addClass('d-none');
                         $('label[for="labelCheckbox-' + response.checklist.id + '"]')
                             .removeClass('hidden');
                         $('label[for="labelCheckbox-' + response.checklist.id + '"]').html(
@@ -1534,10 +1584,10 @@
                 const cancelButton = document.getElementById(`cancelButtonChecklistUpdate-${id}`);
 
 
-                dynamicCheckboxValue.addEventListener('click', function() {
-                    aksiUpdateChecklist.style.marginBottom = '10px';
-                    aksiUpdateChecklist.style.marginTop = '5px';
-                });
+                // dynamicCheckboxValue.addEventListener('click', function() {
+                //     aksiUpdateChecklist.style.marginBottom = '10px';
+                //     aksiUpdateChecklist.style.marginTop = '5px';
+                // });
 
                 saveButton.addEventListener('click', function() {
                     aksiUpdateChecklist.style.marginBottom = '0';

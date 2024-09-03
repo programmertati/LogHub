@@ -11,6 +11,8 @@
             $('#cancelButtonTitle' + id).removeClass('hidden');
             $('#iconCheck-' + id).removeClass('hidden');
             $('#addTitle-' + id).addClass('hidden');
+            $('#saveButtonTitle' + id).prop('disabled', false);
+            $('#cancelButtonTitle' + id).prop('disabled', false);
             $('#myFormTitle' + id)[0].reset();
 
             // Button cancel form title
@@ -27,6 +29,9 @@
             isSubmitting = false;
             $('#myFormTitle' + id).on('submit', function(event) {
                 event.preventDefault();
+                $('.spinner-border').removeClass('d-none');
+                $('#saveButtonTitle' + id).prop('disabled', true);
+                $('#cancelButtonTitle' + id).prop('disabled', true);
                 // Mencegah pengiriman ganda
                 if (isSubmitting) return;
                 isSubmitting = true;
@@ -52,6 +57,7 @@
                     url: "{{ route('addTitle') }}",
                     data: formData,
                     success: function(response) {
+                        $('.spinner-border').addClass('d-none');
                         // Mendapatkan ID dan Percentage dari Controller //
                         const title_id = `${response.titlechecklist.id}`;
                         const percentage = `${response.titlechecklist.percentage}`;
@@ -72,7 +78,11 @@
                                                     <input type="hidden" id="card_id" name="card_id" value="${response.titlechecklist.cards_id}">
                                                     <input type="text" class="isian-title border border-1 border-darks w-402 p-2 rounded-xl" style="font-size: 17px" id="titleChecklistUpdate${response.titlechecklist.id}" name="titleChecklistUpdate" placeholder="Enter a title"  data-id="${response.titlechecklist.id}"value="${response.titlechecklist.name}">
                                                     <div class="aksi-update-title gap-2">
-                                                        <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitleUpdate${response.titlechecklist.id}">Save</button>
+                                                        <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitleUpdate${response.titlechecklist.id}">
+                                                             <span class="spinner-border spinner-border-sm mr-2 mb-1 d-none" role="status"
+                                        aria-hidden="true">
+                                    </span>
+                                                            Save</button>
                                                         <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonTitleUpdate${response.titlechecklist.id}">Cancel</button>
                                                     </div>
                                             </form>
@@ -130,7 +140,11 @@
                                                     <div class="mention-tag" id="mention-tag-checklist${response.titlechecklist.id}"></div>
                                                 </div>
                                                 <div class="aksi-update-checklist gap-2">
-                                                    <button  type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist${response.titlechecklist.id}">Save</button>
+                                                    <button  type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist${response.titlechecklist.id}">
+                                                         <span class="spinner-border spinner-border-sm mr-2 mb-1 d-none" role="status"
+                                        aria-hidden="true">
+                                    </span>
+                                                        Save</button>
                                                     <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist${response.titlechecklist.id}">Cancel</button>
                                                 </div>
                                         </form>

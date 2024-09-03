@@ -168,6 +168,7 @@ class ChecklistController extends Controller
         ]);
 
         return response()->json([
+            'name' => $request->titleChecklistUpdate,
             'message' => 'Data berhasil disimpan!',
             'card_id' => $request->card_id,
             'titlechecklist' => $titlechecklist

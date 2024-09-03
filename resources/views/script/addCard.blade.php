@@ -5,7 +5,7 @@
         let isSubmitting = false;
 
         event.preventDefault();
-
+        $('.submit-btn').prop('disabled', true);
         // Mencegah pengiriman ganda
         if (isSubmitting) return;
         isSubmitting = true;
@@ -114,6 +114,8 @@
 
     function addCardScript(event, columnId) {
         event.preventDefault();
+        $('.spinner-border').removeClass('d-none');
+        $('.btn-add').prop('disabled', true)
         if (isSubmitting) return; // Prevent duplicate submissions
         isSubmitting = true;
         let form = document.getElementById('addCardForm' + columnId);
@@ -328,7 +330,8 @@
                                 });
                         }
                     });
-
+                    $('.spinner-border').addClass('d-none');
+                    $('.submit-btn').prop('disabled', false);
                     toastr.success('Berhasil membuat kartu!');
 
                     // Memuat Ulang Form Kosongan
