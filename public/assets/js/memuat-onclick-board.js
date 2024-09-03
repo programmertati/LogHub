@@ -2,9 +2,9 @@
 function openAdd(id) {
     const cardLoghub = document.getElementById(`cardLoghub${id}`);
     const btnadd = document.getElementById(`btn-add${id}`);
-
+    $('.btn-add').prop('disabled', false)
     let style = cardLoghub.getAttribute("class");
-    
+
     if (style.includes('flex')) {
         cardLoghub.classList.remove("flex");
         btnadd.innerHTML = "<i class='fa-solid fa-plus'></i> Add a card...";

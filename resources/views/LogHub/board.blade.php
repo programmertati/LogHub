@@ -627,7 +627,10 @@
                                     <input type="text" class="form-control" name="name" id="cardName"
                                         style="width: 130%; border-radius: 10px; background-color: #f5fffa;"
                                         placeholder="Enter card's name..." required>
-                                    <button type="submit" class="btn btn-outline-info btn-add">Tambah Kartu</button>
+                                    <button type="submit" class="btn btn-outline-info btn-add"> <span
+                                            class="spinner-border spinner-border-sm mr-2 mb-1 d-none" role="status"
+                                            aria-hidden="true">
+                                        </span>Tambah Kartu</button>
                                 </form>
                             </div>
                         </div>
@@ -771,7 +774,9 @@
                                 @enderror
                             </div>
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-outline-info submit-btn">Save</button>
+                                <button type="submit" class="btn btn-outline-info submit-btn">
+                                    Save
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -1028,7 +1033,6 @@
             <script src="{{ asset('assets/js/memuat-pattern-board.js?v=' . time()) }}"></script>
             <script src="{{ asset('assets/js/memuat-onclick-board.js?v=' . time()) }}"></script>
             <script src="{{ asset('assets/js/memuat-modal.js?v=' . time()) }}"></script>
-            <script></script>
             <script>
                 function progressBar(id, percentage) {
                     var progressBar = $('.progress-bar-' + id);

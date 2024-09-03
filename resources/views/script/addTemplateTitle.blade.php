@@ -14,6 +14,7 @@
             $('#cancelButtonTitle' + id).removeClass('hidden');
             $('#iconCheck-' + id).removeClass('hidden');
             $('#addTitle-' + id).addClass('hidden');
+            $('#makeTemplate' + id).prop('disabled', false);
             $('#makeTemplateForm' + id)[0].reset();
         });
         // Button cancel form title
@@ -29,7 +30,7 @@
         // Form title
         $('#makeTemplateForm' + id).on('submit', function(event) {
             event.preventDefault();
-
+            $('#makeTemplate' + id).prop('disabled', true);
             // Mencegah pengiriman ganda
             if (isSubmitting) return;
 
@@ -63,7 +64,11 @@
                                         <input type="hidden" id="card_id" name="card_id" value="${titlechecklist.cards_id}">
                                         <input type="text" class="isian-title border border-1 border-darks w-402 p-2 rounded-xl" style="font-size: 17px" id="titleChecklistUpdate${titlechecklist.id}" name="titleChecklistUpdate" placeholder="Enter a title" data-id="${titlechecklist.id}" value="${titlechecklist.name}">
                                         <div class="aksi-update-title gap-2">
-                                            <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitleUpdate${titlechecklist.id}">Save</button>
+                                            <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonTitleUpdate${titlechecklist.id}">
+                                                 <span class="spinner-border spinner-border-sm mr-2 mb-1 d-none" role="status"
+                                        aria-hidden="true">
+                                    </span>
+                                                Save</button>
                                             <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonTitleUpdate${titlechecklist.id}">Cancel</button>
                                         </div>
                                     </form>
@@ -121,7 +126,11 @@
                                         <div class="mention-tag" id="mention-tag-checklist${titlechecklist.id}"></div>
                                     </div>
                                     <div class="aksi-update-checklist gap-2">
-                                        <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist${titlechecklist.id}">Save</button>
+                                        <button type="submit" class="btn btn-outline-info icon-keterangan hidden" id="saveButtonChecklist${titlechecklist.id}">
+                                             <span class="spinner-border spinner-border-sm mr-2 mb-1 d-none" role="status"
+                                        aria-hidden="true">
+                                    </span>
+                                            Save</button>
                                         <button type="button" class="btn btn-outline-danger icon-keterangan hidden" id="cancelButtonChecklist${titlechecklist.id}">Cancel</button>
                                     </div>
                                 </form>
