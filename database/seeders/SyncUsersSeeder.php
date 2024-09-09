@@ -69,7 +69,7 @@ class SyncUsersSeeder extends Seeder
                         'status' => $value['role'] == 'Admin' ? 'Owner' : 'Member' ,
                     ]);
 
-                    $tgl = ["8 Juli - 12 Juli 2024", "15 Juli - 19 Juli 2024", "22 Juli - 26 Juli 2024", "29 Juli - 2 Agustus 2024"];
+                    $tgl = ["9 - 13 September 2024", "16 - 20 September 2024", "23 - 27 September 2024", "30 September - 4 Oktober 2024"];
             
                     $hari = ['Target Mingguan','Senin','Selasa','Rabu','Kamis','Jumat'];
         
