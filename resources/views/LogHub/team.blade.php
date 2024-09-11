@@ -51,105 +51,109 @@
 
             </div>
             <!-- /Page Header -->
-            <div class="flex gap-8">
+            <div class="d-flex flex-column flex-md-row gap-4">
                 <div class="flex flex-col gap-8 flex-1 w-full">
-                    <!-- /Tampilan Papan dan Pencaharian Nama Papan -->
-                    <div class="flex flex-col gap-6">
-                        <div class="flex flex-col gap-4">
-                            <div class="flex items-center gap-2 pl-1">
-                                <h2 class="text-2xl font-bold">Boards</h2>
-                            </div>
-                            <form action="{{ route('searchBoard', ['team_ids' => encrypt($team->id)]) }}" id="search-form"
-                                method="GET">
-                                @csrf
-                                <div class="row filter-row">
-                                    <div class="col-sm-6 col-md-11">
-                                        <div class="form-group form-focus">
-                                            <input type="hidden" name="team_id" value="{{ $team->id }}">
-                                            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                            <input type="text" class="form-control floating" name="board_name"
-                                                value="{{ session('__old_board_name') }}"
-                                                style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 15px">
-                                            <label class="focus-label"><i class="fa-solid fa-table-columns"></i> Boards's
-                                                Name</label>
+                    <div class="konten">
+                        <!-- /Tampilan Papan dan Pencaharian Nama Papan -->
+                        <div class="flex flex-col gap-6">
+                            <div class="flex flex-col gap-4">
+                                <div class="flex items-center gap-2 pl-1">
+                                    <h2 class="text-2xl font-bold">Boards</h2>
+                                </div>
+                                <form action="{{ route('searchBoard', ['team_ids' => encrypt($team->id)]) }}"
+                                    id="search-form" method="GET">
+                                    @csrf
+                                    <div class="row filter-row">
+                                        <div class="col-sm-6 col-md-9 col-lg-9">
+                                            <div class="form-group form-focus">
+                                                <input type="hidden" name="team_id" value="{{ $team->id }}">
+                                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                                <input type="text" class="form-control floating" name="board_name"
+                                                    value="{{ session('__old_board_name') }}"
+                                                    style="--tw-border-opacity: 1; border-color: rgb(0 0 0 / var(--tw-border-opacity)); border-radius: 15px">
+                                                <label class="focus-label"><i class="fa-solid fa-table-columns"></i>
+                                                    Boards's
+                                                    Name</label>
 
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 col-md-3 col-lg-3">
+                                            <button type="submit" class="btn btn-success btn-block btn_search"><i
+                                                    class="fa-solid fa-magnifying-glass"></i></button>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-1">
-                                        <button type="submit" class="btn btn-success btn-block btn_search"><i
-                                                class="fa-solid fa-magnifying-glass"></i></button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- /Tampilan Papan dan Pencaharian Nama Papan -->
-
-                    <!-- Tampilan Papan -->
-                    <div class="tampilan-papan">
-                        @isset($boards)
-                            @foreach ($boards as $board)
-                                <a href="{{ route('board', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id)]) }}"
-                                    class="flex cursor-pointer select-none flex-col transition duration-300 border border-gray-200 shadow-xl rounded-xl w-72 hover:shadow-2xl bg-grad-{{ $board->pattern }}"
-                                    id="bgGrad" style="margin-bottom: 15px;">
-                                    <div class="flex-grow w-full p-4" style="padding: 3rem !important;"></div>
-                                    <article
-                                        class="flex flex-col w-full gap-1 px-4 py-2 bg-white border-t rounded-b-lg border-t-gray-200">
-                                        <h4 class="overflow-hidden font-semibold truncate text-bold" style="font-size: 15px">
-                                            {{ $board->name }}</h4>
-                                    </article>
-                                </a>
-                            @endforeach
-                            @endif
-                        </div>
-                        <!-- /Tampilan Papan -->
-
-                        <div class="flex flex-wrap gap-x-8 gap-y-6">
-                            <!-- Fitur Buat Papan -->
-                            @if ($boards->isEmpty() && Auth::user()->id == $owner->id)
-                                <a href="#" data-toggle="modal" data-target="#createBoard">
-                                    <div class="flex flex-col items-center justify-center gap-2 text-gray-400 transition duration-300 bg-gray-100 shadow-md cursor-pointer select-none w-72 h-52 rounded-xl hover:shadow-2xl"
-                                        style="background-color: rgb(243 244 246 / 1) !important; @if ($result_tema->tema_aplikasi == 'Gelap') background-color: #292D3E !important; @endif ">
-                                        <i class="fa-solid fa-plus fa-2xl"
-                                            style="margin-top: 14px; margin-bottom: -16px;"></i><br>
-                                        <h4>Create Board</h4>
-                                    </div>
-                                </a>
-                            @endif
-                            <!-- /Fitur Buat Papan -->
-                        </div>
-                    </div>
-
-                    {!! Toastr::message() !!}
-
-                    <!-- Tampilan Papan dan Anggota Tim -->
-                    <div class="flex flex-col max-h-96 gap-4 w-96">
-                        <h2 class="ml-4 text-2xl font-bold">Members</h2>
-                        <div
-                            class="isian-anggota  flex flex-col flex-grow w-full gap-2 p-4 border-2 border-gray-200 rounded-xl">
-                            <div class="flex items-center gap-4">
-                                <a href="{{ URL::to('/assets/images/' . $owner->avatar) }}" data-fancybox="foto-profil">
-                                    <img src="{{ URL::to('/assets/images/' . $owner->avatar) }}" loading="lazy"
-                                        class="!flex-shrink-0 !flex-grow-0 w-12 avatar-undangan">
-                                </a>
-                                <p class="flex-grow truncate">{{ $owner->name }}</p>
-                                <i class="fa-solid fa-crown fa-lg w-6 h-6 text-yellow-400 !flex-shrink-0 !flex-grow-0"></i>
+                                </form>
                             </div>
-                            @foreach ($members as $member)
+                        </div>
+                        <!-- /Tampilan Papan dan Pencaharian Nama Papan -->
+
+                        <!-- Tampilan Papan -->
+                        <div class="tampilan-papan">
+                            @isset($boards)
+                                @foreach ($boards as $board)
+                                    <a href="{{ route('board', ['board_id' => $board->id, 'team_id' => encrypt($board->team_id)]) }}"
+                                        class="flex cursor-pointer select-none flex-col transition duration-300 border border-gray-200 shadow-xl rounded-xl w-72 hover:shadow-2xl bg-grad-{{ $board->pattern }}"
+                                        id="bgGrad" style="margin-bottom: 15px;">
+                                        <div class="flex-grow w-full p-4" style="padding: 3rem !important;"></div>
+                                        <article
+                                            class="flex flex-col w-full gap-1 px-4 py-2 bg-white border-t rounded-b-lg border-t-gray-200">
+                                            <h4 class="overflow-hidden font-semibold truncate text-bold"
+                                                style="font-size: 15px">
+                                                {{ $board->name }}</h4>
+                                        </article>
+                                    </a>
+                                @endforeach
+                                @endif
+                            </div>
+                            <!-- /Tampilan Papan -->
+
+                            <div class="flex flex-wrap gap-x-8 gap-y-6">
+                                <!-- Fitur Buat Papan -->
+                                @if ($boards->isEmpty() && Auth::user()->id == $owner->id)
+                                    <a href="#" data-toggle="modal" data-target="#createBoard">
+                                        <div class="flex flex-col items-center justify-center gap-2 text-gray-400 transition duration-300 bg-gray-100 shadow-md cursor-pointer select-none w-72 h-52 rounded-xl hover:shadow-2xl"
+                                            style="background-color: rgb(243 244 246 / 1) !important; @if ($result_tema->tema_aplikasi == 'Gelap') background-color: #292D3E !important; @endif ">
+                                            <i class="fa-solid fa-plus fa-2xl"
+                                                style="margin-top: 14px; margin-bottom: -16px;"></i><br>
+                                            <h4>Create Board</h4>
+                                        </div>
+                                    </a>
+                                @endif
+                                <!-- /Fitur Buat Papan -->
+                            </div>
+                        </div>
+                    </div>
+                    {!! Toastr::message() !!}
+                    <div class="member">
+                        <!-- Tampilan Papan dan Anggota Tim -->
+                        {{-- d-flex flex-column max-h-96 gap-4 w-100 w-md-25 --}}
+                        <div class="d-flex flex-column max-h-96 gap-4 w-96 w-sm-100">
+                            <h2 class="ml-4 text-2xl font-bold">Members</h2>
+                            <div
+                                class="isian-anggota  flex flex-col flex-grow w-full gap-2 p-4 border-2 border-gray-200 rounded-xl">
                                 <div class="flex items-center gap-4">
-                                    <a href="{{ URL::to('/assets/images/' . $member->avatar) }}" data-fancybox="foto-profil">
-                                        <img src="{{ URL::to('/assets/images/' . $member->avatar) }}" loading="lazy"
+                                    <a href="{{ URL::to('/assets/images/' . $owner->avatar) }}" data-fancybox="foto-profil">
+                                        <img src="{{ URL::to('/assets/images/' . $owner->avatar) }}" loading="lazy"
                                             class="!flex-shrink-0 !flex-grow-0 w-12 avatar-undangan">
                                     </a>
-                                    <p class="w-40 truncate">{{ $member->name }}</p>
+                                    <p class="flex-grow truncate">{{ $owner->name }}</p>
+                                    <i class="fa-solid fa-crown fa-lg w-6 h-6 text-yellow-400 !flex-shrink-0 !flex-grow-0"></i>
                                 </div>
-                            @endforeach
+                                @foreach ($members as $member)
+                                    <div class="flex items-center gap-4">
+                                        <a href="{{ URL::to('/assets/images/' . $member->avatar) }}"
+                                            data-fancybox="foto-profil">
+                                            <img src="{{ URL::to('/assets/images/' . $member->avatar) }}" loading="lazy"
+                                                class="!flex-shrink-0 !flex-grow-0 w-12 avatar-undangan">
+                                        </a>
+                                        <p class="w-40 truncate">{{ $member->name }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
+                        <!-- /Tampilan Papan dan Anggota Tim -->
                     </div>
-                    <!-- /Tampilan Papan dan Anggota Tim -->
-
                 </div>
-
             </div>
             <!-- /Page Content -->
 
@@ -433,7 +437,7 @@
 
                 </div>
                 <!-- /Page Wrapper -->
-
+                </div>
                 @push('js')
                     <!-- FancyBox Foto Profil -->
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">

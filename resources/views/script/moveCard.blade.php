@@ -3,6 +3,9 @@
         const columnContainer = document.getElementById('cardContainer');
         new Sortable(columnContainer, {
             animation: 150,
+            delay: 200, // 2 detik
+            delayOnTouchOnly: true,
+            touchStartThreshold: 5,
             onEnd: function(evt) {
                 updateColumnPositions();
             },
@@ -13,6 +16,9 @@
             new Sortable(e, {
                 group: 'shared',
                 animation: 150,
+                delay: 200, // 2 detik
+                delayOnTouchOnly: true,
+                touchStartThreshold: 5,
                 onAdd: function(evt) {
                     updateCardColumn(evt);
                 },
