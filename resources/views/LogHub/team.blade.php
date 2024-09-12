@@ -7,6 +7,9 @@
         }
     </style>
     @if ($result_tema->tema_aplikasi == 'Gelap')
+        <link href="
+    https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css
+    " rel="stylesheet">
         <style>
             .rounded-xl {
                 background-color: {{ $result_tema->warna_mode }} !important;
@@ -276,27 +279,31 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div class="mb-3">
+                                <div class="mb-3 hidden">
                                     <label for="input-text-inv-email" class="form-label">E-mail Address</label>
                                     <div class="input-group gap-2">
                                         <input type="email" class="form-control" id="inv-email"
                                             placeholder="Enter member email">
-                                        <button class="btn btn-outline-info" type="button" id="add-btn">
+                                        <button class="btn btn-outline-info hidden" type="button" id="add-btn">
                                             <i class="fa-solid fa-user-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <div class="input-group gap-2" style="flex-wrap: nowrap;">
-                                        <select class="theSelect" id="inv-email2" style="width: 100% !important">
+                                        <select class="js-example-basic-single theSelect" id="inv-email2"
+                                            style="width: 100% !important">
+                                            {{-- <select data-live-search="true" class="theSelect" id="inv-email2"
+                                            style="width: 100% !important"> --}}
                                             <option selected disabled>-- Select Team Members --</option>
                                             @foreach ($UserTeams as $result_team)
-                                                <option value="{{ $result_team->email }}">{{ $result_team->name }}</option>
+                                                <option value="{{ $result_team->email }}">
+                                                    {{ $result_team->name }}</option>
                                             @endforeach
                                         </select>
-                                        <button class="btn btn-outline-info" type="button" id="add-btn2">
+                                        {{-- <button class="btn btn-outline-info" type="button" id="add-btn2">
                                             <i class="fa-solid fa-user-plus"></i>
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 </div>
                                 <form method="POST" id="invite-members-form"
@@ -439,6 +446,8 @@
                 <!-- /Page Wrapper -->
                 </div>
                 @push('js')
+                    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
                     <!-- FancyBox Foto Profil -->
                     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
@@ -446,8 +455,12 @@
                         $(document).ready(function() {
                             $('[data-fancybox="foto-profil"]').fancybox({});
                         });
+                        $(document).ready(function() {
+                            $('.js-example-basic-single').select2();
+                        });
                     </script>
                     <!-- /FancyBox Foto Profil -->
+
                     <script>
                         function selectPattern(pattern) {
                             var selectedPattern = document.querySelector('#pattern-field');
@@ -565,25 +578,46 @@
                             const inviteContainer = document.getElementById('invite-container');
                             const form = document.getElementById('invite-members-form');
 
-                            addBtn.addEventListener('click', () => {
-                                const email = emailInput.value.trim();
-                                if (email && email !== '-- Select Team Members --') {
-                                    const emailDiv = document.createElement('div');
-                                    emailDiv.className =
-                                        'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
-                                    emailDiv.innerHTML = `
-                            <span>${email}</span>
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
-                            <input type="hidden" name="emails[]" value="${email}">`;
-                                    inviteContainer.appendChild(emailDiv);
-                                    emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
-                                        inviteContainer.removeChild(emailDiv);
-                                    });
-                                    emailInput.value = '';
-                                }
-                            });
+                            // addBtn.addEventListener('click', () => {
+                            //     const email = emailInput.value.trim();
+                            //     if (email && email !== '-- Select Team Members --') {
+                            //         const emailDiv = document.createElement('div');
+                            //         emailDiv.className =
+                            //             'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
+                            //         emailDiv.innerHTML = `
+        // <span>${email}</span>
+        // <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
+        // <input type="hidden" name="emails[]" value="${email}">`;
+                            //         inviteContainer.appendChild(emailDiv);
+                            //         emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
+                            //             inviteContainer.removeChild(emailDiv);
+                            //         });
+                            //         emailInput.value = '';
+                            //     }
+                            // });
 
-                            addBtn2.addEventListener('click', () => {
+                            //     addBtn2.addEventListener('click', () => {
+                            //         const email = emailInput2.value.trim();
+                            //         if (email && email !== '-- Select Team Members --') {
+                            //             const emailDiv = document.createElement('div');
+                            //             emailDiv.className =
+                            //                 'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
+                            //             emailDiv.innerHTML = `
+        //     <span>${email}</span>
+        //     <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
+        //     <input type="hidden" name="emails[]" value="${email}">
+        // `;
+                            //             inviteContainer.appendChild(emailDiv);
+                            //             emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
+                            //                 inviteContainer.removeChild(emailDiv);
+                            //             });
+                            //             emailInput2.value = '';
+                            //         }
+                            //     });
+
+                            $('#inv-email2').on('change', function() {
+                                // e.preventDefault();
+                                // alert('test');
                                 const email = emailInput2.value.trim();
                                 if (email && email !== '-- Select Team Members --') {
                                     const emailDiv = document.createElement('div');
@@ -601,6 +635,8 @@
                                     emailInput2.value = '';
                                 }
                             });
+
+
 
                             form.addEventListener('submit', (e) => {
                                 if (inviteContainer.children.length === 0) {
