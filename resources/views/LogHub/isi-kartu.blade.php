@@ -915,6 +915,7 @@
                 const percentage = $(this).data('persen');
                 $(this).addClass('hidden');
                 $('#checklist' + title_id).removeClass('hidden');
+                // alert('test');
                 $('#checklist' + title_id).focus();
                 $('#saveButtonChecklist' + title_id).removeClass('hidden');
                 $('#cancelButtonChecklist' + title_id).removeClass('hidden');

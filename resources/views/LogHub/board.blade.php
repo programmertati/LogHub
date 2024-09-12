@@ -624,7 +624,8 @@
                                         value="{{ $team->id }}">
                                     <input type="hidden" class="form-control" name="column_id"
                                         value="{{ $dataKolom->id }}">
-                                    <input type="text" class="form-control" name="name" id="cardName"
+                                    <input type="text" class="form-control input-card-name" name="name"
+                                        id="cardName{{ $dataKolom->id }}"
                                         style="width: 130%; border-radius: 10px; background-color: #f5fffa;"
                                         placeholder="Enter card's name..." required>
                                     <button type="submit" class="btn btn-outline-info btn-add"> <span

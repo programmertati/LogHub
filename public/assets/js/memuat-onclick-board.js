@@ -1,5 +1,6 @@
 // Khusus ketika klik button +Tambah Kartu //
 function openAdd(id) {
+    // $('.input-card-name').focus();
     const cardLoghub = document.getElementById(`cardLoghub${id}`);
     const btnadd = document.getElementById(`btn-add${id}`);
     $('.btn-add').prop('disabled', false)
@@ -12,6 +13,9 @@ function openAdd(id) {
         cardLoghub.classList.add("flex");
         btnadd.innerHTML = "Cancel";
     }
+    setTimeout(function() {
+        document.querySelector(`#cardLoghub${id} .input-card-name`).focus();
+    }, 100); // Delay agar input sudah terlihat sebelum fokus
 }
 // /Khusus ketika klik button +Tambah Kartu //
 
