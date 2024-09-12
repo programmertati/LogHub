@@ -79,11 +79,11 @@
                                                     </div>
                                                 </li>
                                                 <br>
-                                                @can('admin')
+                                                {{-- @can('admin')
                                                     <a href='#' class='btn btn-outline-danger' data-toggle='modal'
                                                         data-target='#hapus_pengguna'><i class="fa fa-trash-o m-r-5"></i> Delete
                                                         Account</a>
-                                                @endcan
+                                                @endcan --}}
                                                 {{-- <a href='{{ route('rubah-kata-sandi') }}' class='btn btn-outline-danger'><i
                                                         class="fa fa-lock m-r-5"></i>Rubah
                                                     Sandi</a> --}}
@@ -91,11 +91,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="pro-edit">
+                                {{-- <div class="pro-edit">
                                     <a data-target="#data_pengguna" data-toggle="modal" class="edit-icon" href="#">
                                         <i class="fa fa-pencil"></i>
                                     </a>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -105,83 +105,83 @@
         <!-- /Page Content -->
 
         <!-- Update Data Pengguna Modal -->
-        <div id="data_pengguna" class="modal custom-modal fade" role="dialog">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">User Data</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('profile/perbaharui/data-pengguna') }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <input type="hidden" class="form-control" id="user_id" name="user_id"
-                                            value="{{ $users->user_id }}">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Full Name</label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    value="{{ $users->name }}" placeholder="Enter a name" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>E-mail</label>
-                                                <input type="email" class="form-control" id="email" name="email"
-                                                    value="{{ $users->email }}" placeholder="Enter your email" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Username</label>
-                                                <input type="text" class="form-control" id="username"
-                                                    name="username" value="{{ $users->username }}"
-                                                    placeholder="Enter your username" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Employee ID</label>
-                                                <input type="text" class="form-control" id="employee_id"
-                                                    name="employee_id" value="{{ $users->employee_id }}"
-                                                    placeholder="Enter your employee id" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Date of Birth</label>
-                                                <div class="cal-icon">
-                                                    <input class="form-control datetimepicker" type="text"
-                                                        id="birthDate" name="birthDate" value="{{ $users->tgl_lahir }}"
-                                                        placeholder="Enter your date of birth">
-                                                    <small class="text-danger">Example : 10-10-2023</small>
+        {{-- <div id="data_pengguna" class="modal custom-modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">User Data</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ route('profile/perbaharui/data-pengguna') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <input type="hidden" class="form-control" id="user_id" name="user_id"
+                                                value="{{ $users->user_id }}">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Full Name</label>
+                                                    <input type="text" class="form-control" id="name" name="name"
+                                                        value="{{ $users->name }}" placeholder="Enter a name" readonly>
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>E-mail</label>
+                                                    <input type="email" class="form-control" id="email" name="email"
+                                                        value="{{ $users->email }}" placeholder="Enter your email" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Username</label>
+                                                    <input type="text" class="form-control" id="username"
+                                                        name="username" value="{{ $users->username }}"
+                                                        placeholder="Enter your username" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Employee ID</label>
+                                                    <input type="text" class="form-control" id="employee_id"
+                                                        name="employee_id" value="{{ $users->employee_id }}"
+                                                        placeholder="Enter your employee id" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Date of Birth</label>
+                                                    <div class="cal-icon">
+                                                        <input class="form-control datetimepicker" type="text"
+                                                            id="birthDate" name="birthDate" value="{{ $users->tgl_lahir }}"
+                                                            placeholder="Enter your date of birth">
+                                                        <small class="text-danger">Example : 10-10-2023</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" class="form-control" id="avatar" name="avatar"
+                                                value="{{ $user->avatar }}">
                                         </div>
-                                        <input type="hidden" class="form-control" id="avatar" name="avatar"
-                                            value="{{ $user->avatar }}">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn">Update</button>
-                            </div>
-                        </form>
+                                <div class="submit-section">
+                                    <button type="submit" class="btn btn-primary submit-btn">Update</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> --}}
         <!-- /Update Data Pengguna Modal -->
 
 
         <!-- Hapus Akun Modal -->
-        <div id="hapus_pengguna" class="modal custom-modal fade" role="dialog">
+        {{-- <div id="hapus_pengguna" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -208,7 +208,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- /Hapus Akun Modal -->
 
         <!-- Update Foto Profil Modal -->
@@ -222,8 +222,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('profile/perbaharui/foto') }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form action="{{ route('profile/perbaharui/foto') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-12">

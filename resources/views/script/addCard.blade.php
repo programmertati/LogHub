@@ -76,7 +76,7 @@
                     if (cardContainer) {
                         cardContainer.appendChild(newColumn);
                         toastr.success('Berhasil membuat kolom!');
-
+                        $('.submit-btn').prop('disabled', false);
                         // Menutup modal
                         $('#addCol').modal('hide');
 

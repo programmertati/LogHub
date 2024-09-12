@@ -43,7 +43,8 @@
     <script src="https://kit.fontawesome.com/abea6a9d41.js" crossorigin="anonymous"></script>
 
     <!-- Untuk Moving Kolom -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script> --}}
     <!-- Untuk Moving Kolom -->
 
     {{-- message toastr --}}
@@ -1704,9 +1705,6 @@
             </a>
             <!-- /Header Title -->
 
-
-
-
             <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
             <!-- Header Menu -->
             <ul class="nav user-menu">
@@ -2065,7 +2063,7 @@
     <script src="{{ URL::to('assets/js/app.js') }}"></script>
 
     {{-- swalfire --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>\
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     {{-- DayJs --}}
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/dayjs.min.js"></script>
@@ -2215,7 +2213,7 @@
         });
     </script>
     <script src="{{ asset('assets/js/checking-online.js') }}"></script>
-    @stack('js');
+    @stack('js')
 
 </body>
 
