@@ -148,14 +148,14 @@ class TeamController extends Controller
 
         if ($userInvite == null) {
 
-            Toastr::error('Undangan tidak ditemukan, mungkin dibatalkan atau masa berlakunya sudah habis hubungi pemilik tim.', 'Error');
+            Toastr::error('Invite tidak ditemukan, mungkin dibatalkan atau masa berlakunya sudah habis hubungi pemilik tim.', 'Error');
             return redirect()->back();
         }
 
         $userInvite->status = "Member";
         $userInvite->save();
 
-        Toastr::success('Undangan telah diterima!', 'Success');
+        Toastr::success('Invite telah diterima!', 'Success');
         return redirect()->back();
     }
     // /Fitur Terima Undangan Khusus Admin //
@@ -177,7 +177,7 @@ class TeamController extends Controller
 
         $userInvite->delete();
 
-        Toastr::success('Undangan telah ditolak!', 'Success');
+        Toastr::success('Invite telah ditolak!', 'Success');
         return redirect()->back();
     }
     // /Fitur Menolak Undangan Khusus Admin //
@@ -305,6 +305,7 @@ class TeamController extends Controller
             $existingInvite = UserTeam::where('user_id', $user->id)
                 ->where('team_id', $team_id)
                 ->first();
+                dd($existingInvite != null);
 
             if ($existingInvite != null) continue;
 
