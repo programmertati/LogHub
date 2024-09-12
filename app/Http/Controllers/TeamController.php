@@ -114,6 +114,7 @@ class TeamController extends Controller
         $selected_team = Team::find($team_id);
         $team_owner = $this->teamLogic->getTeamOwner($selected_team->id);
         $team_members = $this->teamLogic->getTeamMember($selected_team->id);
+        $team_members_pending = $this->teamLogic->getTeamMemberPending($selected_team->id);
         $team_boards = $this->teamLogic->getBoards($selected_team->id);
         $UserTeams = DB::table('users')->select('name', 'email')->get();
         $statusTeams = DB::table('user_team')->where('team_id', '=', $team_id)->pluck('status');
@@ -126,6 +127,7 @@ class TeamController extends Controller
             ->with("UserTeams", $UserTeams)
             ->with("team", $selected_team)
             ->with("owner", $team_owner)
+            ->with("membersPending", $team_members_pending)
             ->with("members", $team_members)
             ->with("patterns", TeamLogic::PATTERN)
             ->with("backgrounds", BoardLogic::PATTERN)
@@ -313,7 +315,7 @@ class TeamController extends Controller
             ]);
         }
 
-        Toastr::success('Undangan terkirim!', 'Success');
+        Toastr::success('Invite terkirim!', 'Success');
         return redirect()->back();
     }
     // /Fitur Mengundang Anggota Khusus Admin //
