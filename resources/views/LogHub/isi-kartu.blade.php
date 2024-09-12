@@ -439,7 +439,7 @@
 
             </div>
             <div class="activity-tag hiddens" id="showActivity{{ $isianKartu->id }}">
-                {{-- @php
+                @php
                     $columns = DB::table('columns')
                         ->where('id', $dataKolom->id)
                         ->get();
@@ -459,9 +459,28 @@
                                 ->get();
                         @endphp
                         @foreach ($isianHistory as $history)
+                            <div class="isian-tag" id="isianTag{{ $isianKartu->id }}">
+
+                                <div class="isian-history">
+                                    <img class="avatar-activity"
+                                        src="{{ URL::to('/assets/images/' . $history->avatar) }}" loading="lazy">
+                                    <div class="title-activity">
+                                        <p class="isian-activity">
+                                            {{ $history->name }}<br><span>{{ $history->content }}</span></p>
+                                    </div>
+                                </div>
+                                <div class="waktu-history">
+                                    <p class="isian-activity"><i class="fa-solid fa-clock" style="color: #808080;"
+                                            aria-hidden="true"></i>
+                                        {{ \Carbon\Carbon::parse($history->created_at)->translatedFormat('j F \p\u\k\u\l h:i A') }}
+                                    </p>
+                                </div>
+
+                            </div>
+                            {{-- @dd($history);
                             @foreach ($isianKartu->titleChecklists as $titleChecklists)
                                 <div class="isian-tag" id="isianTag{{ $isianKartu->id }}">
-                                    @if ($history->type === 'event')
+                                    @if ($history->type == 'event')
                                         <div class="isian-history">
                                             <img class="avatar-activity"
                                                 src="{{ URL::to('/assets/images/' . $history->avatar) }}"
@@ -557,10 +576,10 @@
                                         </div>
                                     @endif
                                 </div>
-                            @endforeach
+                            @endforeach --}}
                         @endforeach
                     @endforeach
-                @endforeach --}}
+                @endforeach
             </div>
         </div>
     </div>

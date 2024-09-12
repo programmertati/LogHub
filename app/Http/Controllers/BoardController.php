@@ -109,7 +109,7 @@ class BoardController extends Controller
         ini_set('memory_limit', '-1');
         ini_set('max_execution_time', 0);
 
-        $isianKartu = Card::find($request->card_id);
+        $isianKartu = Card::with(['titleChecklists.checklists'])->find($request->card_id);
         $dataKolom = Column::find($isianKartu->column_id);
         $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
         return view('LogHub.isi-kartu')
