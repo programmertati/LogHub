@@ -98,6 +98,15 @@ class TeamLogic
 
         return $team_members;
     }
+
+    function getTeamMemberPending(int $team_id)
+    {
+        $team_members = Team::find($team_id)->users()
+            ->wherePivot("status", "Pending")
+            ->get();
+
+        return $team_members;
+    }
     // /Mendapatkan Anggota pada Tim //
 
     /**

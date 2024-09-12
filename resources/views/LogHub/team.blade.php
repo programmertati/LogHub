@@ -149,7 +149,17 @@
                                             <img src="{{ URL::to('/assets/images/' . $member->avatar) }}" loading="lazy"
                                                 class="!flex-shrink-0 !flex-grow-0 w-12 avatar-undangan">
                                         </a>
-                                        <p class="w-40 truncate">{{ $member->name }}</p>
+                                        <p class="w-50 truncate">{{ $member->name }}</p>
+                                    </div>
+                                @endforeach
+                                @foreach ($membersPending as $memberP)
+                                    <div class="flex items-center gap-4">
+                                        <a href="{{ URL::to('/assets/images/' . $memberP->avatar) }}"
+                                            data-fancybox="foto-profil">
+                                            <img src="{{ URL::to('/assets/images/' . $memberP->avatar) }}" loading="lazy"
+                                                class="!flex-shrink-0 !flex-grow-0 w-12 avatar-undangan">
+                                        </a>
+                                        <p class="w-50 truncate">{{ $memberP->name }} <p class="badge badge-warning">Pending</p></p>
                                     </div>
                                 @endforeach
                             </div>
@@ -290,6 +300,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
+                                    <h5>Pilih Team Members</h5>
                                     <div class="input-group gap-2" style="flex-wrap: nowrap;">
                                         <select class="js-example-basic-single theSelect" id="inv-email2"
                                             style="width: 100% !important">
@@ -306,13 +317,13 @@
                                         </button> --}}
                                     </div>
                                 </div>
+                                <h5>Team Members</h5>
                                 <form method="POST" id="invite-members-form"
                                     action="{{ route('doInviteMembers', ['team_ids' => encrypt($team->id)]) }}">
                                     @csrf
                                     <input type="hidden" name="team_id" value="{{ $team->id }}">
                                     <div class="border border-2 border-dark p-2 rounded"
-                                        style="max-height: 300px; overflow-y: auto;" id="invite-container">
-
+                                        style="max-height: 300px; overflow-y: auto;" id="invite-container"> <span id="message-team-members" style="color: red">--Belum Ada Team Members--</span>
                                     </div>
                                     <div class="submit-section">
                                         <button type="submit" class="btn btn-outline-info submit-btn"
@@ -615,33 +626,81 @@
                             //         }
                             //     });
 
+                            // $('#inv-email2').on('change', function() {
+                            //     // e.preventDefault();
+                            //     const email = emailInput2.value.trim();
+                            //     if (email && email !== '-- Select Team Members --') {
+                            //         const emailDiv = document.createElement('div');
+                            //         emailDiv.className =
+                            //             'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
+                            //         emailDiv.innerHTML = `
+                            //             <span>${email}</span>
+                            //             <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
+                            //             <input type="hidden" name="emails[]" value="${email}">
+                            //         `;
+                            //         inviteContainer.appendChild(emailDiv);
+                            //         emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
+                            //             inviteContainer.removeChild(emailDiv);
+                            //         });
+                            //         emailInput2.value = '';
+                            //     }
+                            // });
+                            let emailArray = [];
                             $('#inv-email2').on('change', function() {
-                                // e.preventDefault();
-                                // alert('test');
                                 const email = emailInput2.value.trim();
+                                
                                 if (email && email !== '-- Select Team Members --') {
-                                    const emailDiv = document.createElement('div');
-                                    emailDiv.className =
-                                        'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
-                                    emailDiv.innerHTML = `
-                            <span>${email}</span>
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
-                            <input type="hidden" name="emails[]" value="${email}">
-                        `;
-                                    inviteContainer.appendChild(emailDiv);
-                                    emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
-                                        inviteContainer.removeChild(emailDiv);
-                                    });
-                                    emailInput2.value = '';
+                                    if (!emailArray.includes(email)) {
+                                        emailArray.push(email);
+
+                                        const emailDiv = document.createElement('div');
+                                        emailDiv.className =
+                                            'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
+                                        emailDiv.innerHTML = `
+                                            <span>${email}</span>
+                                            <button type="button" class="btn btn-outline-danger btn-sm remove-btn">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                            <input type="hidden" name="emails[]" value="${email}">
+                                        `;
+
+                                            inviteContainer.appendChild(emailDiv);
+
+                                            emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
+                                            inviteContainer.removeChild(emailDiv);
+
+                                            emailArray = emailArray.filter(e => e !== email);
+
+                                            $('#message-team-members').hide();
+                                            if(emailArray.length == 0){
+                                                $('#message-team-members').show();
+                                            }
+                                        });
+
+                                        emailInput2.value = '';
+                                    } else {
+                                        toastr.error('Nama Tersebut Sudah Ada Pada Team Members!');
+                                        // Swal.fire({
+                                        //     icon: "error",
+                                        //     title: "Gagal",
+                                        //     text: "Nama Tersebut Sudah Ada Pada Team Members!",
+                                        //     confirmButtonText: 'OK'
+                                        // });
+                                    }
+                                }
+
+                                $('#message-team-members').hide();
+                                if(emailArray.length == 0){
+                                    $('#message-team-members').show();
                                 }
                             });
 
-
-
                             form.addEventListener('submit', (e) => {
-                                if (inviteContainer.children.length === 0) {
+                                $('.submit-btn').prop('disabled', true);
+                                if (inviteContainer.children.length === 1) {
                                     e.preventDefault();
                                     toastr.error('Harap tambahkan email anggota tim Anda sebelum menyimpan!');
+                                    $('.submit-btn').prop('disabled', false);
                                 }
                             });
                         });
