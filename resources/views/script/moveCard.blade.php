@@ -3,10 +3,6 @@
         const columnContainer = document.getElementById('cardContainer');
 
 
-
-
-
-
         $(document).on('focus', '.input-card-name', function(e) {
             e.preventDefault();
             isInputFocused = true;
