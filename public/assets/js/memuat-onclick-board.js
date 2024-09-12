@@ -13,8 +13,10 @@ function openAdd(id) {
         cardLoghub.classList.add("flex");
         btnadd.innerHTML = "Cancel";
     }
+    // cardName{{ $dataKolom->id }}
     setTimeout(function() {
-        document.querySelector(`#cardLoghub${id} .input-card-name`).focus();
+            // $('#cardName' + id).focus();
+        document.querySelector(`#cardLoghub${id} #cardName${id}`).focus();
     }, 100); // Delay agar input sudah terlihat sebelum fokus
 }
 // /Khusus ketika klik button +Tambah Kartu //
