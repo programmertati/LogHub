@@ -111,7 +111,7 @@ class LoginController extends Controller
     // Untuk Cek Authentifikasi dari Mantai //
     public function autorize($username)
     {
-        $username = decrypt($username);
+        // $username = decrypt($username);
         $dt = Carbon::now();
         $todayDate = $dt->toDayDateTimeString();
 
