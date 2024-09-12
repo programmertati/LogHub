@@ -26,6 +26,16 @@
             .bg-grad-system.system {
                 background: #464a5b !important
             }
+
+            .member-selects {
+                max-height: 100px !important;
+                overflow-y: auto !important;
+            }
+
+            .select2-results__options {
+                max-height: 50px !important;
+                overflow-y: auto !important;
+            }
         </style>
     @endif
 @endpush
@@ -159,7 +169,9 @@
                                             <img src="{{ URL::to('/assets/images/' . $memberP->avatar) }}" loading="lazy"
                                                 class="!flex-shrink-0 !flex-grow-0 w-12 avatar-undangan">
                                         </a>
-                                        <p class="w-50 truncate">{{ $memberP->name }} <p class="badge badge-warning">Pending</p></p>
+                                        <p class="w-50 truncate">{{ $memberP->name }}
+                                        <p class="badge badge-warning">Pending</p>
+                                        </p>
                                     </div>
                                 @endforeach
                             </div>
@@ -181,7 +193,8 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ route('doTeamDataUpdate', ['team_ids' => encrypt($team->id)]) }}" method="POST">
+                            <form action="{{ route('doTeamDataUpdate', ['team_ids' => encrypt($team->id)]) }}"
+                                method="POST">
                                 @csrf
                                 <input type="hidden" name="team_id" value="{{ $team->id }}">
                                 <div class="form-group">
@@ -241,37 +254,33 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Manage Members</h5>
+                                <h5 class="modal-title">Delete Members</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="member-name">Team Member</label>
-                                    <select class="theSelect" id="member-name2" name="member-name"
-                                        style="width: 100% !important">
-                                        <option selected disabled>-- Select Team Members --</option>
-                                        @foreach ($members as $member)
-                                            <option value="{{ $member->email }}">{{ $member->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="border border-dark rounded-lg overflow-auto" style="max-height: 20rem;">
-                                    <div class="d-flex flex-wrap p-2">
-                                        @foreach ($members as $member)
-                                            <div data-role="member-card" data-email="{{ $member->email }}"
-                                                data-name="{{ $member->name }}">
-                                                <p class="card-text font-weight-bold" style="cursor: pointer">
-                                                    {{ $member->name }}, {{ $member->email }}</p>
-                                            </div>
-                                        @endforeach
+                                <div class="d-flex justify-between">
+                                    <div class="title">
+                                        List Member
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="check-all">
+                                        <label class="form-check-label" for="check-all">Check All</label>
                                     </div>
                                 </div>
+                                <select id="member-select" class="member-selects form-control" multiple="multiple"
+                                    style="width:100%; height: 50px !important; overflow-y: auto;">
+                                    @foreach ($members as $member)
+                                        <option value="{{ $member->email }}">{{ $member->name }}</option>
+                                    @endforeach
+                                </select>
+
                                 <div class="submit-section">
                                     <button type="button" class="btn btn-outline-danger submit-btn" id="save-btn"
                                         data-url="{{ route('deleteTeamMember', ['team_id' => encrypt($team->id)]) }}">Delete</button>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -323,7 +332,8 @@
                                     @csrf
                                     <input type="hidden" name="team_id" value="{{ $team->id }}">
                                     <div class="border border-2 border-dark p-2 rounded"
-                                        style="max-height: 300px; overflow-y: auto;" id="invite-container"> <span id="message-team-members" style="color: red">--Belum Ada Team Members--</span>
+                                        style="max-height: 300px; overflow-y: auto;" id="invite-container"> <span
+                                            id="message-team-members" style="color: red">--Belum Ada Team Members--</span>
                                     </div>
                                     <div class="submit-section">
                                         <button type="submit" class="btn btn-outline-info submit-btn"
@@ -467,6 +477,13 @@
                             $('[data-fancybox="foto-profil"]').fancybox({});
                         });
                         $(document).ready(function() {
+                            $('#member-select').select2({
+                                dropdownParent: $('#manageMember'),
+                                placeholder: '--- Pilih atau Cari Member yang Ingin Anda Hapus ---',
+                                allowClear: true,
+                                width: '100%',
+                                // closeOnSelect: false
+                            });
                             $('.js-example-basic-single').select2();
                         });
                     </script>
@@ -517,15 +534,28 @@
                         $(document).ready(function() {
                             $('#pageTitle').html('Team Board | Loghub - PT TATI ');
                             let selectedMembers = [];
+
+
                             $('#manageMember').on('shown.bs.modal', function() {
                                 $('#member-name').trigger('focus');
                                 $('#member-name2').trigger('focus');
                             });
 
+                            $('#check-all').on('click', function() {
+                                if ($(this).is(':checked')) {
+                                    $('#member-select > option').prop('selected', true).trigger('change');
+                                } else {
+                                    $('#member-select > option').prop('selected', false).trigger('change');
+                                }
+                            });
+
+
                             $('#save-btn').on('click', function() {
-                                $('[data-role="member-card"].selected').each(function() {
-                                    selectedMembers.push($(this).data('email'));
-                                });
+                                const selectedMembers = $('#member-select').val();
+                                // $('[data-role="member-card"].selected').each(function() {
+                                //     selectedMembers.push($(this).data('email'));
+                                // });
+                                $('#save-btn').prop('disabled', true);
                                 const url = $(this).data('url');
                                 if (selectedMembers.length > 0) {
                                     $.ajax({
@@ -541,13 +571,19 @@
                                             setTimeout(function() {
                                                 location.reload();
                                             }, 1000);
+                                            $('#save-btn').prop('disabled', false);
                                         },
                                         error: function(error) {
-                                            toastr.error('Terjadi kesalahan saat menghapus anggota tim Anda!');
+                                            toastr.error(
+                                                'Terjadi kesalahan saat menghapus anggota tim Anda!'
+                                            );
+                                            $('#save-btn').prop('disabled', false);
                                         }
+
                                     });
                                 } else {
                                     toastr.error('Tidak ada anggota tim yang Anda pilih!');
+                                    $('#save-btn').prop('disabled', false);
                                 }
                             });
 
@@ -555,29 +591,29 @@
                                 $(this).toggleClass('selected border-info bg-red-200');
                             });
 
-                            $('#member-name, #member-name2').on('change', function() {
-                                let email = $(this).val().trim();
-                                if (email !== "") {
-                                    let emailExists = false;
-                                    $('[data-role="member-card"]').each(function() {
-                                        if ($(this).data('email') === email) {
-                                            emailExists = true;
-                                            return false;
-                                        }
-                                    });
-                                    if (!emailExists) {
-                                        toastr.error(
-                                            'Email yang Anda masukkan tidak tersedia, silahkan memasukkannya kembali!');
-                                        return;
-                                    }
-                                    if (!selectedMembers.includes(email)) {
-                                        selectedMembers.push(email);
-                                        $(this).val('');
-                                    }
-                                } else {
-                                    toastr.error('Email tidak boleh kosong!');
-                                }
-                            });
+                            // $('#member-name, #member-name2').on('change', function() {
+                            //     let email = $(this).val().trim();
+                            //     if (email !== "") {
+                            //         let emailExists = false;
+                            //         $('[data-role="member-card"]').each(function() {
+                            //             if ($(this).data('email') === email) {
+                            //                 emailExists = true;
+                            //                 return false;
+                            //             }
+                            //         });
+                            //         if (!emailExists) {
+                            //             toastr.error(
+                            //                 'Email yang Anda masukkan tidak tersedia, silahkan memasukkannya kembali!');
+                            //             return;
+                            //         }
+                            //         if (!selectedMembers.includes(email)) {
+                            //             selectedMembers.push(email);
+                            //             $(this).val('');
+                            //         }
+                            //     } else {
+                            //         toastr.error('Email tidak boleh kosong!');
+                            //     }
+                            // });
                         });
                     </script>
                     <script>
@@ -634,10 +670,10 @@
                             //         emailDiv.className =
                             //             'd-flex justify-content-between align-items-center mb-2 bg-red-200 rounded-lg';
                             //         emailDiv.innerHTML = `
-                            //             <span>${email}</span>
-                            //             <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
-                            //             <input type="hidden" name="emails[]" value="${email}">
-                            //         `;
+        //             <span>${email}</span>
+        //             <button type="button" class="btn btn-outline-danger btn-sm remove-btn"><i class="fa-solid fa-trash"></i></button>
+        //             <input type="hidden" name="emails[]" value="${email}">
+        //         `;
                             //         inviteContainer.appendChild(emailDiv);
                             //         emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
                             //             inviteContainer.removeChild(emailDiv);
@@ -648,7 +684,7 @@
                             let emailArray = [];
                             $('#inv-email2').on('change', function() {
                                 const email = emailInput2.value.trim();
-                                
+
                                 if (email && email !== '-- Select Team Members --') {
                                     if (!emailArray.includes(email)) {
                                         emailArray.push(email);
@@ -664,15 +700,15 @@
                                             <input type="hidden" name="emails[]" value="${email}">
                                         `;
 
-                                            inviteContainer.appendChild(emailDiv);
+                                        inviteContainer.appendChild(emailDiv);
 
-                                            emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
+                                        emailDiv.querySelector('.remove-btn').addEventListener('click', () => {
                                             inviteContainer.removeChild(emailDiv);
 
                                             emailArray = emailArray.filter(e => e !== email);
 
                                             $('#message-team-members').hide();
-                                            if(emailArray.length == 0){
+                                            if (emailArray.length == 0) {
                                                 $('#message-team-members').show();
                                             }
                                         });
@@ -690,7 +726,7 @@
                                 }
 
                                 $('#message-team-members').hide();
-                                if(emailArray.length == 0){
+                                if (emailArray.length == 0) {
                                     $('#message-team-members').show();
                                 }
                             });
