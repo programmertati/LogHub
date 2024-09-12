@@ -1,7 +1,26 @@
 <script>
     $(document).ready(function() {
         const columnContainer = document.getElementById('cardContainer');
-        new Sortable(columnContainer, {
+
+
+
+
+
+
+        $(document).on('focus', '.input-card-name', function(e) {
+            e.preventDefault();
+            isInputFocused = true;
+            disableDragAndDrop();
+        });
+
+        // Ketika input atau title kehilangan fokus
+        $(document).on('blur', '.input-card-name', function() {
+            isInputFocused = false;
+            enableDragAndDrop();
+        });
+
+
+        const col = new Sortable(columnContainer, {
             animation: 150,
             delay: 200, // 2 detik
             delayOnTouchOnly: true,
@@ -10,6 +29,22 @@
                 updateColumnPositions();
             },
         });
+
+        function disableDragAndDrop() {
+            col.option("disabled", true);
+            sortableInstances.forEach(sortableInstance => {
+                sortableInstance.option("disabled", true);
+            });
+        }
+
+        // Enable drag-and-drop
+        function enableDragAndDrop() {
+            col.option("disabled", false);
+            sortableInstances.forEach(sortableInstance => {
+                sortableInstance.option("disabled", false);
+            });
+        }
+
 
         const cardContainers = document.getElementsByClassName('card-container');
         Array.from(cardContainers).forEach(e => {

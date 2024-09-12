@@ -10,14 +10,14 @@
         let initialChecklistPositions = getChecklistPositions();
 
         // Ketika input atau title difokuskan
-        $(document).on('focus', '.isian-title, .dynamicCheckboxValue', function(e) {
+        $(document).on('focus', '.isian-title, .dynamicCheckboxValue , .tambah-baru-checklist', function(e) {
             e.preventDefault();
             isInputFocused = true;
             disableDragAndDrop();
         });
 
         // Ketika input atau title kehilangan fokus
-        $(document).on('blur', '.isian-title, .dynamicCheckboxValue', function() {
+        $(document).on('blur', '.isian-title, .dynamicCheckboxValue ,.tambah-baru-checklist', function() {
             isInputFocused = false;
             enableDragAndDrop();
         });
