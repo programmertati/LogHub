@@ -305,7 +305,6 @@ class TeamController extends Controller
             $existingInvite = UserTeam::where('user_id', $user->id)
                 ->where('team_id', $team_id)
                 ->first();
-                dd($existingInvite != null);
 
             if ($existingInvite != null) continue;
 
