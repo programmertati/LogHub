@@ -410,7 +410,7 @@
             @endforeach
         </div>
 
-        <div class="menu-activity">
+        {{-- <div class="menu-activity">
             <div class="header-activity flex">
                 <i class="fa-solid fa-list-ul fa-lg"></i>
                 <p class="activity-keterangan">Activity </p>
@@ -477,116 +477,16 @@
                                 </div>
 
                             </div>
-                            {{-- @dd($history);
-                            @foreach ($isianKartu->titleChecklists as $titleChecklists)
-                                <div class="isian-tag" id="isianTag{{ $isianKartu->id }}">
-                                    @if ($history->type == 'event')
-                                        <div class="isian-history">
-                                            <img class="avatar-activity"
-                                                src="{{ URL::to('/assets/images/' . $history->avatar) }}"
-                                                loading="lazy">
-                                            <div class="title-activity">
-                                                @if (strpos($history->content, 'Membuat Kartu') !== false)
-                                                    <!-- Berdasarkan kolom masing-masing -->
-                                                    <p class="isian-activity">{{ $history->name }}, added
-                                                        {{ $card->name }} to this column</p>
-                                                @elseif (strpos($history->content, 'Memperbaharui Kartu') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has updated
-                                                        {{ $card->name }} to this column</p>
-                                                @elseif (strpos($history->content, 'Menghapus Kartu') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has deleted
-                                                        {{ $card->name }} to this column</p>
-                                                @elseif (strpos($history->content, 'Memulihkan Kartu') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has recovered
-                                                        {{ $card->name }} to this column</p>
-                                                @elseif (strpos($history->content, 'Memperbaharui Keterangan Kartu') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has updated card
-                                                        description {{ $card->name }} to this column</p>
-                                                    <!-- /Berdasarkan kolom masing-masing -->
-
-                                                    <!-- Berdasarkan kartu masing-masing -->
-                                                @elseif (strpos($history->content, 'Membuat Judul Checklist') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, added title
-                                                        {{ $titleChecklists->name }} to this card</p>
-                                                @elseif (strpos($history->content, 'Memperbaharui Judul Checklist') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has updated title
-                                                        {{ $titleChecklists->name }} to this card</p>
-                                                @elseif (strpos($history->content, 'Menghapus Judul Checklist') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has deleted title
-                                                        {{ $titleChecklists->name }} to this card</p>
-                                                @elseif (strpos($history->content, 'Memulihkan Judul Checklist') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has recovered title
-                                                        {{ $titleChecklists->name }} to this card</p>
-                                                @elseif (strpos($history->content, 'Menghapus Judul Checklist Permanen') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has deleted
-                                                        permanently title {{ $titleChecklists->name }} to this card</p>
-                                                    <!-- /Berdasarkan kartu masing-masing -->
-
-                                                    <!-- Berdasarkan judul masing-masing -->
-                                                @elseif (strpos($history->content, 'Membuat Checklist') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, added checklist to
-                                                        title {{ $titleChecklists->name }}</p>
-                                                @elseif (strpos($history->content, 'Memperbaharui Checklist') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has updated checklist
-                                                        to title {{ $titleChecklists->name }}</p>
-                                                @elseif (strpos($history->content, 'Menghapus Checklist') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has deleted checklist
-                                                        to title {{ $titleChecklists->name }}</p>
-                                                @elseif (strpos($history->content, 'Memulihkan Checklist') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has recovered
-                                                        checklist to title {{ $titleChecklists->name }}</p>
-                                                @elseif (strpos($history->content, 'Menghapus Checklist Permanen') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has deleted
-                                                        permanently checklist to title {{ $titleChecklists->name }}</p>
-                                                    <!-- /Berdasarkan judul masing-masing -->
-
-                                                    <!-- Berdasarkan cover masing-masing -->
-                                                @elseif (strpos($history->content, 'Memperbaharui Cover Kartu') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has updated cover to
-                                                        this card</p>
-                                                @elseif (strpos($history->content, 'Menghapus Cover Kartu') !== false)
-                                                    <p class="isian-activity">{{ $history->name }}, has deleted cover to
-                                                        this card</p>
-                                                    <!-- /Berdasarkan cover masing-masing -->
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="waktu-history">
-                                            <p class="isian-activity"><i class="fa-solid fa-clock"
-                                                    style="color: #808080;" aria-hidden="true"></i>
-                                                {{ \Carbon\Carbon::parse($history->created_at)->translatedFormat('j F \p\u\k\u\l h:i A') }}
-                                            </p>
-                                        </div>
-                                    @endif
-                                    @if ($history->type === 'comment')
-                                        <div class="isian-history">
-                                            <img class="avatar-activity"
-                                                src="{{ URL::to('/assets/images/' . $history->avatar) }}"
-                                                loading="lazy">
-                                            <div class="title-activity">
-                                                <p class="isian-activity">
-                                                    {{ $history->name }}<br><span>{{ $history->content }}</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="waktu-history">
-                                            <p class="isian-activity"><i class="fa-solid fa-clock"
-                                                    style="color: #808080;" aria-hidden="true"></i>
-                                                {{ \Carbon\Carbon::parse($history->created_at)->translatedFormat('j F \p\u\k\u\l h:i A') }}
-                                            </p>
-                                        </div>
-                                    @endif
-                                </div>
-                            @endforeach --}}
                         @endforeach
                     @endforeach
                 @endforeach
             </div>
-        </div>
+        </div> --}}
     </div>
 
     @include('script.moveTitle')
     @include('script.addMentiontag')
-    @include('script.addComment')
+    {{-- @include('script.addComment') --}}
 
     {{-- NEW CHECK ALL BIAR GA DI FOREACH 1 1 --}}
     <script>
