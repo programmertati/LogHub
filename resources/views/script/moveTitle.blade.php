@@ -25,6 +25,8 @@
         // Initialize sortable untuk title
         const titleSortable = new Sortable(titleContainer, {
             animation: 150,
+            delay: 200,
+            delayOnTouchOnly: true,
             onEnd: function(evt) {
                 const newTitlePositions = getTitlePositions();
                 if (JSON.stringify(initialTitlePositions) !== JSON.stringify(newTitlePositions)) {
@@ -40,6 +42,8 @@
         checklistsContainers.forEach(e => {
             const sortableInstance = new Sortable(e, {
                 animation: 150,
+                delay: 200,
+                delayOnTouchOnly: true,
                 group: 'checklists',
                 onEnd: function(evt) {
                     if (!isInputFocused) {
