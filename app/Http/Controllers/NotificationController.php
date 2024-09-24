@@ -14,7 +14,7 @@ class NotificationController extends Controller
     // Tampilan Notifikasi //
     public function tampilanNotifikasi(Request $request)
     {
-        $usernotifikasi = Notification::where('notifiable_id', auth()->id())->get();
+        $usernotifikasi = Notification::where('notifiable_id', auth()->id())->latest()->get();
         // $notifikasiData = json_decode($semua_notifikasi->data);
         // dd($semua_notifikasi);
         return view('dashboard.notification_list', compact('usernotifikasi'));
