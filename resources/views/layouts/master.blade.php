@@ -1855,7 +1855,7 @@
                             </ul>
                         </div>
                         <div class="topnav-dropdown-footer">
-                            <a href="{{ route('tampilan-semua-notifikasi') }}">All
+                            <a href="{{ route('tampilan-semua-notifikasi') }}" id='all-notif'>All
                                 Notifications
                             </a>
                         </div>
@@ -2121,7 +2121,6 @@
         });
     </script>
 
-
     <script src="{{ asset('assets/js/atur-tanggal-waktu-indo-realtime.js') }}"></script>
 
     <script>
@@ -2149,6 +2148,19 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+    {{-- All Notif = MARK ALL --}}
+    <script>
+        $(document).ready(function() {
+            $('#all-notif').click(function(e) {
+                e.preventDefault();
+                var link = $(this).attr('href');
+                $('#mark-all').submit();
+                window.location.href = link;
+            });
+        });
+    </script>
+
     <!-- /FancyBox Foto Profil -->
     <script>
         $(document).ready(function() {
