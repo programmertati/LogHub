@@ -14,20 +14,10 @@ class DaftarPegawai extends Model
     protected $fillable = [
         'name',
         'user_id',
-        'nip',
+        'email',
+        'username',
+        'employee_id',
         'role_name',
-        'avatar',
-        'pendidikan_terakhir',
-        'no_hp',
-        'ruangan',
-        'kedudukan_pns',
-        'jenis_pegawai',
-        'jabatan',
-        'gol_ruang_awal',
-        'gol_ruang_akhir',
-        'tempat_lahir',
-        'tanggal_lahir',
-        'tingkat_pendidikan',
-        'jenis_kelamin'
+        'avatar'
     ];
 }
