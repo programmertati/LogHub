@@ -19,7 +19,7 @@ class CheckApiToken
 
         if ($token !== env('TOKEN_KEY')) {
             return response()->json([
-                'error' => 'Token Invalid'
+                'msg' => 'Token Invalid'
             ], 401);
         }
 
