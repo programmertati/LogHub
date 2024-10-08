@@ -19,6 +19,7 @@ class CreateUserController extends Controller
 {
     public function create(Request $request)
     {
+        $board = Board::where('team_id', 1)->where('name', 'LOG HARIAN TATI 2024')->first();
         $cek_user = User::where('email', $request->email)->count();
         if (empty($cek_user)) {
             try {
@@ -55,7 +56,7 @@ class CreateUserController extends Controller
                     'tema_aplikasi'                => 'Terang',
                 ]);
 
-                $board = Board::where('team_id', 1)->where('name', 'LOG HARIAN TATI 2024')->first();
+
                 $user = User::where('user_id', $user_id)->first();
                 UserTeam::create([
                     'user_id' => $user->id,
