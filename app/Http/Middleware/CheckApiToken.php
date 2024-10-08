@@ -17,9 +17,9 @@ class CheckApiToken
     {
         $token = $request->header('Token_Key');
 
-        if ($token !== env('TOKEN_KEY')) {
+        if ($token != env('TOKEN_KEY')) {
             return response()->json([
-                'msg' => 'Token Invalid'
+                'msg' => 'Token Invalid' . $token . '-' . env('TOKEN_KEY'),
             ], 401);
         }
 
