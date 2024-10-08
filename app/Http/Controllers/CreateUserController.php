@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Card;
 use App\Models\Team;
 use App\Models\User;
@@ -12,7 +13,7 @@ use App\Models\ModeAplikasi;
 use Illuminate\Http\Request;
 use App\Models\DaftarPegawai;
 use App\Models\TitleChecklists;
-use Exception;
+use Illuminate\Database\QueryException;
 
 class CreateUserController extends Controller
 {
@@ -84,10 +85,24 @@ class CreateUserController extends Controller
                 'status' => 200,
                 'msg' => 'success'
             ], 200);
+        } catch (QueryException $e) {
+            $error = $e->getMessage();
+            // Extract the error message
+            if (str_contains($error, 'users_email_unique')) {
+                $msg = 'Duplicate email entry';
+            } elseif (str_contains($error, 'users_id_unique')) {
+                $msg = 'Duplicate ID entry';
+            } else {
+                $msg = 'Unknown error';
+            }
+            return response()->json([
+                'status' => 500,
+                'msg' => $msg,
+            ], 500);
         } catch (Exception $e) {
             return response()->json([
                 'status' => 400,
-                'msg' => $e,
+                'msg' => $e->getMessage(),
             ], 400);
         }
     }
