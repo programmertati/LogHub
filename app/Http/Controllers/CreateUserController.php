@@ -54,7 +54,7 @@ class CreateUserController extends Controller
             ]);
 
             $board = Board::where('team_id', 1)->where('name', 'LOG HARIAN TATI 2024')->first();
-            $user = User::where('user_id', $request->user_id)->first();
+            $user = User::where('user_id', $user_id)->first();
             UserTeam::create([
                 'user_id' => $user->id,
                 'team_id' => 1,
