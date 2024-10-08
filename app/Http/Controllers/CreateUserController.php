@@ -20,9 +20,11 @@ class CreateUserController extends Controller
     public function create(Request $request)
     {
         try {
+            $maxId = User::max('id');
+            $user_id = 'ID_0000' . ($maxId + 1);
             User::create([
                 'name'                         => $request->name,
-                'user_id'                      => $request->user_id,
+                'user_id'                      => $user_id,
                 'email'                        => $request->email,
                 'username'                     => $request->username,
                 'employee_id'                  => $request->employee_id,
@@ -37,7 +39,7 @@ class CreateUserController extends Controller
 
             DaftarPegawai::create([
                 'name'                         => $request->name,
-                'user_id'                      => $request->user_id,
+                'user_id'                      => $user_id,
                 'email'                        => $request->email,
                 'username'                     => $request->username,
                 'employee_id'                  => $request->employee_id,
@@ -46,13 +48,13 @@ class CreateUserController extends Controller
             ]);
             ModeAplikasi::create([
                 'name'                         => $request->name,
-                'user_id'                      => $request->user_id,
+                'user_id'                      => $user_id,
                 'email'                        => $request->email,
                 'tema_aplikasi'                => 'Terang',
             ]);
 
             $board = Board::where('team_id', 1)->where('name', 'LOG HARIAN TATI 2024')->first();
-            $user = User::where('user_id', $request->user_id)->first();
+            $user = User::where('user_id', $user_id)->first();
             UserTeam::create([
                 'user_id' => $user->id,
                 'team_id' => 1,
