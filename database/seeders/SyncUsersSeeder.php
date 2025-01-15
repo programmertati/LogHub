@@ -24,6 +24,7 @@ class SyncUsersSeeder extends Seeder
     {
         $response = Http::withBasicAuth('mantai', 'T@T3@M')->timeout(60)->retry(3, 1000)->get('https://management.pttati.co.id/api/list-account');
         $accounts = $response->json();
+        // dd($accounts);
         $team = Team::where('name', 'LOG HARIAN TATI')->first();
         $board = Board::where('team_id', $team->id)->where('name', 'LOG HARIAN TATI 2024')->first();
         foreach ($accounts['data'] as $key => $value) {
@@ -40,7 +41,7 @@ class SyncUsersSeeder extends Seeder
                     'employee_id'                  => str_replace(".", "", $value['id_pegawai']),
                     'join_date'                    => now()->toDayDateTimeString(),
                     'status'                       => $value['status'] == 'Aktif' ? 'Active' : 'Inactive',
-                    'pegawai_id_mantai'            => $value['primaryId'],
+                    'pegawai_id_mantai'            => $value['primaryId'] == '' ? null : $value['primaryId'],
                     'role_name'                    => $value['role'],
                     'avatar'                       => 'photo_defaults.jpg',
                     'password'                     => $value['password'],
@@ -98,7 +99,7 @@ class SyncUsersSeeder extends Seeder
                         'username' => $value['username'],
                         'employee_id' => str_replace(".", "", $value['id_pegawai']),
                         'status' => $value['status'] == 'Aktif' ? 'Active' : 'Inactive',
-                        'pegawai_id_mantai' => $value['primaryId'],
+                        'pegawai_id_mantai' => $value['primaryId'] == '' ? null : $value['primaryId'],
                     ]);
 
                 DaftarPegawai::where('email', $value['email'])
