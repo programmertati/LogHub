@@ -26,7 +26,7 @@ class SyncUsersSeeder extends Seeder
         $accounts = $response->json();
         // dd($accounts);
         $team = Team::where('name', 'LOG HARIAN TATI')->first();
-        $board = Board::where('team_id', $team->id)->where('name', 'LOG HARIAN TATI 2024')->first();
+        $board = Board::where('team_id', $team->id)->where('name', 'LOG HARIAN TATI '.date('Y'))->first();
         foreach ($accounts['data'] as $key => $value) {
             //Cek User baru
             $cek_user = User::where('email', $value['email'])->count();
@@ -98,7 +98,7 @@ class SyncUsersSeeder extends Seeder
                         'name'  => $value['name'],
                         'username' => $value['username'],
                         'employee_id' => str_replace(".", "", $value['id_pegawai']),
-                        'status' => $value['status'] == 'Aktif' ? 'Active' : 'Inactive',
+                        'status' => $value['username'] == 'Admintati' ? 'Active' : ($value['status'] == 'Aktif' ? 'Active' : 'Inactive'),
                         'pegawai_id_mantai' => $value['primaryId'] == '' ? null : $value['primaryId'],
                     ]);
 
