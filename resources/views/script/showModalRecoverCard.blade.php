@@ -218,7 +218,7 @@
                     <a href="#" class="dropdown-item" onclick="deleteCardModal2(${card.id}, '${addSlashes(card.name)}', '${column.name}', '${card.deleteUrl}');">
                         <i class='fa fa-trash-o m-r-5'></i> Delete
                     </a>
-                    <a href="#" class="dropdown-item" onclick="copyCardModal(${card.id}, '${addSlashes(card.name)}', '${card.copyCardUrl}');" id="copy-card-${card.id}">
+                    <a href="#" class="dropdown-item" onclick="copyCardModal(${card.id}, '${card.copyCardUrl}');" id="copy-card-${card.id}">
                         <i class="fa-regular fa-copy m-r-5"></i> Copy Card
                     </a>
                 </div>

@@ -87,7 +87,7 @@ class BoardController extends Controller
         $dataColumnCard = Column::with(['cards.titleChecklists.checklists'])
             ->where('board_id', $board_id)
             ->get();
-        $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
+        $UserTeams = DB::table('users')->where('status','Active')->select('name', 'email', 'username', 'avatar')->get();
         $actionTeams = DB::table('user_team')->where('team_id', '=', $team_id)->where('status', '=', 'Owner')->where('user_id', '=', $userID)->get();
         return view("LogHub.board")
             ->with("UserTeams", $UserTeams)
@@ -111,7 +111,7 @@ class BoardController extends Controller
 
         $isianKartu = Card::with(['titleChecklists.checklists'])->find($request->card_id);
         $dataKolom = Column::find($isianKartu->column_id);
-        $UserTeams = DB::table('users')->select('name', 'email', 'username', 'avatar')->get();
+        $UserTeams = DB::table('users')->where('status','Active')->select('name', 'email', 'username', 'avatar')->get();
         return view('LogHub.isi-kartu')
             ->with("isianKartu", $isianKartu)
             ->with("dataKolom", $dataKolom)
@@ -363,6 +363,10 @@ class BoardController extends Controller
 
             // Pulihkan Kartu
             $card->restore();
+
+            // setelah pulihkan rubah posisi kartu ke paling bawah
+            $lastPosition = Card::where('column_id', $columnId)->max('position') + 1;
+            $card->update(['position' => $lastPosition]);
 
             // Pulihkan Judul Checklist
             TitleChecklists::withTrashed()->where('cards_id', $card->id)->get()->each(function ($titleChecklist) {

@@ -292,7 +292,7 @@ class UserManagementController extends Controller
             return redirect()->back();
         } catch (\Exception $e) {
             DB::rollback();
-            Toastr::error('Foto profil gagal diperbaharui', 'Error');
+            Toastr::error('Error' . $e->getMessage(), 'Error');
             return redirect()->back();
         }
     }

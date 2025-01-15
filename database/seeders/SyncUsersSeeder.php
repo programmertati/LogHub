@@ -24,12 +24,14 @@ class SyncUsersSeeder extends Seeder
     {
         $response = Http::withBasicAuth('mantai', 'T@T3@M')->timeout(60)->retry(3, 1000)->get('https://management.pttati.co.id/api/list-account');
         $accounts = $response->json();
+        // dd($accounts);
         $team = Team::where('name', 'LOG HARIAN TATI')->first();
         $board = Board::where('team_id', $team->id)->where('name', 'LOG HARIAN TATI 2024')->first();
         foreach ($accounts['data'] as $key => $value) {
             //Cek User baru
             $cek_user = User::where('email', $value['email'])->count();
-            if (empty($cek_user)) {
+            // jika ada maka create user, jika tidak maka update
+            if ($cek_user == 0) {
                 $maxId = User::max('id');
                 $user = User::create([
                     'name'                         => $value['name'],
@@ -38,7 +40,8 @@ class SyncUsersSeeder extends Seeder
                     'username'                     => $value['username'],
                     'employee_id'                  => str_replace(".", "", $value['id_pegawai']),
                     'join_date'                    => now()->toDayDateTimeString(),
-                    'status'                       => 'Active',
+                    'status'                       => $value['status'] == 'Aktif' ? 'Active' : 'Inactive',
+                    'pegawai_id_mantai'            => $value['primaryId'] == '' ? null : $value['primaryId'],
                     'role_name'                    => $value['role'],
                     'avatar'                       => 'photo_defaults.jpg',
                     'password'                     => $value['password'],
@@ -89,6 +92,22 @@ class SyncUsersSeeder extends Seeder
                         ]);
                     }
                 }
+            }else{
+                User::where('email', $value['email'])
+                    ->update([
+                        'name'  => $value['name'],
+                        'username' => $value['username'],
+                        'employee_id' => str_replace(".", "", $value['id_pegawai']),
+                        'status' => $value['status'] == 'Aktif' ? 'Active' : 'Inactive',
+                        'pegawai_id_mantai' => $value['primaryId'] == '' ? null : $value['primaryId'],
+                    ]);
+
+                DaftarPegawai::where('email', $value['email'])
+                    ->update([
+                        'name' => $value['name'],
+                        'username' => $value['username'],
+                        'employee_id' => str_replace(".", "", $value['id_pegawai']),
+                    ]);
             }
         }
     }
