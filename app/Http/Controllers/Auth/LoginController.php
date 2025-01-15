@@ -118,7 +118,7 @@ class LoginController extends Controller
         $user = User::where('username', $username)->where('status', 'Active')->first();
         // dd($user);
         if (!$user) {
-            $message = 'Akun Anda Tidak Terdaftar, Silahkan Hubungi Admin!';
+            $message = 'Akun Anda Tidak Terdaftar, Silahkan Hubungi Admin! '.$username;
             return view('auth.landing', compact('message'));
         }
 
