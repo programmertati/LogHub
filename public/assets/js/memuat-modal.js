@@ -297,7 +297,7 @@ $(document).ready(function() {
                             <a href="#" class="dropdown-item" onclick="deleteCardModal2('${response.card.id}', '${addSlashes(response.card.name)}', '${response.column.name}', '${response.card.deleteUrl}');">
                                 <i class='fa fa-trash-o m-r-5'></i> Delete
                             </a>
-                            <a href="#" class="dropdown-item" onclick="copyCardModal('${response.card.id}', '${addSlashes(response.card.name)}', '${response.card.copyCardUrl}');" id="copy-card-${response.card.id}">
+                            <a href="#" class="dropdown-item" onclick="copyCardModal('${response.card.id}','${response.card.copyCardUrl}');" id="copy-card-${response.card.id}">
                                 <i class="fa-regular fa-copy m-r-5"></i> Copy Card
                             </a>
                         </div>
@@ -425,7 +425,7 @@ $(document).ready(function() {
                 isSubmitting = false;
             },
             error: function(xhr, status, error) {
-                toastr.error('Gagal menyalin kartu!');
+                toastr.error(xhr.responseJSON.message);
                 $('#copy-card-name-error').text('Terjadi kesalahan saat menyalin kartu!');
                 $('#copy-card-name').addClass('is-invalid');
 
