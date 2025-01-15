@@ -364,6 +364,10 @@ class BoardController extends Controller
             // Pulihkan Kartu
             $card->restore();
 
+            // setelah pulihkan rubah posisi kartu ke paling bawah
+            $lastPosition = Card::where('column_id', $columnId)->max('position') + 1;
+            $card->update(['position' => $lastPosition]);
+
             // Pulihkan Judul Checklist
             TitleChecklists::withTrashed()->where('cards_id', $card->id)->get()->each(function ($titleChecklist) {
 
