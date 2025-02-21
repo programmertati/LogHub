@@ -113,7 +113,7 @@ class TeamController extends Controller
         $team_id = intval($team_id);
         $selected_team = Team::find($team_id);
         $team_owner = $this->teamLogic->getTeamOwner($selected_team->id);
-        $team_members = $this->teamLogic->getTeamMember($selected_team->id);
+        $team_members = $this->teamLogic->getTeamMember($selected_team->id)->where('status', 'Active');
         $team_members_pending = $this->teamLogic->getTeamMemberPending($selected_team->id);
         $team_boards = $this->teamLogic->getBoards($selected_team->id);
         $UserTeams = DB::table('users')->select('name', 'email')->get();
